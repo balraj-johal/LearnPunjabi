@@ -1,0 +1,16 @@
+@import "abstracts/mixins";
+@import "abstracts/animations";
+@import "abstracts/variables";
+
+@import "base/typography";
+
+@import "layout/content";
+@import "layout/navigation";
+
+body {
+    overflow: hidden;
+    // z-index: 0;
+}
+html {
+    scroll-behavior: smooth;
+}
