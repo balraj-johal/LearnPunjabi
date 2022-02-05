@@ -1,0 +1,14 @@
+#logo-full {
+    margin: 1.5em 2em 0.5em;
+    width: 210px;
+}
+
+#topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+        width: 50px;
+        margin-right: 1.5em;
+    }
+}
