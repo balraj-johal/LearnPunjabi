@@ -64,6 +64,12 @@
   width: 100%;
 }
 
+#welcome {
+  background: #f0a6ff;
+  background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), to(#d3ffff));
+  background: linear-gradient(0deg, #f0a6ff 0%, #d3ffff 100%);
+}
+
 .container {
   width: 80%;
   margin: auto;

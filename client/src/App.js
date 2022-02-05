@@ -2,7 +2,6 @@ import './style/Root.css';
 
 import { useCallback, useEffect } from "react";
 
-
 // router imports
 import { BrowserRouter as 
     Router,
@@ -25,6 +24,7 @@ import {
     setCurrentUser,
     decodeJWTandSetUser
 } from "./actions/authActions";
+import Welcome from './components/Welcome';
 
 
 function App() {
@@ -76,6 +76,7 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/welcome" element={<Welcome />} />
                     <Route path="/account" element={<AccountManager />} />
                 </Routes>
             </Router>
