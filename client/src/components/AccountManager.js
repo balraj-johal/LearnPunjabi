@@ -24,7 +24,7 @@ function AccountManager(props) {
                         setManagerState("Register")
                     }}>Register</button>
                     <button onClick={() => {
-                        setManagerState("Register")
+                        props.logoutUser(props.auth.user._id);
                     }}>Logout</button>
                 </div>
                 <Switcher state={managerState} setManagerState={setManagerState} />

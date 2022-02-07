@@ -1,5 +1,5 @@
 import React from "react";
-
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import AccountIcon from "../res/icons/user.png";
@@ -15,12 +15,24 @@ function Topbar(props) {
                 </svg>
             </Link>
             <Link to="/account">
+                { props.auth.isAuthenticated ? (
+                    <div>Hello {props.auth.user.username}!</div>
+                ) : null }
                 <div className="account-button">
-                    <img src={AccountIcon}></img>
+                    <img src={AccountIcon} alt="account-open-button-icon"></img>
                 </div>
             </Link>
         </div>
     )
 }
 
-export default Topbar;
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+    mapStateToProps,
+    {
+    }
+)(Topbar);

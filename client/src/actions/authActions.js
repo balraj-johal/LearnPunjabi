@@ -8,7 +8,6 @@ import {
     GET_ERRORS,
     SET_CURRENT_USER,
     USER_LOADING,
-    RESTART
 } from "./types";
 
 export const registerUser = (userData) => dispatch => {
@@ -73,11 +72,12 @@ export const loginUser = userData => dispatch => {
         })
 }
 
-export const logoutUser = () => dispatch => {
+export const logoutUser = userID => dispatch => {
     //post user data
     axios({
-        method: 'get',
+        method: 'post',
         url: "http://localhost:3001/api/users/logout",
+        data: qs.stringify({_id: userID}),
         headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
@@ -107,7 +107,7 @@ export const logoutUser = () => dispatch => {
 }
 
 export const decodeJWTandSetUser = token => dispatch => {
-    console.log("deeconed")
+    console.log("deeconed");
     const decodedToken = jwt_decode(token);
     dispatch(setCurrentUser(decodedToken));
 }

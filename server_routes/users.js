@@ -92,10 +92,11 @@ router.post("/login", (req, res) => {
                                     //create JWT payload
                                     const payload = {
                                         id: user.id,
-                                        name: user.name
+                                        name: user.name,
+                                        message: "login"
                                     };
                                     // sign jwt token
-                                    jwt.sign(
+                                    jwt.sign( // TODO; refactor to use the getToken method from authenticate.js
                                             payload,
                                             process.env.PASSPORT_SECRET,
                                             {
@@ -137,7 +138,7 @@ router.post("/refreshToken", (req, res, next) => {
             // verify refresh token against REFRESH_TOKEN_SECRET and extract user id from it
             const payload = jwt.verify(cookieRefreshToken, process.env.REFRESH_TOKEN_SECRET)
             // find user 
-            const userId = payload._id
+            const userId = payload.user._id
             User.findOne({ _id: userId })
                 .then(user => {
                     if (user) {
@@ -158,7 +159,8 @@ router.post("/refreshToken", (req, res, next) => {
                             res.status(401).send("Unauthorized1")
                         } else {
                             // generate new jwt token
-                            const token = getToken({ _id: userId })
+                            const token = getToken( user )
+                            // const token = getToken({ _id: userId })
                             // create new refresh token and save in user's db entry
                             const newRefreshToken = getRefreshToken({ _id: userId })
                             // replace old refresh token with the new token
@@ -193,16 +195,14 @@ router.post("/refreshToken", (req, res, next) => {
         res.status(401).send("Unauthorized4")
     }
 })
-router.get("/user-details", verifyUser, (req, res) => {
-    res.send(req.user);
-})
-router.get("/logout", verifyUser, (req, res, next) => {
+router.post("/logout", (req, res, next) => {
     // retrieve refresh token from cookies
     let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
     // find user
-    User.findById(req.user._id)
+    console.log("logging out user ", req.body)
+    User.findById(req.body._id)
         .then(user => {
-                // find the refresh token in the user's db entry
+            if (user) {// find the refresh token in the user's db entry
                 let tokenIndex = -1;
                 let count = 0;
                 user.refreshToken.forEach(element => {
@@ -226,8 +226,11 @@ router.get("/logout", verifyUser, (req, res, next) => {
                         res.send({ success: true })
                     }
                 })
-            },
-            err => next(err)
+            } else {
+                res.status(404).send("user not found");
+            }
+        },
+        err => next(err)
         )
 })
 

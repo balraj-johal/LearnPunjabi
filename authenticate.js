@@ -1,6 +1,6 @@
-const passport = require("passport")
-const jwt = require("jsonwebtoken")
-const dev = process.env.NODE_ENV !== "production"
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const dev = process.env.NODE_ENV !== "production";
 
 exports.REFRESH_COOKIE_OPTIONS = {
     httpOnly: true,
@@ -14,18 +14,22 @@ exports.REFRESH_COOKIE_OPTIONS = {
 
 // generate jwt token
 exports.getToken = user => {
-    return jwt.sign(user, process.env.PASSPORT_SECRET, {
+    return jwt.sign({
+            _id : user._id,
+            username : user.username,
+        }, process.env.PASSPORT_SECRET, {
         expiresIn: eval(process.env.SESSION_EXPIRY),
-    })
+    });
 }
 
 // generate refresh token
 exports.getRefreshToken = user => {
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
+    const refreshToken = jwt.sign({user : user, message: "refresh"}, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: eval(process.env.REFRESH_TOKEN_EXPIRY),
-    })
-    return refreshToken
+    });
+    return refreshToken;
 }
 
 // export verify user middleware
-exports.verifyUser = passport.authenticate("jwt", { session: false })
+exports.verifyUser = passport.authenticate();
+// exports.verifyUser = passport.authenticate("jwt", { session: false });

@@ -10,7 +10,7 @@ const sessionSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
-    password: { type: String, required: true, minlength: 6 },  
+    password: { type: String, required: true, minlength: 6 },
     refreshToken: {
         type: [sessionSchema],
     },
@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema({
 });
 
 //Remove refreshToken from the response
-
 userSchema.set("toJSON", {
     transform: function (document, retrn, options) {
         delete retrn.refreshToken
