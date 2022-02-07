@@ -15,6 +15,7 @@ const {
 } = require("../authenticate")
 
 router.post("/register", (req, res) => {
+    console.log("register boyd: ", req.body)
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) {
@@ -31,6 +32,7 @@ router.post("/register", (req, res) => {
                 username: req.body.username,
                 password: req.body.password,
                 createdOn: req.body.createdOn,
+                progress: []
             })
             //salt and hash pw
             bcrypt.genSalt(10, (err, salt) => {
@@ -233,108 +235,5 @@ router.post("/logout", (req, res, next) => {
         err => next(err)
         )
 })
-
-
-
-// @route POST api/users/register
-// @desc Register user
-// @access Public
-router.post("/registerOLD", (req, res) => {
-    console.log("register request recieved")
-    console.log("yerdr", req.body.username, req.body.password)
-    //validate userData
-    const { errors, isValid } = validateRegister(req.body);
-    if (!isValid) {
-        return res.status(400).json({error: errors});
-    }
-    //look for username in db
-    User.findOne({
-        username: req.body.username,
-    }).then(user => {
-        if (user) { //if found
-            return res.status(400).json({error: "User already exists!"});
-        } else { //if not found, create new user
-            const newUser = new User({
-                username: req.body.username,
-                password: req.body.password,
-                createdOn: req.body.createdOn,
-            })
-            //salt and hash pw
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) {
-                        throw err;
-                    }
-                    newUser.password = hash;
-                    //save user to db
-                    newUser
-                        .save()
-                        .then(user => {
-                            console.log(user)
-                            return res.status(201).json(user);
-                        })
-                        .catch(err => console.log(err))
-                })
-                if (err) {
-                    console.log(err);
-                }
-            })
-        }
-    })
-})
-
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
-router.post("/loginOLD", (req, res) => {
-    //validate userData
-    const { errors, isValid } = validateLogin(req.body);
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-
-    const username = req.body.username;
-    const password = req.body.password;
-
-    //look for user in db
-    User.findOne({ username }).then(user => {
-        if (!user) {
-            return res.status(404).json({ error: "no user found." });
-        }
-        //check password
-        bcrypt
-            .compare(password, user.password)
-            .then(isMatch => {
-                if (isMatch) {
-                    //create JWT Payload
-                    const payload = {
-                        id: user.id,
-                        name: user.name
-                    };
-                    //sign token
-                    jwt.sign(
-                        payload,
-                        process.env.PASSPORT_SECRET, //TODO: this looks very wrong
-                        {
-                            expiresIn: 3600 // set expiry of session to one hour
-                        },
-                        (err, token) => {
-                            res.json({
-                                success: true,
-                                token: "Bearer " + token
-                            });
-                            if (err) {
-                                console.log('JWT Signing err: ', err);
-                            }
-                        }
-                    );
-                } else {
-                    return res
-                        .status(400)
-                        .json({ error: "Wrong password." });
-                }
-        });
-    });
-});
 
 module.exports = router;

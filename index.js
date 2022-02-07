@@ -10,6 +10,7 @@ const csurf = require('csurf');
 // import routes
 const s3 = require("./server_routes/s3");
 const users = require("./server_routes/users");
+const progress = require("./server_routes/progress");
 
 const app = express();
 
@@ -47,9 +48,10 @@ app.use(passport.initialize());
 const csurfProtection = csurf({
     cookie: true
 });
-app.use(csurfProtection);
+// app.use(csurfProtection); //TODO: fix csurf protection
 app.get('/csrf-token', (req, res) => {
-    res.json({ csrfToken: req.csrfToken() });
+    // res.json({ csrfToken: req.csrfToken() });
+    res.json();
 });
 
 // Passport config
@@ -57,6 +59,7 @@ require("./config/passport")(passport);
 
 // declare routes
 app.use("/api/s3", s3);
+app.use("/api/progress", progress);
 app.use("/api/users", users);
 
 const PORT = process.env.PORT || 3001;

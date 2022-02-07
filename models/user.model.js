@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
         type: [sessionSchema],
     },
     createdOn: { type: Date, required: false },
+    progress: { type: Array }
 });
 
 //Remove refreshToken from the response
