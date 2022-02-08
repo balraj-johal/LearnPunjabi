@@ -41,7 +41,7 @@ router.post("/update", (req, res) => { //TODO: ensure user is verified before al
                         }
                         user.save()
                             .then(saveRes => {
-                                res.status(200).send({ newProgress: user.progress });
+                                res.status(200).send({ newProgress: user.progress }); //TODO: should I return the whole object here?
                             })
                             // TODO: error handling here
                     } else {

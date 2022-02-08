@@ -17,11 +17,17 @@ import AccountManager from '../components/AccountManager';
 
 import {
     setToken,
-    decodeJWTandSetUser
+    decodeJWTandSetUser,
+    getUserData
 } from "../actions/authActions";
 
 
 function Main(props) {
+
+    useEffect(() => {
+        props.getUserData();    
+    }, [props.auth])
+
     // verify user credentials and refresh their refresh token
     const verifyUser = useCallback(async () => { // TODO: determine why function executes twice
         const { data } = await axios.get('/csrf-token');
@@ -79,6 +85,7 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {
-        decodeJWTandSetUser
+        decodeJWTandSetUser,
+        getUserData
     }
 )(Main);

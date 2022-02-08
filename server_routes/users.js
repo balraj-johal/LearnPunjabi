@@ -131,6 +131,38 @@ router.post("/login", (req, res) => {
             res.status(500).json(err)
         })
 });
+router.get("/data", (req, res, next) => {
+    // retrieve refresh token from cookies
+    let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
+    
+    if (cookieRefreshToken) {
+        try {
+            // verify refresh token against REFRESH_TOKEN_SECRET and extract user id from it
+            const payload = jwt.verify(cookieRefreshToken, process.env.REFRESH_TOKEN_SECRET)
+            // find user 
+            const userId = payload.user._id
+            User.findOne({ _id: userId })
+                .then(user => {
+                    if (user) {
+                        res.send({
+                            user: user
+                        })
+                    } else {
+                        console.log("user not found")
+                        res.status(401).send("Unauthorized2")
+                    }
+                },
+                err => next(err)
+            )
+        } catch (err) {
+            console.log("error in jwt verify or user.find")
+            res.status(401).send("Unauthorized3")
+        }
+    } else {
+        console.log("cookie refresh token not present")
+        res.status(401).send("Unauthorized4")
+    }
+})
 router.post("/refreshToken", (req, res, next) => {
     // retrieve refresh token from cookies
     let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?

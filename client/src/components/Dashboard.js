@@ -12,7 +12,7 @@ function Dashboard(props) {
         <div id="main">
             <Topbar />
             <div className="container">
-                <Course course={courses[courseIndex]} />
+                <Course />
             </div>
         </div>
     )

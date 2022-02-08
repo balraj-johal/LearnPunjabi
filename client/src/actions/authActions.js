@@ -8,6 +8,7 @@ import {
     GET_ERRORS,
     SET_CURRENT_USER,
     USER_LOADING,
+    SET_PROGRESS
 } from "./types";
 
 export const registerUser = (userData) => dispatch => {
@@ -72,6 +73,38 @@ export const loginUser = userData => dispatch => {
         })
 }
 
+export const getUserData = () => dispatch => {
+    axios({
+        method: 'get',
+        url: "http://localhost:3001/api/users/data",
+        // data: qs.stringify(userData),
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        withCredentials: true
+    })
+        .then(res => {
+            let userData = res.data.user
+            console.log("user data: ", userData);
+            dispatch({
+                type: SET_PROGRESS,
+                payload: userData.progress
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+
+let clearUserData = dispatch => {
+    dispatch({
+        type: SET_PROGRESS,
+        payload: []
+    })
+}
 export const logoutUser = userID => dispatch => {
     //post user data
     axios({
@@ -88,6 +121,7 @@ export const logoutUser = userID => dispatch => {
             setAuthToken(false);
             //set current user to empty obj
             dispatch(setCurrentUser({}));
+            clearUserData(dispatch);
             window.localStorage.setItem("logout", Date.now())
         })
         //if err dispatch GET_ERRORS with the error data
