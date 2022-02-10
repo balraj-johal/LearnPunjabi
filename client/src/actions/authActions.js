@@ -7,7 +7,6 @@ import jwt_decode from "jwt-decode";
 import {
     GET_ERRORS,
     SET_CURRENT_USER,
-    USER_LOADING,
     SET_PROGRESS
 } from "./types";
 
@@ -54,11 +53,9 @@ export const loginUser = userData => dispatch => {
             //decode and set current user from token
             const decodedToken = jwt_decode(token);
             dispatch(setCurrentUser(decodedToken));
-            // window.location.reload();
         })
         //if err dispatch GET_ERRORS with the error data
         .catch(err => {
-            
             if (err.response) {
                 dispatch({
                     type: GET_ERRORS,
@@ -74,10 +71,10 @@ export const loginUser = userData => dispatch => {
 }
 
 export const getUserData = () => dispatch => {
+    //post user data
     axios({
         method: 'get',
         url: "http://localhost:3001/api/users/data",
-        // data: qs.stringify(userData),
         headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
@@ -91,11 +88,19 @@ export const getUserData = () => dispatch => {
                 payload: userData.progress
             })
         })
+        //if err dispatch GET_ERRORS with the error data
         .catch(err => {
-            dispatch({
-                type: GET_ERRORS,
-                payload: err.response.data
-            })
+            if (err.response) {
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: err.response.data
+                })
+            } else {
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: "sth else"
+                })
+            }
         })
 }
 
@@ -140,8 +145,8 @@ export const logoutUser = userID => dispatch => {
         })
 }
 
+
 export const decodeJWTandSetUser = token => dispatch => {
-    console.log("deeconed");
     const decodedToken = jwt_decode(token);
     dispatch(setCurrentUser(decodedToken));
 }
@@ -153,15 +158,8 @@ export const setCurrentUser = decodedToken => {
       payload: decodedToken
     };
 };
-  
-export const setUserLoading = () => {
-    return {
-        type: USER_LOADING
-    };
-};
 
 export const setToken = token => dispatch => {
-    console.log("sett")
     localStorage.setItem("jwtToken", token);
     setAuthToken(token);
     //decode and set current user from token

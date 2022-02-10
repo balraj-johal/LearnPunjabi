@@ -6,7 +6,8 @@ import Topbar from "./Topbar";
 import { connect } from "react-redux";
 
 import {
-    logoutUser
+    logoutUser,
+    getUserData
 } from "../actions/authActions";
 
 function AccountManager(props) {
@@ -24,6 +25,9 @@ function AccountManager(props) {
                 <button onClick={() => {
                     props.logoutUser(props.auth.user._id);
                 }}>Logout</button>
+                <button onClick={() => {
+                    props.getUserData();
+                }}>Get User Data</button>
             </div>
             <Switcher state={managerState} setManagerState={setManagerState} />
         </div>
@@ -56,6 +60,7 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {
-        logoutUser
+        logoutUser,
+        getUserData
     }
 )(AccountManager);

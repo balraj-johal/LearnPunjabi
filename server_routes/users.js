@@ -8,11 +8,12 @@ const validateLogin = require("../validation/login");
 const User = require("../models/user.model");
 
 const { 
-    getToken, 
+    getNewToken, 
     REFRESH_COOKIE_OPTIONS, 
-    getRefreshToken, 
-    verifyUser 
-} = require("../authenticate")
+    getNewRefreshToken, 
+    verifyToken,
+    verifyRefreshToken
+} = require("../authentication")
 
 router.post("/register", (req, res) => {
     //validate userData
@@ -40,7 +41,7 @@ router.post("/register", (req, res) => {
                         throw err;
                     }
                     newUser.password = hash;          
-                    const refreshToken = getRefreshToken({ _id: newUser._id });
+                    const refreshToken = getNewRefreshToken({ _id: newUser._id });
                     newUser.refreshToken.push({refreshToken});
                     //save user to db
                     newUser
@@ -84,7 +85,7 @@ router.post("/login", (req, res) => {
                         if (isMatch) {  
                             console.log("pw match")
                             // generate new refresh token and store in user entry
-                            const newRefreshToken = getRefreshToken({ _id: user._id });
+                            const newRefreshToken = getNewRefreshToken({ _id: user._id });
                             user.refreshToken.push({ refreshToken: newRefreshToken });
                             user
                                 .save()
@@ -97,9 +98,9 @@ router.post("/login", (req, res) => {
                                         message: "login"
                                     };
                                     // sign jwt token
-                                    jwt.sign( // TODO; refactor to use the getToken method from authenticate.js
+                                    jwt.sign( // TODO; refactor to use the getNewToken method from authenticate.js
                                             payload,
-                                            process.env.PASSPORT_SECRET,
+                                            process.env.JWT_SECRET,
                                             {
                                                 expiresIn: 15 * 60 // set expiry of session to 15 mins
                                             },
@@ -110,7 +111,7 @@ router.post("/login", (req, res) => {
                                                 }
                                                 console.log("jwt'd, ", token)
                                                 res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS);
-                                                res.cookie("jwtToken", "Bearer " + token, REFRESH_COOKIE_OPTIONS);
+                                                res.cookie("jwtToken", token, REFRESH_COOKIE_OPTIONS);
                                                 res.send({
                                                     success: true,
                                                     token: "Bearer " + token
@@ -130,42 +131,64 @@ router.post("/login", (req, res) => {
             console.log(err);
             res.status(500).json(err)
         })
-});
+}); 
+
 router.get("/data", (req, res, next) => {
+    verifyToken(req)
+        .then(user => {
+            return res.send({
+                user: user
+            })
+        })
+        .catch(err => {
+            return res.status(500).send(err);
+        })
+})
+
+router.post("/refreshToken", (req, res, next) => {
+    verifyRefreshToken(res)
+        .then(user => {
+            // find the refresh token in the user's db entry
+            let tokenIndex = -1;
+            let count = 0;
+            user.refreshToken.forEach(element => {
+                storedToken = element.refreshToken;
+                if (storedToken === cookieRefreshToken) {
+                    tokenIndex = count;
+                }
+                count++;
+            });
+
+            // if the refresh token is not present in the user's db entry
+            if (tokenIndex == -1) {
+                console.log("refresh token not present in user db")
+                res.status(401).send("Unauthorized1")
+            } else {
+                // generate new jwt token
+                const token = getNewToken( user )
+                // const token = getNewToken({ _id: userId })
+                // create new refresh token and save in user's db entry
+                const newRefreshToken = getNewRefreshToken({ _id: userId })
+                // replace old refresh token with the new token
+                user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
+                // save user
+                user.save((err, user) => {
+                    if (err) {
+                        res.status(500).send(err)
+                    } else {
+                        // send new jwt token and store refresh token in cookies
+                        res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS)
+                        res.send({ 
+                            success: true,
+                            token: "Bearer " + token
+                        })
+                    }
+                })
+            }
+        })
+
     // retrieve refresh token from cookies
     let cookieRefreshToken = req.cookies.refreshToken;
-    
-    if (cookieRefreshToken) {
-        try {
-            // verify refresh token against REFRESH_TOKEN_SECRET and extract user id from it
-            const payload = jwt.verify(cookieRefreshToken, process.env.REFRESH_TOKEN_SECRET)
-            // find user 
-            const userId = payload.user._id
-            User.findOne({ _id: userId })
-                .then(user => {
-                    if (user) {
-                        res.send({
-                            user: user
-                        })
-                    } else {
-                        console.log("user not found")
-                        res.status(401).send("Unauthorized2")
-                    }
-                },
-                err => next(err)
-            )
-        } catch (err) {
-            console.log("error in jwt verify or user.find")
-            res.status(401).send("Unauthorized3")
-        }
-    } else {
-        console.log("cookie refresh token not present")
-        res.status(401).send("Unauthorized4")
-    }
-})
-router.post("/refreshToken", (req, res, next) => {
-    // retrieve refresh token from cookies
-    let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
     
     if (cookieRefreshToken) {
         try {
@@ -193,10 +216,10 @@ router.post("/refreshToken", (req, res, next) => {
                             res.status(401).send("Unauthorized1")
                         } else {
                             // generate new jwt token
-                            const token = getToken( user )
-                            // const token = getToken({ _id: userId })
+                            const token = getNewToken( user )
+                            // const token = getNewToken({ _id: userId })
                             // create new refresh token and save in user's db entry
-                            const newRefreshToken = getRefreshToken({ _id: userId })
+                            const newRefreshToken = getNewRefreshToken({ _id: userId })
                             // replace old refresh token with the new token
                             user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
                             // save user
@@ -229,96 +252,65 @@ router.post("/refreshToken", (req, res, next) => {
         res.status(401).send("Unauthorized4")
     }
 })
+
 router.post("/logout", (req, res, next) => {
-    // retrieve refresh token from cookies
-    let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
-    // find user
-    console.log("logging out user ", req.body)
-    User.findById(req.body._id)
+    verifyToken(req)
         .then(user => {
-            if (user) {// find the refresh token in the user's db entry
-                let tokenIndex = -1;
-                let count = 0;
-                user.refreshToken.forEach(element => {
-                    storedToken = element.refreshToken;
-                    if (storedToken === cookieRefreshToken) {
-                        tokenIndex = count;
-                    }
-                    count++;
-                });
-                // if refresh token is present, delete the token
-                if (tokenIndex !== -1) {
-                    user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
+            let tokenIndex = -1;
+            let count = 0;
+            user.refreshToken.forEach(element => {
+                storedToken = element.refreshToken;
+                if (storedToken === cookieRefreshToken) {
+                    tokenIndex = count;
                 }
-                // save user
-                user.save((err, user) => {
-                    if (err) {
-                        res.status(500).send(err)
-                    } else {
-                        // delete refresh token from cookies
-                        res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
-                        res.send({ success: true })
-                    }
-                })
-            } else {
-                res.status(404).send("user not found");
+                count++;
+            });
+            // if refresh token is present, delete the token
+            if (tokenIndex !== -1) {
+                user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
             }
-        },
-        err => next(err)
-        )
+            // save user
+            user.save((err, result) => {
+                if (err) {
+                    res.status(500).send(err)
+                } else {
+                    // delete refresh token from cookies
+                    res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
+                    res.clearCookie("jwtToken", REFRESH_COOKIE_OPTIONS)
+                    res.send({ success: true })
+                }
+            })
+        })
 })
 
-router.post("/update-progress", (req, res) => { //TODO: ensure user is verified before allowing
-    // retrieve refresh token from cookies
-    let progressToAdd = req.body;
-    let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
-    console.log("prtoadd, ", req.body)
-
-    if (cookieRefreshToken) {
-        try {
-            // verify refresh token against REFRESH_TOKEN_SECRET and extract user id from it
-            const payload = jwt.verify(cookieRefreshToken, process.env.REFRESH_TOKEN_SECRET)
-            // find user 
-            const userId = payload.user._id
-            User.findOne({ _id: userId })
-                .then(user => {
-                    if (user) {
-                        let lesson;
-                        // if (user.progress.length > 1) { //TODO: fix this
-                        //     lesson = user.progress.find(elem => elem.id === progressToAdd.id);
-                        // }
-                        user.progress.forEach(elem => {
-                            if (elem != null) {
-                                if (elem.id === progressToAdd.id) {
-                                    lesson = elem;
-                                }
-                            }
-                        })
-                        if (lesson === undefined) {
-                            user.progress.push(progressToAdd);
-                        } else {
-                            lesson = progressToAdd // TODO: figure out how to update a lesson's progress
-                        }
-                        user.save()
-                            .then(saveRes => {
-                                res.status(200).send({ newProgress: user.progress }); //TODO: should I return the whole object here?
-                            })
-                            // TODO: error handling here
-                    } else {
-                        console.log("user not found")
-                        res.status(401).send("Unauthorized2")
+router.post("/update-progress", (req, res) => {
+    verifyToken(req)
+        .then(user => {
+            let progressToAdd = req.body;
+            let lesson;
+            // check if lesson object is already present
+            user.progress.forEach(elem => {
+                if (elem != null) {
+                    if (elem.id === progressToAdd.id) {
+                        lesson = elem;
                     }
-                },
-                err => next(err)
-            )
-        } catch (err) {
-            console.log("error in jwt verify or user.find")
-            res.status(401).send("Unauthorized3")
-        }
-    } else {
-        console.log("cookie refresh token not present")
-        res.status(401).send("Unauthorized4")
-    }
+                }
+            })
+            if (lesson === undefined) {
+                user.progress.push(progressToAdd);
+            } else {
+                lesson = progressToAdd; // TODO: figure out how to better update a lesson's progress
+            }
+            user.save()
+                .then(saveRes => {
+                    res.status(200).send({ newProgress: user.progress }); //TODO: should I return the whole object here?
+                })
+                // TODO: error handling here
+        }) 
+        .catch(err => {
+            res.status(500).send(`Error: ${err}`);
+        })
+
 })
 
 module.exports = router;
