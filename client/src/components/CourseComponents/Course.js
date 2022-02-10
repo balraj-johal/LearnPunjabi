@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import { connect } from "react-redux";
+
+import {
+    Link
+} from "react-router-dom";
+
 import axios from "axios";
 import qs from 'qs';
 
@@ -44,26 +49,35 @@ function Course(props) {
             })
     }
     let getLessonStatus = (id) => {
-        let string = "not completed"
+        let status = false;
         props.course.progress.forEach(lesson => {
             if (lesson.id === id) {
-                string = "completed";
+                status = true;
             }
         });
-        return string;
+        return status;
     }
 
     return(
         <div id="course">
             <h1 id="course-name">Punjabi 101</h1>
-            {courseData.map((lesson, index) => 
-                <div className="lesson" key={index} onClick={() => {
-                    updateProgress(lesson);
-                }}>
-                    { lesson.name }
-                    { getLessonStatus(lesson.id) }
-                </div>
-            )}
+            <div class="lesson-wrap">
+                {courseData.map((lesson, index) => 
+                    <div 
+                        className={`lesson ${getLessonStatus(lesson.id) ? "complete" : "incomplete"}`}
+                        onClick={() => {
+                            // updateProgress(lesson);
+                        }}
+                        key={index} 
+                    >
+                        
+                        <Link to={`/lesson/${lesson.id}`}>
+                            { lesson.name }
+                            { getLessonStatus(lesson.id) }
+                        </Link>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

@@ -14,6 +14,9 @@ import { BrowserRouter as
 // component imports
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManager';
+import Lessons from '../components/CourseComponents/Lessons';
+import Lesson from '../components/CourseComponents/Lesson';
+import Topbar from "./Topbar";
 
 import {
     setToken,
@@ -26,7 +29,7 @@ function Main(props) {
 
     useEffect(() => {
         props.getUserData();    
-    }, [props.auth])
+    }, [])
 
     // verify user credentials and refresh their refresh token
     const verifyUser = useCallback(async () => { // TODO: determine why function executes twice
@@ -66,14 +69,20 @@ function Main(props) {
     }, [verifyUser])
 
     return(
-        <div id="redux-provider-wrap">
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/account" element={<AccountManager />} />
-                </Routes>
-            </Router>
-        </div>
+        <Router>
+            <>
+                <Topbar />
+                <div className="container">
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/account" element={<AccountManager />} />
+                        <Route path="/lesson" element={<Lessons />} >
+                            <Route path=":id" element={<Lesson />} />
+                        </Route>
+                    </Routes>
+                </div>
+            </>
+        </Router>
     )
 }
 

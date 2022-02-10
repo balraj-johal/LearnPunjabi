@@ -13,23 +13,19 @@ function AccountManager(props) {
     let [managerState, setManagerState] = useState("Login");
 
     return(
-        <div>
-            <Topbar />
-            <div id="accounts-wrap">
-                <div id="switcher-buttons">
-                    <button onClick={() => {
-                        setManagerState("Login")
-                    }}>Login</button>
-                    <button onClick={() => {
-                        setManagerState("Register")
-                    }}>Register</button>
-                    <button onClick={() => {
-                        props.logoutUser(props.auth.user._id);
-                    }}>Logout</button>
-                </div>
-                <Switcher state={managerState} setManagerState={setManagerState} />
+        <div id="accounts-wrap">
+            <div id="switcher-buttons">
+                <button onClick={() => {
+                    setManagerState("Login")
+                }}>Login</button>
+                <button onClick={() => {
+                    setManagerState("Register")
+                }}>Register</button>
+                <button onClick={() => {
+                    props.logoutUser(props.auth.user._id);
+                }}>Logout</button>
             </div>
-
+            <Switcher state={managerState} setManagerState={setManagerState} />
         </div>
     )
 }

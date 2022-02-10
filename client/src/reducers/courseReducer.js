@@ -12,7 +12,7 @@ export default function(state = initialState, action) {
             console.log("SETTING")
             return {
                 ...state,
-                progress: [...action.payload]
+                progress: [...action.payload] // array copied to ensure redux rerender
             };
         default:
             return state;

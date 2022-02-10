@@ -11,6 +11,7 @@ const csurf = require('csurf');
 const s3 = require("./server_routes/s3");
 const users = require("./server_routes/users");
 const progress = require("./server_routes/progress");
+const lessons = require("./server_routes/lessons");
 
 const app = express();
 
@@ -61,6 +62,7 @@ require("./config/passport")(passport);
 app.use("/api/s3", s3);
 app.use("/api/progress", progress);
 app.use("/api/users", users);
+app.use("/api/lessons", lessons);
 
 const PORT = process.env.PORT || 3001;
 
