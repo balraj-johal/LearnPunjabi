@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
-import Topbar from "./Topbar";
 
 import { connect } from "react-redux";
 
@@ -46,8 +45,7 @@ function Switcher(props) {
             )
         default:
             return(
-                <div id="switcher">
-                </div>
+                <></>
             )
     }
 }

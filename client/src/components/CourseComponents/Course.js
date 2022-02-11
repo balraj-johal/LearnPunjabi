@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-
+import React, {  } from "react";
 import { connect } from "react-redux";
 
 import {
     Link
 } from "react-router-dom";
-
-import axios from "axios";
-import qs from 'qs';
 
 import {
     setProgress
@@ -30,31 +26,19 @@ function Course(props) {
         },
     ]
 
-    let updateProgress = (progressToAdd) => {
-        axios({
-            method: 'post',
-            url: "http://localhost:3001/api/progress/update",
-            data: qs.stringify(progressToAdd),
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            withCredentials: true
-        })
-            .then(res => {
-                console.log(res.data.newProgress);
-                props.setProgress(res.data.newProgress);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
+    /**
+     * @param { String } id - lesson id
+     * @returns { boolean } status - is lesson completed or not
+     */
     let getLessonStatus = (id) => {
         let status = false;
-        props.course.progress.forEach(lesson => {
-            if (lesson.id === id) {
-                status = true;
-            }
-        });
+        if (props.userProgress) {
+            props.userProgress.forEach(lesson => {
+                if (lesson.id === id) {
+                    status = true;
+                }
+            });
+        }
         return status;
     }
 
@@ -65,12 +49,8 @@ function Course(props) {
                 {courseData.map((lesson, index) => 
                     <div 
                         className={`lesson ${getLessonStatus(lesson.id) ? "complete" : "incomplete"}`}
-                        onClick={() => {
-                            // updateProgress(lesson);
-                        }}
                         key={index} 
                     >
-                        
                         <Link to={`/lesson/${lesson.id}`}>
                             { lesson.name }
                             { getLessonStatus(lesson.id) }
@@ -84,7 +64,8 @@ function Course(props) {
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
-    course: state.course
+    course: state.course,
+    userProgress: state.auth.user.progress
 });
 
 export default connect(
