@@ -17,25 +17,7 @@ class Register extends Component {
             firstName: "",
             errors: {},
         };
-    }
-    componentDidMount() {
-    }
-
-    //TODO: this is dodgy need to fix, see
-    //https://reactjs.org/docs/react-component.html#unsafe_componentwillreceiveprops
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.auth.isAuthenticated) {
-    //         this.props.history.push("/game");
-    //         // this.state.register_fx.play(0.25);
-    //         // setTimeout(() => {
-    //         //     this.props.history.push("/game");
-    //         // }, 5000);
-    //     } else {
-    //     }
-    //     if (nextProps.errors) {
-    //         this.setState({ errors: nextProps.errors });
-    //     }
-    // }
+    };
 
     //form control methods
     onChange = e => {
@@ -73,11 +55,12 @@ class Register extends Component {
         const { errors } = this.state;
         return (
             <div className="register">
+                <h2>Register</h2>
                 <div className="register-window bevel">
                     <div className="register-area">
                         <form className="register-form" noValidate onSubmit={this.onSubmit}>
                             <div className="input-field">
-                                <label htmlFor="username">Username:</label><br/>
+                                <label htmlFor="username">Username:</label>
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.username}
@@ -87,7 +70,7 @@ class Register extends Component {
                                 />
                             </div>
                             <div className="input-field">
-                                <label htmlFor="firstName">First Name:</label><br/>
+                                <label htmlFor="firstName">First Name:</label>
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.firstName}
@@ -97,7 +80,7 @@ class Register extends Component {
                                 />
                             </div>
                             <div className="input-field">
-                                <label htmlFor="email">Email:</label><br/>
+                                <label htmlFor="email">Email:</label>
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.email}
@@ -107,7 +90,7 @@ class Register extends Component {
                                 />
                             </div>
                             <div className="input-field">
-                                <label htmlFor="password">Password:</label><br/>
+                                <label htmlFor="password">Password:</label>
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.password}

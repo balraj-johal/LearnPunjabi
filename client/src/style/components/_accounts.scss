@@ -4,4 +4,19 @@
     .register, .login {
         width: 100%;
     }
+
+    .input-field {
+        label {
+            margin: 0.25em 0 0.25em;
+            display: block;
+        }
+    }
+}
+
+.auth-error {
+    height: 1em;
+    margin: 0.25em 0 1em;
+    font-size: 0.8em;
+    color: red;
+    font-style: italic;
 }

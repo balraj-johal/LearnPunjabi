@@ -16,24 +16,6 @@ class Login extends Component {
             errors: {},
         };
     }
-    componentDidMount() {
-    }
-
-    //TODO: this is dodgy need to fix, see
-    //https://reactjs.org/docs/react-component.html#unsafe_componentwillreceiveprops
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.auth.isAuthenticated) {
-    //         this.props.history.push("/game");
-    //         // this.state.login_fx.play(0.25);
-    //         // setTimeout(() => {
-    //         //     this.props.history.push("/game");
-    //         // }, 5000);
-    //     } else {
-    //     }
-    //     if (nextProps.errors) {
-    //         this.setState({ errors: nextProps.errors });
-    //     }
-    // }
 
     //form control methods
     onChange = e => {
@@ -58,11 +40,12 @@ class Login extends Component {
         const { errors } = this.state;
         return (
             <div className="login">
+                <h2>Login</h2>
                 <div className="login-window bevel">
                     <div className="login-area">
                         <form className="login-form" noValidate onSubmit={this.onSubmit}>
                             <div className="input-field">
-                                <label htmlFor="username">Username:</label><br/>
+                                <label htmlFor="username">Username:</label>
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.username}
@@ -71,42 +54,21 @@ class Login extends Component {
                                     type="text"
                                 />
                             </div>
-                            <div className="input-field">
-                                <label htmlFor="firstName">First Name:</label><br/>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.firstName}
-                                    error={errors.firstName}
-                                    id="firstName"
-                                    type="text"
-                                />
+                            <div className="auth-error" id="login-username-error">
+                                {this.props.errors.username}
                             </div>
                             <div className="input-field">
-                                <label htmlFor="email">Email:</label><br/>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.email}
-                                    error={errors.email}
-                                    id="email"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="password">Password:</label><br/>
+                                <label htmlFor="password">Password:</label>
                                 <input
                                     onChange={this.onChange}
                                     value={this.state.password}
-                                    error={errors.password}
+                                    error={this.props.errors.password}
                                     id="password"
                                     type="text"
                                 />
                             </div>
-                            <div className="login-error">
-                                <span className="red-text">
-                                    {errors.username}
-                                    {errors.msg}
-                                    {errors.date}
-                                </span>
+                            <div className="auth-error" id="login-pw-error">
+                                {this.props.errors.password}
                             </div>
                             <div className="button-wrap-login" >
                                 <button
