@@ -64,6 +64,19 @@
   width: 100%;
 }
 
+#accounts-wrap .input-field label {
+  margin: 0.25em 0 0.25em;
+  display: block;
+}
+
+.auth-error {
+  height: 1em;
+  margin: 0.25em 0 1em;
+  font-size: 0.8em;
+  color: red;
+  font-style: italic;
+}
+
 .lesson-wrap {
   width: 100%;
   display: -webkit-box;
@@ -94,6 +107,8 @@
   border: 1px grey solid;
   border-radius: 10px;
   margin: 15px;
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
 }
 
 .lesson-wrap .lesson.complete {
@@ -101,7 +116,7 @@
 }
 
 .lesson-wrap .lesson.incomplete {
-  background-color: red;
+  background-color: transparent;
 }
 
 .container {

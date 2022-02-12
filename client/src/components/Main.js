@@ -1,8 +1,7 @@
 import React from "react";
 import { useCallback, useEffect } from "react";
-
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
 
 // router imports
 import { BrowserRouter as 
@@ -18,70 +17,53 @@ import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import Topbar from "./Topbar";
 
+// auth actions
 import {
-    setToken,
-    decodeJWTandSetUser,
-    getUserData
+    getUserData,
+    useRefreshToken
 } from "../actions/authActions";
 
 
 function Main(props) {
-
-    useEffect(() => {
-        props.getUserData();    
-    }, [])
-
     // verify user credentials and refresh their refresh token
-    const verifyUser = useCallback(async () => { // TODO: determine why function executes twice
+    // TODO: determine why function executes twice
+    const verifyUser = useCallback(async () => { 
+        // TODO: fix this
+        // set csurf protection header
         const { data } = await axios.get('/csrf-token');
-        // add token to HTTP request headers
         axios.defaults.headers.post['X-CSRF-Token'] = data.csrfToken;
-        console.log("csrf token: ", data.csrfToken);
-
-        axios
-            .post(
-                "http://localhost:3001/api/users/refreshToken",
-                {},
-                {
-                    withCredentials: true, 
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                }
-            )
-            .then(res => {
-                //retrieve and save jwtToken
-                const {token} = res.data;
-                console.log("token refresh successful!");
-                setToken(token);
-                props.decodeJWTandSetUser(token);
-                
-                // call refreshToken every 5 minutes to renew the authentication token.
-                setTimeout(verifyUser, 5 * 60 * 1000)
-            })
-            .catch(err => {
-                console.log("Token refresh error: ", err);
-            })
-    }, [props.auth.isAuthenticated]);
-
+        // refresh the jwt with the refresh token
+        props.useRefreshToken();
+        // TODO: confirm that these dependancies are corrent
+    }, [props.auth.isAuthenticated]); 
     useEffect(() => {
         verifyUser();
     }, [verifyUser])
 
+    
+    // synchronise logout across open tabs
+    const syncLogout = useCallback(event => {
+        if (event.key === "logout") {
+            window.location.reload();
+            }
+    }, [])
+    useEffect(() => {
+        window.addEventListener("storage", syncLogout);
+        return () => { window.removeEventListener("storage", syncLogout) };
+    }, [syncLogout]);
+
     return(
         <Router>
-            <>
-                <Topbar />
-                <div className="container">
-                    <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/account" element={<AccountManager />} />
-                        <Route path="/lesson" element={<Lessons />} >
-                            <Route path=":id" element={<Lesson />} />
-                        </Route>
-                    </Routes>
-                </div>
-            </>
+            <Topbar />
+            <div className="container">
+                <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/account" element={<AccountManager />} />
+                    <Route path="/lesson" element={<Lessons />} >
+                        <Route path=":id" element={<Lesson />} />
+                    </Route>
+                </Routes>
+            </div>
         </Router>
     )
 }
@@ -94,7 +76,7 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {
-        decodeJWTandSetUser,
-        getUserData
+        getUserData,
+        useRefreshToken
     }
 )(Main);

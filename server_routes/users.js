@@ -1,7 +1,16 @@
+/**
+ * @module api/users
+ */
+
 const express = require("express");
+/**
+ * Express router to mount user related functions on.
+ * @type {object}
+ * @const
+ * @namespace usersRouter
+ */
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
@@ -9,12 +18,20 @@ const User = require("../models/user.model");
 
 const { 
     getNewToken, 
-    REFRESH_COOKIE_OPTIONS, 
     getNewRefreshToken, 
+    AUTH_COOKIE_OPTIONS,
     verifyToken,
     verifyRefreshToken
 } = require("../authentication")
 
+/**
+ * Register a new user.
+ * @name post/register
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.post("/register", (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
@@ -25,36 +42,50 @@ router.post("/register", (req, res) => {
     User.findOne({
         username: req.body.username,
     }).then(user => {
-        if (user) { //if found
-            return res.status(400).json({error: "User already exists!"});
-        } else { //if not found, create new user
+        if (user) { 
+            //if found
+            return res.status(400).json({
+                username: "User already exists!"
+            });
+        } else { 
+            // if not found, create new user
             const newUser = new User({
                 username: req.body.username,
                 password: req.body.password,
+                email: req.body.email,
+                firstName: req.body.firstName,
                 createdOn: req.body.createdOn,
                 progress: []
             })
-            //salt and hash pw
+            // salt and hash pw
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
                     if (err) {
                         throw err;
                     }
-                    newUser.password = hash;          
-                    const refreshToken = getNewRefreshToken({ _id: newUser._id });
+                    newUser.password = hash;
+                    // generate refresh token and save to user
+                    const refreshToken = getNewRefreshToken(newUser._id);
                     newUser.refreshToken.push({refreshToken});
-                    //save user to db
+                    // save user to db
                     newUser
                         .save()
                         .then(user => {
                             console.log(user);
-                            res.cookie("refreshToken", refreshToken, REFRESH_COOKIE_OPTIONS);
+                            res.cookie("refreshToken", refreshToken, AUTH_COOKIE_OPTIONS);
                             return res.status(201).json(user);
                         })
-                        .catch(err => console.log(err))
+                        .catch(err => {
+                            console.log(err);
+                            return res.status(500).json({
+                                registration: "Error creating user."
+                            });
+                        })
                 })
                 if (err) {
-                    console.log(err);
+                    return res.status(500).json({
+                        registration: "Error creating user."
+                    });
                 }
             })
         }
@@ -62,21 +93,17 @@ router.post("/register", (req, res) => {
 })
 router.post("/login", (req, res) => {
     // validate user data
-    console.log("login go")
     const { errors, isValid } = validateLogin(req.body);
     if (!isValid) {
         return res.status(400).json(errors);
-    } else {
-        console.log("validation pass")
     }
-
     // look for user in database
     const username = req.body.username;
     const password = req.body.password;
     User.findOne({ username })
         .then(user => {
             if (!user) {
-                return res.status(404).json({ error: "no user found." });
+                return res.status(404).json({ username: "no user found." });
             } else {
                 // check password against stored hash
                 bcrypt
@@ -85,44 +112,23 @@ router.post("/login", (req, res) => {
                         if (isMatch) {  
                             console.log("pw match")
                             // generate new refresh token and store in user entry
-                            const newRefreshToken = getNewRefreshToken({ _id: user._id });
+                            const newRefreshToken = getNewRefreshToken(user._id);
                             user.refreshToken.push({ refreshToken: newRefreshToken });
                             user
                                 .save()
-                                .then(saveRes => {
-                                    console.log("user saved")
-                                    //create JWT payload
-                                    const payload = {
-                                        id: user.id,
-                                        name: user.name,
-                                        message: "login"
-                                    };
-                                    // sign jwt token
-                                    jwt.sign( // TODO; refactor to use the getNewToken method from authenticate.js
-                                            payload,
-                                            process.env.JWT_SECRET,
-                                            {
-                                                expiresIn: 15 * 60 // set expiry of session to 15 mins
-                                            },
-                                            (err, token) => {
-                                                if (err) {
-                                                    console.log('JWT Signing err: ', err);
-                                                    res.status(500).json({ error: "JWT Signing error" })
-                                                }
-                                                console.log("jwt'd, ", token)
-                                                res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS);
-                                                res.cookie("jwtToken", token, REFRESH_COOKIE_OPTIONS);
-                                                res.send({
-                                                    success: true,
-                                                    token: "Bearer " + token
-                                                });
-                                            }
-                                        )
+                                .then(saveResult => {
+                                    const token = getNewToken( user._id );
+                                    res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
+                                    res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
+                                    return res.send({
+                                        success: true,
+                                        userID: user._id
+                                    });
                                 });
                         } else {
                             return res
                                 .status(400)
-                                .json({ error: "Wrong password." });
+                                .json({ password: "Wrong password." });
                         }
                 });
             }
@@ -136,8 +142,12 @@ router.post("/login", (req, res) => {
 router.get("/data", (req, res, next) => {
     verifyToken(req)
         .then(user => {
-            return res.send({
-                user: user
+            return res.send({ // TODO: whitelist properties here
+                user: {
+                    _id: user._id,
+                    username: user.username,
+                    progress: user.progress
+                }
             })
         })
         .catch(err => {
@@ -146,8 +156,10 @@ router.get("/data", (req, res, next) => {
 })
 
 router.post("/refreshToken", (req, res, next) => {
-    verifyRefreshToken(res)
-        .then(user => {
+    verifyRefreshToken(req)
+        .then(resultObject => {
+            let user = resultObject.user;
+            let cookieRefreshToken = resultObject.refreshToken;
             // find the refresh token in the user's db entry
             let tokenIndex = -1;
             let count = 0;
@@ -158,17 +170,15 @@ router.post("/refreshToken", (req, res, next) => {
                 }
                 count++;
             });
-
             // if the refresh token is not present in the user's db entry
             if (tokenIndex == -1) {
                 console.log("refresh token not present in user db")
                 res.status(401).send("Unauthorized1")
             } else {
                 // generate new jwt token
-                const token = getNewToken( user )
-                // const token = getNewToken({ _id: userId })
+                const token = getNewToken( user._id )
                 // create new refresh token and save in user's db entry
-                const newRefreshToken = getNewRefreshToken({ _id: userId })
+                const newRefreshToken = getNewRefreshToken(user._id)
                 // replace old refresh token with the new token
                 user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
                 // save user
@@ -177,80 +187,21 @@ router.post("/refreshToken", (req, res, next) => {
                         res.status(500).send(err)
                     } else {
                         // send new jwt token and store refresh token in cookies
-                        res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS)
-                        res.send({ 
+                        res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
+                        res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
+                        return res.send({ 
                             success: true,
-                            token: "Bearer " + token
+                            userID: user._id
+                            // token: "Bearer " + token
                         })
                     }
                 })
             }
         })
-
-    // retrieve refresh token from cookies
-    let cookieRefreshToken = req.cookies.refreshToken;
-    
-    if (cookieRefreshToken) {
-        try {
-            // verify refresh token against REFRESH_TOKEN_SECRET and extract user id from it
-            const payload = jwt.verify(cookieRefreshToken, process.env.REFRESH_TOKEN_SECRET)
-            // find user 
-            const userId = payload.user._id
-            User.findOne({ _id: userId })
-                .then(user => {
-                    if (user) {
-                        // find the refresh token in the user's db entry
-                        let tokenIndex = -1;
-                        let count = 0;
-                        user.refreshToken.forEach(element => {
-                            storedToken = element.refreshToken;
-                            if (storedToken === cookieRefreshToken) {
-                                tokenIndex = count;
-                            }
-                            count++;
-                        });
-
-                        // if the refresh token is not present in the user's db entry
-                        if (tokenIndex == -1) {
-                            console.log("refresh token not present in user db")
-                            res.status(401).send("Unauthorized1")
-                        } else {
-                            // generate new jwt token
-                            const token = getNewToken( user )
-                            // const token = getNewToken({ _id: userId })
-                            // create new refresh token and save in user's db entry
-                            const newRefreshToken = getNewRefreshToken({ _id: userId })
-                            // replace old refresh token with the new token
-                            user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
-                            // save user
-                            user.save((err, user) => {
-                                if (err) {
-                                    res.status(500).send(err)
-                                } else {
-                                    // send new jwt token and store refresh token in cookies
-                                    res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS)
-                                    res.send({ 
-                                        success: true,
-                                        token: "Bearer " + token
-                                    })
-                                }
-                            })
-                        }
-                    } else {
-                        console.log("user not found")
-                        res.status(401).send("Unauthorized2")
-                    }
-                },
-                err => next(err)
-            )
-        } catch (err) {
-            console.log("error in jwt verify or user.find")
-            res.status(401).send("Unauthorized3")
-        }
-    } else {
-        console.log("cookie refresh token not present")
-        res.status(401).send("Unauthorized4")
-    }
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(`Error: ${err}`);
+        })
 })
 
 router.post("/logout", (req, res, next) => {
@@ -258,13 +209,18 @@ router.post("/logout", (req, res, next) => {
         .then(user => {
             let tokenIndex = -1;
             let count = 0;
-            user.refreshToken.forEach(element => {
-                storedToken = element.refreshToken;
-                if (storedToken === cookieRefreshToken) {
-                    tokenIndex = count;
-                }
-                count++;
-            });
+            let cookieRefreshToken = req.cookies.refreshToken;
+            if (cookieRefreshToken) {
+                user.refreshToken.forEach(element => {
+                    storedToken = element.refreshToken;
+                        if (storedToken === cookieRefreshToken) {
+                            tokenIndex = count;
+                        }
+                    count++;
+                });
+            } else {
+                return res.status(401).send("refresh token not present.")
+            }
             // if refresh token is present, delete the token
             if (tokenIndex !== -1) {
                 user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
@@ -275,11 +231,15 @@ router.post("/logout", (req, res, next) => {
                     res.status(500).send(err)
                 } else {
                     // delete refresh token from cookies
-                    res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
-                    res.clearCookie("jwtToken", REFRESH_COOKIE_OPTIONS)
-                    res.send({ success: true })
+                    res.clearCookie("refreshToken", AUTH_COOKIE_OPTIONS)
+                    res.clearCookie("jwtToken", AUTH_COOKIE_OPTIONS)
+                    return res.send({ success: true })
                 }
             })
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).send(`Error: ${err}`);
         })
 })
 
@@ -299,16 +259,22 @@ router.post("/update-progress", (req, res) => {
             if (lesson === undefined) {
                 user.progress.push(progressToAdd);
             } else {
-                lesson = progressToAdd; // TODO: figure out how to better update a lesson's progress
+                lesson = progressToAdd; 
+                // TODO: figure out how to better update a lesson's progress
             }
             user.save()
                 .then(saveRes => {
-                    res.status(200).send({ newProgress: user.progress }); //TODO: should I return the whole object here?
+                    return res.status(200).send({ newProgress: user.progress }); 
+                    //TODO: should I return the whole object here?
                 })
-                // TODO: error handling here
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).send(`Error: ${err}`);
+                })
         }) 
         .catch(err => {
-            res.status(500).send(`Error: ${err}`);
+            console.log(err);
+            return res.status(500).send(`Error: ${err}`);
         })
 
 })

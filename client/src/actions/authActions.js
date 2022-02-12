@@ -1,16 +1,13 @@
 import axios from "axios";
 import qs from 'qs';
-import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
 
 //import declared action types
 import {
-    GET_ERRORS,
+    SET_AUTH_ERRORS,
     SET_CURRENT_USER,
-    SET_PROGRESS
 } from "./types";
 
-export const registerUser = (userData) => dispatch => {
+export const registerUser = userData => dispatch => {
     axios({
         method: 'post',
         url: "http://localhost:3001/api/users/register",
@@ -26,7 +23,7 @@ export const registerUser = (userData) => dispatch => {
         })
         .catch(err => {
             dispatch({
-                type: GET_ERRORS,
+                type: SET_AUTH_ERRORS,
                 payload: err.response.data
             })
         })
@@ -44,72 +41,54 @@ export const loginUser = userData => dispatch => {
         withCredentials: true
     })
         .then(res => {
-            //retrieve and save jwtToken
-            const {token} = res.data;
-            alert("login successful");
-            console.log("login successful: ", res.data)
-            localStorage.setItem("jwtToken", token);
-            setAuthToken(token);
-            //decode and set current user from token
-            const decodedToken = jwt_decode(token);
-            dispatch(setCurrentUser(decodedToken));
+            getUserDataPromise()
+                .then(userData => {
+                    dispatch(setCurrentUser(userData));
+                })
+                .catch(err => {
+                    dispatch({
+                        type: SET_AUTH_ERRORS,
+                        payload: err
+                    })
+                })
         })
-        //if err dispatch GET_ERRORS with the error data
         .catch(err => {
-            if (err.response) {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: err.response.data
-                })
-            } else {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: "sth else"
-                })
-            }
-        })
-}
-
-export const getUserData = () => dispatch => {
-    //post user data
-    axios({
-        method: 'get',
-        url: "http://localhost:3001/api/users/data",
-        headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        withCredentials: true
-    })
-        .then(res => {
-            let userData = res.data.user
-            console.log("user data: ", userData);
             dispatch({
-                type: SET_PROGRESS,
-                payload: userData.progress
+                type: SET_AUTH_ERRORS,
+                payload: err.response.data
             })
         })
-        //if err dispatch GET_ERRORS with the error data
+}
+
+
+export const getUserDataPromise = () => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'get',
+            url: "http://localhost:3001/api/users/data",
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            withCredentials: true
+        })
+            .then(res => {
+                resolve(res.data.user);
+            })
+            .catch(err => {
+                reject(err);
+            })
+    })
+}
+export const getUserData = () => dispatch => {
+    getUserDataPromise()
+        .then(userData => {
+            dispatch(setCurrentUser(userData));
+        })
         .catch(err => {
-            if (err.response) {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: err.response.data
-                })
-            } else {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: "sth else"
-                })
-            }
+            console.log("get /users/data error: ", err)
         })
 }
 
-let clearUserData = dispatch => {
-    dispatch({
-        type: SET_PROGRESS,
-        payload: []
-    })
-}
 export const logoutUser = userID => dispatch => {
     //post user data
     axios({
@@ -122,35 +101,36 @@ export const logoutUser = userID => dispatch => {
         withCredentials: true
     })
         .then(res => {
-            localStorage.removeItem("jwtToken");
-            setAuthToken(false);
-            //set current user to empty obj
-            dispatch(setCurrentUser({}));
-            clearUserData(dispatch);
-            window.localStorage.setItem("logout", Date.now())
+            dispatch(setCurrentUser({})); 
+            window.localStorage.setItem("logout", Date.now());
         })
-        //if err dispatch GET_ERRORS with the error data
         .catch(err => {
-            if (err.response) {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: err.response.data
-                })
-            } else {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: "sth else"
-                })
-            }
+            console.log("post /users/logout error: ", err);
         })
 }
 
-
-export const decodeJWTandSetUser = token => dispatch => {
-    const decodedToken = jwt_decode(token);
-    dispatch(setCurrentUser(decodedToken));
+export const useRefreshToken = () => dispatch => {
+    axios
+        .post("http://localhost:3001/api/users/refreshToken", {},
+            {
+                withCredentials: true, 
+                headers: { "Content-Type": "application/json" }
+            }
+        ) 
+        .then(res => {
+            console.log("token refresh successful!");
+            getUserDataPromise()
+                .then(userData => {
+                    dispatch(setCurrentUser(userData));
+                })
+                .catch(err => {
+                    console.log("post /users/refreshToken error: ", err);
+                })
+        })
+        .catch(err => {
+            console.log("Token refresh error: ", err);
+        })
 }
-
 
 export const setCurrentUser = decodedToken => {
     return {
@@ -158,11 +138,3 @@ export const setCurrentUser = decodedToken => {
       payload: decodedToken
     };
 };
-
-export const setToken = token => dispatch => {
-    localStorage.setItem("jwtToken", token);
-    setAuthToken(token);
-    //decode and set current user from token
-    const decodedToken = jwt_decode(token);
-    dispatch(setCurrentUser(decodedToken));
-}

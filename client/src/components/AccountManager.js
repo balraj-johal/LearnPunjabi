@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 
@@ -10,23 +10,29 @@ import {
 } from "../actions/authActions";
 
 function AccountManager(props) {
-    let [managerState, setManagerState] = useState("Login");
+    let initialState;
+    props.isAuthenticated ? initialState = "Summary" : initialState = "Login";
+    let [managerState, setManagerState] = useState(initialState);
 
     return(
         <div id="accounts-wrap">
             <div id="switcher-buttons">
-                <button onClick={() => {
-                    setManagerState("Login")
-                }}>Login</button>
-                <button onClick={() => {
-                    setManagerState("Register")
-                }}>Register</button>
-                <button onClick={() => {
-                    props.logoutUser(props.auth.user._id);
-                }}>Logout</button>
-                <button onClick={() => {
-                    props.getUserData();
-                }}>Get User Data</button>
+                {props.isAuthenticated ? (
+                    <>
+                        <button onClick={() => {
+                            props.logoutUser(props.auth.user._id);
+                        }}>Logout</button>
+                    </>
+                ) : (
+                    <>
+                        <button onClick={() => {
+                            setManagerState("Login")
+                        }}>Login</button>
+                        <button onClick={() => {
+                            setManagerState("Register")
+                        }}>Register</button>
+                    </>
+                )}
             </div>
             <Switcher state={managerState} setManagerState={setManagerState} />
         </div>
@@ -43,6 +49,10 @@ function Switcher(props) {
             return(
                 <Register setManagerState={props.setManagerState} />
             )
+        case "Summary":
+            return(
+                <h2>Summary</h2>
+            )
         default:
             return(
                 <></>
@@ -53,6 +63,7 @@ function Switcher(props) {
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     auth: state.auth,
+    isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(
