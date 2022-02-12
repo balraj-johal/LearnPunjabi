@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
+import AccountSummary from "./AccountSummary";
 
 import { connect } from "react-redux";
 
@@ -51,7 +52,7 @@ function Switcher(props) {
             )
         case "Summary":
             return(
-                <h2>Summary</h2>
+                <AccountSummary />
             )
         default:
             return(

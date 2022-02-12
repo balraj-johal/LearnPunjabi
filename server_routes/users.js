@@ -146,6 +146,7 @@ router.get("/data", (req, res, next) => {
                 user: {
                     _id: user._id,
                     username: user.username,
+                    firstName: user.firstName,
                     progress: user.progress
                 }
             })
