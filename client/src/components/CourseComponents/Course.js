@@ -41,6 +41,19 @@ function Course(props) {
         }
         return status;
     }
+    /**
+     * @param { String } id - lesson id
+     * @returns { Number } timesCompleted - number of times lesson has been completed
+     */
+    let getTimesCompleted = (id) => {
+        if (props.userProgress) {
+            props.userProgress.forEach(lesson => {
+                if (lesson.id === id) {
+                    return String(lesson.timesCompleted);
+                }
+            });
+        }
+    }
 
     return(
         <div id="course">
@@ -55,6 +68,9 @@ function Course(props) {
                             { lesson.name }
                             { getLessonStatus(lesson.id) }
                         </Link>
+                        { getLessonStatus(lesson.id) ? (
+                            <p>Times Completed: {getTimesCompleted(lesson.id)}</p>
+                        ) : "null" }
                     </div>
                 )}
             </div>

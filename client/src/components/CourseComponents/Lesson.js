@@ -20,12 +20,12 @@ function Lesson(props) {
     let [ready, setReady] = useState(false);
     let { id } = useParams();
     
-    // TODO: rename to completeLesson or something
-    let updateProgress = (progressToAdd) => {
+    
+    let setLessonComplete = (lessonID) => {
         axios({
             method: 'post',
             url: "http://localhost:3001/api/users/update-progress",
-            data: qs.stringify(progressToAdd),
+            data: qs.stringify({lessonID: lessonID}),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
             },
@@ -43,7 +43,7 @@ function Lesson(props) {
     let nextTask = () => {
         let nextIndex = currentTask+1;
         if (nextIndex >= lesson.tasks.length) {
-            updateProgress(lesson);
+            setLessonComplete(lesson.id);
             // TODO: redirect here
         } else {
             setCurrentTask(currentTask+1);

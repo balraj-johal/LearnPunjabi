@@ -244,29 +244,32 @@ router.post("/logout", (req, res, next) => {
         })
 })
 
+/**
+ * 
+ * @param  {String} path "/update-progress"
+ */
 router.post("/update-progress", (req, res) => {
     verifyToken(req)
         .then(user => {
-            let progressToAdd = req.body;
+            let lessonID = req.body.lessonID;
             let lesson;
             // check if lesson object is already present
-            user.progress.forEach(elem => {
-                if (elem != null) {
-                    if (elem.id === progressToAdd.id) {
-                        lesson = elem;
+            user.progress.forEach(storedLesson => {
+                if (storedLesson != null) {
+                    if (storedLesson.id === lessonID) {
+                        lesson = storedLesson;
+                        storedLesson.timesCompleted = storedLesson.timesCompleted + 1;
                     }
                 }
             })
             if (lesson === undefined) {
-                user.progress.push(progressToAdd);
-            } else {
-                lesson = progressToAdd; 
-                // TODO: figure out how to better update a lesson's progress
+                user.progress.push({ id: lessonID, timesCompleted: 1 });
             }
+            // notify mongoose that progress property has changed
+            user.markModified("progress");
             user.save()
-                .then(saveRes => {
-                    return res.status(200).send({ newProgress: user.progress }); 
-                    //TODO: should I return the whole object here?
+                .then(savedUser => {
+                    return res.status(200).send({ newProgress: savedUser.progress }); 
                 })
                 .catch(err => {
                     console.log(err);
@@ -274,7 +277,7 @@ router.post("/update-progress", (req, res) => {
                 })
         }) 
         .catch(err => {
-            console.log(err);
+            console.log("err, ", err);
             return res.status(500).send(`Error: ${err}`);
         })
 
