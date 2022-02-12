@@ -12,15 +12,42 @@ const LESSONS = [
         tasks: [
             {
                 id: "1",
-                text: "butt1"
+                text: "butt1",
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        text: "Balraj"
+                    },
+                    {
+                        text: "Not Balraj"
+                    },
+                    {
+                        text: "Balraj the fourth"
+                    },
+                ],
+                correctAnswerIndex: 0,
             },
             {
                 id: "2",
-                text: "butt2"
+                text: "butt2",
+                type: "AI"
             },
             {
                 id: "3",
-                text: "butt3"
+                text: "butt3",
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        text: "Balraj"
+                    },
+                    {
+                        text: "Not Balraj"
+                    },
+                    {
+                        text: "Balraj the fourth"
+                    },
+                ],
+                correctAnswerIndex: 0,
             },
         ]
     },
@@ -30,15 +57,30 @@ const LESSONS = [
         tasks: [
             {
                 id: "1",
-                text: "buttttt1"
+                text: "what is my name",
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        text: "Balraj"
+                    },
+                    {
+                        text: "Not Balraj"
+                    },
+                    {
+                        text: "Balraj the fourth"
+                    },
+                ],
+                correctAnswerIndex: 0,
             },
             {
                 id: "2",
-                text: "buttttt2"
+                text: "buttttt2",
+                type: "AI"
             },
             {
                 id: "3",
-                text: "buttttt3"
+                text: "buttttt3",
+                type: "MultipleChoice"
             },
         ]
     },
@@ -48,15 +90,18 @@ const LESSONS = [
         tasks: [
             {
                 id: "1",
-                text: "bu3tt1"
+                text: "bu3tt1",
+                type: "MultipleChoice"
             },
             {
                 id: "2",
-                text: "but3ttt2"
+                text: "but3ttt2",
+                type: "AI"
             },
             {
                 id: "3",
-                text: "33"
+                text: "33",
+                type: "MultipleChoice"
             },
         ]
     },
@@ -67,7 +112,6 @@ const LESSONS = [
  * @returns { Object } result - lesson data object with id: id
  */
 let getLessonById = (id) => {
-    console.log("Looking for ", id)
     let result = LESSONS.find(lesson => lesson.id === id);
     return result;
 }

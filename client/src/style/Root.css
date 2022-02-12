@@ -142,4 +142,40 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+#root {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.multiple-choice .answers-wrap {
+  margin: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.multiple-choice-answer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 200px;
+  width: 200px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.multiple-choice-answer.chosen {
+  background-color: lightgrey;
+}
 /*# sourceMappingURL=Root.css.map */

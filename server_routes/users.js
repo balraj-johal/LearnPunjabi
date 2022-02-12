@@ -244,8 +244,7 @@ router.post("/logout", (req, res, next) => {
         })
 })
 
-/**
- * 
+/** Update user proress by changing lesson status by lesson id
  * @param  {String} path "/update-progress"
  */
 router.post("/update-progress", (req, res) => {
@@ -258,15 +257,18 @@ router.post("/update-progress", (req, res) => {
                 if (storedLesson != null) {
                     if (storedLesson.id === lessonID) {
                         lesson = storedLesson;
+                        // update lesson object
                         storedLesson.timesCompleted = storedLesson.timesCompleted + 1;
                     }
                 }
             })
+            // if lesson not previously tracked begin tracking progress
             if (lesson === undefined) {
                 user.progress.push({ id: lessonID, timesCompleted: 1 });
             }
             // notify mongoose that progress property has changed
             user.markModified("progress");
+            // save user
             user.save()
                 .then(savedUser => {
                     return res.status(200).send({ newProgress: savedUser.progress }); 

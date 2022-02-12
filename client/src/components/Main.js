@@ -6,8 +6,8 @@ import axios from "axios";
 // router imports
 import { BrowserRouter as 
     Router,
-    Route, 
-    Routes, 
+    Route,
+    Routes,
 } from "react-router-dom";
 
 // component imports
@@ -34,6 +34,9 @@ function Main(props) {
         axios.defaults.headers.post['X-CSRF-Token'] = data.csrfToken;
         // refresh the jwt with the refresh token
         props.useRefreshToken();
+        setTimeout(() => {
+            verifyUser();
+        }, 2.5 * 60 * 1000);
         // TODO: confirm that these dependancies are corrent
     }, [props.auth.isAuthenticated]); 
     useEffect(() => {

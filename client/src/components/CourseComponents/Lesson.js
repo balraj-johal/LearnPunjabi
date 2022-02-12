@@ -12,16 +12,50 @@ import {
     setProgress
 } from "../../actions/courseActions";
 
-import Task from "./Task";
+import TaskManager from "./TaskManager";
 
 function Lesson(props) {
     let [lesson, setLesson] = useState();
     let [currentTask, setCurrentTask] = useState(0);
+    let [answerTracking, setAnswerTracking] = useState({
+        noCorrect: 0,
+        noWrong: 0
+    });
     let [ready, setReady] = useState(false);
     let { id } = useParams();
     
+    // get lesson data from server by id
+    useEffect(() => {
+        axios({
+            method: 'post',
+            url: "http://localhost:3001/api/lessons/get-by-id",
+            data: qs.stringify({ idToFind : String(id) }),
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            withCredentials: true
+        })
+            .then(res => {
+                setLesson(res.data.lesson);
+                setReady(true);
+            })
+            .catch(err => {
+                console.log("Lesson get error: ", err);
+            })
+    }, [id])
     
+    /**
+     * @name getPercentCorrect
+     * @returns {String} - returns a string describing the user's correct answer score
+     */
+    let getPercentCorrect = () => {
+        let total = answerTracking.noCorrect + answerTracking.noWrong;
+        console.log(total);
+        return String((answerTracking.noCorrect / total) * 100) + "%";
+    }
+
     let setLessonComplete = (lessonID) => {
+        alert(getPercentCorrect());
         axios({
             method: 'post',
             url: "http://localhost:3001/api/users/update-progress",
@@ -40,6 +74,21 @@ function Lesson(props) {
             })
     }
 
+    let submitAnswer = (correct) => {
+        if (correct) {
+            setAnswerTracking({
+                noCorrect: answerTracking.noCorrect += 1,
+                noWrong: answerTracking.noWrong
+            });
+            nextTask();
+        } else {
+            setAnswerTracking({
+                noCorrect: answerTracking.noCorrect,
+                noWrong: answerTracking.noWrong += 1
+            });
+        }
+        
+    }
     let nextTask = () => {
         let nextIndex = currentTask+1;
         if (nextIndex >= lesson.tasks.length) {
@@ -50,40 +99,23 @@ function Lesson(props) {
         }
     }
     
-    useEffect(() => {
-        axios({
-            method: 'post',
-            url: "http://localhost:3001/api/lessons/get-by-id",
-            data: qs.stringify({ idToFind : String(id) }),
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            withCredentials: true
-        })
-            .then(res => {
-                setLesson(res.data.lesson);
-                setReady(true);
-                console.log(res.data.lesson.tasks[0].text)
-            })
-            .catch(err => {
-                console.log("Lesson get error: ", err);
-            })
-    }, [id])
 
     return(
         <>
             LESSON {id}
             {ready ? (
-                <div>
-                    <Task task={lesson.tasks[currentTask]} />
-                    <div onClick={()=>{
-                        nextTask();
-                    }}>
-                        Next &gt;
-                    </div>
-                </div>
-            ) : null}
+                <TaskManager 
+                    taskData={lesson.tasks[currentTask]}
+                    submitAnswer={submitAnswer}
+                />
+            ) : <LessonLoader />}
         </>
+    )
+}
+
+function LessonLoader(props) {
+    return(
+        <>Loader</>
     )
 }
 
