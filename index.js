@@ -44,15 +44,16 @@ app.use(bp.urlencoded()); // TODO: fix deprecated error here
 app.use(cp(process.env.COOKIE_SECRET));
 app.use(passport.initialize());
 
+//TODO: fix csurf protection
 // enable middleware to protect against CSRF attacks
-const csurfProtection = csurf({
-    cookie: true
-});
-// app.use(csurfProtection); //TODO: fix csurf protection
-app.get('/csrf-token', (req, res) => {
-    // res.json({ csrfToken: req.csrfToken() });
-    res.json();
-});
+// const csurfProtection = csurf({
+//     cookie: true
+// });
+// // app.use(csurfProtection); 
+// app.get('/csrf-token', (req, res) => {
+//     // res.json({ csrfToken: req.csrfToken() });
+//     res.json();
+// });
 
 // Passport config
 require("./config/passport")(passport);

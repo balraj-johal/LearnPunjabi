@@ -13,11 +13,26 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true, minlength: 6 },
     email: { type: String, required: true },
     firstName: { type: String, required: true },
+    createdOn: { type: Date, required: false },
+    progress: { type: Array },
     refreshToken: {
         type: [sessionSchema],
     },
-    createdOn: { type: Date, required: false },
-    progress: { type: Array }
+    status: {
+        type: String, 
+        enum: ['Pending', 'Active'],
+        default: 'Pending'
+    },
+    verificationCode: { 
+        type: String, 
+        unique: true 
+    },
+    // roles: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "Role"
+    //     }
+    // ]
 });
 
 //Remove refreshToken from the response

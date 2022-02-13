@@ -3,7 +3,9 @@ import qs from "qs";
 import { connect } from "react-redux";
 // router imports
 import { 
-    useParams
+    useParams,
+    useNavigate,
+
 } from "react-router-dom";
 
 import axios from "axios";
@@ -15,6 +17,8 @@ import {
 import TaskManager from "./TaskManager";
 
 function Lesson(props) {
+    let navigate = useNavigate();
+
     let [lesson, setLesson] = useState();
     let [currentTask, setCurrentTask] = useState(0);
     let [answerTracking, setAnswerTracking] = useState({
@@ -28,8 +32,8 @@ function Lesson(props) {
     useEffect(() => {
         axios({
             method: 'post',
-            url: "http://localhost:3001/api/lessons/get-by-id",
-            data: qs.stringify({ idToFind : String(id) }),
+            url: `http://localhost:3001/api/lessons/get-by-id/${String(id)}`,
+            // data: qs.stringify({ idToFind : String(id) }),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
             },
@@ -44,9 +48,9 @@ function Lesson(props) {
             })
     }, [id])
     
-    /**
+    /** calculate users percentage of correct answers
      * @name getPercentCorrect
-     * @returns {String} - returns a string describing the user's correct answer score
+     * @returns {String} - string describing calculated percentage
      */
     let getPercentCorrect = () => {
         let total = answerTracking.noCorrect + answerTracking.noWrong;
@@ -54,6 +58,10 @@ function Lesson(props) {
         return String((answerTracking.noCorrect / total) * 100) + "%";
     }
 
+    /** update user progress for a specific lesson
+     * @name setLessonComplete
+     * @param  {String} lessonID
+     */
     let setLessonComplete = (lessonID) => {
         alert(getPercentCorrect());
         axios({
@@ -74,6 +82,10 @@ function Lesson(props) {
             })
     }
 
+    /** handle and track a valid or invalid answer
+     * @name submitAnswer
+     * @param  {Boolean} correct - was user's answer correct
+     */
     let submitAnswer = (correct) => {
         if (correct) {
             setAnswerTracking({
@@ -89,17 +101,19 @@ function Lesson(props) {
         }
         
     }
+    /** proceed onto the next task in the lesson
+     * @name nextTask
+     */
     let nextTask = () => {
         let nextIndex = currentTask+1;
         if (nextIndex >= lesson.tasks.length) {
             setLessonComplete(lesson.id);
-            // TODO: redirect here
+            navigate("/");
         } else {
-            setCurrentTask(currentTask+1);
+            setCurrentTask(nextIndex);
         }
     }
     
-
     return(
         <>
             LESSON {id}

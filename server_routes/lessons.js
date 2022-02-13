@@ -116,11 +116,10 @@ let getLessonById = (id) => {
     return result;
 }
 
-router.post("/get-by-id", (req, res) => {
+router.post("/get-by-id/:lessonID", (req, res) => {
     verifyToken(req)
         .then(user => {
-            let idToFind = req.body.idToFind;
-            let lesson = getLessonById(idToFind);
+            let lesson = getLessonById(req.params.lessonID);
             if (lesson) {
                 res.status(200).send({ lesson: lesson });
             } else {

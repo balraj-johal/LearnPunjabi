@@ -55,7 +55,7 @@ class Login extends Component {
                                 />
                             </div>
                             <div className="auth-error" id="login-username-error">
-                                {this.props.errors.username}
+                                { this.props.errors.username }
                             </div>
                             <div className="input-field">
                                 <label htmlFor="password">Password:</label>
@@ -68,7 +68,10 @@ class Login extends Component {
                                 />
                             </div>
                             <div className="auth-error" id="login-pw-error">
-                                {this.props.errors.password}
+                                { this.props.errors.password }
+                            </div>
+                            <div className="auth-error" id="login-verification-error">
+                                { this.props.errors.verification }
                             </div>
                             <div className="button-wrap-login" >
                                 <button

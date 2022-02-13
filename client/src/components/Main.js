@@ -28,10 +28,12 @@ function Main(props) {
     // verify user credentials and refresh their refresh token
     // TODO: determine why function executes twice
     const verifyUser = useCallback(async () => { 
+
         // TODO: fix this
-        // set csurf protection header
-        const { data } = await axios.get('/csrf-token');
-        axios.defaults.headers.post['X-CSRF-Token'] = data.csrfToken;
+        // // set csurf protection header
+        // const { data } = await axios.get('/csrf-token');
+        // axios.defaults.headers.post['X-CSRF-Token'] = data.csrfToken;
+
         // refresh the jwt with the refresh token
         props.useRefreshToken();
         setTimeout(() => {

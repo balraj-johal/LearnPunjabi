@@ -24,6 +24,16 @@ const {
     verifyRefreshToken
 } = require("../authentication")
 
+// TODO: consider replacing with more secure random code
+const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+let genVerificationCode = (length) => {
+    let code = '';
+    for (let i = 0; i < length; i++) {
+        code += characters[Math.floor(Math.random() * characters.length )];
+    }
+    return code;
+}
+
 /**
  * Register a new user.
  * @name post/register
@@ -55,7 +65,8 @@ router.post("/register", (req, res) => {
                 email: req.body.email,
                 firstName: req.body.firstName,
                 createdOn: req.body.createdOn,
-                progress: []
+                progress: [],
+                verificationCode: genVerificationCode(8),
             })
             // salt and hash pw
             bcrypt.genSalt(10, (err, salt) => {
@@ -71,9 +82,9 @@ router.post("/register", (req, res) => {
                     newUser
                         .save()
                         .then(user => {
-                            console.log(user);
-                            res.cookie("refreshToken", refreshToken, AUTH_COOKIE_OPTIONS);
-                            return res.status(201).json(user);
+                            // TODO: do I need to set refreshToken cookie here??
+                            // res.cookie("refreshToken", refreshToken, AUTH_COOKIE_OPTIONS);
+                            return res.status(201).json({code: user.verificationCode});
                         })
                         .catch(err => {
                             console.log(err);
@@ -104,6 +115,8 @@ router.post("/login", (req, res) => {
         .then(user => {
             if (!user) {
                 return res.status(404).json({ username: "no user found." });
+            } else if (user.status !== "Active") {
+                return res.status(401).json({ verification: "Please verify your email first!" });
             } else {
                 // check password against stored hash
                 bcrypt
@@ -241,6 +254,26 @@ router.post("/logout", (req, res, next) => {
         .catch(err => {
             console.log(err);
             return res.status(500).send(`Error: ${err}`);
+        })
+})
+
+router.get("/verify-email/:verificationCode", (req, res, next) => {
+    console.log("checking verification code: ", req.params.verificationCode);
+    User.findOne({ verificationCode: req.params.verificationCode })
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: "User not found..." })
+            }
+
+            user.status = "Active";
+            user.save()
+                .then(savedUser => {
+                    return res.status(200).send({}); 
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).send(`Error: ${err}`);
+                })
         })
 })
 
