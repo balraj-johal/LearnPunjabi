@@ -10,18 +10,19 @@ import { BrowserRouter as
     Routes,
 } from "react-router-dom";
 
+// auth actions
+import {
+    getUserData,
+    useRefreshToken
+} from "../actions/authActions";
+
 // component imports
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManager';
 import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import Topbar from "./Topbar";
-
-// auth actions
-import {
-    getUserData,
-    useRefreshToken
-} from "../actions/authActions";
+import Tensorflow from "./Tensorflow";
 
 
 function Main(props) {
@@ -67,6 +68,7 @@ function Main(props) {
                     <Route path="/lesson" element={<Lessons />} >
                         <Route path=":id" element={<Lesson />} />
                     </Route>
+                    <Route path="/tensorflow" element={<Tensorflow />} />
                 </Routes>
             </div>
         </Router>
