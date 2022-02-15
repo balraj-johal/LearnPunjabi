@@ -34,9 +34,19 @@ const connectDB = async () => {
 };
 connectDB();
 
+let allowedDomains = ["http://localhost:3000", "https://learn-punjabi-alphabet.herokuapp.com"];
 // configure middleware
 const corsOptions = {  
-    origin: 'http://localhost:3000',
+    // origin: 'http://localhost:3000',  
+    origin: function (origin, callback) {
+        // bypass the requests with no origin (like curl requests, mobile apps, etc )
+        if (!origin) return callback(null, true);    
+        if (allowedDomains.indexOf(origin) === -1) {
+          var msg = `This site ${origin} does not have access.`;
+          return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
     credentials: true,
 }
 app.use(cors(corsOptions));
