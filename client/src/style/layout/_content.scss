@@ -1,4 +1,7 @@
 .container {
     width: 80%;
+    padding: 0 10%;
+    height: calc(100vh - 98px);
+    overflow-y: auto;
     margin: auto;
 }
