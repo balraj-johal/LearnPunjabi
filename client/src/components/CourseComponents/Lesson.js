@@ -13,6 +13,10 @@ import axios from "axios";
 import {
     setProgress
 } from "../../actions/courseActions";
+// auth actions
+import {
+    getUserData,
+} from "../../actions/authActions";
 
 import TaskManager from "./TaskManager";
 
@@ -27,6 +31,12 @@ function Lesson(props) {
     });
     let [ready, setReady] = useState(false);
     let { id } = useParams();
+
+    useEffect(() => {
+        if (!props.isAuthenticated) {
+            navigate("/account");
+        }
+    }, [])
     
     // get lesson data from server by id
     useEffect(() => {
@@ -108,6 +118,7 @@ function Lesson(props) {
         let nextIndex = currentTask+1;
         if (nextIndex >= lesson.tasks.length) {
             setLessonComplete(lesson.id);
+            props.getUserData();
             navigate("/");
         } else {
             setCurrentTask(nextIndex);
@@ -135,11 +146,13 @@ function LessonLoader(props) {
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(
     mapStateToProps,
     {
-        setProgress
+        setProgress,
+        getUserData
     }
 )(Lesson);

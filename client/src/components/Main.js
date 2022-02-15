@@ -1,7 +1,6 @@
 import React from "react";
 import { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 
 // router imports
 import { BrowserRouter as 
@@ -10,18 +9,19 @@ import { BrowserRouter as
     Routes,
 } from "react-router-dom";
 
+// auth actions
+import {
+    getUserData,
+    useRefreshToken
+} from "../actions/authActions";
+
 // component imports
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManager';
 import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import Topbar from "./Topbar";
-
-// auth actions
-import {
-    getUserData,
-    useRefreshToken
-} from "../actions/authActions";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 function Main(props) {
@@ -62,8 +62,8 @@ function Main(props) {
             <Topbar />
             <div className="container">
                 <Routes>
-                    <Route path="/" element={<Dashboard />} />
                     <Route path="/account" element={<AccountManager />} />
+                    <Route path="/" element={<ProtectedRoute component={<Dashboard />} />} />
                     <Route path="/lesson" element={<Lessons />} >
                         <Route path=":id" element={<Lesson />} />
                     </Route>
