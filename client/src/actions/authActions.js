@@ -30,6 +30,7 @@ export const registerUser = userData => dispatch => {
 }
 
 export const loginUser = userData => dispatch => {
+    console.log("login user auth action called, sending post req");
     //post user data
     axios({
         method: 'post',
@@ -41,6 +42,7 @@ export const loginUser = userData => dispatch => {
         withCredentials: true
     })
         .then(res => {
+            console.log("post request returned");
             getUserDataPromise()
                 .then(userData => {
                     dispatch(setCurrentUser(userData));
@@ -53,6 +55,7 @@ export const loginUser = userData => dispatch => {
                 })
         })
         .catch(err => {
+            console.log("post request errored");
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data

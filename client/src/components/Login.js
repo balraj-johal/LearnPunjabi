@@ -32,6 +32,7 @@ class Login extends Component {
             email: this.state.email,
             firstName: this.state.firstName,
         };
+        console.log("Login form submitted for user: ", data.username);
         this.props.loginUser(data);
     }
 

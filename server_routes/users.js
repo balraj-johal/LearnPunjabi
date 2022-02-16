@@ -1,7 +1,6 @@
 /**
  * @module api/users
  */
-
 const express = require("express");
 /**
  * Express router to mount user related functions on.
@@ -103,6 +102,7 @@ router.post("/register", (req, res) => {
     })
 })
 router.post("/login", (req, res) => {
+    console.log("login request recieved")
     // validate user data
     const { errors, isValid } = validateLogin(req.body);
     if (!isValid) {
