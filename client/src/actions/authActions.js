@@ -34,7 +34,8 @@ export const loginUser = userData => dispatch => {
     //post user data
     axios({
         method: 'post',
-        url: "http://localhost:3001/api/users/login",
+        // url: "http://localhost:3001/api/users/login",
+        url: "/api/users/login",
         data: qs.stringify(userData),
         headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
