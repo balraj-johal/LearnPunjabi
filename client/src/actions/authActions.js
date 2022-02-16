@@ -55,7 +55,7 @@ export const loginUser = userData => dispatch => {
                 })
         })
         .catch(err => {
-            console.log("post request errored");
+            console.log("post request errored, ", err.response);
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data
