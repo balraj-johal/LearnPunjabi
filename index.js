@@ -34,7 +34,7 @@ const connectDB = async () => {
 };
 connectDB();
 
-let allowedDomains = ["http://localhost:3000", "https://learn-punjabi-alphabet.herokuapp.com"];
+let allowedDomains = ["http://localhost:3000", "http://localhost:3001/", "https://learn-punjabi-alphabet.herokuapp.com"];
 // configure middleware
 const corsOptions = {  
     // origin: 'http://localhost:3000',  
