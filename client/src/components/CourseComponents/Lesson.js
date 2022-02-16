@@ -42,7 +42,7 @@ function Lesson(props) {
     useEffect(() => {
         axios({
             method: 'post',
-            url: `http://localhost:3001/api/lessons/get-by-id/${String(id)}`,
+            url: `/api/lessons/get-by-id/${String(id)}`,
             // data: qs.stringify({ idToFind : String(id) }),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -76,7 +76,7 @@ function Lesson(props) {
         alert(getPercentCorrect());
         axios({
             method: 'post',
-            url: "http://localhost:3001/api/users/update-progress",
+            url: "/api/users/update-progress",
             data: qs.stringify({lessonID: lessonID}),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'

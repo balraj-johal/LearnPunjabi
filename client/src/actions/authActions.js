@@ -10,7 +10,7 @@ import {
 export const registerUser = userData => dispatch => {
     axios({
         method: 'post',
-        url: "http://localhost:3001/api/users/register",
+        url: "/api/users/register",
         data: qs.stringify(userData),
         headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -34,7 +34,7 @@ export const loginUser = userData => dispatch => {
     //post user data
     axios({
         method: 'post',
-        // url: "http://localhost:3001/api/users/login",
+        // url: "/api/users/login",
         url: "/api/users/login",
         data: qs.stringify(userData),
         headers: {
@@ -69,7 +69,7 @@ export const getUserDataPromise = () => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
-            url: "http://localhost:3001/api/users/data",
+            url: "/api/users/data",
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
             },
@@ -97,7 +97,7 @@ export const logoutUser = userID => dispatch => {
     //post user data
     axios({
         method: 'post',
-        url: "http://localhost:3001/api/users/logout",
+        url: "/api/users/logout",
         data: qs.stringify({_id: userID}),
         headers: {
             'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -115,7 +115,7 @@ export const logoutUser = userID => dispatch => {
 
 export const useRefreshToken = () => dispatch => {
     axios
-        .post("http://localhost:3001/api/users/refreshToken", {},
+        .post("/api/users/refreshToken", {},
             {
                 withCredentials: true, 
                 headers: { "Content-Type": "application/json" }

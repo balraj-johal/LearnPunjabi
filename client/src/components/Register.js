@@ -36,7 +36,7 @@ class Register extends Component {
         // this.props.registerUser(data);
         axios({
             method: 'post',
-            url: "http://localhost:3001/api/users/register",
+            url: "/api/users/register",
             data: qs.stringify(data),
             headers: {
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
