@@ -37,11 +37,20 @@ function Lesson(props) {
             navigate("/account");
         }
     }, [])
+
+    /**
+     * Returns a shuffled array.
+     * @param {Array} arr - the array to shuffle.
+     * @returns {Array} shuffled array.
+     */
+    let shuffle = (arr) => {
+        return arr.sort(() => Math.random() - 0.5)
+    }
     
     // get lesson data from server by id
     useEffect(() => {
         axios({
-            method: 'post',
+            method: 'get',
             url: `/api/lessons/get-by-id/${String(id)}`,
             // data: qs.stringify({ idToFind : String(id) }),
             headers: {
@@ -50,7 +59,11 @@ function Lesson(props) {
             withCredentials: true
         })
             .then(res => {
-                setLesson(res.data.lesson);
+                let resLesson = res.data.lesson;
+                // console.log("res lesson ", resLesson.tasks)
+                resLesson.tasks = shuffle(resLesson.tasks);
+                // console.log("shuffled ", resLesson.tasks)
+                setLesson(resLesson);
                 setReady(true);
             })
             .catch(err => {
@@ -127,7 +140,7 @@ function Lesson(props) {
     
     return(
         <>
-            LESSON {id}
+            {/* LESSON {id} */}
             {ready ? (
                 <TaskManager 
                     taskData={lesson.tasks[currentTask]}

@@ -1,4 +1,13 @@
+/**
+ * @module api/lessons
+ */
 const express = require("express");
+/**
+ * Express router to mount user related functions on.
+ * @type {object}
+ * @const
+ * @namespace lessonsRouter
+ */
 const router = express.Router();
 
 const { 
@@ -12,17 +21,21 @@ const LESSONS = [
         tasks: [
             {
                 id: "1",
-                text: "butt1",
+                text: 'Which character makes the "ou" sound?',
                 type: "MultipleChoice",
+                audioSrc: "test",
                 possibleAnswers: [
                     {
-                        text: "Balraj"
+                        // bottomText: "Balraj",
+                        middleText: "ੳ"
                     },
                     {
-                        text: "Not Balraj"
+                        // bottomText: "Not Balraj",
+                        middleText: "ਅ"
                     },
                     {
-                        text: "Balraj the fourth"
+                        // bottomText: "Balraj the fourth",
+                        middleText: "ੲ"
                     },
                 ],
                 correctAnswerIndex: 0,
@@ -36,15 +49,19 @@ const LESSONS = [
                 id: "3",
                 text: "butt3",
                 type: "MultipleChoice",
+                audioSrc: "test",
                 possibleAnswers: [
                     {
-                        text: "Balraj"
+                        bottomText: "Balraj",
+                        middleText: ""
                     },
                     {
-                        text: "Not Balraj"
+                        bottomText: "Not Balraj",
+                        middleText: ""
                     },
                     {
-                        text: "Balraj the fourth"
+                        bottomText: "Balraj the fourth",
+                        middleText: ""
                     },
                 ],
                 correctAnswerIndex: 0,
@@ -61,13 +78,13 @@ const LESSONS = [
                 type: "MultipleChoice",
                 possibleAnswers: [
                     {
-                        text: "Balraj"
+                        bottomText: "Balraj"
                     },
                     {
-                        text: "Not Balraj"
+                        bottomText: "Not Balraj"
                     },
                     {
-                        text: "Balraj the fourth"
+                        bottomText: "Balraj the fourth"
                     },
                 ],
                 correctAnswerIndex: 0,
@@ -80,7 +97,19 @@ const LESSONS = [
             {
                 id: "3",
                 text: "buttttt3",
-                type: "MultipleChoice"
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        bottomText: "Balraj"
+                    },
+                    {
+                        bottomText: "Not Balraj"
+                    },
+                    {
+                        bottomText: "Balraj the fourth"
+                    },
+                ],
+                correctAnswerIndex: 0,
             },
         ]
     },
@@ -106,6 +135,7 @@ const LESSONS = [
         ]
     },
 ]
+// import { LESSONS } from "../data/lessonData";
 
 /**
  * @param  { String } id - lesson id
@@ -116,7 +146,15 @@ let getLessonById = (id) => {
     return result;
 }
 
-router.post("/get-by-id/:lessonID", (req, res) => {
+/**
+ * Get lesson data by lessonID
+ * @name get/get-by-id
+ * @function
+ * @memberof module:api/lessons~lessonsRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.get("/get-by-id/:lessonID", (req, res) => {
     verifyToken(req)
         .then(user => {
             let lesson = getLessonById(req.params.lessonID);

@@ -2,7 +2,7 @@ import React, {  } from "react";
 import { connect } from "react-redux";
 
 import {
-    Link
+    useNavigate
 } from "react-router-dom";
 
 import {
@@ -10,6 +10,7 @@ import {
 } from "../../actions/courseActions";
 
 function Course(props) {
+    let navigate = useNavigate();
 
     let courseData = [
         {
@@ -46,13 +47,17 @@ function Course(props) {
      * @returns { Number } timesCompleted - number of times lesson has been completed
      */
     let getTimesCompleted = (id) => {
+        let outputString;
         if (props.userProgress) {
             props.userProgress.forEach(lesson => {
+                console.log("lesson: ", lesson)
                 if (lesson.id === id) {
-                    return String(lesson.timesCompleted);
+                    console.log("tru ", String(lesson.timesCompleted))
+                    outputString = String(lesson.timesCompleted);
                 }
             });
         }
+        return outputString;
     }
 
     return(
@@ -63,11 +68,11 @@ function Course(props) {
                     <div 
                         className={`lesson ${getLessonStatus(lesson.id) ? "complete" : "incomplete"}`}
                         key={index} 
+                        onClick={() => {
+                            navigate(`/lesson/${lesson.id}`);
+                        }}
                     >
-                        <Link to={`/lesson/${lesson.id}`}>
-                            { lesson.name }
-                            { getLessonStatus(lesson.id) }
-                        </Link>
+                        Lesson { lesson.name }
                         { getLessonStatus(lesson.id) ? (
                             <p>Times Completed: {getTimesCompleted(lesson.id)}</p>
                         ) : "null" }
