@@ -9,6 +9,9 @@
 @import "components/accounts";
 @import "components/lessons";
 
+@import "components/multipleChoice/multipleChoice";
+@import "components/multipleChoice/answer";
+
 @import "layout/content";
 @import "layout/navigation";
 
@@ -40,24 +43,4 @@ code {
     overflow-x: hidden;
     // overflow-y: auto;
     height: 100vh;
-}
-
-.multiple-choice {
-    .answers-wrap {
-        margin: 1em;
-        display: flex;
-        justify-content: space-between;
-    }
-}
-.multiple-choice-answer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    width: 200px;
-    border: 1px solid grey;
-    border-radius: 5px;
-    &.chosen {
-        background-color: lightgrey;
-    }
 }

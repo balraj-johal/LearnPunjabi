@@ -31,8 +31,7 @@
   height: 50px;
   background-color: #00a2ff;
   border-radius: 5px;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.178) 2px 2px 2px;
-          box-shadow: rgba(0, 0, 0, 0.178) 2px 2px 2px;
+  border: 2px black solid;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -43,6 +42,7 @@
       -ms-flex-align: center;
           align-items: center;
   margin: 0;
+  margin-top: 7px;
 }
 
 .account-button img {
@@ -103,6 +103,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  margin-bottom: 50px;
 }
 
 .lesson-wrap .lesson {
@@ -112,6 +113,9 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -123,6 +127,16 @@
   margin: 15px;
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+}
+
+.lesson-wrap .lesson:hover {
+  cursor: pointer;
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
 }
 
 .lesson-wrap .lesson.complete {
@@ -131,6 +145,82 @@
 
 .lesson-wrap .lesson.incomplete {
   background-color: transparent;
+}
+
+.task {
+  margin-top: 50px;
+}
+
+.multiple-choice .answers-wrap {
+  margin: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.multiple-choice .audio {
+  height: 90px;
+  margin: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.multiple-choice .audio .replay-audio-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 80px;
+  width: 80px;
+  background-color: #00a2ff;
+  border-radius: 5px;
+}
+
+.multiple-choice-answer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 200px;
+  width: 200px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.multiple-choice-answer.chosen {
+  background-color: lightgrey;
+}
+
+.middle-text {
+  font-size: 2.5em;
+}
+
+.bottom-text, .middle-text {
+  height: 1em;
 }
 
 .container {
@@ -163,35 +253,5 @@ code {
 #root {
   overflow-x: hidden;
   height: 100vh;
-}
-
-.multiple-choice .answers-wrap {
-  margin: 1em;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-.multiple-choice-answer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 200px;
-  width: 200px;
-  border: 1px solid grey;
-  border-radius: 5px;
-}
-
-.multiple-choice-answer.chosen {
-  background-color: lightgrey;
 }
 /*# sourceMappingURL=Root.css.map */

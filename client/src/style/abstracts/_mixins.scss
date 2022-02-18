@@ -11,3 +11,12 @@
         display: none;
     }
 }
+
+@mixin hoverScaleUp($scale) {
+    transition: transform 0.5s ease;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale($scale);
+    }
+}
