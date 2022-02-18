@@ -60,7 +60,6 @@ function Course(props) {
 
     return(
         <div id="course">
-            <h1 id="course-name">Punjabi 101</h1>
             <div className="lesson-wrap">
                 {courseData.map((lesson, index) => 
                     <div 

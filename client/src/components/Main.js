@@ -39,7 +39,7 @@ function Main(props) {
         setTimeout(() => {
             verifyUser();
         }, 2.5 * 60 * 1000);
-        // TODO: confirm that these dependancies are corrent
+    // TODO: confirm that these dependancies are corrent
     }, [props.auth.isAuthenticated]); 
     useEffect(() => {
         verifyUser();

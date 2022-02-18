@@ -8,6 +8,7 @@ import {
 import {
     useRefreshToken
 } from "../actions/authActions";
+import Loader from "./Loader";
 
 /**
  * Compnent wrapper to redirect to login page if user is not authenticated
@@ -34,7 +35,7 @@ function ProtectedComponent({ component, ...props}) {
         return component;
     } else {
         return(
-            <h1>Loading...</h1>
+            <Loader />
         )
     }
 }
