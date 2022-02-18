@@ -10,12 +10,13 @@ module.exports = function validateLogin(data) {
   
   // username checks
   if (Validator.isEmpty(data.username)) {
-    errors.username = "username field is required";
+    errors.username = "Username field is required";
   }
   // Password checks
   if (Validator.isEmpty(data.password)) {
-    errors.password = "Password field is required";
+    errors.password = "Password field is required.";
   }
+
   
   return {
     errors,
