@@ -21,7 +21,7 @@ import AccountManager from '../components/AccountManager';
 import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import Topbar from "./Topbar";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedComponent from "./ProtectedComponent";
 
 
 function Main(props) {
@@ -50,7 +50,7 @@ function Main(props) {
     const syncLogout = useCallback(event => {
         if (event.key === "logout") {
             window.location.reload();
-            }
+        }
     }, [])
     useEffect(() => {
         window.addEventListener("storage", syncLogout);
@@ -63,9 +63,12 @@ function Main(props) {
             <div className="container">
                 <Routes>
                     <Route path="/account" element={<AccountManager />} />
-                    <Route path="/" element={<ProtectedRoute component={<Dashboard />} />} />
+                    <Route path="/" element={<ProtectedComponent component={<Dashboard />} />} />
                     <Route path="/lesson" element={<Lessons />} >
-                        <Route path=":id" element={<Lesson />} />
+                        <Route path=":id" element={
+                            <ProtectedComponent component={<Lesson />} />
+                            
+                        } />
                     </Route>
                 </Routes>
             </div>

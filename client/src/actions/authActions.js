@@ -5,6 +5,7 @@ import qs from 'qs';
 import {
     SET_AUTH_ERRORS,
     SET_CURRENT_USER,
+    SET_LOADED,
 } from "./types";
 
 export const registerUser = userData => dispatch => {
@@ -133,6 +134,9 @@ export const useRefreshToken = () => dispatch => {
         })
         .catch(err => {
             console.log("Token refresh error: ", err);
+            dispatch({
+                type: SET_LOADED
+            })
         })
 }
 
