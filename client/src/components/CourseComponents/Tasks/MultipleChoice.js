@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 function MultipleChoice(props) {
     let [choice, setChoice] = useState(null);
+
+    useEffect(() => {
+        setChoice(null);
+    }, [props.taskData])
 
     let checkAnswer = () => {
         if (choice !== null) {

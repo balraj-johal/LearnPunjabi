@@ -19,24 +19,31 @@ import {
 } from "../../actions/authActions";
 
 import TaskManager from "./TaskManager";
+import Loader from "../Loader";
+
 
 function Lesson(props) {
     let navigate = useNavigate();
-
-    let [lesson, setLesson] = useState();
-    let [currentTask, setCurrentTask] = useState(0);
-    let [answerTracking, setAnswerTracking] = useState({
-        noCorrect: 0,
-        noWrong: 0
-    });
-    let [ready, setReady] = useState(false);
     let { id } = useParams();
 
-    useEffect(() => {
-        if (!props.isAuthenticated) {
-            navigate("/account");
+    let [lesson, setLesson] = useState();
+    let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
+    let [ready, setReady] = useState(false);
+    let [answerTracking, setAnswerTracking] = useState({
+        noCorrect: 0,
+        noWrong: 0,
+    });
+    let [mistakeTracker, setMistakeTracker] = useState([]);
+
+    /**
+     * Updates the mistakeTracker state, adding on a newly failed task
+     * @param  {Object} task
+     */
+    let updateMistakes = (task) => {
+        if (!mistakeTracker.includes(task)) {
+            setMistakeTracker(mistakeTracker => [...mistakeTracker, task]);
         }
-    }, [])
+    }
 
     /**
      * Returns a shuffled array.
@@ -60,9 +67,7 @@ function Lesson(props) {
         })
             .then(res => {
                 let resLesson = res.data.lesson;
-                // console.log("res lesson ", resLesson.tasks)
                 resLesson.tasks = shuffle(resLesson.tasks);
-                // console.log("shuffled ", resLesson.tasks)
                 setLesson(resLesson);
                 setReady(true);
             })
@@ -71,7 +76,8 @@ function Lesson(props) {
             })
     }, [id])
     
-    /** calculate users percentage of correct answers
+    /**
+     * calculate users percentage of correct answers
      * @name getPercentCorrect
      * @returns {String} - string describing calculated percentage
      */
@@ -81,11 +87,51 @@ function Lesson(props) {
         return String((answerTracking.noCorrect / total) * 100) + "%";
     }
 
-    /** update user progress for a specific lesson
-     * @name setLessonComplete
+    /** 
+     * handle and track a valid or invalid answer
+     * @name submitAnswer
+     * @param  {Boolean} correct - was user's answer correct
+     */
+    let submitAnswer = (correct) => {
+        if (correct) {
+            setAnswerTracking({
+                noCorrect: answerTracking.noCorrect += 1,
+                ...answerTracking
+            });
+            nextTask();
+        } else {
+            let currentTaskData = lesson.tasks[currentTaskIndex];
+            updateMistakes(currentTaskData);
+            setAnswerTracking({
+                noWrong: answerTracking.noWrong += 1,
+                ...answerTracking
+            });
+        }
+        
+    }
+    /** 
+     * proceed onto the next task in the lesson
+     * @name nextTask
+     */
+    let nextTask = () => {
+        let nextIndex = currentTaskIndex+1;
+        if (nextIndex >= lesson.tasks.length) {
+            endLesson(lesson.id);
+            props.getUserData();
+            navigate("/");
+        } else {
+            setCurrentTaskIndex(nextIndex);
+        }
+    }
+    /** 
+     * update user progress for a specific lesson
+     * @name endLesson
      * @param  {String} lessonID
      */
-    let setLessonComplete = (lessonID) => {
+    let endLesson = (lessonID) => {
+        // TODO: submit tracked mistakes here
+        let mistakes = answerTracking.wrongTasks;
+        console.log("mistakes: ", mistakes);
         alert(getPercentCorrect());
         axios({
             method: 'post',
@@ -104,62 +150,25 @@ function Lesson(props) {
                 console.log(err);
             })
     }
-
-    /** handle and track a valid or invalid answer
-     * @name submitAnswer
-     * @param  {Boolean} correct - was user's answer correct
-     */
-    let submitAnswer = (correct) => {
-        if (correct) {
-            setAnswerTracking({
-                noCorrect: answerTracking.noCorrect += 1,
-                noWrong: answerTracking.noWrong
-            });
-            nextTask();
-        } else {
-            setAnswerTracking({
-                noCorrect: answerTracking.noCorrect,
-                noWrong: answerTracking.noWrong += 1
-            });
-        }
-        
-    }
-    /** proceed onto the next task in the lesson
-     * @name nextTask
-     */
-    let nextTask = () => {
-        let nextIndex = currentTask+1;
-        if (nextIndex >= lesson.tasks.length) {
-            setLessonComplete(lesson.id);
-            props.getUserData();
-            navigate("/");
-        } else {
-            setCurrentTask(nextIndex);
-        }
-    }
     
     return(
         <>
-            {/* LESSON {id} */}
-            {ready ? (
+            { false ? (
                 <TaskManager 
-                    taskData={lesson.tasks[currentTask]}
+                    taskData={lesson.tasks[currentTaskIndex]}
                     submitAnswer={submitAnswer}
                 />
-            ) : <LessonLoader />}
+            ) : <Loader /> }
         </>
     )
 }
 
-function LessonLoader(props) {
-    return(
-        <>Loader</>
-    )
-}
+
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    isLoading: state.auth.loading
 });
 
 export default connect(
