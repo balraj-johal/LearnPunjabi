@@ -7,6 +7,11 @@ import qs from 'qs'
 
 import { registerUser } from "../actions/authActions";
 
+// form components
+import FormError from "./FormComponents/FormError";
+import FormInputField from "./FormComponents/FormInputField";
+import FormSubmitButton from "./FormComponents/FormSubmitButton";
+
 class Register extends Component {
     constructor() {
         super();
@@ -56,66 +61,53 @@ class Register extends Component {
         return (
             <div className="register">
                 <h2>Register</h2>
-                <div className="register-window bevel">
-                    <div className="register-area">
-                        <form className="register-form" noValidate onSubmit={this.onSubmit}>
-                            <div className="input-field">
-                                <label htmlFor="username">Username:</label>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.username}
-                                    error={errors.username}
-                                    id="username"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="firstName">First Name:</label>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.firstName}
-                                    error={errors.firstName}
-                                    id="firstName"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="email">Email:</label>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.email}
-                                    error={errors.email}
-                                    id="email"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="password">Password:</label>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.password}
-                                    error={errors.password}
-                                    id="password"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="register-error">
-                                <span className="red-text">
-                                    {errors.username}
-                                    {errors.msg}
-                                    {errors.date}
-                                </span>
-                            </div>
-                            <div className="button-wrap-register" >
-                                <button
-                                    type="submit"
-                                >
-                                Register
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <form className="register-form" noValidate onSubmit={this.onSubmit}>
+                    <FormInputField 
+                        dataElem="username"
+                        onChange={this.onChange}
+                        value={this.state.username}
+                        error={errors.username}
+                    />
+                    <FormError 
+                        dataElem="username" 
+                        errors={this.props.errors} 
+                    />
+                    <FormInputField 
+                        dataElem="firstName"
+                        onChange={this.onChange}
+                        value={this.state.firstName}
+                        error={errors.firstName}
+                    />
+                    <FormError 
+                        dataElem="firstName" 
+                        errors={this.props.errors} 
+                    />
+                    <FormInputField 
+                        dataElem="email"
+                        onChange={this.onChange}
+                        value={this.state.email}
+                        error={errors.email}
+                    />
+                    <FormError 
+                        dataElem="email" 
+                        errors={this.props.errors} 
+                    />
+                    <FormInputField 
+                        dataElem="password"
+                        onChange={this.onChange}
+                        value={this.state.password}
+                        error={errors.password}
+                    />
+                    <FormError 
+                        dataElem="password" 
+                        errors={this.props.errors} 
+                    />
+                    <FormError 
+                        dataElem="verification" 
+                        errors={this.props.errors} 
+                    />
+                    <FormSubmitButton dataElem="register" />
+                </form>
             </div>
         )
     }
