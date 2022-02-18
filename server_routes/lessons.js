@@ -18,9 +18,10 @@ const LESSONS = [
     {
         name: "line 1",
         id: "1",
+        requiredCompletions: 5,
         tasks: [
             {
-                id: "1",
+                taskID: "1",
                 text: 'Which character makes the "ou" sound?',
                 type: "MultipleChoice",
                 audioSrc: "test",
@@ -41,12 +42,12 @@ const LESSONS = [
                 correctAnswerIndex: 0,
             },
             {
-                id: "2",
+                taskID: "2",
                 text: "butt2",
                 type: "AI"
             },
             {
-                id: "3",
+                taskID: "3",
                 text: "butt3",
                 type: "MultipleChoice",
                 audioSrc: "test",
@@ -71,9 +72,10 @@ const LESSONS = [
     {
         name: "line 2",
         id: "2",
+        requiredCompletions: 5,
         tasks: [
             {
-                id: "1",
+                taskID: "1",
                 text: "what is my name",
                 type: "MultipleChoice",
                 possibleAnswers: [
@@ -90,12 +92,12 @@ const LESSONS = [
                 correctAnswerIndex: 0,
             },
             {
-                id: "2",
+                taskID: "2",
                 text: "buttttt2",
                 type: "AI"
             },
             {
-                id: "3",
+                taskID: "3",
                 text: "buttttt3",
                 type: "MultipleChoice",
                 possibleAnswers: [
@@ -116,26 +118,26 @@ const LESSONS = [
     {
         name: "line 3",
         id: "3",
+        requiredCompletions: 5,
         tasks: [
             {
-                id: "1",
+                taskID: "1",
                 text: "bu3tt1",
                 type: "MultipleChoice"
             },
             {
-                id: "2",
+                taskID: "2",
                 text: "but3ttt2",
                 type: "AI"
             },
             {
-                id: "3",
+                taskID: "3",
                 text: "33",
                 type: "MultipleChoice"
             },
         ]
     },
 ]
-// import { LESSONS } from "../data/lessonData";
 
 /**
  * @param  { String } id - lesson id

@@ -50,9 +50,7 @@ function Course(props) {
         let outputString;
         if (props.userProgress) {
             props.userProgress.forEach(lesson => {
-                console.log("lesson: ", lesson)
                 if (lesson.id === id) {
-                    console.log("tru ", String(lesson.timesCompleted))
                     outputString = String(lesson.timesCompleted);
                 }
             });
@@ -67,10 +65,10 @@ function Course(props) {
                 {courseData.map((lesson, index) => 
                     <div 
                         className={`lesson ${getLessonStatus(lesson.id) ? "complete" : "incomplete"}`}
-                        key={index} 
                         onClick={() => {
                             navigate(`/lesson/${lesson.id}`);
                         }}
+                        key={index} 
                     >
                         Lesson { lesson.name }
                         { getLessonStatus(lesson.id) ? (

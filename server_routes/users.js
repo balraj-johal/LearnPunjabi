@@ -101,8 +101,16 @@ router.post("/register", (req, res) => {
         }
     })
 })
+
+/**
+ * Login user if credentials are valid.
+ * @name post/login
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.post("/login", (req, res) => {
-    console.log("login request recieved")
     // validate user data
     const { errors, isValid } = validateLogin(req.body);
     if (!isValid) {
@@ -152,6 +160,15 @@ router.post("/login", (req, res) => {
         })
 }); 
 
+
+/**
+ * If user is verified, get user's data (that is publically accessible);
+ * @name get/data
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.get("/data", (req, res, next) => {
     verifyToken(req)
         .then(user => {
@@ -169,6 +186,14 @@ router.get("/data", (req, res, next) => {
         })
 })
 
+/**
+ * If supplied refreshToken is valid, generate new JWT and refreshToken
+ * @name post/refreshToken
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.post("/refreshToken", (req, res, next) => {
     verifyRefreshToken(req)
         .then(resultObject => {
@@ -218,6 +243,14 @@ router.post("/refreshToken", (req, res, next) => {
         })
 })
 
+/**
+ * If supplied refreshToken is valid, generate new JWT and refreshToken
+ * @name post/logout
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.post("/logout", (req, res, next) => {
     verifyToken(req)
         .then(user => {
@@ -257,6 +290,14 @@ router.post("/logout", (req, res, next) => {
         })
 })
 
+/**
+ * set user status to Active if the supplied email verification code is valid
+ * @name get/verify-email
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.get("/verify-email/:verificationCode", (req, res, next) => {
     console.log("checking verification code: ", req.params.verificationCode);
     User.findOne({ verificationCode: req.params.verificationCode })
