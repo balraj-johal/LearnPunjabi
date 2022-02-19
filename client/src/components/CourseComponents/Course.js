@@ -1,29 +1,31 @@
 import React, {  } from "react";
 import { connect } from "react-redux";
-
 import {
     useNavigate
 } from "react-router-dom";
 
+// import redux actions
 import {
     setProgress
 } from "../../actions/courseActions";
 
 function Course(props) {
-    let navigate = useNavigate();
-
+    // TODO: change this to get data from the server
     let courseData = [
         {
             name: "1",
-            id: "1" 
+            id: "1" ,
+            requiredCompletions: 5,
         },
         {
             name: "2",
-            id: "2"
+            id: "2",
+            requiredCompletions: 5,
         },
         {
             name: "3",
-            id: "3"
+            id: "3",
+            requiredCompletions: 5,
         },
     ]
 
@@ -42,6 +44,7 @@ function Course(props) {
         }
         return status;
     }
+
     /**
      * @param { String } id - lesson id
      * @returns { Number } timesCompleted - number of times lesson has been completed
@@ -62,28 +65,36 @@ function Course(props) {
         <div id="course">
             <div className="lesson-wrap">
                 {courseData.map((lesson, index) => 
-                    <div 
-                        className={`lesson ${getLessonStatus(lesson.id) ? "complete" : "incomplete"}`}
-                        onClick={() => {
-                            navigate(`/lesson/${lesson.id}`);
-                        }}
+                    <LessonIcon 
+                        status={getLessonStatus(lesson.id)} 
+                        lesson={lesson}
+                        timesCompleted={getTimesCompleted(lesson.id)}
                         key={index} 
-                    >
-                        Lesson { lesson.name }
-                        { getLessonStatus(lesson.id) ? (
-                            <p>Times Completed: {getTimesCompleted(lesson.id)}</p>
-                        ) : "null" }
-                    </div>
+                    />
                 )}
             </div>
         </div>
     )
 }
 
+function LessonIcon(props) {
+    let navigate = useNavigate();
+    return(
+        <div 
+            className={`lesson ${props.status ? "complete" : "incomplete"}`}
+            onClick={() => {
+                navigate(`/lesson/${props.lesson.id}`);
+            }}
+        >
+            { props.lesson.name }<br/>
+            <p>{ props.timesCompleted }/{ props.lesson.requiredCompletions }</p>
+        </div>
+    )
+}
+
 //pull relevant props from redux state
 const mapStateToProps = state => ({
-    course: state.course,
-    userProgress: state.auth.user.progress
+    userProgress: state.auth.user.progress,
 });
 
 export default connect(

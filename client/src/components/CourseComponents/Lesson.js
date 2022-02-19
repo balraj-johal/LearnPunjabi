@@ -10,10 +10,10 @@ import {
 
 import axios from "axios";
 
+//import redux actions
 import {
     setProgress
 } from "../../actions/courseActions";
-// auth actions
 import {
     getUserData,
 } from "../../actions/authActions";
@@ -26,6 +26,7 @@ function Lesson(props) {
     let navigate = useNavigate();
     let { id } = useParams();
 
+    // configure states
     let [lesson, setLesson] = useState();
     let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     let [ready, setReady] = useState(false);
@@ -36,6 +37,45 @@ function Lesson(props) {
     let [mistakeTracker, setMistakeTracker] = useState([]);
 
     /**
+     * Returns a shuffled array.
+     * @param {Array} arr - the array to shuffle.
+     * @returns {Array} shuffled array.
+     */
+    let shuffle = (arr) => {
+        return arr.sort(() => Math.random() - 0.5)
+    };
+    
+    // when lesson ID is updated, get and save lesson data from server
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: `/api/lessons/get-by-id/${String(id)}`,
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            withCredentials: true
+        })
+            .then(res => {
+                let lessonData = res.data.lesson;
+                // shuffle lesson tasks
+                lessonData.tasks = shuffle(lessonData.tasks);
+                // add data for the lesson end screen
+                let endScreenData = {
+                    taskID: "end",
+                    text: "butt3",
+                    type: "End",
+                };
+                lessonData.tasks.push(endScreenData);
+                // save modified lesson data to component state
+                setLesson(lessonData);
+                setReady(true);
+            })
+            .catch(err => {
+                console.log("Lesson get error: ", err);
+            })
+    }, [id]);
+
+    /**
      * Updates the mistakeTracker state, adding on a newly failed task
      * @param  {Object} task
      */
@@ -44,37 +84,6 @@ function Lesson(props) {
             setMistakeTracker(mistakeTracker => [...mistakeTracker, task]);
         }
     }
-
-    /**
-     * Returns a shuffled array.
-     * @param {Array} arr - the array to shuffle.
-     * @returns {Array} shuffled array.
-     */
-    let shuffle = (arr) => {
-        return arr.sort(() => Math.random() - 0.5)
-    }
-    
-    // get lesson data from server by id
-    useEffect(() => {
-        axios({
-            method: 'get',
-            url: `/api/lessons/get-by-id/${String(id)}`,
-            // data: qs.stringify({ idToFind : String(id) }),
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            withCredentials: true
-        })
-            .then(res => {
-                let resLesson = res.data.lesson;
-                resLesson.tasks = shuffle(resLesson.tasks);
-                setLesson(resLesson);
-                setReady(true);
-            })
-            .catch(err => {
-                console.log("Lesson get error: ", err);
-            })
-    }, [id])
     
     /**
      * calculate users percentage of correct answers
@@ -109,6 +118,7 @@ function Lesson(props) {
         }
         
     }
+    
     /** 
      * proceed onto the next task in the lesson
      * @name nextTask
@@ -123,6 +133,7 @@ function Lesson(props) {
             setCurrentTaskIndex(nextIndex);
         }
     }
+
     /** 
      * update user progress for a specific lesson
      * @name endLesson
@@ -132,7 +143,7 @@ function Lesson(props) {
         // TODO: submit tracked mistakes here
         let mistakes = answerTracking.wrongTasks;
         console.log("mistakes: ", mistakes);
-        alert(getPercentCorrect());
+        
         axios({
             method: 'post',
             url: "/api/users/update-progress",
@@ -154,9 +165,10 @@ function Lesson(props) {
     return(
         <>
             { ready ? (
-                <TaskManager 
+                <TaskManager
                     taskData={lesson.tasks[currentTaskIndex]}
                     submitAnswer={submitAnswer}
+                    stats={getPercentCorrect()}
                 />
             ) : <Loader /> }
         </>

@@ -2,6 +2,7 @@ import React, {  } from "react";
 import { connect } from "react-redux";
 
 import MultipleChoice from "./Tasks/MultipleChoice";
+import End from "./End";
 
 function TaskManager(props) {
 
@@ -11,6 +12,14 @@ function TaskManager(props) {
                 <MultipleChoice 
                     taskData={props.taskData} 
                     submitAnswer={props.submitAnswer}
+                />
+            );
+        case "End":
+            return(
+                <End 
+                    data={props.taskData} 
+                    submit={props.submitAnswer}
+                    stats={props.stats}
                 />
             );
         default:
