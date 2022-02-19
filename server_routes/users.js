@@ -13,6 +13,7 @@ const bcrypt = require("bcryptjs");
 
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
+const validatePassword = require("../validation/password");
 const User = require("../models/user.model");
 
 const { 
@@ -102,6 +103,7 @@ router.post("/register", (req, res) => {
     })
 })
 
+
 /**
  * Login user if credentials are valid.
  * @name post/login
@@ -160,6 +162,103 @@ router.post("/login", (req, res) => {
         })
 }); 
 
+
+/**
+ * Will send reset password link to user if email is valid.
+ * @name post/forgotPassword
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+ router.post("/forgot-password", (req, res) => {
+    // look for user in database
+    const email = req.body.email;
+    User.findOne({ email: email })
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ email: "no user found." });
+            // } else if (user.status !== "Active") {
+            //     return res.status(401).json({ verification: "Please verify your email first!" });
+            } else {
+                let code = genVerificationCode(8);
+                user.pwResetCode = code;
+                user.pwResetCodeExpiry = Date.now() + (10 * 60 * 1000) // 10 mins from now 
+                user.save((err, user) => {
+                    if (err) {
+                        res.status(500).send(err)
+                    } else {
+                        return res.send({ 
+                            success: true,
+                            code: user.pwResetCode
+                        })
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err)
+        })
+}); 
+/**
+ * Resets password if code is valid
+ * @name post/resetPassword
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+ router.post("/reset-password/:resetCode", (req, res) => {
+    // look for user in database
+    const code = req.params.resetCode;
+    console.log(code)
+    User.findOne({ pwResetCode: code }) // , pwResetCodeExpiry: {$gt: Date.now()}
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ error: "Password reset token is invalid or has expired." });
+            // } else if (user.status !== "Active") {
+            //     return res.status(401).json({ verification: "Please verify your email first!" });
+            } else {
+                const password = req.body.password;
+                //validate userData
+                const { errors, isValid } = validatePassword({ password: password });
+                if (!isValid) {
+                    return res.status(400).json({error: errors});
+                }
+                // salt and hash pw
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(password, salt, (err, hash) => {
+                        if (err) {
+                            throw err;
+                        }
+                        user.password = hash;
+                        // save user to db
+                        user
+                            .save()
+                            .then(user => {
+                                return res.status(201).json({});
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                return res.status(500).json({
+                                    error: "Error saving password."
+                                });
+                            })
+                    })
+                    if (err) {
+                        return res.status(500).json({
+                            error: "Error salting new password."
+                        });
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err)
+        })
+}); 
 
 /**
  * If user is verified, get user's data (that is publically accessible);

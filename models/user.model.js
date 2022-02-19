@@ -17,23 +17,34 @@ const userSchema = new mongoose.Schema({
     progress: { type: Array },
     refreshToken: {
         type: [sessionSchema],
+        required: false
     },
     status: {
         type: String, 
         enum: ['Pending', 'Active'],
-        default: 'Pending'
+        default: 'Pending',
+        required: true
     },
     verificationCode: { 
         type: String, 
         unique: true 
     },
+    pwResetCode: {
+        type: String, 
+        unique: true,
+        required: false
+    },
+    pwResetCodeExpiry: {
+        type: Date,
+        required: false
+    }
     // roles: [
     //     {
     //         type: mongoose.Schema.Types.ObjectId,
     //         ref: "Role"
     //     }
     // ]
-});
+}, { timestamps: true });
 
 //Remove refreshToken from the response
 userSchema.set("toJSON", {
