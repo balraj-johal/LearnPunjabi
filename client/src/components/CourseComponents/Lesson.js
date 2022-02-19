@@ -153,7 +153,7 @@ function Lesson(props) {
     
     return(
         <>
-            { false ? (
+            { ready ? (
                 <TaskManager 
                     taskData={lesson.tasks[currentTaskIndex]}
                     submitAnswer={submitAnswer}
