@@ -338,7 +338,7 @@ router.post("/refreshToken", (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-            res.status(500).send(`Error: ${err}`);
+            res.status(500).send({ error: err });
         })
 })
 
@@ -385,7 +385,7 @@ router.post("/logout", (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-            return res.status(500).send(`Error: ${err}`);
+            return res.status(500).send({ error: err });
         })
 })
 
@@ -412,7 +412,7 @@ router.get("/verify-email/:verificationCode", (req, res, next) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    return res.status(500).send(`Error: ${err}`);
+                    return res.status(500).send({ error: err });
                 })
         })
 })
@@ -448,12 +448,12 @@ router.post("/update-progress", (req, res) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    return res.status(500).send(`Error: ${err}`);
+                    return res.status(500).send({ error: err });
                 })
         }) 
         .catch(err => {
             console.log("err, ", err);
-            return res.status(500).send(`Error: ${err}`);
+            return res.status(500).send({ error: err });
         })
 
 })
