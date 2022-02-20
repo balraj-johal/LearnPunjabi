@@ -24,7 +24,7 @@ const {
     verifyRefreshToken
 } = require("../authentication")
 
-// TODO: consider replacing with more secure random code
+// TODO: replace with cryptographically secure random code /You should use a cryptographic strength pseudo-random number generator (PRNG), seeded with the timestamp when it was created plus a static secret.
 const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 let genVerificationCode = (length) => {
     let code = '';
@@ -389,6 +389,7 @@ router.post("/logout", (req, res, next) => {
         })
 })
 
+// TODO: urgent change to post 
 /**
  * set user status to Active if the supplied email verification code is valid
  * @name get/verify-email

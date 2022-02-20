@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import {
     useNavigate
 } from "react-router-dom";
-
 import axios from "axios";
 
 // import redux actions
@@ -13,42 +12,18 @@ import {
 
 function Course(props) {
     let [courseData, setCourseData] = useState([]);
+
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: "/api/lessons/overview",
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            withCredentials: true
-        })
+        axios.get("/api/lessons/overview", {withCredentials: true})
             .then(res => {
-                console.log("course data, ", res.data.overview)
                 setCourseData(res.data.overview);
             })
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(err => { console.log(err); })
     }, [])
-    // let courseData = [
-    //     {
-    //         name: "1",
-    //         id: "1" ,
-    //         requiredCompletions: 5,
-    //     },
-    //     {
-    //         name: "2",
-    //         id: "2",
-    //         requiredCompletions: 5,
-    //     },
-    //     {
-    //         name: "3",
-    //         id: "3",
-    //         requiredCompletions: 5,
-    //     },
-    // ]
 
     /**
+     * Returns true if lesson has been completed at least once
+     * @name getLessonStatus
      * @param { String } id - lesson id
      * @returns { boolean } status - is lesson completed or not
      */
@@ -65,19 +40,21 @@ function Course(props) {
     }
 
     /**
+     * Returns true if lesson has been completed at least once
+     * @name getTimesCompleted
      * @param { String } id - lesson id
      * @returns { Number } timesCompleted - number of times lesson has been completed
      */
     let getTimesCompleted = (id) => {
-        let outputString;
+        let number = 0;
         if (props.userProgress) {
             props.userProgress.forEach(lesson => {
                 if (lesson.id === id) {
-                    outputString = String(lesson.timesCompleted);
+                    number = lesson.timesCompleted;
                 }
             });
         }
-        return outputString;
+        return number;
     }
 
     return(

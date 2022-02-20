@@ -35,16 +35,23 @@ const connectDB = async () => {
 };
 connectDB();
 
-//    configure middleware
-
-
+// ---  configure middleware
+// configure CORS
+let allowedDomains;
+if (process.env.NODE_ENV === "dev") {
+    console.log("Whitelisting dev domains in CORS...");
+    allowedDomains = [
+        "http://localhost:3000", 
+        "http://localhost:3001/", 
+        "https://learn-punjabi-alphabet.herokuapp.com"
+    ];
+} else {
+    allowedDomains = [
+        "https://learn-punjabi-alphabet.herokuapp.com"
+    ];
+}
 const corsOptions = {
     origin: function (origin, callback) {
-        let allowedDomains = [
-            "http://localhost:3000", 
-            "http://localhost:3001/", 
-            "https://learn-punjabi-alphabet.herokuapp.com"
-        ];
         // bypass the requests with no origin (like curl requests, mobile apps, etc)
         if (!origin) return callback(null, true);    
         if (allowedDomains.indexOf(origin) === -1) {
@@ -56,7 +63,7 @@ const corsOptions = {
     credentials: true,
 }
 app.use(cors(corsOptions));
-
+// configure rate limiter
 let rateLimiter = rateLimit({
     windowMs: 0.5 * 60 * 1000, // 30s
     max: 15,
@@ -71,14 +78,15 @@ app.use(passport.initialize());
 
 //TODO: fix csurf protection
 // enable middleware to protect against CSRF attacks
-// const csurfProtection = csurf({
-//     cookie: true
-// });
-// // app.use(csurfProtection); 
-// app.get('/csrf-token', (req, res) => {
-//     // res.json({ csrfToken: req.csrfToken() });
-//     res.json();
-// });
+const csrfProtection = csurf({
+    cookie: true
+});
+app.use(csrfProtection); 
+app.get('/csrf-token', (req, res) => {
+    // console.log(res);
+    res.json({ token: req.csrfToken() });
+    // res.json();
+});
 
 // Passport config
 require("./config/passport")(passport);

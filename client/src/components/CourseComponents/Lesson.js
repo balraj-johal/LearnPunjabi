@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
-import qs from "qs";
 import { connect } from "react-redux";
-// router imports
-import { 
-    useParams,
-    useNavigate,
-
-} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import qs from "qs";
 
 //import redux actions
-import {
-    setProgress
-} from "../../actions/courseActions";
-import {
-    getUserData,
-} from "../../actions/authActions";
+import { setProgress } from "../../actions/courseActions";
+import { getUserData } from "../../actions/authActions";
 
+// import components
 import TaskManager from "./TaskManager";
 import Loader from "../Loader";
 
@@ -47,32 +39,22 @@ function Lesson(props) {
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: `/api/lessons/get-by-id/${String(id)}`,
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            withCredentials: true
-        })
+        axios.get(`/api/lessons/get-by-id/${String(id)}`, {withCredentials: true})
             .then(res => {
                 let lessonData = res.data.lesson;
                 // shuffle lesson tasks
                 lessonData.tasks = shuffle(lessonData.tasks);
                 // add data for the lesson end screen
-                let endScreenData = {
+                lessonData.tasks.push({
                     taskID: "end",
                     text: "butt3",
                     type: "End",
-                };
-                lessonData.tasks.push(endScreenData);
+                });
                 // save modified lesson data to component state
                 setLesson(lessonData);
                 setReady(true);
             })
-            .catch(err => {
-                console.log("Lesson get error: ", err);
-            })
+            .catch(err => { console.log("Lesson get error: ", err); })
     }, [id]);
 
     /**
@@ -92,7 +74,6 @@ function Lesson(props) {
      */
     let getPercentCorrect = () => {
         let total = answerTracking.noCorrect + answerTracking.noWrong;
-        console.log(total);
         return String((answerTracking.noCorrect / total) * 100) + "%";
     }
 
@@ -154,7 +135,6 @@ function Lesson(props) {
             withCredentials: true
         })
             .then(res => {
-                console.log(res.data.newProgress);
                 props.setProgress(res.data.newProgress);
             })
             .catch(err => {
