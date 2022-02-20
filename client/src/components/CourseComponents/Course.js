@@ -1,8 +1,10 @@
-import React, {  } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
     useNavigate
 } from "react-router-dom";
+
+import axios from "axios";
 
 // import redux actions
 import {
@@ -10,24 +12,41 @@ import {
 } from "../../actions/courseActions";
 
 function Course(props) {
-    // TODO: change this to get data from the server
-    let courseData = [
-        {
-            name: "1",
-            id: "1" ,
-            requiredCompletions: 5,
-        },
-        {
-            name: "2",
-            id: "2",
-            requiredCompletions: 5,
-        },
-        {
-            name: "3",
-            id: "3",
-            requiredCompletions: 5,
-        },
-    ]
+    let [courseData, setCourseData] = useState([]);
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: "/api/lessons/overview",
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            withCredentials: true
+        })
+            .then(res => {
+                console.log("course data, ", res.data.overview)
+                setCourseData(res.data.overview);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, [])
+    // let courseData = [
+    //     {
+    //         name: "1",
+    //         id: "1" ,
+    //         requiredCompletions: 5,
+    //     },
+    //     {
+    //         name: "2",
+    //         id: "2",
+    //         requiredCompletions: 5,
+    //     },
+    //     {
+    //         name: "3",
+    //         id: "3",
+    //         requiredCompletions: 5,
+    //     },
+    // ]
 
     /**
      * @param { String } id - lesson id

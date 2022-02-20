@@ -59,7 +59,7 @@ app.use(cors(corsOptions));
 
 let rateLimiter = rateLimit({
     windowMs: 0.5 * 60 * 1000, // 30s
-    max: 5,
+    max: 15,
 	standardHeaders: true,
 	legacyHeaders: false,
 })

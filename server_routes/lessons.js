@@ -167,8 +167,39 @@ router.get("/get-by-id/:lessonID", (req, res) => {
             }
         })
         .catch(err => {
-            return res.status(500).send(err);
+            return res.status(500).send({error: err});
         })
 })
+
+/**
+ * Get overview of all lessons
+ * @name get/overview
+ * @function
+ * @memberof module:api/lessons~lessonsRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.get("/overview", (req, res) => {
+    verifyToken(req)
+        .then(user => {
+            let overview = [];
+            LESSONS.forEach(elem => {
+                overview.push({
+                    name: elem.name,
+                    id: elem.id,
+                    requiredCompletions: elem.requiredCompletions
+                })
+            })
+            if (overview) {
+                res.status(200).send({ overview: overview });
+            } else {
+                res.status(404).send({ message: "overview data not found..." });
+            }
+        })
+        .catch(err => {
+            return res.status(500).send({error: err});
+        })
+})
+
 
 module.exports = router;
