@@ -50,7 +50,7 @@ router.post("/register", (req, res) => {
     }
     //look for user in db by username
     User.findOne({
-        username: req.body.username,
+        username: {$eq: req.body.username},
     }).then(user => {
         if (user) { 
             //if found
@@ -121,7 +121,7 @@ router.post("/login", (req, res) => {
     // look for user in database
     const username = req.body.username;
     const password = req.body.password;
-    User.findOne({ username })
+    User.findOne({ username: {$eq: username} })
         .then(user => {
             if (!user) {
                 return res.status(404).json({ username: "no user found." });
@@ -174,7 +174,7 @@ router.post("/login", (req, res) => {
  router.post("/forgot-password", (req, res) => {
     // look for user in database
     const email = req.body.email;
-    User.findOne({ email: email })
+    User.findOne({ email: {$eq: email} })
         .then(user => {
             if (!user) {
                 return res.status(404).json({ email: "no user found." });
@@ -213,7 +213,7 @@ router.post("/login", (req, res) => {
     // look for user in database
     const code = req.params.resetCode;
     console.log(code)
-    User.findOne({ pwResetCode: code }) // , pwResetCodeExpiry: {$gt: Date.now()}
+    User.findOne({ pwResetCode: {$eq: code} }) // , pwResetCodeExpiry: {$gt: Date.now()}
         .then(user => {
             if (!user) {
                 return res.status(404).json({ error: "Password reset token is invalid or has expired." });
@@ -399,7 +399,7 @@ router.post("/logout", (req, res, next) => {
  */
 router.get("/verify-email/:verificationCode", (req, res, next) => {
     console.log("checking verification code: ", req.params.verificationCode);
-    User.findOne({ verificationCode: req.params.verificationCode })
+    User.findOne({ verificationCode: {$eq: req.params.verificationCode} })
         .then(user => {
             if (!user) {
                 return res.status(404).send({ message: "User not found..." })

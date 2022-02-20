@@ -54,7 +54,7 @@ exports.verifyToken = (req) => {
                     }
                     // find user 
                     const userId = decoded.userID;
-                    User.findOne({ _id: userId })
+                    User.findOne({ _id: {$eq: userId} })
                         .then(user => {
                             if (user) {
                                 resolve(user);
@@ -94,7 +94,7 @@ exports.verifyRefreshToken = (req) => {
                     } else {
                         // find user 
                         const userId = decoded.userID;
-                        User.findOne({ _id: userId })
+                        User.findOne({ _id: {$eq: userId} })
                             .then(user => {
                                 if (user) {
                                     resolve({user: user, refreshToken: refreshToken});
