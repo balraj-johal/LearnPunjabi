@@ -6,6 +6,7 @@ const bp = require('body-parser');
 const cp = require('cookie-parser');
 const cors = require('cors');
 const csurf = require('csurf');
+const rateLimit = require('express-rate-limit')
 
 // import routes
 const s3 = require("./server_routes/s3");
@@ -55,6 +56,14 @@ const corsOptions = {
     credentials: true,
 }
 app.use(cors(corsOptions));
+
+let rateLimiter = rateLimit({
+    windowMs: 0.5 * 60 * 1000, // 30s
+    max: 5,
+	standardHeaders: true,
+	legacyHeaders: false,
+})
+app.use(rateLimiter);
 
 app.use(bp.urlencoded()); // TODO: fix deprecated error here
 app.use(cp(process.env.COOKIE_SECRET));
