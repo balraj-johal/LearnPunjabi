@@ -6,7 +6,7 @@ const bp = require('body-parser');
 const cp = require('cookie-parser');
 const cors = require('cors');
 const csurf = require('csurf');
-const rateLimit = require('express-rate-limit')
+const rateLimit = require('express-rate-limit');
 
 // import routes
 const s3 = require("./server_routes/s3");
@@ -66,7 +66,7 @@ app.use(cors(corsOptions));
 // configure rate limiter
 let rateLimiter = rateLimit({
     windowMs: 0.5 * 60 * 1000, // 30s
-    max: 15,
+    max: 50,
 	standardHeaders: true,
 	legacyHeaders: false,
 })
