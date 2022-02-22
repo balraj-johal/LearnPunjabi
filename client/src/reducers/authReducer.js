@@ -1,4 +1,5 @@
 import {
+    CLEAR_AUTH_ERRORS,
     SET_AUTH_ERRORS, 
     SET_CURRENT_USER, 
     SET_LOADED
@@ -31,6 +32,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 errors: action.payload
+            };
+        case CLEAR_AUTH_ERRORS:
+            return {
+                ...state,
+                errors: {}
             };
         default:
             return state;

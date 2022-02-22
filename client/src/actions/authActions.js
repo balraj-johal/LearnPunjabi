@@ -3,10 +3,18 @@ import qs from 'qs';
 
 //import declared action types
 import {
+    CLEAR_AUTH_ERRORS,
     SET_AUTH_ERRORS,
     SET_CURRENT_USER,
     SET_LOADED,
 } from "./types";
+
+export const clearAuthErrors = () => dispatch => {
+    dispatch({
+        type: CLEAR_AUTH_ERRORS,
+        payload: null
+    })
+}
 
 export const registerUser = userData => dispatch => {
     axios({
@@ -14,7 +22,7 @@ export const registerUser = userData => dispatch => {
         url: "/api/users/register",
         data: qs.stringify(userData),
         headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            'content-type': 'application/x-www-form-urlencoded'
         },
         withCredentials: true
     })
@@ -23,6 +31,9 @@ export const registerUser = userData => dispatch => {
             alert("Register successful.");
         })
         .catch(err => {
+            // TODO: Why is this log not running?
+            console.log("post request errored, ");
+            console.log("post request errored, ", err.response);
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data
@@ -35,11 +46,10 @@ export const loginUser = userData => dispatch => {
     //post user data
     axios({
         method: 'post',
-        // url: "/api/users/login",
         url: "/api/users/login",
         data: qs.stringify(userData),
         headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            'content-type': 'application/x-www-form-urlencoded'
         },
         withCredentials: true
     })
@@ -65,6 +75,49 @@ export const loginUser = userData => dispatch => {
         })
 }
 
+export const forgotPassword = userData => dispatch => {
+    axios({
+        method: 'post', url: "/api/users/forgot-password",
+        data: qs.stringify(userData),
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        withCredentials: true
+    })
+        .then(res => {
+            console.log(res.data.code);
+        })
+        .catch(err => {
+            console.log("post request errored, ", err.response);
+            dispatch({
+                type: SET_AUTH_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+export const resetPassword = (userData) => dispatch => {
+    console.log(userData)
+    axios({
+        method: 'post', url: `/api/users/reset-password/${userData.code}`,
+        data: qs.stringify(userData),
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        withCredentials: true
+    })
+        .then(res => {
+            console.log("reset successful");
+            console.log(res.data);
+        })
+        .catch(err => {
+            console.log("post request errored, ", err.response);
+            dispatch({
+                type: SET_AUTH_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+
 
 export const getUserDataPromise = () => {
     return new Promise((resolve, reject) => {
@@ -72,7 +125,7 @@ export const getUserDataPromise = () => {
             method: 'get',
             url: "/api/users/data",
             headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                'content-type': 'application/x-www-form-urlencoded'
             },
             withCredentials: true
         })
@@ -101,7 +154,7 @@ export const logoutUser = userID => dispatch => {
         url: "/api/users/logout",
         data: qs.stringify({_id: userID}),
         headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            'content-type': 'application/x-www-form-urlencoded'
         },
         withCredentials: true
     })

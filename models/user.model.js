@@ -9,12 +9,33 @@ const sessionSchema = new mongoose.Schema({
 })
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true },
-    password: { type: String, required: true, minlength: 6 },
-    email: { type: String, required: true },
-    firstName: { type: String, required: true },
-    createdOn: { type: Date, required: false },
-    progress: { type: Array },
+    username: { 
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: { 
+        type: String, 
+        required: true, 
+        minlength: 6 
+    },
+    email: { 
+        type: String,
+        required: true,
+        unique: true
+    },
+    firstName: { 
+        type: String, 
+        required: true 
+    },
+    createdOn: { 
+        type: Date, 
+        required: false 
+    },
+    progress: { 
+        type: Array, 
+        required: true 
+    },
     refreshToken: {
         type: [sessionSchema],
         required: false
@@ -37,13 +58,13 @@ const userSchema = new mongoose.Schema({
     pwResetCodeExpiry: {
         type: Date,
         required: false
-    }
-    // roles: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "Role"
-    //     }
-    // ]
+    },
+    role: {
+        type: String, 
+        enum: ['User', 'Author', 'Admin'],
+        default: 'User',
+        required: true
+    },
 }, { timestamps: true });
 
 //Remove refreshToken from the response

@@ -58,7 +58,7 @@
   height: 30px;
 }
 
-#accounts-wrap {
+.accounts-wrap {
   width: 85%;
   height: 48vh;
   border: 2px solid black;
@@ -67,17 +67,17 @@
   margin: 50px auto;
 }
 
-#accounts-wrap .register, #accounts-wrap .login {
+.accounts-wrap .register, .accounts-wrap .login {
   width: 100%;
 }
 
-#accounts-wrap .input-field label {
+.accounts-wrap .input-field label {
   margin: 0.25em 0 0.25em;
   display: block;
 }
 
 @media (min-width: 768px) {
-  #accounts-wrap {
+  .accounts-wrap {
     width: 50%;
     height: 70vh;
   }

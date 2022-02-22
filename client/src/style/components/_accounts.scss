@@ -1,4 +1,4 @@
-#accounts-wrap {
+.accounts-wrap {
     width: 85%;
     height: 48vh;
     // width: 44%;
@@ -20,7 +20,7 @@
 }
 
 @media (min-width: 768px) {
-    #accounts-wrap {
+    .accounts-wrap {
         width: 50%;
         height: 70vh;
     }

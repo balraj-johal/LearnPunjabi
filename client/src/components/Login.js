@@ -71,6 +71,9 @@ class Login extends Component {
                         errors={this.props.errors} 
                     />
                     <FormSubmitButton dataElem="login" />
+                    <div onClick={() => {
+                        this.props.setManagerState("ForgotPassword");
+                    }}>Forgot Password?</div>
                 </form>
             </div>
         )
@@ -82,7 +85,7 @@ class Login extends Component {
 Login.propTypes = {
     loginUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+    // errors: PropTypes.object.isRequired
 }
 
 //pull relevant props from redux state

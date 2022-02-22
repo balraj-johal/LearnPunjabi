@@ -130,7 +130,7 @@ function Lesson(props) {
             url: "/api/users/update-progress",
             data: qs.stringify({lessonID: lessonID}),
             headers: {
-                'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                'content-type': 'application/x-www-form-urlencoded'
             },
             withCredentials: true
         })

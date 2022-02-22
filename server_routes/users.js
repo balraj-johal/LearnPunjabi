@@ -10,6 +10,7 @@ const express = require("express");
  */
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const rateLimit = require('express-rate-limit');
 
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
@@ -21,7 +22,7 @@ const {
     getNewRefreshToken, 
     AUTH_COOKIE_OPTIONS,
     verifyToken,
-    verifyRefreshToken
+    verifyRefreshToken,
 } = require("../authentication")
 
 // TODO: replace with cryptographically secure random code /You should use a cryptographic strength pseudo-random number generator (PRNG), seeded with the timestamp when it was created plus a static secret.
@@ -46,7 +47,7 @@ router.post("/register", (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) {
-        return res.status(400).json({error: errors});
+        return res.status(400).json(errors);
     }
     //look for user in db by username
     User.findOne({
@@ -67,6 +68,9 @@ router.post("/register", (req, res) => {
                 createdOn: req.body.createdOn,
                 progress: [],
                 verificationCode: genVerificationCode(8),
+                role: 'User',
+                pwResetCode: genVerificationCode(8), //TODO: make unique here
+                pwResetCodeExpiry: Date.now()
             })
             // salt and hash pw
             bcrypt.genSalt(10, (err, salt) => {
@@ -82,8 +86,6 @@ router.post("/register", (req, res) => {
                     newUser
                         .save()
                         .then(user => {
-                            // TODO: do I need to set refreshToken cookie here??
-                            // res.cookie("refreshToken", refreshToken, AUTH_COOKIE_OPTIONS);
                             return res.status(201).json({code: user.verificationCode});
                         })
                         .catch(err => {
@@ -163,6 +165,12 @@ router.post("/login", (req, res) => {
 }); 
 
 
+const forgotPasswordLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 30s
+    max: 2,
+	standardHeaders: true,
+	legacyHeaders: false,
+})
 /**
  * Will send reset password link to user if email is valid.
  * @name post/forgotPassword
@@ -171,7 +179,7 @@ router.post("/login", (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
- router.post("/forgot-password", (req, res) => {
+ router.post("/forgot-password", forgotPasswordLimiter,  (req, res) => {
     // look for user in database
     const email = req.body.email;
     User.findOne({ email: {$eq: email} })
@@ -210,21 +218,25 @@ router.post("/login", (req, res) => {
  * @param { callback } middleware - express middleware
  */
  router.post("/reset-password/:resetCode", (req, res) => {
+    // console.log("reset pw called");
     // look for user in database
     const code = req.params.resetCode;
-    console.log(code)
-    User.findOne({ pwResetCode: {$eq: code} }) // , pwResetCodeExpiry: {$gt: Date.now()}
+    // console.log(code);
+    User.findOne({ 
+        pwResetCode: {$eq: code},
+        email: {$eq: req.body.email},
+    }) // , pwResetCodeExpiry: {$gt: Date.now()}  // TODO: test reset expiry
         .then(user => {
             if (!user) {
                 return res.status(404).json({ error: "Password reset token is invalid or has expired." });
             // } else if (user.status !== "Active") {
             //     return res.status(401).json({ verification: "Please verify your email first!" });
             } else {
-                const password = req.body.password;
+                const password = req.body.newPW;
                 //validate userData
                 const { errors, isValid } = validatePassword({ password: password });
                 if (!isValid) {
-                    return res.status(400).json({error: errors});
+                    return res.status(400).json(errors);
                 }
                 // salt and hash pw
                 bcrypt.genSalt(10, (err, salt) => {
@@ -271,7 +283,7 @@ router.post("/login", (req, res) => {
 router.get("/data", (req, res, next) => {
     verifyToken(req)
         .then(user => {
-            return res.send({ // TODO: whitelist properties here
+            return res.send({
                 user: {
                     _id: user._id,
                     username: user.username,
@@ -279,6 +291,37 @@ router.get("/data", (req, res, next) => {
                     progress: user.progress
                 }
             })
+        })
+        .catch(err => {
+            return res.status(500).send({error: err});
+        })
+})
+
+ router.get("/adminRoleTest", (req, res, next) => {
+    verifyToken(req)
+        .then(user => {
+            if (user.role === "Admin") {
+                res.status(200).send("success");
+            } else {
+                return res.status(401).send({
+                    error: "User does not have correct role for this resource."
+                });
+            }
+        })
+        .catch(err => {
+            return res.status(500).send({error: err});
+        })
+})
+ router.get("/userRoleTest", (req, res, next) => {
+    verifyToken(req)
+        .then(user => {
+            if (user.role === "User" || user.role === "Admin") {
+                res.status(200).send("success");
+            } else {
+                return res.status(401).send({
+                    error: "User does not have correct role for this resource."
+                });
+            }
         })
         .catch(err => {
             return res.status(500).send({error: err});

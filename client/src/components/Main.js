@@ -1,12 +1,10 @@
-import React from "react";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as 
     Router,
     Route,
     Routes,
 } from "react-router-dom";
-
 import axios from "axios";
 
 // import redux actions
@@ -19,25 +17,33 @@ import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
+import ResetPassword from "./ResetPassword";
 
 
 function Main(props) {
-    // verify user credentials and refresh their refresh token
-    // TODO: determine why function executes twice
-    const verifyUser = useCallback(async () => {
+    let [csrfTokenReady, setCsrfTokenReady] = useState(false);
+
+    useEffect(() => {
         axios.get("/csrf-token", {withCredentials: true})
             .then(res => {
                 axios.defaults.headers.post['X-CSRF-Token'] = res.data.token;
-                // refresh the jwt with the refresh token
-                props.useRefreshToken();
-                setTimeout(() => {
-                    verifyUser();
-                }, 2.5 * 60 * 1000);
+                setCsrfTokenReady(true)
             })
             .catch(err => { console.log(err); })
+    }, [])
 
+    // verify user credentials and refresh their refresh token
+    // TODO: determine why function executes twice
+    const verifyUser = useCallback(async () => {
+        // refresh the jwt with the refresh token
+        if (csrfTokenReady) {
+            props.useRefreshToken();
+            setTimeout(() => {
+                verifyUser();
+            }, 5 * 60 * 1000);
+        }
     // TODO: confirm that these dependancies are corrent
-    }, [props.auth.isAuthenticated]); 
+    }, [props.auth.isAuthenticated, csrfTokenReady]);
     useEffect(() => {
         verifyUser();
     }, [verifyUser])
@@ -60,6 +66,7 @@ function Main(props) {
             <div className="container">
                 <Routes>
                     <Route path="/account" element={<AccountManager />} />
+                    <Route path="/reset-password" element={ <ResetPassword /> } />
                     <Route path="/" element={
                         <ProtectedComponent component={<Dashboard />} />
                     } />
