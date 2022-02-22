@@ -11,6 +11,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
 
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
@@ -28,11 +29,15 @@ const {
 // TODO: replace with cryptographically secure random code /You should use a cryptographic strength pseudo-random number generator (PRNG), seeded with the timestamp when it was created plus a static secret.
 const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 let genVerificationCode = (length) => {
-    let code = '';
-    for (let i = 0; i < length; i++) {
-        code += characters[Math.floor(Math.random() * characters.length )];
-    }
-    return code;
+    return crypto
+        .randomBytes(length)
+        .toString('base64')
+        .slice(0, length)
+    // let code = '';
+    // for (let i = 0; i < length; i++) {
+    //     code += characters[Math.floor(Math.random() * characters.length )];
+    // }
+    // return code;
 }
 
 /**
@@ -69,7 +74,7 @@ router.post("/register", (req, res) => {
                 progress: [],
                 verificationCode: genVerificationCode(8),
                 role: 'User',
-                pwResetCode: genVerificationCode(8), //TODO: make unique here
+                pwResetCode: genVerificationCode(8),
                 pwResetCodeExpiry: Date.now()
             })
             // salt and hash pw
@@ -186,12 +191,10 @@ const forgotPasswordLimiter = rateLimit({
         .then(user => {
             if (!user) {
                 return res.status(404).json({ email: "no user found." });
-            // } else if (user.status !== "Active") {
-            //     return res.status(401).json({ verification: "Please verify your email first!" });
             } else {
                 let code = genVerificationCode(8);
                 user.pwResetCode = code;
-                user.pwResetCodeExpiry = Date.now() + (10 * 60 * 1000) // 10 mins from now 
+                user.pwResetCodeExpiry = Date.now() + (3 * 60 * 1000) // 3 mins from now 
                 user.save((err, user) => {
                     if (err) {
                         res.status(500).send(err)
@@ -225,32 +228,30 @@ const forgotPasswordLimiter = rateLimit({
     User.findOne({ 
         pwResetCode: {$eq: code},
         email: {$eq: req.body.email},
+        pwResetCodeExpiry: {$gt: Date.now()}
     }) // , pwResetCodeExpiry: {$gt: Date.now()}  // TODO: test reset expiry
         .then(user => {
             if (!user) {
-                return res.status(404).json({ error: "Password reset token is invalid or has expired." });
-            // } else if (user.status !== "Active") {
-            //     return res.status(401).json({ verification: "Please verify your email first!" });
+                return res.status(404).json({ 
+                    error: "Password reset token is invalid or has expired." 
+                });
             } else {
+                console.log(`code; ${user.pwResetCode}, expiry ${user.pwResetCodeExpiry.toString()}`)
                 const password = req.body.newPW;
                 //validate userData
                 const { errors, isValid } = validatePassword({ password: password });
-                if (!isValid) {
-                    return res.status(400).json(errors);
-                }
+                if (!isValid) { return res.status(400).json(errors); }
                 // salt and hash pw
                 bcrypt.genSalt(10, (err, salt) => {
                     bcrypt.hash(password, salt, (err, hash) => {
-                        if (err) {
-                            throw err;
-                        }
+                        if (err) { throw err; }
                         user.password = hash;
+                        user.pwResetCodeExpiry = Date.now() - 100000;
+                        user.pwResetCode = genVerificationCode(8);
                         // save user to db
                         user
                             .save()
-                            .then(user => {
-                                return res.status(201).json({});
-                            })
+                            .then(user => { return res.status(201).json({}); })
                             .catch(err => {
                                 console.log(err);
                                 return res.status(500).json({
