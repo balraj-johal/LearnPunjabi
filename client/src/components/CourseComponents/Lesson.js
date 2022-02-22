@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import axiosClient from "../../axiosDefaults";
 import qs from "qs";
 
 //import redux actions
@@ -39,7 +39,7 @@ function Lesson(props) {
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
-        axios.get(`/api/lessons/get-by-id/${String(id)}`, {withCredentials: true})
+        axiosClient.get(`/api/lessons/get-by-id/${String(id)}`)
             .then(res => {
                 let lessonData = res.data.lesson;
                 // shuffle lesson tasks
@@ -125,15 +125,7 @@ function Lesson(props) {
         let mistakes = answerTracking.wrongTasks;
         console.log("mistakes: ", mistakes);
         
-        axios({
-            method: 'post',
-            url: "/api/users/update-progress",
-            data: qs.stringify({lessonID: lessonID}),
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            withCredentials: true
-        })
+        axiosClient.post("/api/users/update-progress", qs.stringify({lessonID: lessonID}))
             .then(res => {
                 props.setProgress(res.data.newProgress);
             })

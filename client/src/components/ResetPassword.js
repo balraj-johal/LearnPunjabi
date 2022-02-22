@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
+import axiosClient from "../axiosDefaults";
 import qs from 'qs';
 
 // import redux actions
@@ -33,12 +33,7 @@ class ResetPassword extends Component {
             email: this.state.email,
             newPW: this.state.newPW
         };
-        axios({
-            method: 'post', url: `/api/users/reset-password/${this.state.code}`,
-            data: qs.stringify(data),
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            withCredentials: true
-        })
+        axiosClient.post(`/api/users/reset-password/${this.state.code}`, qs.stringify(data))
             .then(res => {
                 console.log("reset successful");
                 console.log(res.data);

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
     useNavigate
 } from "react-router-dom";
-import axios from "axios";
+import axiosClient from "../../axiosDefaults";
 
 // import redux actions
 import {
@@ -14,7 +14,7 @@ function Course(props) {
     let [courseData, setCourseData] = useState([]);
 
     useEffect(() => {
-        axios.get("/api/lessons/overview", {withCredentials: true})
+        axiosClient.get("/api/lessons/overview")
             .then(res => {
                 setCourseData(res.data.overview);
             })

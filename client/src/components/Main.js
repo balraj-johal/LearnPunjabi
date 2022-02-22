@@ -5,7 +5,7 @@ import { BrowserRouter as
     Route,
     Routes,
 } from "react-router-dom";
-import axios from "axios";
+import axiosClient from "../axiosDefaults";
 
 // import redux actions
 import { getUserData, useRefreshToken } from "../actions/authActions";
@@ -24,10 +24,10 @@ function Main(props) {
     let [csrfTokenReady, setCsrfTokenReady] = useState(false);
 
     useEffect(() => {
-        axios.get("/csrf-token", {withCredentials: true})
+        axiosClient.get("/csrf-token")
             .then(res => {
-                axios.defaults.headers.post['X-CSRF-Token'] = res.data.token;
-                setCsrfTokenReady(true)
+                axiosClient.defaults.headers.post['X-CSRF-Token'] = res.data.token;
+                setCsrfTokenReady(true);
             })
             .catch(err => { console.log(err); })
     }, [])

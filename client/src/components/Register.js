@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import axios from "axios";
+import axiosClient from "../axiosDefaults";
 import qs from 'qs'
 
 import { registerUser } from "../actions/authActions";
@@ -39,15 +39,7 @@ class Register extends Component {
             firstName: this.state.firstName,
         };
         // this.props.registerUser(data);
-        axios({
-            method: 'post',
-            url: "/api/users/register",
-            data: qs.stringify(data),
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            withCredentials: true
-        })
+        axiosClient.post("/api/users/register", qs.stringify(data))
             .then(res => {
                 console.log(res);
                 alert("Register successful.");
