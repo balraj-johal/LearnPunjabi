@@ -3,5 +3,6 @@
     padding: 0 10%;
     height: calc(100vh - 98px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     margin: auto;
 }
