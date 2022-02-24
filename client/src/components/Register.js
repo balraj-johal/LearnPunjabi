@@ -1,9 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-
-import axiosClient from "../axiosDefaults";
-import qs from 'qs'
 
 import { registerUser } from "../actions/authActions";
 
@@ -12,104 +8,75 @@ import FormError from "./FormComponents/FormError";
 import FormInputField from "./FormComponents/FormInputField";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
-class Register extends Component {
-    constructor() {
-        super();
-        this.state = {
-            username: "",
-            password: "",
-            email: "",
-            firstName: "",
-            errors: {},
-        };
-    };
+function Register(props) {
+    let [username, setUsername] = useState("")
+    let [firstName, setFirstName] = useState("")
+    let [email, setEmail] = useState("")
+    let [password, setPassword] = useState("")
 
-    //form control methods
-    onChange = e => {
-        this.setState({
-            [e.target.id]: e.target.value
-        });
-    }
-    onSubmit = e => {
+    let onSubmit = e => {
         e.preventDefault();
-        const data = {
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email,
-            firstName: this.state.firstName,
-        };
-        // this.props.registerUser(data);
-        axiosClient.post("/api/users/register", qs.stringify(data))
-            .then(res => {
-                console.log(res);
-                alert("Register successful.");
-                this.props.setManagerState("Login");
-            })
+        let data = {
+            username: username,
+            password: password,
+            email: email,
+            firstName: firstName
+        }
+        props.registerUser(data);
     }
 
-
-    render() {
-        const { errors } = this.state;
-        return (
-            <div className="register">
-                <h2>Register</h2>
-                <form className="register-form" noValidate onSubmit={this.onSubmit}>
-                    <FormInputField 
-                        dataElem="username"
-                        onChange={this.onChange}
-                        value={this.state.username}
-                        error={errors.username}
-                    />
-                    <FormError 
-                        dataElem="username" 
-                        errors={this.props.errors} 
-                    />
-                    <FormInputField 
-                        dataElem="firstName"
-                        onChange={this.onChange}
-                        value={this.state.firstName}
-                        error={errors.firstName}
-                    />
-                    <FormError 
-                        dataElem="firstName" 
-                        errors={this.props.errors} 
-                    />
-                    <FormInputField 
-                        dataElem="email"
-                        onChange={this.onChange}
-                        value={this.state.email}
-                        error={errors.email}
-                    />
-                    <FormError 
-                        dataElem="email" 
-                        errors={this.props.errors} 
-                    />
-                    <FormInputField 
-                        dataElem="password"
-                        onChange={this.onChange}
-                        value={this.state.password}
-                        error={errors.password}
-                    />
-                    <FormError 
-                        dataElem="password" 
-                        errors={this.props.errors} 
-                    />
-                    <FormError 
-                        dataElem="verification" 
-                        errors={this.props.errors} 
-                    />
-                    <FormSubmitButton dataElem="register" />
-                </form>
-            </div>
-        )
-    }
-}
-
-//define prop types
-Register.propTypes = {
-    registerUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+    return(
+        <div className="register">
+            <h2>Register</h2>
+            <form className="register-form" noValidate onSubmit={ onSubmit }>
+                <FormInputField 
+                    dataElem="username"
+                    onChange={e => setUsername(e.target.value) }
+                    value={ username }
+                    error={ props.errors.username }
+                />
+                <FormError 
+                    dataElem="username" 
+                    errors={ props.errors } 
+                />
+                <FormInputField 
+                    dataElem="firstName"
+                    onChange={ e => setFirstName(e.target.value) }
+                    value={ firstName }
+                    error={ props.errors.firstName }
+                />
+                <FormError 
+                    dataElem="firstName" 
+                    errors={ props.errors } 
+                />
+                <FormInputField 
+                    dataElem="email"
+                    onChange={ e => setEmail(e.target.value) }
+                    value={ email }
+                    error={ props.errors.email }
+                />
+                <FormError 
+                    dataElem="email" 
+                    errors={ props.errors } 
+                />
+                <FormInputField 
+                    dataElem="password"
+                    onChange={ e => setPassword(e.target.value) }
+                    value={ password }
+                    error={ props.errors.password }
+                />
+                <FormError 
+                    dataElem="password" 
+                    errors={ props.errors } 
+                />
+                <FormError 
+                    dataElem="verification" 
+                    errors={ props.errors } 
+                />
+                <FormSubmitButton dataElem="register" />
+            </form>
+        </div>
+    )
 }
 
 //pull relevant props from redux state

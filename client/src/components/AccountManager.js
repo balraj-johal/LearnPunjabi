@@ -66,6 +66,7 @@ function Switcher(props) {
     switch (props.state) {
         case "Login":
             return(
+                // <Login setManagerState={props.setManagerState} />
                 <Login setManagerState={props.setManagerState} />
             )
         case "Register":

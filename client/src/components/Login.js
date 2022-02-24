@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -9,83 +9,54 @@ import FormError from "./FormComponents/FormError";
 import FormInputField from "./FormComponents/FormInputField";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
-class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            submitting: false,
-            username: "",
-            password: "",
-            email: "",
-            firstName: "",
-            errors: {},
-        };
-    }
+function Login(props) {
+    let [username, setUsername] = useState("")
+    let [password, setPassword] = useState("")
 
-    //form control methods
-    onChange = e => {
-        this.setState({
-            [e.target.id]: e.target.value
-        });
-    }
-    onSubmit = e => {
+    let onSubmit = e => {
         e.preventDefault();
-        const data = {
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email,
-            firstName: this.state.firstName,
-        };
-        this.props.loginUser(data);
+        let data = {
+            username: username,
+            password: password
+        }
+        props.loginUser(data);
     }
 
-
-    render() {
-        const { errors } = this.state;
-        return (
-            <div className="login">
-                <h2>Login</h2>
-                <form className="login-form" noValidate onSubmit={this.onSubmit}>
-                    <FormInputField 
-                        dataElem="username"
-                        onChange={this.onChange}
-                        value={this.state.username}
-                        error={errors.username}
-                    />
-                    <FormError 
-                        dataElem="username" 
-                        errors={this.props.errors} 
-                    />
-                    <FormInputField 
-                        dataElem="password"
-                        onChange={this.onChange}
-                        value={this.state.password}
-                        error={errors.password}
-                    />
-                    <FormError 
-                        dataElem="password" 
-                        errors={this.props.errors} 
-                    />
-                    <FormError 
-                        dataElem="verification" 
-                        errors={this.props.errors} 
-                    />
-                    <FormSubmitButton dataElem="login" />
-                    <div onClick={() => {
-                        this.props.setManagerState("ForgotPassword");
-                    }}>Forgot Password?</div>
-                </form>
-            </div>
-        )
-    }
-}
-
-
-//define prop types
-Login.propTypes = {
-    loginUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    // errors: PropTypes.object.isRequired
+    return(
+        <div className="login">
+            <h2>Login</h2>
+            <form className="login-form" noValidate onSubmit={ onSubmit }>
+                <FormInputField 
+                    dataElem="username"
+                    onChange={ e => setUsername(e.target.value) }
+                    value={ username }
+                    error={ props.errors.username }
+                />
+                <FormError 
+                    dataElem="username" 
+                    errors={ props.errors } 
+                />
+                <FormInputField 
+                    dataElem="password"
+                    onChange={ e => setPassword(e.target.value) }
+                    value={ password }
+                    error={ props.errors.password }
+                />
+                <FormError 
+                    dataElem="password" 
+                    errors={ props.errors } 
+                />
+                <FormError 
+                    dataElem="verification" 
+                    errors={ props.errors } 
+                />
+                <FormSubmitButton dataElem="login" />
+                <div onClick={() => {
+                    props.setManagerState("ForgotPassword");
+                }}>Forgot Password?</div>
+            </form>
+        </div>
+    )
 }
 
 //pull relevant props from redux state
