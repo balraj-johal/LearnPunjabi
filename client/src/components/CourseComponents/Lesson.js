@@ -41,17 +41,18 @@ function Lesson(props) {
     useEffect(() => {
         axiosClient.get(`/api/lessons/get-by-id/${String(id)}`)
             .then(res => {
-                let lessonData = res.data.lesson;
-                // shuffle lesson tasks
-                lessonData.tasks = shuffle(lessonData.tasks);
+                let data = res.data.lesson;
+                if (data.shuffle) {
+                    data.tasks = shuffle(data.tasks);
+                }
                 // add data for the lesson end screen
-                lessonData.tasks.push({
+                data.tasks.push({
                     taskID: "end",
-                    text: "butt3",
+                    text: "Congrats! You've finished the lesson!", // TODO: is this needed?
                     type: "End",
                 });
                 // save modified lesson data to component state
-                setLesson(lessonData);
+                setLesson(data);
                 setReady(true);
             })
             .catch(err => { console.log("Lesson get error: ", err); })

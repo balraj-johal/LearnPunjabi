@@ -16,6 +16,119 @@ const {
 
 const LESSONS = [
     {
+        name: "Intro to Punjabi",
+        id: "Intro_Main",
+        requiredCompletions: 1,
+        shuffle: false,
+        tasks: [
+            {
+                taskID: "1",
+                text: `
+                    Punjabi is a language spoken by over 112 million people.
+
+                    It is written in an alpabet called Gurmukhi - which translated means
+                    "from the mouth of the Guru", where Guru means sacred teacher.
+
+                    Throughout this course you will learn how to read and write in the
+                    Gurmukhi alphabet and also learn common Punjabi words and phrases.
+                `,
+                type: "TextOnly",
+            },
+        ]
+    },
+    {
+        name: "Intro to Line 1",
+        id: "Intro_Line-1",
+        requiredCompletions: 1,
+        shuffle: false,
+        tasks: [
+            {
+                taskID: "1",
+                text: `
+                    There are 35 Gurmukhi characters, that are commonly divided into
+                    groups of 5.
+
+                    This lesson will cover the first line.
+                `,
+                type: "TextOnly",
+            },
+            {
+                taskID: "2",
+                text: `
+                    Ourha
+                `,
+                type: "TextOnly",
+            },
+            {
+                taskID: "3",
+                text: "What sound does the character ੳ make?",
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        bottomText: "ai"
+                    },
+                    {
+                        bottomText: "ee"
+                    },
+                    {
+                        bottomText: "ou"
+                    },
+                ],
+                correctAnswerIndex: 2,
+            },
+            {
+                taskID: "4",
+                text: `
+                    Ai'rhaa
+                    (ai - as in air) - makes the a sound
+                `,
+                type: "TextOnly",
+            },
+            {
+                taskID: "5",
+                text: "What sound does the character ਅ make?",
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        bottomText: "ai"
+                    },
+                    {
+                        bottomText: "ee"
+                    },
+                    {
+                        bottomText: "ou"
+                    },
+                ],
+                correctAnswerIndex: 0,
+            },
+            {
+                taskID: "6",
+                text: `
+                    Ee'rhee	
+                    (e - as in air) - makes the e sound
+                `,
+                type: "TextOnly",
+            },
+            {
+                taskID: "7",
+                text: "What sound does the character ੲ make?",
+                type: "MultipleChoice",
+                possibleAnswers: [
+                    {
+                        bottomText: "ai"
+                    },
+                    {
+                        bottomText: "ee"
+                    },
+                    {
+                        bottomText: "ou"
+                    },
+                ],
+                correctAnswerIndex: 1,
+            },
+        ]
+    },
+    {
         name: "line 1",
         id: "1",
         requiredCompletions: 5,
@@ -43,12 +156,12 @@ const LESSONS = [
             },
             {
                 taskID: "2",
-                text: "butt2",
+                text: "PLACEHOLDER2",
                 type: "AI"
             },
             {
                 taskID: "3",
-                text: "butt3",
+                text: "PLACEHOLDER3",
                 type: "MultipleChoice",
                 audioSrc: "test",
                 possibleAnswers: [
@@ -93,12 +206,12 @@ const LESSONS = [
             },
             {
                 taskID: "2",
-                text: "buttttt2",
+                text: "PLACEHOLDERttt2",
                 type: "AI"
             },
             {
                 taskID: "3",
-                text: "buttttt3",
+                text: "PLACEHOLDERttt3",
                 type: "MultipleChoice",
                 possibleAnswers: [
                     {

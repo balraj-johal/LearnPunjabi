@@ -1,7 +1,5 @@
-import React, { useState, useEffectlet  } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import axiosClient from "../axiosDefaults";
-import qs from 'qs';
 
 // import redux actions
 import { resetPassword } from "../actions/authActions";
