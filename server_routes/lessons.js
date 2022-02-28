@@ -137,7 +137,7 @@ const LESSONS = [
                 taskID: "1",
                 text: 'Which character makes the "ou" sound?',
                 type: "MultipleChoice",
-                audioSrc: "test",
+                audioSrc: "test.mp3",
                 possibleAnswers: [
                     {
                         // bottomText: "Balraj",
@@ -163,7 +163,7 @@ const LESSONS = [
                 taskID: "3",
                 text: "PLACEHOLDER3",
                 type: "MultipleChoice",
-                audioSrc: "test",
+                audioSrc: "test.mp3",
                 possibleAnswers: [
                     {
                         bottomText: "Balraj",

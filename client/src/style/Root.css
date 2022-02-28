@@ -255,4 +255,8 @@ code {
   overflow-x: hidden;
   height: 100vh;
 }
+
+.button {
+  cursor: pointer;
+}
 /*# sourceMappingURL=Root.css.map */
