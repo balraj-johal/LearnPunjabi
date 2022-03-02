@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MultipleChoice from "./Tasks/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly";
 import End from "./Tasks/End";
+import SpecifiedOrder from "./Tasks/SpecifiedOrder";
 
 function TaskManager(props) {
 
@@ -26,6 +27,14 @@ function TaskManager(props) {
         case "TextOnly":
             return(
                 <TextOnly 
+                    data={props.taskData} 
+                    submit={props.submitAnswer}
+                    stats={props.stats}
+                />
+            );
+        case "SpecifiedOrder":
+            return(
+                <SpecifiedOrder 
                     data={props.taskData} 
                     submit={props.submitAnswer}
                     stats={props.stats}

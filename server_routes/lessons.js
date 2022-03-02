@@ -37,6 +37,54 @@ const LESSONS = [
         ]
     },
     {
+        name: "Spec Order Test",
+        id: "Spec_Order_Test",
+        requiredCompletions: 1,
+        shuffle: false,
+        tasks: [
+            {
+                taskID: "7",
+                text: "What sound does the character ੲ make?",
+                type: "SpecifiedOrder",
+                possibleAnswers: [
+                    {
+                        text: "3",
+                        id: "a-0"
+                    },
+                    {
+                        text: "2",
+                        id: "a-1"
+                    },
+                    {
+                        text: "1",
+                        id: "a-2"
+                    },
+                ],
+                correctOrder: [2, 1, 0],
+            },
+            {
+                taskID: "1",
+                text: "What sound does the character ੲ make?",
+                type: "SpecifiedOrder",
+                possibleAnswers: [
+                    {
+                        text: "3",
+                        id: "a-0"
+                    },
+                    {
+                        text: "2",
+                        id: "a-1"
+                    },
+                    {
+                        text: "1",
+                        id: "a-2"
+                    },
+                ],
+                correctOrder: [2, 1, 0],
+            },
+        ]
+    },
+    {
         name: "Intro to Line 1",
         id: "Intro_Line-1",
         requiredCompletions: 1,

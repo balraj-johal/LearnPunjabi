@@ -1,8 +1,16 @@
-.container {
-    width: 80%;
+#course-container {
+    width: 60%;
     padding: 0 10%;
+    margin: 0;
+    border-right: 2px solid black;
+}
+.container {
     height: calc(100vh - 98px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    margin: auto;
+
+    display: flex;
+}
+.sidebar {
+    width: 40%;
 }

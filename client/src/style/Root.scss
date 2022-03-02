@@ -9,7 +9,11 @@
 @import "components/accounts";
 @import "components/lessons";
 
+@import "components/sidebar/leaderboard";
+
 @import "components/multipleChoice/multipleChoice";
+@import "components/multipleChoice/answer";
+@import "components/specifiedOrder/specifiedOrder";
 @import "components/multipleChoice/answer";
 
 @import "layout/content";
