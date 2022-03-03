@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
+import AudioClip from "../AudioClip";
+
 function MultipleChoice(props) {
     let [choice, setChoice] = useState(null);
 
@@ -27,18 +29,7 @@ function MultipleChoice(props) {
         <div className="task multiple-choice">
             { props.data.text }
             { props.data.audioSrc ? (
-                <div className="audio">
-                    <audio 
-                        id={`audio-${props.data.audioSrc}`} 
-                        src={ `https://d2hks59q0iv04y.cloudfront.net/${props.data.audioSrc}` }
-                        autoPlay={true}
-                    />
-                    <div className="replay-audio-button button" onClick={() => {
-                        let audElem = document.getElementById(`audio-${props.data.audioSrc}`);
-                        audElem.currentTime = 0;
-                        audElem.play();
-                    }}>replay</div>
-                </div>
+                <AudioClip src={props.data.audioSrc} />
             ) : null }
             <div className="answers-wrap">
                 { props.data.possibleAnswers.map((possible, index) => 
