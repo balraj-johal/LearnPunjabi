@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 
 function FormInputField(props) {
+    let typeDefault = "text";
+
     return(
         <div className="input-field">
             <label 
@@ -14,7 +16,7 @@ function FormInputField(props) {
                 value={props.value}
                 error={props.error}
                 id={`${props.dataElem}`}
-                type="text"
+                type={props.type ? props.type : "text"}
             />
         </div>
     )

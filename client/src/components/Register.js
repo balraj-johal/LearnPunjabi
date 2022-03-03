@@ -34,6 +34,7 @@ function Register(props) {
                     onChange={e => setUsername(e.target.value) }
                     value={ username }
                     error={ props.errors.username }
+                    type="username"
                 />
                 <FormError 
                     dataElem="username" 
@@ -64,6 +65,7 @@ function Register(props) {
                     onChange={ e => setPassword(e.target.value) }
                     value={ password }
                     error={ props.errors.password }
+                    type="password"
                 />
                 <FormError 
                     dataElem="password" 
