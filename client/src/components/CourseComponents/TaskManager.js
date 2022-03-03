@@ -7,7 +7,6 @@ import End from "./Tasks/End";
 import SpecifiedOrder from "./Tasks/SpecifiedOrder";
 
 function TaskManager(props) {
-
     switch (props.taskData.type) {
         case "MultipleChoice":
             return(

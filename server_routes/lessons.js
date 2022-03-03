@@ -60,7 +60,7 @@ const LESSONS = [
                         id: "a-2"
                     },
                 ],
-                correctOrder: [2, 1, 0],
+                correctAnswer: "123",
             },
             {
                 taskID: "1",
@@ -80,7 +80,7 @@ const LESSONS = [
                         id: "a-2"
                     },
                 ],
-                correctOrder: [2, 1, 0],
+                correctAnswer: "123",
             },
         ]
     },

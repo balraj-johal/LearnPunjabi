@@ -244,9 +244,12 @@
 
 .specified-order .answers-wrap {
   margin: 1em;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  list-style-type: none;
+  padding: 2px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.226);
 }
 
 .specified-order .audio {
@@ -277,6 +280,24 @@
   width: 80px;
   background-color: #00a2ff;
   border-radius: 5px;
+}
+
+.specified-order .specified-order-answer {
+  padding: 0.5em;
+  margin: 0 1em;
+  height: 1.05em;
+  min-width: 50px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .multiple-choice-answer {

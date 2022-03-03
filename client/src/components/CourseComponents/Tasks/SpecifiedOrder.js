@@ -7,25 +7,54 @@ import {
 } from 'react-beautiful-dnd';
 
 function SpecifiedOrder(props) {
-    let [answer, setAnswer] = useState(null);
+    let [order, setOrder] = useState([]);
 
+    // initialise state when task data changes
     useEffect(() => {
-        setAnswer(null);
+        setOrder(props.data.possibleAnswers);
     }, [props.data])
 
+    /**
+     * check if the submitted answer is correct and handle consequences
+     * @name checkAnswer
+     */
     let checkAnswer = () => {
-        if (answer !== null) {
-            if (answer === true) { //if correct
+        if (order !== null) {
+            if (getAnswerString().includes(props.data.correctAnswer)) {
                 alert("answer right")
-                props.submitAnswer(true);
+                props.submit(true);
             } else {
-                alert("answer wrong")
-                setAnswer(null);
-                props.submitAnswer(false);
+                alert("answer wrong");
+                props.submit(false);
             }
         } else {
             alert("Please choose an answer...")
         }
+    }
+
+    /**
+     * update the stored list state when an element has been dragged
+     * @name handleDragEnd
+     * @param {Object} result - result object from the onDragEnd event of the dragdrop Context
+     */
+    let handleDragEnd = (result) => {
+        const newarray = [...order];
+        const [reordered] = newarray.splice(result.source.index, 1);
+        newarray.splice(result.destination.index, 0, reordered);
+        setOrder(newarray);
+    }
+
+    /**
+     * get the string containing the current answer state
+     * @name getAnswerString
+     * @returns {String} - string containing current order's text concatenated together
+     */
+    let getAnswerString = () => {
+        let str = "";
+        order.forEach(elem => {
+            str += elem.text
+        })
+        return str;
     }
 
     return(
@@ -45,17 +74,18 @@ function SpecifiedOrder(props) {
                     }}>replay</div>
                 </div>
             ) : null }
-            <DragDropContext>
-                <Droppable droppableId="characters">
+
+            <DragDropContext onDragEnd={handleDragEnd} >
+                <Droppable droppableId="characters" direction="horizontal" >
                     {(provided) => (
                         <ul 
                             className="answers-wrap" 
                             {...provided.droppableProps} 
                             ref={provided.innerRef}
                         >
-                            { props.data.possibleAnswers.map((possible, index) => 
-                                <PossibleAnswer 
-                                    possible={possible}
+                            { order.map((data, index) => 
+                                <AnswerFragment 
+                                    possible={data}
                                     key={index}
                                     index={index}
                                 />
@@ -63,16 +93,8 @@ function SpecifiedOrder(props) {
                         </ul>
                     )}
                 </Droppable>
-          </DragDropContext>
-            {/* <div className="answers-wrap">
-                { props.data.possibleAnswers.map((possible, index) => 
-                    <PossibleAnswer 
-                        possible={possible}
-                        key={index}
-                        index={index}
-                    />
-                ) }
-            </div> */}
+            </DragDropContext>
+
             <div onClick={()=>{
                 checkAnswer();
             }}>
@@ -82,33 +104,22 @@ function SpecifiedOrder(props) {
     );
 }
 
-function PossibleAnswer(props) {
+function AnswerFragment(props) {
     return(
         <Draggable draggableId={String(props.index)} index={props.index} >
             {(provided) => (
                 <li
                     className={`specified-order-answer`}
-                    ref={provided.innerRef} 
+                    ref={provided.innerRef}
                     {...provided.draggableProps} 
                     {...provided.dragHandleProps}
                 >
                     { props.possible.text ? (
-                        <div className="text">
-                            {props.possible.text}
-                        </div>
+                        <div className="text"> {props.possible.text} </div>
                     ) : null }
                 </li>
             )}
         </Draggable>
-        // <div
-        //     className={`specified-choice-answer`}
-        // >
-        //     { props.possible.text ? (
-        //         <div className="text">
-        //             {props.possible.text}
-        //         </div>
-        //     ) : null }
-        // </div>
     )
 }
 
