@@ -8,10 +8,12 @@ import {
 
 function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
+    let [possibleFrags, setPossibleFrags] = useState([]);
 
     // initialise state when task data changes
     useEffect(() => {
-        setOrder(props.data.possibleAnswers);
+        // setOrder(props.data.possibleAnswers);
+        setPossibleFrags(props.data.possibleAnswers);
     }, [props.data])
 
     /**
@@ -38,10 +40,12 @@ function SpecifiedOrder(props) {
      * @param {Object} result - result object from the onDragEnd event of the dragdrop Context
      */
     let handleDragEnd = (result) => {
-        const newarray = [...order];
-        const [reordered] = newarray.splice(result.source.index, 1);
-        newarray.splice(result.destination.index, 0, reordered);
-        setOrder(newarray);
+        // return if user drags elem out of bounds
+        if (!result.destination) return;
+        const updatedOrder = [...order];
+        const [updatedItem] = updatedOrder.splice(result.source.index, 1);
+        updatedOrder.splice(result.destination.index, 0, updatedItem);
+        setOrder(updatedOrder);
     }
 
     /**
@@ -55,6 +59,19 @@ function SpecifiedOrder(props) {
             str += elem.text
         })
         return str;
+    }
+
+    let addToOrder = (frag) => {
+        setOrder(order.concat([frag]));
+        setPossibleFrags(possibleFrags.filter(elem => {
+            return elem != frag;
+        }));
+    }
+    let removeFromOrder = (frag) => {
+        setOrder(order.filter(elem => {
+            return elem != frag;
+        }));
+        setPossibleFrags(possibleFrags.concat([frag]));
     }
 
     return(
@@ -84,16 +101,31 @@ function SpecifiedOrder(props) {
                             ref={provided.innerRef}
                         >
                             { order.map((data, index) => 
-                                <AnswerFragment 
+                                <DragAnswerFragment 
                                     possible={data}
                                     key={index}
                                     index={index}
+                                    removeFromOrder={removeFromOrder}
                                 />
                             ) }
+                            {provided.placeholder}
                         </ul>
                     )}
                 </Droppable>
             </DragDropContext>
+            
+            <div id="possible-fragments">
+                <ul className="possiblities-wrap">
+                    {possibleFrags.map((data, index) => 
+                        <PossAnswerFragment 
+                            possible={data}
+                            key={index}
+                            index={index}
+                            addToOrder={addToOrder}
+                        />
+                    )}
+                </ul>
+            </div>
 
             <div onClick={()=>{
                 checkAnswer();
@@ -104,7 +136,7 @@ function SpecifiedOrder(props) {
     );
 }
 
-function AnswerFragment(props) {
+function DragAnswerFragment(props) {
     return(
         <Draggable draggableId={String(props.index)} index={props.index} >
             {(provided) => (
@@ -113,6 +145,9 @@ function AnswerFragment(props) {
                     ref={provided.innerRef}
                     {...provided.draggableProps} 
                     {...provided.dragHandleProps}
+                    onClick={() => {
+                        props.removeFromOrder(props.possible);
+                    }}
                 >
                     { props.possible.text ? (
                         <div className="text"> {props.possible.text} </div>
@@ -120,6 +155,17 @@ function AnswerFragment(props) {
                 </li>
             )}
         </Draggable>
+    )
+}
+function PossAnswerFragment(props) {
+    return(
+        <li className={`specified-order-answer`} onClick={() => {
+            props.addToOrder(props.possible);
+        }}>
+            { props.possible ? (
+                <div className="text"> {props.possible.text} </div>
+            ) : null }
+        </li>
     )
 }
 
