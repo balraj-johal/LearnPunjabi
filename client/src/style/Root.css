@@ -61,7 +61,7 @@
 .accounts-wrap {
   width: 85%;
   height: 48vh;
-  border: 2px solid black;
+  border: 3px solid black;
   border-radius: 5px;
   padding: 15px;
   margin: 50px auto;
@@ -157,7 +157,7 @@
 @media (min-width: 768px) {
   .lesson-wrap {
     width: 60%;
-    border-right: 2px solid black;
+    border-right: 3px solid black;
   }
 }
 
@@ -167,7 +167,7 @@
 
 #leaderboard {
   min-height: 40vh;
-  border-bottom: 2px solid black;
+  border-bottom: 3px solid black;
 }
 
 .multiple-choice .answers-wrap {
@@ -336,7 +336,7 @@
   width: 60%;
   padding: 0 10%;
   margin: 0;
-  border-right: 2px solid black;
+  border-right: 3px solid black;
 }
 
 .container {

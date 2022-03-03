@@ -4,6 +4,7 @@ import {
     useNavigate
 } from "react-router-dom";
 import axiosClient from "../../axiosDefaults";
+import Loader from "../Loader";
 
 // import redux actions
 import {
@@ -57,18 +58,33 @@ function Course(props) {
         return number;
     }
 
+    /**
+     * calculate the height the lesson-wrap elem should be
+     * @name getWrapHeight
+     * @returns { tring } height - string to set height style to
+     */
+    let getWrapHeight = () => {
+        if (courseData.length > 0) {
+            return `${courseData.length * (182)}px`
+        } else {
+            return `calc(100vh - 98px)`
+        }
+    }
+
     return(
-        <div id="course">
-            <div className="lesson-wrap">
-                {courseData.map((lesson, index) => 
+        <div className="lesson-wrap" style={{
+            height: getWrapHeight()
+        }}>
+            { courseData.length > 0 ? (
+                courseData.map((lesson, index) => 
                     <LessonIcon 
                         status={getLessonStatus(lesson.id)} 
                         lesson={lesson}
                         timesCompleted={getTimesCompleted(lesson.id)}
                         key={index} 
                     />
-                )}
-            </div>
+                )
+            ) : <Loader /> }
         </div>
     )
 }

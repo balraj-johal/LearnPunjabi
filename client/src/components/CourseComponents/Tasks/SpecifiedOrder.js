@@ -10,10 +10,14 @@ function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
 
+    let resetTask = () => {
+        setOrder([]);
+        setPossibleFrags(props.data.possibleAnswers);
+    }
+
     // initialise state when task data changes
     useEffect(() => {
-        // setOrder(props.data.possibleAnswers);
-        setPossibleFrags(props.data.possibleAnswers);
+        resetTask();
     }, [props.data])
 
     /**
@@ -28,6 +32,7 @@ function SpecifiedOrder(props) {
             } else {
                 alert("answer wrong");
                 props.submit(false);
+                resetTask();
             }
         } else {
             alert("Please choose an answer...")
