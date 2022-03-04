@@ -67,7 +67,7 @@ function Course(props) {
         if (courseData.length > 0) {
             return `${courseData.length * (182)}px`
         } else {
-            return `calc(100vh - 98px)`
+            return `calc(100vh - 99px)`
         }
     }
 

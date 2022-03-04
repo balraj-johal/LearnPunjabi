@@ -4,7 +4,7 @@ function Leaderboard(props) {
 
     return(
         <div id="leaderboard">
-            LEEDER
+            <div className="header">Weekly Leaderboard</div>
         </div>
     )
 }

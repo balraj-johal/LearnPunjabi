@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
 function FormInputField(props) {
-    let typeDefault = "text";
 
     return(
         <div className="input-field">

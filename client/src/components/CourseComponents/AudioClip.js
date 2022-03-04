@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function AudioClip(props) {
+    // attempt to play on load for mobile
+    useEffect(() => {
+        let audio = document.getElementById(`audio-${props.src}`)
+        let handler = () => {
+            if (audio.readState >= 2) {
+                audio.play();
+            }
+        }
+        audio.addEventListener("loadeddata", handler);
+
+        return () => {
+            audio.removeEventListener("loadeddata", handler);
+        }
+    }, [props.src])
+
     return(
         <div className="audio">
             <audio 
                 id={`audio-${props.src}`} 
                 src={ `https://d2hks59q0iv04y.cloudfront.net/${props.src}` }
+                preload="auto"
                 autoPlay={true}
                 controls={true}
             />

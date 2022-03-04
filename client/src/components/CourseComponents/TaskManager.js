@@ -8,21 +8,6 @@ import SpecifiedOrder from "./Tasks/SpecifiedOrder";
 
 function TaskManager(props) {
     switch (props.taskData.type) {
-        case "MultipleChoice":
-            return(
-                <MultipleChoice 
-                    data={props.taskData} 
-                    submitAnswer={props.submitAnswer}
-                />
-            );
-        case "End":
-            return(
-                <End 
-                    data={props.taskData} 
-                    submit={props.submitAnswer}
-                    stats={props.stats}
-                />
-            );
         case "TextOnly":
             return(
                 <TextOnly 
@@ -31,9 +16,24 @@ function TaskManager(props) {
                     stats={props.stats}
                 />
             );
+        case "MultipleChoice":
+            return(
+                <MultipleChoice 
+                    data={props.taskData} 
+                    submitAnswer={props.submitAnswer}
+                />
+            );
         case "SpecifiedOrder":
             return(
                 <SpecifiedOrder 
+                    data={props.taskData} 
+                    submit={props.submitAnswer}
+                    stats={props.stats}
+                />
+            );
+        case "End":
+            return(
+                <End 
                     data={props.taskData} 
                     submit={props.submitAnswer}
                     stats={props.stats}
