@@ -71,11 +71,11 @@ function Lesson(props) {
     /**
      * calculate users percentage of correct answers
      * @name getPercentCorrect
-     * @returns {String} - string describing calculated percentage
+     * @returns {Number} - calculated percentage
      */
     let getPercentCorrect = () => {
         let total = answerTracking.noCorrect + answerTracking.noWrong;
-        return String((answerTracking.noCorrect / total) * 100) + "%";
+        return (answerTracking.noCorrect / total) * 100;
     }
 
     /** 
@@ -126,7 +126,10 @@ function Lesson(props) {
         let mistakes = answerTracking.wrongTasks;
         console.log("mistakes: ", mistakes);
         
-        axiosClient.post("/api/users/update-progress", qs.stringify({lessonID: lessonID}))
+        axiosClient.post("/api/users/update-progress", qs.stringify({
+            lessonID: lessonID,
+            XP: Math.floor(25*getPercentCorrect()/100)
+        }))
             .then(res => {
                 props.setProgress(res.data.newProgress);
             })
@@ -141,7 +144,7 @@ function Lesson(props) {
                 <TaskManager
                     taskData={lesson.tasks[currentTaskIndex]}
                     submitAnswer={submitAnswer}
-                    stats={getPercentCorrect()}
+                    stats={`${getPercentCorrect()}%`}
                 />
             ) : <Loader /> }
         </>

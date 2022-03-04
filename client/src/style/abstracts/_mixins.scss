@@ -20,3 +20,8 @@
         transform: scale($scale);
     }
 }
+
+@mixin vScroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}

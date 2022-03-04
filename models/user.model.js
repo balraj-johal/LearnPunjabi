@@ -65,6 +65,20 @@ const userSchema = new mongoose.Schema({
         default: 'User',
         required: true
     },
+    totalXP: {
+        type: Number, 
+        default: 0,
+        // required: true
+    },
+    weeklyXP: {
+        type: Number, 
+        default: 0,
+        // required: true
+    },
+    groupID: {
+        type: Number,
+        required: false
+    },
 }, { timestamps: true });
 
 //Remove refreshToken from the response

@@ -26,7 +26,95 @@ const {
     verifyRefreshToken,
 } = require("../authentication")
 
-// TODO: replace with cryptographically secure random code /You should use a cryptographic strength pseudo-random number generator (PRNG), seeded with the timestamp when it was created plus a static secret.
+
+const GROUP_SIZE = 4;
+const USER_GROUPS = [];
+/**
+ * Divide users into leaderboard groups
+ * @name groupUsers
+ */
+const groupUsers = async () => {
+    let groupIndex = 0;
+    let counter = 0;
+    const GROUP_DEFAULT = {
+        users: [],
+        groupID: 0
+    };
+    let group = GROUP_DEFAULT;
+
+    for await (const user of User.find()) {
+        // TODO: randomise users somehow
+        counter++;
+        // if group is full
+        if (counter > GROUP_SIZE) {
+            counter = 1;
+            // save group
+            USER_GROUPS[groupIndex] = group;
+            // move to next group
+            groupIndex++;
+            group = {
+                users: [],
+                groupID: groupIndex
+            };
+        }
+        // save user to group
+        group.users.push({
+            username: user.username,
+            _id: user._id,
+            weeklyXP: 42069 // TODO: this is a test value, get rid of it on debug completion
+        });
+        // update user
+        user.groupID = groupIndex;
+        user.weeklyXP = 0;
+        user.save()
+            // .then(saved => {
+            //     console.log(`${saved.firstName} ${saved.groupID}`)
+            // })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    // save final group
+    USER_GROUPS[groupIndex] = group;
+    console.log(USER_GROUPS);
+}
+groupUsers();
+
+
+let updateGroupsWeeklyXP = async (array) => {
+    for (user of array.users) {
+        await User.findById(user._id)
+            .then(foundUser => {
+                user.weeklyXP = foundUser.weeklyXP;
+                console.log("how")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    console.log("sdffffffffff");
+    return array;
+}
+router.get("/group_data/:groupID", (req, res) => {
+    const g_id = req.params.groupID;
+    let found = USER_GROUPS.find(group => group.groupID === Number(g_id));
+    if (found) {
+        updateGroupsWeeklyXP(found)
+            .then(result => {
+                console.log(result);
+                return res.status(200).send({ group: result })
+            })
+    } else {
+        return res.status(404).send("Group not found...")
+    }
+})
+
+router.put("")
+
+
+// TODO: replace with cryptographically secure random code 
+// You should use a cryptographic strength pseudo-random number generator (PRNG), 
+// seeded with the timestamp when it was created plus a static secret.
 const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 let genVerificationCode = (length) => {
     return crypto
@@ -289,7 +377,10 @@ router.get("/data", (req, res, next) => {
                     _id: user._id,
                     username: user.username,
                     firstName: user.firstName,
-                    progress: user.progress
+                    progress: user.progress,
+                    groupID: user.groupID,
+                    weeklyXP: user.weeklyXP,
+                    XP: user.XP
                 }
             })
         })
@@ -486,10 +577,17 @@ router.post("/update-progress", (req, res) => {
             }
             // notify mongoose that progress property has changed
             user.markModified("progress");
+            
+            user.weeklyXP += req.body.XP;
+            user.totalXP += req.body.XP;
+
             // save user
             user.save()
                 .then(savedUser => {
-                    return res.status(200).send({ newProgress: savedUser.progress }); 
+                    return res.status(200).send({ 
+                        newProgress: savedUser.progress,
+                        savedUser: savedUser
+                    }); 
                 })
                 .catch(err => {
                     console.log(err);

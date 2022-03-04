@@ -6,8 +6,7 @@
 }
 .container {
     height: calc(100vh - 99px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    @include vScroll;
 
     display: flex;
 }
