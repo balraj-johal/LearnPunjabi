@@ -1,0 +1,10 @@
+#leaderboard {
+    min-height: 40vh;
+    border-bottom: $border-thickness solid black;
+    .header {
+        font-weight: bold;
+        font-size: 22px;
+        padding: 15px;
+        border-bottom: $border-thickness solid black;
+    }
+}

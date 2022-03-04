@@ -39,7 +39,7 @@
 @media (min-width: 768px) {
     .lesson-wrap {
         width: 60%;
-        border-right: 3px solid black;
+        border-right: $border-thickness solid black;
     }
 }
 

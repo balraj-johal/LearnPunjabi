@@ -18,7 +18,7 @@
       -ms-flex-align: center;
           align-items: center;
   padding-bottom: 6px;
-  border-bottom: 2PX solid black;
+  border-bottom: 3px solid black;
 }
 
 #topbar a {
@@ -170,6 +170,13 @@
   border-bottom: 3px solid black;
 }
 
+#leaderboard .header {
+  font-weight: bold;
+  font-size: 22px;
+  padding: 15px;
+  border-bottom: 3px solid black;
+}
+
 .multiple-choice .answers-wrap {
   margin: 1em;
   display: -webkit-box;
@@ -283,10 +290,10 @@
 }
 
 .specified-order .specified-order-answer {
-  padding: 0.5em;
-  margin: 0 1em;
+  padding: 0.5em 0.75em;
+  margin: 0 6px;
   height: 1.05em;
-  min-width: 50px;
+  min-width: 10px;
   border: 1px solid grey;
   border-radius: 5px;
   display: -webkit-box;
@@ -340,7 +347,7 @@
 }
 
 .container {
-  height: calc(100vh - 98px);
+  height: calc(100vh - 99px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;
