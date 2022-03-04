@@ -10,6 +10,7 @@
 @import "components/lessons";
 
 @import "components/sidebar";
+@import "components/audio";
 
 @import "components/multipleChoice/multipleChoice";
 @import "components/multipleChoice/answer";
@@ -51,4 +52,9 @@ code {
 
 .button {
     cursor: pointer;
+}
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

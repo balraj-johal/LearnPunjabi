@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import AudioIcon from "../../res/icons/audio.png";
+
 function AudioClip(props) {
     // attempt to play on load for mobile
     useEffect(() => {
@@ -23,13 +25,15 @@ function AudioClip(props) {
                 src={ `https://d2hks59q0iv04y.cloudfront.net/${props.src}` }
                 preload="auto"
                 autoPlay={true}
-                controls={true}
+                // controls={true}
             />
             <div className="replay-audio-button button" onClick={() => {
                 let audElem = document.getElementById(`audio-${props.src}`);
                 audElem.currentTime = 0;
                 audElem.play();
-            }}>replay</div>
+            }}>
+                <img src={AudioIcon} alt="play-audio-button-icon"></img>
+            </div>
         </div>
     )
 }
