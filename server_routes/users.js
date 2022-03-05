@@ -49,6 +49,25 @@ let sendVerifCodeEmail = (params) => {
         .catch((error) => {
             console.error("sendgrid err: ", error.response.body)
         })
+}
+let buildPWResetEmail = (params) => {
+    let link = `${params.host}/reset-password/${params.code}`
+    return msg = {
+        to: params.recipient, // Change to your recipient
+        from: 'balrajsjohal@gmail.com', // Change to your verified sender
+        subject: 'Reset Password',
+        text: `link: ${link}`,
+        html: `'<strong>link: ${link}</strong>'`,
+    }
+}
+let sendPWResetEmail = (params) => {
+    let email = buildPWResetEmail(params);
+    sgMail
+        .send(email)
+        .then(() => { console.log('Email sent'); })
+        .catch((error) => {
+            console.error("sendgrid err: ", error.response.body)
+        })
 
 }
 
@@ -320,16 +339,23 @@ const forgotPasswordLimiter = rateLimit({
                     if (err) {
                         res.status(500).send(err)
                     } else {
-                        // TODO: send reset code email here
+                        sendPWResetEmail({
+                            recipient: user.email,
+                            code: user.pwResetCode,
+                            host: "localhost:3000"
+                        })
                         return res.send({ 
                             success: true,
-                            code: user.pwResetCode
+                            // code: user.pwResetCode,
+                            message: "Password reset link set!"
                         })
                     }
                 })
             }
         })
         .catch(err => {
+            // TODO: should a success message be faked here? 
+            // i.e. should we say if an email isn't found or not
             console.log(err);
             res.status(500).json(err)
         })
@@ -351,7 +377,7 @@ const forgotPasswordLimiter = rateLimit({
         pwResetCode: {$eq: code},
         email: {$eq: req.body.email},
         pwResetCodeExpiry: {$gt: Date.now()}
-    }) // , pwResetCodeExpiry: {$gt: Date.now()}  // TODO: test reset expiry
+    })
         .then(user => {
             if (!user) {
                 return res.status(404).json({ 
