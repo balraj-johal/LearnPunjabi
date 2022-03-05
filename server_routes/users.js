@@ -26,7 +26,6 @@ const {
     verifyRefreshToken,
 } = require("../authentication")
 
-
 const GROUP_SIZE = 4;
 const USER_GROUPS = [];
 /**
@@ -179,6 +178,7 @@ router.post("/register", (req, res) => {
                     newUser
                         .save()
                         .then(user => {
+                            // TODO: send verification code email here
                             return res.status(201).json({code: user.verificationCode});
                         })
                         .catch(err => {
@@ -287,6 +287,7 @@ const forgotPasswordLimiter = rateLimit({
                     if (err) {
                         res.status(500).send(err)
                     } else {
+                        // TODO: send reset code email here
                         return res.send({ 
                             success: true,
                             code: user.pwResetCode
