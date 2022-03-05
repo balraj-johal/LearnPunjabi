@@ -24,7 +24,33 @@ const {
     AUTH_COOKIE_OPTIONS,
     verifyToken,
     verifyRefreshToken,
-} = require("../authentication")
+} = require("../authentication");
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_KEY);
+
+let buildVerifCodeEmail = (params) => {
+    let link = `${params.host}/verify-email/${params.code}`
+    return msg = {
+        to: params.recipient, // Change to your recipient
+        from: 'balrajsjohal@gmail.com', // Change to your verified sender
+        subject: 'Verify your account!',
+        text: `link: ${link}`,
+        html: `'<strong>link: ${link}</strong>'`,
+    }
+}
+let sendVerifCodeEmail = (params) => {
+    let email = buildVerifCodeEmail(params);
+    sgMail
+        .send(email)
+        .then(() => {
+            console.log('Email sent')
+        })
+        .catch((error) => {
+            console.error("sendgrid err: ", error.response.body)
+        })
+
+}
 
 const GROUP_SIZE = 4;
 const USER_GROUPS = [];
@@ -179,7 +205,14 @@ router.post("/register", (req, res) => {
                         .save()
                         .then(user => {
                             // TODO: send verification code email here
-                            return res.status(201).json({code: user.verificationCode});
+                            sendVerifCodeEmail({
+                                recipient: user.email,
+                                code: user.verificationCode,
+                                host: req.get('host')
+                            })
+                            return res.status(201).json({
+                                message: `Check ${user.email} for a verification link!`
+                            });
                         })
                         .catch(err => {
                             console.log(err);
@@ -541,7 +574,6 @@ router.get("/verify-email/:verificationCode", (req, res, next) => {
             if (!user) {
                 return res.status(404).send({ message: "User not found..." })
             }
-
             user.status = "Active";
             user.save()
                 .then(savedUser => {
