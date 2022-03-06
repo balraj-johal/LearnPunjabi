@@ -120,7 +120,6 @@ const groupUsers = async () => {
     }
     // save final group
     USER_GROUPS[groupIndex] = group;
-    console.log(USER_GROUPS);
 }
 groupUsers();
 
@@ -130,13 +129,11 @@ let updateGroupsWeeklyXP = async (array) => {
         await User.findById(user._id)
             .then(foundUser => {
                 user.weeklyXP = foundUser.weeklyXP;
-                console.log("how")
             })
             .catch(err => {
                 console.log(err);
             })
     }
-    console.log("sdffffffffff");
     return array;
 }
 router.get("/group_data/:groupID", (req, res) => {
