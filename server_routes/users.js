@@ -24,7 +24,12 @@ const {
     AUTH_COOKIE_OPTIONS,
     verifyToken,
     verifyRefreshToken,
-} = require("../authentication")
+} = require("../authentication");
+
+const { 
+    sendVerifCodeEmail,
+    sendPWResetEmail
+} = require("../email");
 
 const GROUP_SIZE = 4;
 const USER_GROUPS = [];
@@ -75,7 +80,6 @@ const groupUsers = async () => {
     }
     // save final group
     USER_GROUPS[groupIndex] = group;
-    console.log(USER_GROUPS);
 }
 groupUsers();
 
@@ -85,13 +89,11 @@ let updateGroupsWeeklyXP = async (array) => {
         await User.findById(user._id)
             .then(foundUser => {
                 user.weeklyXP = foundUser.weeklyXP;
-                console.log("how")
             })
             .catch(err => {
                 console.log(err);
             })
     }
-    console.log("sdffffffffff");
     return array;
 }
 router.get("/group_data/:groupID", (req, res) => {
@@ -108,23 +110,17 @@ router.get("/group_data/:groupID", (req, res) => {
     }
 })
 
-router.put("")
-
-
-// TODO: replace with cryptographically secure random code 
-// You should use a cryptographic strength pseudo-random number generator (PRNG), 
-// seeded with the timestamp when it was created plus a static secret.
-const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+/**
+ * Generates cryptographically secure random string of specified length
+ * @name genVerificationCode
+ * @param  {Number} length
+ * @returns {String} code
+ */
 let genVerificationCode = (length) => {
     return crypto
         .randomBytes(length)
         .toString('base64')
         .slice(0, length)
-    // let code = '';
-    // for (let i = 0; i < length; i++) {
-    //     code += characters[Math.floor(Math.random() * characters.length )];
-    // }
-    // return code;
 }
 
 /**
@@ -178,8 +174,14 @@ router.post("/register", (req, res) => {
                     newUser
                         .save()
                         .then(user => {
-                            // TODO: send verification code email here
-                            return res.status(201).json({code: user.verificationCode});
+                            sendVerifCodeEmail({
+                                recipient: user.email,
+                                code: user.verificationCode,
+                                host: req.get('host')
+                            })
+                            return res.status(201).json({
+                                message: `Check ${user.email} for a verification link!`
+                            });
                         })
                         .catch(err => {
                             console.log(err);
@@ -287,16 +289,23 @@ const forgotPasswordLimiter = rateLimit({
                     if (err) {
                         res.status(500).send(err)
                     } else {
-                        // TODO: send reset code email here
+                        sendPWResetEmail({
+                            recipient: user.email,
+                            code: user.pwResetCode,
+                            host: req.get('host')
+                        })
                         return res.send({ 
                             success: true,
-                            code: user.pwResetCode
+                            // code: user.pwResetCode,
+                            message: "Password reset link set!"
                         })
                     }
                 })
             }
         })
         .catch(err => {
+            // TODO: should a success message be faked here? 
+            // i.e. should we say if an email isn't found or not
             console.log(err);
             res.status(500).json(err)
         })
@@ -318,7 +327,7 @@ const forgotPasswordLimiter = rateLimit({
         pwResetCode: {$eq: code},
         email: {$eq: req.body.email},
         pwResetCodeExpiry: {$gt: Date.now()}
-    }) // , pwResetCodeExpiry: {$gt: Date.now()}  // TODO: test reset expiry
+    })
         .then(user => {
             if (!user) {
                 return res.status(404).json({ 
@@ -541,7 +550,6 @@ router.get("/verify-email/:verificationCode", (req, res, next) => {
             if (!user) {
                 return res.status(404).send({ message: "User not found..." })
             }
-
             user.status = "Active";
             user.save()
                 .then(savedUser => {

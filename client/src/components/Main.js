@@ -9,6 +9,7 @@ import axiosClient from "../axiosDefaults";
 
 // import redux actions
 import { getUserData, useRefreshToken } from "../actions/authActions";
+import { setCSRFReady } from "../actions/csrfActions";
 
 // component imports
 import Dashboard from '../components/Dashboard';
@@ -18,16 +19,17 @@ import Lesson from '../components/CourseComponents/Lesson';
 import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
+import VerifyEmail from "./VerifyEmail";
 
 
 function Main(props) {
-    let [csrfTokenReady, setCsrfTokenReady] = useState(false);
-
+    // fetch csrf token and store in redux reducer
     useEffect(() => {
         axiosClient.get("/csrf-token")
             .then(res => {
                 axiosClient.defaults.headers.post['X-CSRF-Token'] = res.data.token;
-                setCsrfTokenReady(true);
+                // setCsrfTokenReady(true);
+                props.setCSRFReady();
             })
             .catch(err => { console.log(err); })
     }, [])
@@ -36,18 +38,17 @@ function Main(props) {
     // TODO: determine why function executes twice
     const verifyUser = useCallback(async () => {
         // refresh the jwt with the refresh token
-        if (csrfTokenReady) {
+        if (props.csrf.ready) {
             props.useRefreshToken();
             setTimeout(() => {
                 verifyUser();
             }, 5 * 60 * 1000);
         }
     // TODO: confirm that these dependancies are corrent
-    }, [props.auth.isAuthenticated, csrfTokenReady]);
+    }, [props.auth.isAuthenticated, props.csrf.ready]);
     useEffect(() => {
         verifyUser();
     }, [verifyUser])
-
     
     // synchronise logout across open tabs
     const syncLogout = useCallback(event => {
@@ -66,7 +67,8 @@ function Main(props) {
             <div className="container">
                 <Routes>
                     <Route path="/account" element={<AccountManager />} />
-                    <Route path="/reset-password" element={ <ResetPassword /> } />
+                    <Route path="/reset-password/:code" element={ <ResetPassword /> } />
+                    <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
                     <Route path="/" element={
                         <ProtectedComponent component={<Dashboard />} />
                     } />
@@ -83,13 +85,15 @@ function Main(props) {
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    csrf: state.csrf
 });
 
 export default connect(
     mapStateToProps,
     {
         getUserData,
-        useRefreshToken
+        useRefreshToken,
+        setCSRFReady
     }
 )(Main);

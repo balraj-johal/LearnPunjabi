@@ -8,3 +8,6 @@ export const RESTART = "RESTART";
 
 // course actions
 export const SET_PROGRESS = "SET_PROGRESS";
+
+// csrf actions
+export const SET_READY = "SET_READY";

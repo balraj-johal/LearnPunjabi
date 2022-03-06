@@ -23,9 +23,7 @@ export const registerUser = userData => dispatch => {
             alert("Register successful.");
         })
         .catch(err => {
-            // TODO: Why is this log not running?
-            console.log("post request errored, ");
-            console.log("post request errored, ", err.response);
+            console.log("register request errored, ", err.response);
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data
@@ -36,7 +34,6 @@ export const registerUser = userData => dispatch => {
 export const loginUser = userData => dispatch => {
     axiosClient.post("/api/users/login", qs.stringify(userData))
         .then(res => {
-            console.log("post request returned");
             getUserDataPromise()
                 .then(userData => { dispatch(setCurrentUser(userData)); })
                 .catch(err => {
@@ -47,7 +44,7 @@ export const loginUser = userData => dispatch => {
                 })
         })
         .catch(err => {
-            console.log("post request errored, ", err.response);
+            console.log("login request errored, ", err.response);
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data
@@ -57,9 +54,8 @@ export const loginUser = userData => dispatch => {
 
 export const forgotPassword = userData => dispatch => {
     axiosClient.post("/api/users/forgot-password", qs.stringify(userData))
-        .then(res => { console.log(res.data.code); })
+        .then(res => { console.log(); })
         .catch(err => {
-            console.log("post request errored, ", err.response);
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data
@@ -74,7 +70,6 @@ export const resetPassword = (userData) => dispatch => {
             console.log(res.data);
         })
         .catch(err => {
-            console.log("post request errored, ", err.response);
             dispatch({
                 type: SET_AUTH_ERRORS,
                 payload: err.response.data
