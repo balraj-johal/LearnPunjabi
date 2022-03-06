@@ -5,8 +5,6 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
-console.log("email js run");
-
 // what happens if email is never verified? can a user make another account with that email?
 // I need to delete the user document after verify email timeout
 
