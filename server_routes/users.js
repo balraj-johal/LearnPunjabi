@@ -292,7 +292,7 @@ const forgotPasswordLimiter = rateLimit({
                         sendPWResetEmail({
                             recipient: user.email,
                             code: user.pwResetCode,
-                            host: "localhost:3000"
+                            host: req.get('host')
                         })
                         return res.send({ 
                             success: true,
