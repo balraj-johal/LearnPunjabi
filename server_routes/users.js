@@ -26,50 +26,10 @@ const {
     verifyRefreshToken,
 } = require("../authentication");
 
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_KEY);
-
-let buildVerifCodeEmail = (params) => {
-    let link = `${params.host}/verify-email/${params.code}`
-    return msg = {
-        to: params.recipient, // Change to your recipient
-        from: 'balrajsjohal@gmail.com', // Change to your verified sender
-        subject: 'Verify your account!',
-        text: `link: ${link}`,
-        html: `'<strong>link: ${link}</strong>'`,
-    }
-}
-let sendVerifCodeEmail = (params) => {
-    let email = buildVerifCodeEmail(params);
-    sgMail
-        .send(email)
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error("sendgrid err: ", error.response.body)
-        })
-}
-let buildPWResetEmail = (params) => {
-    let link = `${params.host}/reset-password/${params.code}`
-    return msg = {
-        to: params.recipient, // Change to your recipient
-        from: 'balrajsjohal@gmail.com', // Change to your verified sender
-        subject: 'Reset Password',
-        text: `link: ${link}`,
-        html: `'<strong>link: ${link}</strong>'`,
-    }
-}
-let sendPWResetEmail = (params) => {
-    let email = buildPWResetEmail(params);
-    sgMail
-        .send(email)
-        .then(() => { console.log('Email sent'); })
-        .catch((error) => {
-            console.error("sendgrid err: ", error.response.body)
-        })
-
-}
+const { 
+    sendVerifCodeEmail,
+    sendPWResetEmail
+} = require("../email");
 
 const GROUP_SIZE = 4;
 const USER_GROUPS = [];
@@ -150,23 +110,17 @@ router.get("/group_data/:groupID", (req, res) => {
     }
 })
 
-router.put("")
-
-
-// TODO: replace with cryptographically secure random code 
-// You should use a cryptographic strength pseudo-random number generator (PRNG), 
-// seeded with the timestamp when it was created plus a static secret.
-const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+/**
+ * Generates cryptographically secure random string of specified length
+ * @name genVerificationCode
+ * @param  {Number} length
+ * @returns {String} code
+ */
 let genVerificationCode = (length) => {
     return crypto
         .randomBytes(length)
         .toString('base64')
         .slice(0, length)
-    // let code = '';
-    // for (let i = 0; i < length; i++) {
-    //     code += characters[Math.floor(Math.random() * characters.length )];
-    // }
-    // return code;
 }
 
 /**
@@ -220,7 +174,6 @@ router.post("/register", (req, res) => {
                     newUser
                         .save()
                         .then(user => {
-                            // TODO: send verification code email here
                             sendVerifCodeEmail({
                                 recipient: user.email,
                                 code: user.verificationCode,
