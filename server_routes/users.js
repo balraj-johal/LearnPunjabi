@@ -117,10 +117,11 @@ router.get("/group_data/:groupID", (req, res) => {
  * @returns {String} code
  */
 let genVerificationCode = (length) => {
-    return crypto
+    let code = crypto
         .randomBytes(length)
         .toString('base64')
         .slice(0, length)
+    return escape(code);
 }
 
 /**
