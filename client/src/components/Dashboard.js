@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import Course from "./CourseComponents/Course";
-import Leaderboard from "./SidebarComponents/Leaderboard";
+import Sidebar from "./Sidebar";
 
 function Dashboard(props) {
     // determine which responsive layout to use
     let [mobile, setMobile] = useState(true);
+    
+    // set up resize handlers
     useEffect(() => {
         let onResize = () => {
             window.innerWidth < 768 ? setMobile(true) : setMobile(false);
@@ -36,14 +38,6 @@ function DesktopDashboard(props) {
             <Course />
             <Sidebar />
         </>
-    )
-}
-
-function Sidebar(props) {
-    return(
-        <div className="sidebar">
-            <Leaderboard />
-        </div>
     )
 }
 
