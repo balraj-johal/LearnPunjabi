@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 function AccountSummary(props) {
@@ -17,6 +17,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-    }
+    {}
 )(AccountSummary);

@@ -13,12 +13,11 @@ import { getUserData } from "../../actions/authActions";
 import TaskManager from "./TaskManager";
 import Loader from "../Loader";
 
-
 function Lesson(props) {
     let navigate = useNavigate();
     let { id } = useParams();
 
-    // configure states
+    // initialise states
     let [lesson, setLesson] = useState();
     let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     let [ready, setReady] = useState(false);
@@ -39,7 +38,7 @@ function Lesson(props) {
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
-        axiosClient.get(`/api/lessons/get-by-id/${String(id)}`)
+        axiosClient.get(`/api/lessons/${String(id)}`)
             .then(res => {
                 let data = res.data.lesson;
                 if (data.shuffle) {
@@ -55,7 +54,7 @@ function Lesson(props) {
                 setLesson(data);
                 setReady(true);
             })
-            .catch(err => { console.log("Lesson get error: ", err); })
+            .catch(err => { console.log("Get lesson error: ", err); })
     }, [id]);
 
     /**
@@ -102,11 +101,12 @@ function Lesson(props) {
     }
     
     /** 
-     * proceed onto the next task in the lesson
+     * proceed onto the next task in the lesson,
+     * if lesson is over redirect to dashboard
      * @name nextTask
      */
     let nextTask = () => {
-        let nextIndex = currentTaskIndex+1;
+        let nextIndex = currentTaskIndex + 1;
         if (nextIndex >= lesson.tasks.length) {
             endLesson(lesson.id);
             props.getUserData();
@@ -124,30 +124,26 @@ function Lesson(props) {
     let endLesson = (lessonID) => {
         // TODO: submit tracked mistakes here
         let mistakes = answerTracking.wrongTasks;
-        console.log("mistakes: ", mistakes);
+        // console.log("mistakes: ", mistakes);
+
+        let adjustedXP = Math.floor(25 * getPercentCorrect() / 100);
+        let endpoint = `/api/users/progress/${lessonID}`;
         
-        axiosClient.post("/api/users/update-progress", qs.stringify({
-            lessonID: lessonID,
-            XP: Math.floor(25*getPercentCorrect()/100)
-        }))
+        axiosClient.put(endpoint, qs.stringify({ XP: adjustedXP }))
             .then(res => {
                 props.setProgress(res.data.newProgress);
             })
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(err => { console.log(err); })
     }
     
     return(
-        <>
-            { ready ? (
-                <TaskManager
-                    taskData={lesson.tasks[currentTaskIndex]}
-                    submitAnswer={submitAnswer}
-                    stats={`${getPercentCorrect()}%`}
-                />
-            ) : <Loader /> }
-        </>
+        ready ? (
+            <TaskManager
+                taskData={ lesson.tasks[currentTaskIndex] }
+                submitAnswer={ submitAnswer }
+                stats={ `${getPercentCorrect()}%` }
+            />
+        ) : <Loader />
     )
 }
 

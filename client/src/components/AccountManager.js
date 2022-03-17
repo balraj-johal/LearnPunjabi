@@ -15,21 +15,17 @@ import AccountSummary from "./AccountSummary";
 import ForgotPassword from "./ForgotPassword";
 
 function AccountManager(props) {
-
+    // initialise state
     let initialState;
     props.isAuthenticated ? initialState = "Summary" : initialState = "Login";
-    // if (props.overrideState) {
-    //     initialState = props.overrideState;
-    // }
     let [managerState, setManagerState] = useState(initialState);
 
+    // update state if user is logged in
     useEffect(() => {
         props.isAuthenticated ? setManagerState("Summary") : setManagerState("Login");
-        // if (props.overrideState) {
-        //     setManagerState(props.overrideState);
-        // }
-    }, [props.isAuthenticated])
+    }, [props.isAuthenticated]);
 
+    // clear error messages when user switches between states
     useEffect(() => {
         props.clearAuthErrors();
     }, [managerState])
@@ -38,11 +34,9 @@ function AccountManager(props) {
         <div className="accounts-wrap">
             <div id="switcher-buttons">
                 {props.isAuthenticated ? (
-                    <>
-                        <button onClick={() => {
-                            props.logoutUser(props.auth.user._id);
-                        }}>Logout</button>
-                    </>
+                    <button onClick={() => {
+                        props.logoutUser(props.auth.user._id);
+                    }}>Logout</button>
                 ) : (
                     <>
                         <button onClick={() => {
@@ -51,9 +45,6 @@ function AccountManager(props) {
                         <button onClick={() => {
                             setManagerState("Register")
                         }}>Register</button>
-                        {/* <button onClick={() => {
-                            setManagerState("ForgotPassword")
-                        }}>Forgot Password</button> */}
                     </>
                 )}
             </div>
@@ -66,7 +57,6 @@ function Switcher(props) {
     switch (props.state) {
         case "Login":
             return(
-                // <Login setManagerState={props.setManagerState} />
                 <Login setManagerState={props.setManagerState} />
             )
         case "Register":

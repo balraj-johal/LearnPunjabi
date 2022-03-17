@@ -9,6 +9,7 @@ import FormInputField from "./FormComponents/FormInputField";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function Register(props) {
+    // initalise form state
     let [username, setUsername] = useState("")
     let [firstName, setFirstName] = useState("")
     let [email, setEmail] = useState("")
@@ -16,13 +17,12 @@ function Register(props) {
 
     let onSubmit = e => {
         e.preventDefault();
-        let data = {
+        props.registerUser({
             username: username,
             password: password,
             email: email,
             firstName: firstName
-        }
-        props.registerUser(data);
+        });
     }
 
     return(

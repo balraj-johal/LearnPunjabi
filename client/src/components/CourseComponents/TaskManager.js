@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import MultipleChoice from "./Tasks/MultipleChoice";
@@ -7,6 +7,7 @@ import End from "./Tasks/End";
 import SpecifiedOrder from "./Tasks/SpecifiedOrder";
 
 function TaskManager(props) {
+    // return task component of specified type
     switch (props.taskData.type) {
         case "TextOnly":
             return(
@@ -60,6 +61,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-    }
+    {}
 )(TaskManager);

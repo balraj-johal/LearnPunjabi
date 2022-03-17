@@ -1,13 +1,9 @@
 import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { 
-    useNavigate
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // auth actions
-import {
-    useRefreshToken
-} from "../actions/authActions";
+import { useRefreshToken } from "../actions/authActions";
 import Loader from "./Loader";
 
 /**
@@ -29,14 +25,14 @@ function ProtectedComponent({ component, ...props}) {
                 navigate("/account");
             }
         }
-    }, [props.auth])
-
+    }, [props.auth]);
+    
     if (ready) {
         return component;
     } else {
         return(
             <Loader />
-        )
+        );
     }
 }
 
@@ -49,7 +45,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-        useRefreshToken
-    }
+    { useRefreshToken }
 )(ProtectedComponent);

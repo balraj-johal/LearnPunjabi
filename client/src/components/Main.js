@@ -44,22 +44,22 @@ function Main(props) {
                 verifyUser();
             }, 5 * 60 * 1000);
         }
-    // TODO: confirm that these dependancies are corrent
+    // TODO: confirm that these dependancies are correct
     }, [props.auth.isAuthenticated, props.csrf.ready]);
     useEffect(() => {
         verifyUser();
     }, [verifyUser])
     
     // synchronise logout across open tabs
-    const syncLogout = useCallback(event => {
+    const synchLogout = useCallback(event => {
         if (event.key === "logout") {
             window.location.reload();
         }
     }, [])
     useEffect(() => {
-        window.addEventListener("storage", syncLogout);
-        return () => { window.removeEventListener("storage", syncLogout) };
-    }, [syncLogout]);
+        window.addEventListener("storage", synchLogout);
+        return () => { window.removeEventListener("storage", synchLogout) };
+    }, [synchLogout]);
 
     return(
         <Router>
@@ -77,6 +77,9 @@ function Main(props) {
                             <ProtectedComponent component={<Lesson />} />
                         } />
                     </Route>
+                    <Route path="/account" element={<AccountManager />} />
+                    <Route path="/reset-password/:code" element={ <ResetPassword /> } />
+                    <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
                 </Routes>
             </div>
         </Router>

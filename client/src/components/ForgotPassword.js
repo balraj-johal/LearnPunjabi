@@ -14,8 +14,7 @@ function ForgotPassword(props) {
     // on form submit call redux action
     let onSubmit = e => {
         e.preventDefault();
-        const data = { email: email };
-        props.forgotPassword(data);
+        props.forgotPassword({ email: email });
     }
 
     return (
@@ -29,12 +28,12 @@ function ForgotPassword(props) {
                 <FormInputField 
                     dataElem="email"
                     onChange={e => setEmail(e.target.value) }
-                    value={email}
-                    error={props.errors.email}
+                    value={ email }
+                    error={ props.errors.email }
                 />
                 {/* <FormError 
                     dataElem="email" 
-                    errors={this.props.errors} 
+                    errors={ this.props.errors } 
                 /> */}
                 <FormSubmitButton dataElem="forgot-password" />
             </form>
@@ -49,7 +48,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-        forgotPassword
-    }
+    { forgotPassword }
 )(ForgotPassword);

@@ -9,16 +9,16 @@ import FormInputField from "./FormComponents/FormInputField";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function Login(props) {
+    // initialise form states
     let [username, setUsername] = useState("")
     let [password, setPassword] = useState("")
 
     let onSubmit = e => {
         e.preventDefault();
-        let data = {
+        props.loginUser({
             username: username,
             password: password
-        }
-        props.loginUser(data);
+        });
     }
 
     return(
@@ -54,7 +54,9 @@ function Login(props) {
                 <FormSubmitButton dataElem="login" />
                 <div onClick={() => {
                     props.setManagerState("ForgotPassword");
-                }}>Forgot Password?</div>
+                }}>
+                    Forgot Password?
+                </div>
             </form>
         </div>
     )

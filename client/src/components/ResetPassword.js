@@ -15,18 +15,16 @@ import FormSubmitButton from "./FormComponents/FormSubmitButton";
 function ResetPassword(props) {
     let params = useParams();
 
-    let [email, setEmail] = useState("")
-    // let [code, setCode] = useState("")
-    let [newPW, setNewPW] = useState("")
+    let [email, setEmail] = useState("");
+    let [newPW, setNewPW] = useState("");
 
     let onSubmit = e => {
         e.preventDefault();
-        const data = { 
+        props.resetPassword({ 
             email: email,
             code: params.code,
             newPW: newPW
-        };
-        props.resetPassword(data);
+        });
     }
 
     return (
@@ -39,19 +37,19 @@ function ResetPassword(props) {
             >
                 <FormInputField 
                     dataElem="email"
-                    onChange={e => setEmail(e.target.value) }
-                    value={email}
-                    error={props.errors.email}
+                    onChange={ e => setEmail(e.target.value) }
+                    value={ email }
+                    error={ props.errors.email }
                 />
                 <FormError 
                     dataElem="email" 
-                    errors={props.errors} 
+                    errors={ props.errors } 
                 />
                 <FormInputField 
                     dataElem="newPW"
-                    onChange={e => setNewPW(e.target.value) }
-                    value={newPW}
-                    error={props.errors.newPW}
+                    onChange={ e => setNewPW(e.target.value) }
+                    value={ newPW }
+                    error={ props.errors.newPW }
                 />
                 <FormSubmitButton dataElem="reset-password" />
             </form>
@@ -66,7 +64,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-        resetPassword
-    }
+    { resetPassword }
 )(ResetPassword);

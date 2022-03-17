@@ -38,7 +38,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-        resetPassword
-    }
+    { resetPassword }
 )(VerifyEmail);
