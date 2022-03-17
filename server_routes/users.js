@@ -158,7 +158,7 @@ router.post("/register", (req, res) => {
                 verificationCode: genVerificationCode(8),
                 role: 'User',
                 pwResetCode: genVerificationCode(8),
-                pwResetCodeExpiry: Date.now()
+                pwResetCodeExpiry: Date.now(),
             })
             // salt and hash pw
             bcrypt.genSalt(10, (err, salt) => {
@@ -560,54 +560,6 @@ router.get("/verify-email/:verificationCode", (req, res, next) => {
                     return res.status(500).send({ error: err });
                 })
         })
-})
-
-/** Update user proress by changing lesson status by lesson id
- * @param  {String} path "/update-progress"
- */
-router.post("/update-progress", (req, res) => {
-    verifyToken(req)
-        .then(user => {
-            let lessonID = req.body.lessonID;
-            let lesson;
-            // check if lesson object is already present
-            user.progress.forEach(storedLesson => {
-                if (storedLesson != null) {
-                    if (storedLesson.id === lessonID) {
-                        lesson = storedLesson;
-                        // update lesson object
-                        storedLesson.timesCompleted = storedLesson.timesCompleted + 1;
-                    }
-                }
-            })
-            // if lesson not previously tracked begin tracking progress
-            if (lesson === undefined) {
-                user.progress.push({ id: lessonID, timesCompleted: 1 });
-            }
-            // notify mongoose that progress property has changed
-            user.markModified("progress");
-            
-            user.weeklyXP += req.body.XP;
-            user.totalXP += req.body.XP;
-
-            // save user
-            user.save()
-                .then(savedUser => {
-                    return res.status(200).send({ 
-                        newProgress: savedUser.progress,
-                        savedUser: savedUser
-                    }); 
-                })
-                .catch(err => {
-                    console.log(err);
-                    return res.status(500).send({ error: err });
-                })
-        }) 
-        .catch(err => {
-            console.log("err, ", err);
-            return res.status(500).send({ error: err });
-        })
-
 })
 
 module.exports = router;

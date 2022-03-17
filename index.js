@@ -11,6 +11,7 @@ const rateLimit = require('express-rate-limit');
 // import routes
 const s3 = require("./server_routes/s3");
 const users = require("./server_routes/users");
+const progress = require("./server_routes/users/progress");
 const lessons = require("./server_routes/lessons");
 
 const app = express();
@@ -83,9 +84,7 @@ const csrfProtection = csurf({
 });
 app.use(csrfProtection); 
 app.get('/csrf-token', (req, res) => {
-    // console.log(res);
     res.json({ token: req.csrfToken() });
-    // res.json();
 });
 
 // Passport config
@@ -94,6 +93,7 @@ require("./config/passport")(passport);
 // declare routes
 // app.use("/api/s3", s3);
 app.use("/api/users", users);
+app.use("/api/users/progress", progress);
 app.use("/api/lessons", lessons);
 
 const PORT = process.env.PORT || 3001;

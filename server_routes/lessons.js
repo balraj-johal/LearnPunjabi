@@ -12,7 +12,7 @@ const router = express.Router();
 
 const { 
     verifyToken,
-} = require("../authentication")
+} = require("../authentication");
 
 const LESSONS = [
     {
@@ -301,38 +301,6 @@ const LESSONS = [
 ]
 
 /**
- * @param  { String } id - lesson id
- * @returns { Object } result - lesson data object with id: id
- */
-let getLessonById = (id) => {
-    let result = LESSONS.find(lesson => lesson.id === id);
-    return result;
-}
-
-/**
- * Get lesson data by lessonID
- * @name get/get-by-id
- * @function
- * @memberof module:api/lessons~lessonsRouter
- * @param { String } path - route path
- * @param { callback } middleware - express middleware
- */
-router.get("/get-by-id/:lessonID", (req, res) => {
-    verifyToken(req)
-        .then(user => {
-            let lesson = getLessonById(req.params.lessonID);
-            if (lesson) {
-                res.status(200).send({ lesson: lesson });
-            } else {
-                res.status(404).send({ message: "lesson not found..." });
-            }
-        })
-        .catch(err => {
-            return res.status(500).send({error: err});
-        })
-})
-
-/**
  * Get overview of all lessons
  * @name get/overview
  * @function
@@ -362,5 +330,26 @@ router.get("/overview", (req, res) => {
         })
 })
 
+/**
+ * Get lesson data by lessonID
+ * @function
+ * @memberof module:api/lessons~lessonsRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+ router.get("/:lessonID", (req, res) => {
+    verifyToken(req)
+        .then(user => {
+            let lesson = LESSONS.find(lesson => lesson.id === req.params.lessonID);
+            if (lesson) {
+                res.status(200).send({ lesson: lesson });
+            } else {
+                res.status(404).send({ message: "lesson not found..." });
+            }
+        })
+        .catch(err => {
+            return res.status(500).send({error: err});
+        })
+})
 
 module.exports = router;
