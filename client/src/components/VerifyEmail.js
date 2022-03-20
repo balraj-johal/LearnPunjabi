@@ -14,7 +14,7 @@ function VerifyEmail(props) {
 
     useEffect(() => {
         if (params.code && props.csrf.ready) {
-            axiosClient.get(`/api/users/verify-email/${params.code}`)
+            axiosClient.get(`/api/v1/users/verify-email/${params.code}`)
                 .then(result => {
                     console.log(result);
                 })

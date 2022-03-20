@@ -38,7 +38,7 @@ function Lesson(props) {
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
-        axiosClient.get(`/api/lessons/${String(id)}`)
+        axiosClient.get(`/api/v1/lessons/${String(id)}`)
             .then(res => {
                 let data = res.data.lesson;
                 if (data.shuffle) {
@@ -127,7 +127,7 @@ function Lesson(props) {
         // console.log("mistakes: ", mistakes);
 
         let adjustedXP = Math.floor(25 * getPercentCorrect() / 100);
-        let endpoint = `/api/users/progress/${lessonID}`;
+        let endpoint = `/api/v1/users/progress/${lessonID}`;
         
         axiosClient.put(endpoint, qs.stringify({ XP: adjustedXP }))
             .then(res => {

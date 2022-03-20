@@ -17,7 +17,7 @@ export const clearAuthErrors = () => dispatch => {
 }
 
 export const registerUser = userData => dispatch => {
-    axiosClient.post("/api/users/register", qs.stringify(userData))
+    axiosClient.post("/api/v1/users/register", qs.stringify(userData))
         .then(res => {
             console.log(res);
             alert("Register successful.");
@@ -32,7 +32,7 @@ export const registerUser = userData => dispatch => {
 }
 
 export const loginUser = userData => dispatch => {
-    axiosClient.post("/api/users/login", qs.stringify(userData))
+    axiosClient.post("/api/v1/users/login", qs.stringify(userData))
         .then(res => {
             getUserDataPromise()
                 .then(userData => { dispatch(setCurrentUser(userData)); })
@@ -53,7 +53,7 @@ export const loginUser = userData => dispatch => {
 }
 
 export const forgotPassword = userData => dispatch => {
-    axiosClient.post("/api/users/forgot-password", qs.stringify(userData))
+    axiosClient.post("/api/v1/users/forgot-password", qs.stringify(userData))
         .then(res => { console.log(); })
         .catch(err => {
             dispatch({
@@ -64,7 +64,7 @@ export const forgotPassword = userData => dispatch => {
 }
 export const resetPassword = (userData) => dispatch => {
     console.log(userData)
-    axiosClient.post(`/api/users/reset-password/${userData.code}`, qs.stringify(userData))
+    axiosClient.post(`/api/v1/users/reset-password/${userData.code}`, qs.stringify(userData))
         .then(res => {
             console.log("reset successful");
             console.log(res.data);
@@ -80,7 +80,7 @@ export const resetPassword = (userData) => dispatch => {
 
 export const getUserDataPromise = () => {
     return new Promise((resolve, reject) => {
-        axiosClient.get(`/api/users/data`)
+        axiosClient.get(`/api/v1/users/data`)
             .then(res => {
                 resolve(res.data.user);
             })
@@ -100,7 +100,7 @@ export const getUserData = () => dispatch => {
 }
 
 export const logoutUser = userID => dispatch => {
-    axiosClient.post(`/api/users/logout`, qs.stringify({_id: userID}))
+    axiosClient.post(`/api/v1/users/logout`, qs.stringify({_id: userID}))
         .then(res => {
             dispatch(setCurrentUser({})); 
             window.localStorage.setItem("logout", Date.now());
@@ -111,7 +111,7 @@ export const logoutUser = userID => dispatch => {
 }
 
 export const useRefreshToken = () => dispatch => {
-    axiosClient.post(`/api/users/refreshToken`, qs.stringify({}))
+    axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}))
         .then(res => {
             console.log("token refresh successful!");
             getUserDataPromise()

@@ -22,7 +22,7 @@ function Leaderboard(props) {
     // if user is authenticated, get their leaderboard group
     useEffect(() => {
         if (props.isAuthenticated) {
-            axiosClient.get(`/api/groups/${props.user.groupID}`)
+            axiosClient.get(`/api/v1/groups/${props.user.groupID}`)
                 .then(res => {
                     setData(sortData(res.data.group.users));
                 })
