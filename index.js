@@ -93,10 +93,10 @@ require("./config/passport")(passport);
 
 // declare routes
 // app.use("/api/s3", s3);
-app.use("/api/users", users);
-app.use("/api/users/progress", progress);
-app.use("/api/groups", groups);
-app.use("/api/lessons", lessons);
+app.use("/api/v1/users", users);
+app.use("/api/v1/users/progress", progress);
+app.use("/api/v1/groups", groups);
+app.use("/api/v1/lessons", lessons);
 
 const PORT = process.env.PORT || 3001;
 
