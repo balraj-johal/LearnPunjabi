@@ -27,8 +27,7 @@ function Main(props) {
     useEffect(() => {
         axiosClient.get("/csrf-token")
             .then(res => {
-                axiosClient.defaults.headers.post['X-CSRF-Token'] = res.data.token;
-                // setCsrfTokenReady(true);
+                axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
                 props.setCSRFReady();
             })
             .catch(err => { console.log(err); })
@@ -66,9 +65,6 @@ function Main(props) {
             <Topbar />
             <div className="container">
                 <Routes>
-                    <Route path="/account" element={<AccountManager />} />
-                    <Route path="/reset-password/:code" element={ <ResetPassword /> } />
-                    <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
                     <Route path="/" element={
                         <ProtectedComponent component={<Dashboard />} />
                     } />

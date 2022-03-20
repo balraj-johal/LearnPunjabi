@@ -16,7 +16,9 @@ const crypto = require('crypto');
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
 const validatePassword = require("../validation/password");
+
 const User = require("../models/user.model");
+const Group = require("../models/groups.model");
 
 const { 
     getNewToken, 
@@ -31,84 +33,6 @@ const {
     sendPWResetEmail
 } = require("../email");
 
-const GROUP_SIZE = 4;
-const USER_GROUPS = [];
-/**
- * Divide users into leaderboard groups
- * @name groupUsers
- */
-const groupUsers = async () => {
-    let groupIndex = 0;
-    let counter = 0;
-    const GROUP_DEFAULT = {
-        users: [],
-        groupID: 0
-    };
-    let group = GROUP_DEFAULT;
-
-    for await (const user of User.find()) {
-        // TODO: randomise users somehow
-        counter++;
-        // if group is full
-        if (counter > GROUP_SIZE) {
-            counter = 1;
-            // save group
-            USER_GROUPS[groupIndex] = group;
-            // move to next group
-            groupIndex++;
-            group = {
-                users: [],
-                groupID: groupIndex
-            };
-        }
-        // save user to group
-        group.users.push({
-            username: user.username,
-            _id: user._id,
-            weeklyXP: 42069 // TODO: this is a test value, get rid of it on debug completion
-        });
-        // update user
-        user.groupID = groupIndex;
-        user.weeklyXP = 0;
-        user.save()
-            // .then(saved => {
-            //     console.log(`${saved.firstName} ${saved.groupID}`)
-            // })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-    // save final group
-    USER_GROUPS[groupIndex] = group;
-}
-groupUsers();
-
-
-let updateGroupsWeeklyXP = async (array) => {
-    for (user of array.users) {
-        await User.findById(user._id)
-            .then(foundUser => {
-                user.weeklyXP = foundUser.weeklyXP;
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-    return array;
-}
-router.get("/group_data/:groupID", (req, res) => {
-    const g_id = req.params.groupID;
-    let found = USER_GROUPS.find(group => group.groupID === Number(g_id));
-    if (found) {
-        updateGroupsWeeklyXP(found)
-            .then(result => {
-                console.log(result);
-                return res.status(200).send({ group: result })
-            })
-    } else {
-        return res.status(404).send("Group not found...")
-    }
-})
 
 /**
  * Generates cryptographically secure random string of specified length
@@ -171,24 +95,49 @@ router.post("/register", (req, res) => {
                     // generate refresh token and save to user
                     const refreshToken = getNewRefreshToken(newUser._id);
                     newUser.refreshToken.push({refreshToken});
-                    // save user to db
-                    newUser
-                        .save()
-                        .then(user => {
-                            sendVerifCodeEmail({
-                                recipient: user.email,
-                                code: user.verificationCode,
-                                host: req.get('host')
-                            })
-                            return res.status(201).json({
-                                message: `Check ${user.email} for a verification link!`
-                            });
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            return res.status(500).json({
-                                registration: "Error creating user."
-                            });
+                    // save user to random leaderboard group
+                    Group.count()
+                        .then(count => {
+                            let randomIndex = Math.floor(Math.random() * count)
+                            // query all users but only fetch document offset by the random index
+                            Group.findOne().skip(randomIndex)
+                                .then(group => {
+                                    group.users.push({
+                                        username: newUser.username,
+                                        _id: newUser._id,
+                                        weeklyXP: 0
+                                    });
+                                    group.save()
+                                        .catch(err => { console.log(err); })
+                                    newUser.groupID = group.groupID;
+
+                                    /**
+                                     * // TODO:
+                                     * after 12 hours
+                                     *      if user.status === Pending
+                                     *          delete user
+                                     */
+
+                                    // save user to db
+                                    newUser
+                                        .save()
+                                        .then(user => {
+                                            sendVerifCodeEmail({
+                                                recipient: user.email,
+                                                code: user.verificationCode,
+                                                host: req.get('host')
+                                            });
+                                            return res.status(201).json({
+                                                message: `Check ${user.email} for a verification link!`
+                                            });
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            return res.status(500).json({
+                                                registration: "Error creating user."
+                                            });
+                                        })
+                                })
                         })
                 })
                 if (err) {

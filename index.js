@@ -12,6 +12,7 @@ const rateLimit = require('express-rate-limit');
 const s3 = require("./server_routes/s3");
 const users = require("./server_routes/users");
 const progress = require("./server_routes/users/progress");
+const groups = require("./server_routes/groups");
 const lessons = require("./server_routes/lessons");
 
 const app = express();
@@ -94,6 +95,7 @@ require("./config/passport")(passport);
 // app.use("/api/s3", s3);
 app.use("/api/users", users);
 app.use("/api/users/progress", progress);
+app.use("/api/groups", groups);
 app.use("/api/lessons", lessons);
 
 const PORT = process.env.PORT || 3001;
