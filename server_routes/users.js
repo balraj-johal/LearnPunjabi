@@ -20,7 +20,7 @@ const validatePassword = require("../validation/password");
 const User = require("../models/user.model");
 const Group = require("../models/groups.model");
 
-const { 
+const {
     getNewToken, 
     getNewRefreshToken, 
     AUTH_COOKIE_OPTIONS,
@@ -180,19 +180,18 @@ router.post("/login", (req, res) => {
                     .compare(password, user.password) 
                     .then(isMatch => {
                         if (isMatch) {  
-                            console.log("pw match")
                             // generate new refresh token and store in user entry
                             const newRefreshToken = getNewRefreshToken(user._id);
                             user.refreshToken.push({ refreshToken: newRefreshToken });
                             user
                                 .save()
                                 .then(saveResult => {
-                                    const token = getNewToken( user._id );
+                                    const token = getNewToken( saveResult._id );
                                     res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
                                     res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
                                     return res.send({
                                         success: true,
-                                        userID: user._id
+                                        userID: saveResult._id
                                     });
                                 });
                         } else {
