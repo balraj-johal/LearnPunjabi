@@ -16,9 +16,7 @@ function Course(props) {
 
     useEffect(() => {
         axiosClient.get("/api/v1/lessons/overview")
-            .then(res => {
-                setCourseData(res.data.overview);
-            })
+            .then(res => { setCourseData(res.data.overview); })
             .catch(err => { console.log(err); })
     }, [])
 
