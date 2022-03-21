@@ -20,6 +20,7 @@ import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
+import NotAuthorised from "./NotAuthorised";
 
 
 function Main(props) {

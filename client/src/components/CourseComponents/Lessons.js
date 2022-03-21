@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, {  } from "react";
 
 import { connect } from "react-redux";
 
 // router imports
 import { BrowserRouter as 
-    Router,
-    Route, 
     Outlet,
 } from "react-router-dom";
 
@@ -23,6 +21,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-    }
+    {}
 )(Lessons);

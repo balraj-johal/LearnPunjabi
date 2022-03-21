@@ -318,7 +318,7 @@ const forgotPasswordLimiter = rateLimit({
             console.log(err);
             res.status(500).json(err)
         })
-}); 
+});
 
 /**
  * If user is verified, get user's data (that is publically accessible);
@@ -339,7 +339,8 @@ router.get("/data", (req, res, next) => {
                     progress: user.progress,
                     groupID: user.groupID,
                     weeklyXP: user.weeklyXP,
-                    XP: user.XP
+                    XP: user.XP,
+                    role: user.role,
                 }
             })
         })
