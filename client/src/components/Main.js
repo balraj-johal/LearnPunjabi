@@ -20,7 +20,9 @@ import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
+import EditLesson from "./Editing/EditLesson";
 import NotAuthorised from "./NotAuthorised";
+import EditOverview from "./Editing/EditOverview";
 
 
 function Main(props) {
@@ -74,6 +76,15 @@ function Main(props) {
                             <ProtectedComponent component={<Lesson />} />
                         } />
                     </Route>
+                    <Route path="/edit" >
+                        <Route path="/edit/overview" element={
+                            <ProtectedComponent component={<EditOverview />} role={"Admin"} />
+                        } />
+                        <Route path=":id" element={
+                            <ProtectedComponent component={<EditLesson />} role={"Admin"} />
+                        } />
+                    </Route>
+                    <Route path="/restricted" element={<NotAuthorised />} />
                     <Route path="/account" element={<AccountManager />} />
                     <Route path="/reset-password/:code" element={ <ResetPassword /> } />
                     <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
