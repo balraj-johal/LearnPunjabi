@@ -15,7 +15,7 @@ function Course(props) {
     let [courseData, setCourseData] = useState([]);
 
     useEffect(() => {
-        axiosClient.get("/api/v1/lessons/overview")
+        axiosClient.get("/api/v1/lessons/")
             .then(res => {
                 setCourseData(res.data.overview);
             })

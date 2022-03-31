@@ -302,13 +302,13 @@ const LESSONS = [
 
 /**
  * Get overview of all lessons
- * @name get/overview
+ * @name get/
  * @function
  * @memberof module:api/lessons~lessonsRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/overview", (req, res) => {
+router.get("/", (req, res) => {
     verifyToken(req)
         .then(user => {
             let overview = [];

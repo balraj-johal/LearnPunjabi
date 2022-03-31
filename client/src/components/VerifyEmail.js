@@ -6,27 +6,32 @@ import {
 
 import axiosClient from "../axiosDefaults";
 
-// import redux actions
-import { resetPassword } from "../actions/authActions";
-
 function VerifyEmail(props) {
+    let [successful, setSuccessful] = useState(false);
     let params = useParams();
 
     useEffect(() => {
         if (params.code && props.csrf.ready) {
             axiosClient.get(`/api/v1/users/verify-email/${params.code}`)
                 .then(result => {
+                    setSuccessful(true);
                     console.log(result);
                 })
-                .catch(err => {
-                    console.log(err);
-                })
+                .catch(err => { console.log(err); })
         }
-    }, [props.csrf.ready])
+    }, [props.csrf.ready, params.code])
 
     return (
         <div className="accounts-wrap" id="verify-email">
-            {params.code}
+            {successful ? (
+                <div>
+                    Email verification successful! Please log in with your details!
+                </div>
+            ) : (
+                <div>
+                    NAH
+                </div>
+            )}
         </div>
     )
 }
@@ -38,5 +43,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { resetPassword }
+    {}
 )(VerifyEmail);

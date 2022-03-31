@@ -50,13 +50,13 @@ let genVerificationCode = (length) => {
 
 /**
  * Register a new user.
- * @name post/register
+ * @name post/
  * @function
  * @memberof module:api/users~usersRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.post("/register", (req, res) => {
+router.post("/", (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) {
@@ -206,7 +206,7 @@ router.post("/login", (req, res) => {
             console.log(err);
             res.status(500).json(err)
         })
-}); 
+});
 
 
 const forgotPasswordLimiter = rateLimit({
