@@ -1,15 +1,51 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 function DrawLetter(props) {
-    // let [drawing, setDrawing] = useState(false);
-    let drawingRef = useRef();
-    drawingRef.current = false;
-
-    let submitContinue = () => {
+    let submitAnswer = () => {
         props.submit(true);
     }
 
+    let clearCanvas = () => {
+        let clearEvent = new Event("clear");
+        let canvas = document.getElementById("drawing-canvas");
+        if (canvas) canvas.dispatchEvent(clearEvent);
+    }
+
+    return(
+        <div className="task draw-letter">
+            { props.data.text }
+
+            <DrawingCanvas />
+
+            <div onClick={()=>{
+                submitAnswer();
+            }}>
+                Next &gt;
+            </div>
+            <div 
+                className="task-button" 
+                id="clear-canvas" 
+                onClick={()=>{
+                    clearCanvas();
+                }}
+            >
+                Clear &gt;
+            </div>
+        </div>
+    );
+}
+
+function DrawingCanvas(props) {
+    let isDrawing = useRef();
+    isDrawing.current = false;
+
+    // let [mousePos, setMousePos] =  useState({
+    //     x: 0, 
+    //     y: 0
+    // })
+    // let [lastPos, setLastPos] = useState(mousePos);
+    
     let getMousePos = (canvas, event) => {
         let rect = canvas.getBoundingClientRect();
         return {
@@ -17,7 +53,6 @@ function DrawLetter(props) {
             y: event.clientY - rect.top
         }
     }
-    // Get the position of a touch relative to the canvas
     let getTouchPos = (canvas, event) => {
         let rect = canvas.getBoundingClientRect();
         return {
@@ -29,14 +64,14 @@ function DrawLetter(props) {
     let ctx;
     let mousePos = { x: 0, y: 0 };
     let lastPos = mousePos;
-    // Draw to the canvas
+    
     let renderCanvas = () => {
-        console.log("renderCanvas drawing: ", drawingRef.current)
-        if (drawingRef.current === true) {
+        if (isDrawing.current === true) {
             ctx.moveTo(lastPos.x, lastPos.y);
             ctx.lineTo(mousePos.x, mousePos.y);
             ctx.stroke();
             lastPos = mousePos;
+            // setLastPos(mousePos);
         }
     }
 
@@ -47,23 +82,24 @@ function DrawLetter(props) {
         ctx.strokeStyle = "#222222";
         ctx.lineWidth = 6;
 
-        canvas.addEventListener("mousedown", (e) => {
-            console.log("drawing");
-            drawingRef.current = true;
+        canvas.addEventListener("mousedown", e => {
+            isDrawing.current = true;
             lastPos = getMousePos(canvas, e);
+            // setLastPos(getMousePos(canvas, e));
         });
-        canvas.addEventListener("mouseup", (e) => {
-            console.log("stopping drawing");
-            drawingRef.current = false;
+        canvas.addEventListener("mouseup", e => {
+            isDrawing.current = false;
         });
-        canvas.addEventListener("mousemove", (e) => {
+        canvas.addEventListener("mousemove", e => {
             mousePos = getMousePos(canvas, e);
+            // setMousePos(getMousePos(canvas, e));
         });
         
         // Set up touch events for mobile, etc
         canvas.addEventListener("touchstart", e => {
             if (e.target === canvas) e.preventDefault();
             mousePos = getTouchPos(canvas, e);
+            // setMousePos(getTouchPos(canvas, e));
             let touch = e.touches[0];
             let mouseEvent = new MouseEvent("mousedown", {
                 clientX: touch.clientX,
@@ -86,6 +122,15 @@ function DrawLetter(props) {
             canvas.dispatchEvent(mouseEvent);
         });
 
+        canvas.addEventListener("clear", e => {
+            console.log("attempting to clear...")
+            let canvas = document.getElementById("drawing-canvas");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+        })
+
+        /**
+         */
         let getCorrectAnimFrameFunction = () => {
             return window.requestAnimationFrame || 
                 window.webkitRequestAnimationFrame ||
@@ -108,20 +153,15 @@ function DrawLetter(props) {
     }, [])
 
     return(
-        <div className="task draw-letter">
-            { props.data.text }
-            <canvas id="drawing-canvas" width="320" height="320" style={{
+        <canvas 
+            id="drawing-canvas" 
+            width="320" 
+            height="320" 
+            style={{
                 border: "1px solid black"
-            }}>
-
-            </canvas>
-            <div onClick={()=>{
-                submitContinue();
-            }}>
-                Next &gt;
-            </div>
-        </div>
-    );
+            }}
+        />
+    )
 }
 
 //pull relevant props from redux state
