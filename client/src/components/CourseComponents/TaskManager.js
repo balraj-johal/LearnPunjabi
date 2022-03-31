@@ -5,6 +5,7 @@ import MultipleChoice from "./Tasks/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly";
 import End from "./Tasks/End";
 import SpecifiedOrder from "./Tasks/SpecifiedOrder";
+import DrawLetter from "./Tasks/DrawLetter";
 
 function TaskManager(props) {
     // return task component of specified type
@@ -24,9 +25,18 @@ function TaskManager(props) {
                     submitAnswer={props.submitAnswer}
                 />
             );
+        // case "SpecifiedOrder":
+        //     return(
+        //         <SpecifiedOrder 
+        //             data={props.taskData} 
+        //             submit={props.submitAnswer}
+        //             stats={props.stats}
+        //         />
+        //     );
+        // case "DrawLetter":
         case "SpecifiedOrder":
             return(
-                <SpecifiedOrder 
+                <DrawLetter 
                     data={props.taskData} 
                     submit={props.submitAnswer}
                     stats={props.stats}
