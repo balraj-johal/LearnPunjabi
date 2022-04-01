@@ -15,7 +15,8 @@ const {
 } = require("../../authentication");
 
 
-/** Update user proress by changing lesson status by lesson id
+/** 
+ * Update user proress by changing lesson status by lesson id
  * @param  {String} path "/:lessonID"
  */
 router.put("/:lessonID", (req, res) => {

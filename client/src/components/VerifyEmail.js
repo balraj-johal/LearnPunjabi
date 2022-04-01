@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-    useParams 
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import axiosClient from "../axiosDefaults";
 
@@ -15,12 +13,8 @@ function VerifyEmail(props) {
     useEffect(() => {
         if (params.code && props.csrf.ready) {
             axiosClient.get(`/api/v1/users/verify-email/${params.code}`)
-                .then(result => {
-                    console.log(result);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+                .then(result => { console.log(result); })
+                .catch(err => { console.log(err); })
         }
     }, [props.csrf.ready])
 
