@@ -330,7 +330,8 @@
           align-items: center;
 }
 
-.multiple-choice-answer {
+.task.draw-letter {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -338,28 +339,17 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 200px;
-  width: 200px;
-  border: 1px solid grey;
-  border-radius: 5px;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
 }
 
-.multiple-choice-answer.chosen {
-  background-color: lightgrey;
-}
-
-.middle-text {
-  font-size: 2.5em;
-}
-
-.bottom-text, .middle-text {
-  height: 1em;
+.task.draw-letter #drawing-canvas {
+  width: 320px;
+  height: 320px;
 }
 
 #course-container {

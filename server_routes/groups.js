@@ -24,12 +24,8 @@ const Group = require("../models/groups.model");
 let updateGroupsWeeklyXP = async (group) => {
     for (user of group.users) {
         await User.findById(user._id)
-            .then(foundUser => {
-                user.weeklyXP = foundUser.weeklyXP;
-            })
-            .catch(err => {
-                console.log(err);
-            })
+            .then(foundUser => { user.weeklyXP = foundUser.weeklyXP; })
+            .catch(err => { console.log(err); })
     }
     return group;
 }
@@ -77,9 +73,7 @@ let createNewServerGroups = () => {
         User.count({})
             .then(count => {
                 let noOfGroups = Math.ceil(count / 4);
-                if (noOfGroups < 1) {
-                    reject();
-                }
+                if (noOfGroups < 1) reject();
                 // create required groups
                 for (let counter = 0; counter < noOfGroups; counter++) {
                     groups[counter] = {

@@ -319,15 +319,10 @@ router.get("/", (req, res) => {
                     requiredCompletions: elem.requiredCompletions
                 })
             })
-            if (overview) {
-                res.status(200).send({ overview: overview });
-            } else {
-                res.status(404).send({ message: "overview data not found..." });
-            }
+            if (overview) return res.status(200).send({ overview: overview });
+            return res.status(404).send({ message: "overview data not found..." });
         })
-        .catch(err => {
-            return res.status(500).send({error: err});
-        })
+        .catch(err => { return res.status(500).send({error: err}); })
 })
 
 /**
@@ -337,7 +332,7 @@ router.get("/", (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
- router.get("/:lessonID", (req, res) => {
+router.get("/:lessonID", (req, res) => {
     verifyToken(req)
         .then(user => {
             let lesson = LESSONS.find(lesson => lesson.id === req.params.lessonID);
