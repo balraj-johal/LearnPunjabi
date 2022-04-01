@@ -29,12 +29,9 @@ function Register(props) {
             email: email,
             firstName: firstName
         }
-        axiosClient.post("/api/v1/users/register", qs.stringify(formData))
+        axiosClient.post("/api/v1/users/", qs.stringify(formData))
             .then(res => { setSuccessful(true); })
-            .catch(err => {
-                console.log("request errored, ", err.response);
-                setErrors(err.response.data);
-            })
+            .catch(err => { setErrors(err.response.data); })
     }
 
     return(

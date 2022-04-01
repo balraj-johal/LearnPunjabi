@@ -17,7 +17,7 @@ export const clearAuthErrors = () => dispatch => {
 }
 
 export const registerUser = userData => dispatch => {
-    axiosClient.post("/api/v1/users/register", qs.stringify(userData))
+    axiosClient.post("/api/v1/users/", qs.stringify(userData))
         .then(res => {
             console.log(res);
             alert("Register successful.");

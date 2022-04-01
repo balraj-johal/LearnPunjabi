@@ -35,27 +35,23 @@ let buildOverviewObject = async () => {
 }
 /**
  * Get overview of all lessons
- * @name get/overview
+ * @name get/
  * @function
  * @memberof module:api/lessons~lessonsRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/overview", (req, res) => {
+router.get("/", (req, res) => {
     verifyToken(req)
         .then(user => {
             buildOverviewObject()
                 .then(overview => {
-                    if (overview) {
-                        res.status(200).send({ overview: overview });
-                    } else {
-                        res.status(404).send({ message: "overview data not found..." });
-                    }
+                    if (overview) return res.status(200).send({ overview: overview });
+                    return res.status(404).send({ message: "overview data not found..." });
                 })
+            })
         })
-        .catch(err => {
-            return res.status(500).send({error: err});
-        })
+        .catch(err => { return res.status(500).send({error: err}); })
 })
 
 /**
