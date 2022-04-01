@@ -1,50 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-
-function DrawLetter(props) {
-    let submitAnswer = () => {
-        props.submit(true);
-    }
-
-    let clearCanvas = () => {
-        let clearEvent = new Event("clear");
-        let canvas = document.getElementById("drawing-canvas");
-        if (canvas) canvas.dispatchEvent(clearEvent);
-    }
-
-    return(
-        <div className="task draw-letter">
-            { props.data.text }
-
-            <DrawingCanvas />
-
-            <div onClick={()=>{
-                submitAnswer();
-            }}>
-                Next &gt;
-            </div>
-            <div 
-                className="task-button" 
-                id="clear-canvas" 
-                onClick={()=>{
-                    clearCanvas();
-                }}
-            >
-                Clear &gt;
-            </div>
-        </div>
-    );
-}
+import React, { useEffect, useRef } from "react";
 
 function DrawingCanvas(props) {
     let isDrawing = useRef();
     isDrawing.current = false;
-
-    // let [mousePos, setMousePos] =  useState({
-    //     x: 0, 
-    //     y: 0
-    // })
-    // let [lastPos, setLastPos] = useState(mousePos);
     
     let getMousePos = (canvas, event) => {
         let rect = canvas.getBoundingClientRect();
@@ -76,7 +34,17 @@ function DrawingCanvas(props) {
     }
 
     useEffect(() => {
-        // should be using react ref here
+        if (props.clearing) {
+            let canvas = document.getElementById("drawing-canvas");
+            let context = canvas.getContext("2d");
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.beginPath();
+            props.setClearing(false);
+        }
+    }, [props.clearing])
+
+    useEffect(() => {
+        // should be using react ref here?
         let canvas = document.getElementById("drawing-canvas");
         ctx = canvas.getContext("2d");
         ctx.strokeStyle = "#222222";
@@ -164,11 +132,4 @@ function DrawingCanvas(props) {
     )
 }
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-});
-
-export default connect(
-    mapStateToProps,
-    {}
-)(DrawLetter);
+export default DrawingCanvas;

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { 
     DragDropContext, 
     Droppable, 
-    Draggable 
 } from 'react-beautiful-dnd';
+
+import DragAnswerFragment from "./DragAnswerFragment";
+import PossAnswerFragment from "./PossAnswerFragment";
 
 function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
@@ -141,45 +142,4 @@ function SpecifiedOrder(props) {
     );
 }
 
-function DragAnswerFragment(props) {
-    return(
-        <Draggable draggableId={String(props.index)} index={props.index} >
-            {(provided) => (
-                <li
-                    className={`specified-order-answer`}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps} 
-                    {...provided.dragHandleProps}
-                    onClick={() => {
-                        props.removeFromOrder(props.possible);
-                    }}
-                >
-                    { props.possible.text ? (
-                        <div className="text"> {props.possible.text} </div>
-                    ) : null }
-                </li>
-            )}
-        </Draggable>
-    )
-}
-function PossAnswerFragment(props) {
-    return(
-        <li className={`specified-order-answer`} onClick={() => {
-            props.addToOrder(props.possible);
-        }}>
-            { props.possible ? (
-                <div className="text"> {props.possible.text} </div>
-            ) : null }
-        </li>
-    )
-}
-
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-});
-
-export default connect(
-    mapStateToProps,
-    {
-    }
-)(SpecifiedOrder);
+export default SpecifiedOrder;
