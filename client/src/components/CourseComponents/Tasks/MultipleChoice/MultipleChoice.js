@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import AudioClip from "../AudioClip";
+import AudioClip from "../../AudioClip";
+import PossibleAnswer from "./PossibleAnswer";
 
 function MultipleChoice(props) {
     let [choice, setChoice] = useState(null);
@@ -49,29 +50,7 @@ function MultipleChoice(props) {
             </div>
         </div>
     );
-}
-
-function PossibleAnswer(props) {
-    return(
-        <div
-            className={`multiple-choice-answer ${props.chosen ? "chosen" : ""}`}
-            onClick={() => {
-                props.setChoice(props.index)
-            }}
-        >
-            { props.possible.middleText ? (
-                <div className="middle-text">
-                    {props.possible.middleText}
-                </div>
-            ) : null }
-            { props.possible.bottomText ? (
-                <div className="bottom-text">
-                    {props.possible.bottomText}
-                </div>
-            ) : null }
-        </div>
-    )
-}
+};
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
