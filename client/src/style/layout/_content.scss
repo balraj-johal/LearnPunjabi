@@ -1,11 +1,11 @@
-#course-container {
+#course-custom-container {
     width: 60%;
     padding: 0 10%;
     margin: 0;
     border-right: $border-thickness solid black;
 }
-.container {
-    height: calc(100vh - 99px);
+#custom-container {
+    height: calc(100vh - 94px);
     @include vScroll;
 
     display: flex;

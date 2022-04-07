@@ -66,7 +66,7 @@ function Main(props) {
     return(
         <Router>
             <Topbar />
-            <div className="container">
+            <div id="custom-container">
                 <Routes>
                     <Route path="/" element={
                         <ProtectedComponent component={<Dashboard />} />
