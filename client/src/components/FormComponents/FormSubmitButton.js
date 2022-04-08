@@ -2,12 +2,12 @@ import React from "react";
 
 function FormSubmitButton(props) {
     return(
-        <div className={`button-wrap-${props.dataElem}`} >
+        <div className={`button-wrap-${props.dataElem} my-8`} >
             <button
                 type="submit"
-                style={{textTransform: "capitalize"}}
+                className="capitalize h-10 bg-blue-500 rounded text-white px-4"
             >
-                {props.dataElem}
+                {props.text}
             </button>
         </div>
     )

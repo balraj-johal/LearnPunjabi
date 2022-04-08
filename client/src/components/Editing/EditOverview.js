@@ -11,11 +11,20 @@ import {
     setProgress
 } from "../../actions/courseActions";
 
+
+const NEW_LESSON = {
+    name: "",
+    id: "new",
+    requiredCompletions: 1,
+    shuffle: false,
+    tasks: []
+}
+
 function EditOverview(props) {
     let [courseData, setCourseData] = useState([]);
 
     useEffect(() => {
-        axiosClient.get("/api/v1/lessons/overview")
+        axiosClient.get("/api/v1/lessons/")
             .then(res => { setCourseData(res.data.overview); })
             .catch(err => { console.log(err); })
     }, []);
@@ -26,26 +35,23 @@ function EditOverview(props) {
      * @returns { String } height - string to set height style to
      */
     let getWrapHeight = () => {
-        if (courseData.length > 0) {
-            return `${courseData.length * (182)}px`
-        } else {
-            return `calc(100vh - 99px)`
-        }
+        if (courseData.length > 0) return `${courseData.length * (182)}px`
+        return `calc(100vh - 99px)`
     }
 
+    if (courseData.length === 0) return <Loader />;
     return(
         <div 
             className="edit-wrap" 
             style={{ height: getWrapHeight() }}
         >
-            { courseData.length > 0 ? (
-                courseData.map((lesson, index) => 
-                    <LessonIcon 
-                        lesson={lesson}
-                        key={index} 
-                    />
-                )
-            ) : <Loader /> }
+            {courseData.map((lesson, index) => 
+                <LessonIcon 
+                    lesson={lesson}
+                    key={index} 
+                />
+            )}
+            <LessonIcon lesson={NEW_LESSON} />
         </div>
     )
 }
@@ -62,7 +68,7 @@ function LessonIcon(props) {
         >
             { props.lesson.name }
             <div className="edit-button">
-                Edit
+                {props.lesson.strId === "new" ? "New Lesson" : "Edit"}
             </div>
         </div>
     )
