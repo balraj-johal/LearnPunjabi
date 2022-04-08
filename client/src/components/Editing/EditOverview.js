@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import {
-    useNavigate
-} from "react-router-dom";
 import axiosClient from "../../axiosDefaults";
+
+import { _moveArrayIndex } from "../../utils/arrays";
+
+import EditOverviewEntry from "./EditOverviewEntry";
 import Loader from "../Loader";
 
-// import redux actions
-import {
-    setProgress
-} from "../../actions/courseActions";
 
-
+// TODO: this seems wrong
 const NEW_LESSON = {
     name: "",
     id: "new",
@@ -22,64 +18,81 @@ const NEW_LESSON = {
 
 function EditOverview(props) {
     let [courseData, setCourseData] = useState([]);
+    let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
+    // on mount retrieve all lessons
+    // TODO: change this to only request specific properties from the API Get Request
     useEffect(() => {
         axiosClient.get("/api/v1/lessons/")
             .then(res => { setCourseData(res.data.overview); })
             .catch(err => { console.log(err); })
     }, []);
 
-    /**
-     * calculate the height the lesson-wrap elem should be
-     * @name getWrapHeight
-     * @returns { String } height - string to set height style to
-     */
-    let getWrapHeight = () => {
-        if (courseData.length > 0) return `${courseData.length * (182)}px`
-        return `calc(100vh - 99px)`
+    let getListEndsState = (index, tasks) => {
+        if (index === 0) return "first"
+        if (index === tasks.length - 1) return "last"
+        return "middle"
+    }
+    
+    let shiftLesson = (lessonID, direction) => {
+        let oldIndex = courseData.findIndex(elem => elem.id === lessonID);
+        let valid = false;
+        switch (direction) {
+            case "up":
+                console.log("UP")
+                if (oldIndex > 0) {
+                    _moveArrayIndex(courseData, oldIndex, oldIndex - 1);
+                    valid = true;
+                }
+                break;
+            case "down":
+                console.log("DONW")
+                if (oldIndex < courseData.length) {
+                    _moveArrayIndex(courseData, oldIndex, oldIndex + 1);
+                    valid = true;
+                }
+                break;
+        }
+        if (valid) {
+            setCourseData([...courseData]);
+            setLessonOrderChanged(true);
+        }
+    }
+
+    let saveUpdatedCourseData = () => {
+        console.log("saving: ", courseData);
     }
 
     if (courseData.length === 0) return <Loader />;
+
     return(
-        <div 
-            className="edit-wrap" 
-            style={{ height: getWrapHeight() }}
-        >
+        <div className="edit-wrap">
             {courseData.map((lesson, index) => 
-                <LessonIcon 
+                <EditOverviewEntry
                     lesson={lesson}
-                    key={index} 
+                    key={index}
+                    getListEndsState={getListEndsState}
+                    listEndsState={getListEndsState(index, courseData)}
+                    shiftLesson={shiftLesson}
                 />
             )}
-            <LessonIcon lesson={NEW_LESSON} />
+            <EditOverviewEntry lesson={NEW_LESSON} new={true} />
+            <SaveButton save={saveUpdatedCourseData} show={lessonOrderChanged} />
         </div>
     )
 }
 
-function LessonIcon(props) {
-    let navigate = useNavigate();
+function SaveButton(props) {
     return(
         <div 
-            className="edit-overview"
-            id={`entry-${props.lesson.id}`}
-            onClick={() => {
-                navigate(`/edit/${props.lesson.id}`);
-            }}
+            className={`capitalize h-10 bg-blue-500 rounded w-4/12 float-right mt-12
+                text-white px-4 cursor-pointer flex justify-center items-center
+                ${props.show ? "" : "hidden"}`}
+            onClick={() => { props.save(); }}
         >
-            { props.lesson.name }
-            <div className="edit-button">
-                {props.lesson.strId === "new" ? "New Lesson" : "Edit"}
-            </div>
+            Save Order
         </div>
     )
 }
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-    userProgress: state.auth.user.progress,
-});
-
-export default connect(
-    mapStateToProps,
-    { setProgress }
-)(EditOverview);
+export default EditOverview;

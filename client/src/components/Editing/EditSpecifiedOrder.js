@@ -74,15 +74,6 @@ function EditSpecifiedOrder(props) {
                 >
                     +
                 </div>
-                {/* {data.possibleAnswers?.map((possible, index) => (
-                    <input
-                        key={index}
-                        value={possible.middleText} 
-                        id={`possible-answer-${index}`}
-                        onChange={onChange}
-                        className="rounded border-2 border-black px-1 py-0.5"
-                    />
-                ))} */}
             </div>
             <div className="input-field my-4 flex flex-col w-6/12 m-auto">
                 <div 

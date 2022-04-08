@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import EditTextOnly from "./EditTextOnly";
 import EditMultipleChoice from "./EditMultipleChoice";
@@ -6,18 +6,6 @@ import EditSpecifiedOrder from "./EditSpecifiedOrder";
 
 function TaskForm(props) {
     let [task, setTask] = useState(props.task);
-
-    let [memory, setMemory] = useState({
-        TextOnly: {},
-        MultipleChoice: {},
-        SpecifiedOrder: {}
-    });
-
-    let updateMemory = () => {
-        // let updated = {...memory};
-        // updated[task.type] = task;
-        // setMemory(updated);
-    } 
 
     let onChange = e => {
         let taskCopy = {...task};
@@ -41,18 +29,22 @@ function TaskForm(props) {
                 rounded border-2 border-black p-4 first:my-4 my-8" 
             id={`edit-task-${task.taskID}`}
         >
-            <div className="absolute top-0 left-0 w-6 h-8 
-                    flex flex-col items-center justify-center text-gray-400">
-                <div onClick={() => {
-                    props.shiftTaskUp(task.taskID);
-                }}>
-                    shiftup
+            <div className={`
+                absolute top-0 left-0 w-8 h-16 
+                flex flex-col items-center justify-center text-gray-400
+                text-xs 
+                ${props.shuffle ? "hidden" : ""}
+            `}>
+                <div
+                    className={`${props.listEndsState === "first" ? "hidden" : "no"}`} 
+                    onClick={() => { props.shiftTaskUp(task.taskID); }}>
+                    ▲
                 </div>
                 {props.index}
-                <div onClick={() => {
-                    props.shiftTaskDown(task.taskID);
-                }}>
-                    shiftdown
+                <div
+                    className={`${props.listEndsState === "last" ? "hidden" : "no"}`} 
+                    onClick={() => { props.shiftTaskDown(task.taskID); }}>
+                    ▼
                 </div>
             </div>
             <div className="input-field my-4 flex flex-col w-5/12">
@@ -64,10 +56,7 @@ function TaskForm(props) {
                 </label>
                 <select 
                     id="type" 
-                    onChange={e => {
-                        updateMemory();
-                        onChange(e);
-                    }}
+                    onChange={e => { onChange(e); }}
                     className="rounded border-2 border-black px-1 py-0.5 w-full my-0.5"
                     value={task.type}
                 >
@@ -93,7 +82,7 @@ function TaskForm(props) {
                         w-full h-28 my-0.5"
                 />
             </div>
-            <div className="answers-wrap my-4">
+            <div className="answers-wrap my-4 w-10/12">
                 <EditTextOnly 
                     task={task}
                     show={task.type === "TextOnly"}

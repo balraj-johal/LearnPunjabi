@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import axiosClient from "../../axiosDefaults";
+import { _moveArrayIndex } from "../../utils/arrays";
 
 import Loader from "../Loader";
 import TaskForm from "./TaskForm";
@@ -111,20 +112,10 @@ function EditLesson(props) {
         container.scrollTop = container.scrollHeight;
     }
 
-    let moveArrayIndex = (array, oldIndex, newIndex) => {
-        if (newIndex >= array.length) {
-            return array;
-            // let k = newIndex - array.length + 1;
-            // while (k--) { array.push(undefined); }
-        }
-        array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
-        return array;
-    };
-
     let shiftTaskUp = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem.taskID === taskID);
-        if (oldIndex > 0) moveArrayIndex(tasksCopy, oldIndex, oldIndex - 1);
+        if (oldIndex > 0) _moveArrayIndex(tasksCopy, oldIndex, oldIndex - 1);
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
     }
@@ -132,9 +123,15 @@ function EditLesson(props) {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem?.taskID === taskID);
         console.log(`id ${taskID} old index: ${oldIndex} len: ${tasksCopy.length}`)
-        if (oldIndex < tasksCopy.length) moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
+        if (oldIndex < tasksCopy.length) _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
+    }
+
+    let getListEndsState = (index, tasks) => {
+        if (index === 0) return "first"
+        if (index === tasks.length - 1) return "last"
+        return "middle"
     }
 
     if (!ready) return <Loader />;
@@ -210,12 +207,14 @@ function EditLesson(props) {
                     </h1>
                     {lesson.tasks.map((task, index) => (
                         <TaskForm 
-                            task={task} 
-                            key={task.taskID}
-                            index={index}
-                            onTasksChange={onTasksChange} 
-                            shiftTaskDown={shiftTaskDown}
-                            shiftTaskUp={shiftTaskUp}
+                            task = {task}
+                            key = {task.taskID}
+                            shuffle = {lesson.shuffle}
+                            index = {index}
+                            listEndsState = {getListEndsState(index, lesson.tasks)}
+                            onTasksChange = {onTasksChange} 
+                            shiftTaskDown = {shiftTaskDown}
+                            shiftTaskUp = {shiftTaskUp}
                         />
                     ))}
                     <div

@@ -102,7 +102,6 @@ function SpecifiedOrder(props) {
                 <Droppable droppableId="characters" direction="horizontal" >
                     {(provided) => (
                         <ul 
-                            className="answers-wrap" 
                             {...provided.droppableProps} 
                             ref={provided.innerRef}
                         >

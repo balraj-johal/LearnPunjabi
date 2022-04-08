@@ -32,7 +32,7 @@ function MultipleChoice(props) {
             { props.data.audioSrc ? (
                 <AudioClip src={props.data.audioSrc} />
             ) : null }
-            <div className="answers-wrap">
+            <div className="">
                 { props.data.possibleAnswers.map((possible, index) => 
                     <PossibleAnswer 
                         chosen={ (choice === index) ? true : false }
