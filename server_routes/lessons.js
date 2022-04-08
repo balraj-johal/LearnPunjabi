@@ -50,8 +50,7 @@ router.get("/", (req, res) => {
                     return res.status(404).send({ message: "overview data not found..." });
                 })
             })
-        })
-        .catch(err => { return res.status(500).send({error: err}); })
+            .catch(err => { return res.status(500).send( {error: err}); })
 })
 
 /**

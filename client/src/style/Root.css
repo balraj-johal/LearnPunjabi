@@ -2,6 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 #logo-full {
   margin: 1.5em 2em 0.5em;
   width: 210px;
@@ -367,6 +370,7 @@
   width: 50px;
   height: 25px;
 }
+
 .task.draw-letter {
   width: 100%;
   display: -webkit-box;
@@ -389,15 +393,15 @@
   height: 320px;
 }
 
-#course-container {
+#course-custom-container {
   width: 60%;
   padding: 0 10%;
   margin: 0;
   border-right: 3px solid black;
 }
 
-.container {
-  height: calc(100vh - 99px);
+#custom-container {
+  height: calc(100vh - 94px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;
@@ -425,8 +429,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
- monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #root {

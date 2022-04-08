@@ -1,25 +1,12 @@
-import React, {  } from "react";
-
-import { connect } from "react-redux";
+import React, {} from "react";
 
 // router imports
-import { BrowserRouter as 
-    Outlet,
-} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function Lessons(props) {
     return(
-        <>
-            <Outlet />
-        </>
+        <Outlet />
     )
 }
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-});
-
-export default connect(
-    mapStateToProps,
-    {}
-)(Lessons);
+export default Lessons;
