@@ -11,3 +11,17 @@
         display: none;
     }
 }
+
+@mixin hoverScaleUp($scale) {
+    transition: transform 0.5s ease;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale($scale);
+    }
+}
+
+@mixin vScroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}

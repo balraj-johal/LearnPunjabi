@@ -1,117 +1,134 @@
-import axios from "axios";
+import axiosClient from "../axiosDefaults";
 import qs from 'qs';
-import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
 
 //import declared action types
 import {
-    GET_ERRORS,
+    CLEAR_AUTH_ERRORS,
+    SET_AUTH_ERRORS,
     SET_CURRENT_USER,
-    USER_LOADING,
-    RESTART
+    SET_LOADED,
 } from "./types";
 
-export const registerUser = (userData) => dispatch => {
-    axios({
-        method: 'post',
-        url: "http://localhost:3001/api/users/register",
-        data: qs.stringify(userData),
-        headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        withCredentials: true
+export const clearAuthErrors = () => dispatch => {
+    dispatch({
+        type: CLEAR_AUTH_ERRORS,
+        payload: null
     })
+}
+
+export const registerUser = userData => dispatch => {
+    axiosClient.post("/api/v1/users/", qs.stringify(userData))
         .then(res => {
             console.log(res);
             alert("Register successful.");
         })
         .catch(err => {
+            console.log("register request errored, ", err.response);
             dispatch({
-                type: GET_ERRORS,
+                type: SET_AUTH_ERRORS,
                 payload: err.response.data
             })
         })
 }
 
 export const loginUser = userData => dispatch => {
-    //post user data
-    axios({
-        method: 'post',
-        url: "http://localhost:3001/api/users/login",
-        data: qs.stringify(userData),
-        headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        withCredentials: true
-    })
+    axiosClient.post("/api/v1/users/login", qs.stringify(userData))
         .then(res => {
-            //retrieve and save jwtToken
-            const {token} = res.data;
-            alert("login successful");
-            console.log("login successful: ", res.data)
-            localStorage.setItem("jwtToken", token);
-            setAuthToken(token);
-            //decode and set current user from token
-            const decodedToken = jwt_decode(token);
-            dispatch(setCurrentUser(decodedToken));
-            // window.location.reload();
+            getUserDataPromise()
+                .then(userData => { dispatch(setCurrentUser(userData)); })
+                .catch(err => {
+                    dispatch({
+                        type: SET_AUTH_ERRORS,
+                        payload: err
+                    })
+                })
         })
-        //if err dispatch GET_ERRORS with the error data
         .catch(err => {
-            
-            if (err.response) {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: err.response.data
-                })
-            } else {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: "sth else"
-                })
-            }
+            console.log("login request errored, ", err.response);
+            dispatch({
+                type: SET_AUTH_ERRORS,
+                payload: err.response.data
+            })
         })
 }
 
-export const logoutUser = () => dispatch => {
-    //post user data
-    axios({
-        method: 'get',
-        url: "http://localhost:3001/api/users/logout",
-        headers: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        withCredentials: true
-    })
+export const forgotPassword = userData => dispatch => {
+    axiosClient.post("/api/v1/users/forgot-password", qs.stringify(userData))
+        .then(res => { console.log(); })
+        .catch(err => {
+            dispatch({
+                type: SET_AUTH_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+export const resetPassword = (userData) => dispatch => {
+    console.log(userData)
+    axiosClient.post(`/api/v1/users/reset-password/${userData.code}`, qs.stringify(userData))
         .then(res => {
-            localStorage.removeItem("jwtToken");
-            setAuthToken(false);
-            //set current user to empty obj
-            dispatch(setCurrentUser({}));
-            window.localStorage.setItem("logout", Date.now())
+            console.log("reset successful");
+            console.log(res.data);
         })
-        //if err dispatch GET_ERRORS with the error data
         .catch(err => {
-            if (err.response) {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: err.response.data
-                })
-            } else {
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: "sth else"
-                })
-            }
+            dispatch({
+                type: SET_AUTH_ERRORS,
+                payload: err.response.data
+            })
         })
 }
 
-export const decodeJWTandSetUser = token => dispatch => {
-    console.log("deeconed")
-    const decodedToken = jwt_decode(token);
-    dispatch(setCurrentUser(decodedToken));
+
+export const getUserDataPromise = () => {
+    return new Promise((resolve, reject) => {
+        axiosClient.get(`/api/v1/users/`)
+            .then(res => {
+                resolve(res.data.user);
+            })
+            .catch(err => {
+                reject(err);
+            })
+    })
+}
+export const getUserData = () => dispatch => {
+    getUserDataPromise()
+        .then(userData => {
+            dispatch(setCurrentUser(userData));
+        })
+        .catch(err => {
+            console.log("get /users/data error: ", err)
+        })
 }
 
+export const logoutUser = userID => dispatch => {
+    axiosClient.post(`/api/v1/users/logout`, qs.stringify({_id: userID}))
+        .then(res => {
+            dispatch(setCurrentUser({})); 
+            window.localStorage.setItem("logout", Date.now());
+        })
+        .catch(err => {
+            console.log("post /users/logout error: ", err);
+        })
+}
+
+export const useRefreshToken = () => dispatch => {
+    axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}))
+        .then(res => {
+            console.log("token refresh successful!");
+            getUserDataPromise()
+                .then(userData => {
+                    dispatch(setCurrentUser(userData));
+                })
+                .catch(err => {
+                    console.log("post /users/refreshToken error: ", err);
+                })
+        })
+        .catch(err => {
+            console.log("Token refresh error: ", err);
+            dispatch({
+                type: SET_LOADED
+            })
+        })
+}
 
 export const setCurrentUser = decodedToken => {
     return {
@@ -119,18 +136,3 @@ export const setCurrentUser = decodedToken => {
       payload: decodedToken
     };
 };
-  
-export const setUserLoading = () => {
-    return {
-        type: USER_LOADING
-    };
-};
-
-export const setToken = token => dispatch => {
-    console.log("sett")
-    localStorage.setItem("jwtToken", token);
-    setAuthToken(token);
-    //decode and set current user from token
-    const decodedToken = jwt_decode(token);
-    dispatch(setCurrentUser(decodedToken));
-}

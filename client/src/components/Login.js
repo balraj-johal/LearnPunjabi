@@ -1,133 +1,65 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { loginUser } from "../actions/authActions";
 
-class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            submitting: false,
-            username: "",
-            password: "",
-            email: "",
-            firstName: "",
-            errors: {},
-        };
-    }
-    componentDidMount() {
-    }
+// form components
+import FormError from "./FormComponents/FormError";
+import FormInputField from "./FormComponents/FormInputField";
+import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
-    //TODO: this is dodgy need to fix, see
-    //https://reactjs.org/docs/react-component.html#unsafe_componentwillreceiveprops
-    // componentWillReceiveProps(nextProps) {
-    //     if (nextProps.auth.isAuthenticated) {
-    //         this.props.history.push("/game");
-    //         // this.state.login_fx.play(0.25);
-    //         // setTimeout(() => {
-    //         //     this.props.history.push("/game");
-    //         // }, 5000);
-    //     } else {
-    //     }
-    //     if (nextProps.errors) {
-    //         this.setState({ errors: nextProps.errors });
-    //     }
-    // }
+function Login(props) {
+    // initialise form states
+    let [username, setUsername] = useState("")
+    let [password, setPassword] = useState("")
 
-    //form control methods
-    onChange = e => {
-        this.setState({
-            [e.target.id]: e.target.value
+    let onSubmit = e => {
+        e.preventDefault();
+        props.loginUser({
+            username: username,
+            password: password
         });
     }
-    onSubmit = e => {
-        e.preventDefault();
-        // this.state.submitting = true;
-        const data = {
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email,
-            firstName: this.state.firstName,
-        };
-        this.props.loginUser(data);
-    }
 
-
-    render() {
-        const { errors } = this.state;
-        return (
-            <div className="login">
-                <div className="login-window bevel">
-                    <div className="login-area">
-                        <form className="login-form" noValidate onSubmit={this.onSubmit}>
-                            <div className="input-field">
-                                <label htmlFor="username">Username:</label><br/>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.username}
-                                    error={errors.username}
-                                    id="username"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="firstName">First Name:</label><br/>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.firstName}
-                                    error={errors.firstName}
-                                    id="firstName"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="email">Email:</label><br/>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.email}
-                                    error={errors.email}
-                                    id="email"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="password">Password:</label><br/>
-                                <input
-                                    onChange={this.onChange}
-                                    value={this.state.password}
-                                    error={errors.password}
-                                    id="password"
-                                    type="text"
-                                />
-                            </div>
-                            <div className="login-error">
-                                <span className="red-text">
-                                    {errors.username}
-                                    {errors.msg}
-                                    {errors.date}
-                                </span>
-                            </div>
-                            <div className="button-wrap-login" >
-                                <button
-                                    type="submit"
-                                >
-                                Login
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+    return(
+        <div className="login">
+            <h2>Login</h2>
+            <form className="login-form" noValidate onSubmit={ onSubmit }>
+                <FormInputField 
+                    dataElem="username"
+                    onChange={ e => setUsername(e.target.value) }
+                    value={ username }
+                    error={ props.errors.username }
+                    type="username"
+                />
+                <FormError 
+                    dataElem="username" 
+                    errors={ props.errors } 
+                />
+                <FormInputField 
+                    dataElem="password"
+                    onChange={ e => setPassword(e.target.value) }
+                    value={ password }
+                    error={ props.errors.password }
+                    type="password"
+                />
+                <FormError 
+                    dataElem="password" 
+                    errors={ props.errors } 
+                />
+                <FormError 
+                    dataElem="verification" 
+                    errors={ props.errors } 
+                />
+                <FormSubmitButton dataElem="login" />
+                <div onClick={() => {
+                    props.setManagerState("ForgotPassword");
+                }}>
+                    Forgot Password?
                 </div>
-            </div>
-        )
-    }
-}
-
-//define prop types
-Login.propTypes = {
-    loginUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+            </form>
+        </div>
+    )
 }
 
 //pull relevant props from redux state

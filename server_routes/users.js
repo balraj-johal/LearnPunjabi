@@ -1,337 +1,327 @@
+/**
+ * @module api/users
+ */
 const express = require("express");
+/**
+ * Express router to mount user related functions on.
+ * @type {object}
+ * @const
+ * @namespace usersRouter
+ */
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const rateLimit = require('express-rate-limit');
 
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
+const validatePassword = require("../validation/password");
+
 const User = require("../models/user.model");
+const Group = require("../models/groups.model");
+
+const {
+    AUTH_COOKIE_OPTIONS,
+    getNewToken, 
+    getNewRefreshToken, 
+    verifyToken,
+    verifyRefreshToken,
+} = require("../utilities/authentication");
 
 const { 
-    getToken, 
-    REFRESH_COOKIE_OPTIONS, 
-    getRefreshToken, 
-    verifyUser 
-} = require("../authenticate")
+    sendVerifCodeEmail,
+    sendPWResetEmail
+} = require("../utilities/email");
 
-router.post("/register", (req, res) => {
+const { genVerificationCode } = require("../utilities/cryptography");
+
+/**
+ * Register a new user.
+ * @name post/
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.post("/", async (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
-    if (!isValid) {
-        return res.status(400).json({error: errors});
-    }
-    //look for username in db
-    User.findOne({
-        username: req.body.username,
-    }).then(user => {
-        if (user) { //if found
-            return res.status(400).json({error: "User already exists!"});
-        } else { //if not found, create new user
-            const newUser = new User({
-                username: req.body.username,
-                password: req.body.password,
-                createdOn: req.body.createdOn,
-            })
-            //salt and hash pw
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) {
-                        throw err;
-                    }
-                    newUser.password = hash;          
-                    const refreshToken = getRefreshToken({ _id: newUser._id });
-                    newUser.refreshToken.push({refreshToken});
-                    //save user to db
-                    newUser
-                        .save()
-                        .then(user => {
-                            console.log(user);
-                            res.cookie("refreshToken", refreshToken, REFRESH_COOKIE_OPTIONS);
-                            return res.status(201).json(user);
-                        })
-                        .catch(err => console.log(err))
-                })
-                if (err) {
-                    console.log(err);
-                }
-            })
-        }
-    })
+    if (!isValid) return res.status(400).json(errors);
+    try {
+        // attempt to find user
+        let user = await User.findOne({ username: {$eq: req.body.username} });
+        if (user) return res.status(400).json({ username: "User already exists!" });
+        // if not found, create new user
+        const newUser = new User({
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+            firstName: req.body.firstName,
+            createdOn: req.body.createdOn,
+            progress: [],
+            verificationCode: genVerificationCode(8),
+            role: 'User',
+            pwResetCode: genVerificationCode(8),
+            pwResetCodeExpiry: Date.now(),
+        })
+        // salt, hash and save user password
+        let salt = await bcrypt.genSalt();
+        let hashedPassword = await bcrypt.hash(newUser.password, salt);
+        newUser.password = hashedPassword;
+        // generate refresh token and save to user
+        const refreshToken = getNewRefreshToken(newUser._id);
+        newUser.refreshToken.push({refreshToken});
+        // assign user to random leaderboard group
+        let groupCount = await Group.count();
+        let randomIndex = Math.floor(Math.random() * groupCount);
+        let randGroup = await Group.findOne().skip(randomIndex);
+        randGroup.users.push({
+            username: newUser.username,
+            _id: newUser._id,
+            weeklyXP: 0
+        });
+        let savedGroup = await randGroup.save();
+        newUser.groupID = savedGroup.groupID;
+        // save user
+        let savedUser = await newUser.save();
+        // send user a verification email
+        sendVerifCodeEmail({
+            recipient: savedUser.email,
+            code: savedUser.verificationCode,
+            host: req.get('host')
+        });
+        return res.status(201).json({ message: `Check ${savedUser.email} for a verification link!` });
+    } catch (err) { 
+        return res.status(500).json({ registration: "Error creating user." }); }
 })
-router.post("/login", (req, res) => {
-    // validate user data
-    console.log("login go")
-    const { errors, isValid } = validateLogin(req.body);
-    if (!isValid) {
-        return res.status(400).json(errors);
-    } else {
-        console.log("validation pass")
-    }
 
-    // look for user in database
-    const username = req.body.username;
-    const password = req.body.password;
-    User.findOne({ username })
-        .then(user => {
-            if (!user) {
-                return res.status(404).json({ error: "no user found." });
-            } else {
-                // check password against stored hash
-                bcrypt
-                    .compare(password, user.password) 
-                    .then(isMatch => {
-                        if (isMatch) {  
-                            console.log("pw match")
-                            // generate new refresh token and store in user entry
-                            const newRefreshToken = getRefreshToken({ _id: user._id });
-                            user.refreshToken.push({ refreshToken: newRefreshToken });
-                            user
-                                .save()
-                                .then(saveRes => {
-                                    console.log("user saved")
-                                    //create JWT payload
-                                    const payload = {
-                                        id: user.id,
-                                        name: user.name
-                                    };
-                                    // sign jwt token
-                                    jwt.sign(
-                                            payload,
-                                            process.env.PASSPORT_SECRET,
-                                            {
-                                                expiresIn: 15 * 60 // set expiry of session to 15 mins
-                                            },
-                                            (err, token) => {
-                                                if (err) {
-                                                    console.log('JWT Signing err: ', err);
-                                                    res.status(500).json({ error: "JWT Signing error" })
-                                                }
-                                                console.log("jwt'd, ", token)
-                                                res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS);
-                                                res.send({
-                                                    success: true,
-                                                    token: "Bearer " + token
-                                                });
-                                            }
-                                        )
-                                });
-                        } else {
-                            return res
-                                .status(400)
-                                .json({ error: "Wrong password." });
-                        }
-                });
+/**
+ * Login user if credentials are valid.
+ * @name post/login
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.post("/login", async (req, res) => {
+    // validate user credentials
+    const { errors, isValid } = validateLogin(req.body);
+    if (!isValid) return res.status(400).json(errors);
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+        // attempt to find user
+        let user = await User.findOne({ username: {$eq: username} });
+        if (!user) return res.status(404).json({ username: "no user found." });
+        if (user.status !== "Active") return res.status(401).json({
+            verification: "Please verify your email first!" 
+        });
+        // check if password is correct
+        let isPWMatch = await bcrypt.compare(password, user.password);
+        if (!isPWMatch) return res.status(400).json({ password: "Wrong password." });
+        // generate new refresh token and store in user entry
+        const newRefreshToken = getNewRefreshToken(user._id);
+        user.refreshToken.push({ refreshToken: newRefreshToken });
+        // save user
+        let savedUser = await user.save();
+        // set auth tokens in cookies
+        const token = getNewToken(savedUser._id);
+        res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
+        res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
+        return res.status(200).send({ message: `login for user ${savedUser._id} successful!` });
+    } catch (err) { res.status(500).json(err); }
+});
+
+
+const forgotPasswordLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 30s
+    max: 2,
+	standardHeaders: true,
+	legacyHeaders: false,
+})
+/**
+ * Will send reset password link to user if email is valid.
+ * @name post/forgotPassword
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+ router.post("/forgot-password", forgotPasswordLimiter, async (req, res) => {
+    try {
+        let user = await User.findOne({ email: {$eq: req.body.email} });
+        // if no user is found by that email
+        if (!user) return res.status(404).json({ email: "no user found." });
+        user.pwResetCode = genVerificationCode(8);
+        user.pwResetCodeExpiry = Date.now() + (3 * 60 * 1000) // 3 mins from now 
+        let savedUser = await user.save();
+        sendPWResetEmail({
+            recipient: savedUser.email,
+            code: savedUser.pwResetCode,
+            host: req.get('host')
+        })
+        return res.status(200).send({ message: "Password reset link set!" })
+    } catch (err) { return res.status(500).send(err); }
+}); 
+
+/**
+ * Resets password if code is valid
+ * @name post/resetPassword
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+*/
+router.post("/reset-password/:resetCode", async (req, res) => {
+    try {
+        let user = await User.findOne({ 
+            pwResetCode: {$eq: req.params.resetCode},
+            email: {$eq: req.body.email},
+            pwResetCodeExpiry: {$gt: Date.now()}
+        });
+        if (!user) return res.status(404).json({ error: "Token is invalid or has expired." });
+        
+        // validate new password
+        const newPassword = req.body.newPW;
+        const { errors, isValid } = validatePassword({ password: newPassword });
+        if (!isValid) return res.status(400).json(errors);
+
+        let salt = await bcrypt.genSalt();
+        let hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword;
+        user.pwResetCodeExpiry = Date.now() - 100000;
+        user.pwResetCode = genVerificationCode(8);
+
+        let savedUser = await user.save();
+        if (savedUser) return res.status(201).json({});
+        return res.status(500).json({ error: "Error saving password." });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+/**
+ * If user is verified, get user's data (that is publically accessible);
+ * @name get/
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.get("/", async (req, res) => {
+    try {
+        let user = await verifyToken(req);
+        return res.send({
+            user: {
+                _id: user._id,
+                username: user.username,
+                firstName: user.firstName,
+                progress: user.progress,
+                groupID: user.groupID,
+                weeklyXP: user.weeklyXP,
+                XP: user.XP,
+                role: user.role,
             }
         })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json(err)
-        })
-});
+    } catch (err) {
+        // TODO: correct request codes
+        return res.status(500).send({ error: err })
+    }
+})
+
+/**
+ * If supplied refreshToken is valid, generate new JWT and refreshToken
+ * @name post/refreshToken
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
 router.post("/refreshToken", (req, res, next) => {
-    // retrieve refresh token from cookies
-    let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
+    verifyRefreshToken(req)
+        .then(resultObject => {
+            let user = resultObject.user;
+            let cookieRefreshToken = resultObject.refreshToken;
+            // find the refresh token in the user's db entry
+            let tokenIndex = -1;
+            let count = 0;
+            user.refreshToken.forEach(element => {
+                storedToken = element.refreshToken;
+                if (storedToken === cookieRefreshToken) tokenIndex = count;
+                count++;
+            });
+            // if the refresh token is not present in the user's db entry
+            if (tokenIndex == -1) {
+                console.log("refresh token not present in user db");
+                return res.status(401).send("Unauthorized");
+            }
+            // generate new jwt token
+            const JWTtoken = getNewToken( user._id )
+            // create new refresh token and save in user's db entry
+            const newRefreshToken = getNewRefreshToken(user._id)
+            // replace old refresh token with the new token
+            user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
+            // save user
+            user.save((err, user) => {
+                if (err) return res.status(500).send(err);
+                // send new jwt token and store refresh token in cookies
+                res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
+                res.cookie("jwtToken", JWTtoken, AUTH_COOKIE_OPTIONS);
+                return res.status(200).send({ userID: user._id });
+            })
+        })
+        .catch(err => { res.status(500).send({ error: err }); })
+})
+
+/**
+ * If supplied refreshToken is valid, generate new JWT and refreshToken
+ * @name post/logout
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.post("/logout", async (req, res) => {
+    try {
+        let user = await verifyToken(req);
+        let tokenIndex = -1;
+        let count = 0;
+        let cookieRefreshToken = req.cookies.refreshToken;
+        if (!cookieRefreshToken) return res.status(401).send("Refresh token not present.");
     
-    if (cookieRefreshToken) {
-        try {
-            // verify refresh token against REFRESH_TOKEN_SECRET and extract user id from it
-            const payload = jwt.verify(cookieRefreshToken, process.env.REFRESH_TOKEN_SECRET)
-            // find user 
-            const userId = payload._id
-            User.findOne({ _id: userId })
-                .then(user => {
-                    if (user) {
-                        // find the refresh token in the user's db entry
-                        let tokenIndex = -1;
-                        let count = 0;
-                        user.refreshToken.forEach(element => {
-                            storedToken = element.refreshToken;
-                            if (storedToken === cookieRefreshToken) {
-                                tokenIndex = count;
-                            }
-                            count++;
-                        });
-
-                        // if the refresh token is not present in the user's db entry
-                        if (tokenIndex == -1) {
-                            console.log("refresh token not present in user db")
-                            res.status(401).send("Unauthorized1")
-                        } else {
-                            // generate new jwt token
-                            const token = getToken({ _id: userId })
-                            // create new refresh token and save in user's db entry
-                            const newRefreshToken = getRefreshToken({ _id: userId })
-                            // replace old refresh token with the new token
-                            user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
-                            // save user
-                            user.save((err, user) => {
-                                if (err) {
-                                    res.status(500).send(err)
-                                } else {
-                                    // send new jwt token and store refresh token in cookies
-                                    res.cookie("refreshToken", newRefreshToken, REFRESH_COOKIE_OPTIONS)
-                                    res.send({ 
-                                        success: true,
-                                        token: "Bearer " + token
-                                    })
-                                }
-                            })
-                        }
-                    } else {
-                        console.log("user not found")
-                        res.status(401).send("Unauthorized2")
-                    }
-                },
-                err => next(err)
-            )
-        } catch (err) {
-            console.log("error in jwt verify or user.find")
-            res.status(401).send("Unauthorized3")
-        }
-    } else {
-        console.log("cookie refresh token not present")
-        res.status(401).send("Unauthorized4")
-    }
-})
-router.get("/user-details", verifyUser, (req, res) => {
-    res.send(req.user);
-})
-router.get("/logout", verifyUser, (req, res, next) => {
-    // retrieve refresh token from cookies
-    let cookieRefreshToken = req.cookies.refreshToken; //TODO: is this safe? what is a httpOnly cookie and should it be used here?
-    // find user
-    User.findById(req.user._id)
-        .then(user => {
-                // find the refresh token in the user's db entry
-                let tokenIndex = -1;
-                let count = 0;
-                user.refreshToken.forEach(element => {
-                    storedToken = element.refreshToken;
-                    if (storedToken === cookieRefreshToken) {
-                        tokenIndex = count;
-                    }
-                    count++;
-                });
-                // if refresh token is present, delete the token
-                if (tokenIndex !== -1) {
-                    user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
-                }
-                // save user
-                user.save((err, user) => {
-                    if (err) {
-                        res.status(500).send(err)
-                    } else {
-                        // delete refresh token from cookies
-                        res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
-                        res.send({ success: true })
-                    }
-                })
-            },
-            err => next(err)
-        )
-})
-
-
-
-// @route POST api/users/register
-// @desc Register user
-// @access Public
-router.post("/registerOLD", (req, res) => {
-    console.log("register request recieved")
-    console.log("yerdr", req.body.username, req.body.password)
-    //validate userData
-    const { errors, isValid } = validateRegister(req.body);
-    if (!isValid) {
-        return res.status(400).json({error: errors});
-    }
-    //look for username in db
-    User.findOne({
-        username: req.body.username,
-    }).then(user => {
-        if (user) { //if found
-            return res.status(400).json({error: "User already exists!"});
-        } else { //if not found, create new user
-            const newUser = new User({
-                username: req.body.username,
-                password: req.body.password,
-                createdOn: req.body.createdOn,
-            })
-            //salt and hash pw
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) {
-                        throw err;
-                    }
-                    newUser.password = hash;
-                    //save user to db
-                    newUser
-                        .save()
-                        .then(user => {
-                            console.log(user)
-                            return res.status(201).json(user);
-                        })
-                        .catch(err => console.log(err))
-                })
-                if (err) {
-                    console.log(err);
-                }
-            })
-        }
-    })
-})
-
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
-router.post("/loginOLD", (req, res) => {
-    //validate userData
-    const { errors, isValid } = validateLogin(req.body);
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-
-    const username = req.body.username;
-    const password = req.body.password;
-
-    //look for user in db
-    User.findOne({ username }).then(user => {
-        if (!user) {
-            return res.status(404).json({ error: "no user found." });
-        }
-        //check password
-        bcrypt
-            .compare(password, user.password)
-            .then(isMatch => {
-                if (isMatch) {
-                    //create JWT Payload
-                    const payload = {
-                        id: user.id,
-                        name: user.name
-                    };
-                    //sign token
-                    jwt.sign(
-                        payload,
-                        process.env.PASSPORT_SECRET, //TODO: this looks very wrong
-                        {
-                            expiresIn: 3600 // set expiry of session to one hour
-                        },
-                        (err, token) => {
-                            res.json({
-                                success: true,
-                                token: "Bearer " + token
-                            });
-                            if (err) {
-                                console.log('JWT Signing err: ', err);
-                            }
-                        }
-                    );
-                } else {
-                    return res
-                        .status(400)
-                        .json({ error: "Wrong password." });
-                }
+        user.refreshToken.forEach(element => {
+            storedToken = element.refreshToken;
+            if (storedToken === cookieRefreshToken) tokenIndex = count;
+            count++;
         });
-    });
-});
+        // if refresh token is present, delete the token
+        if (tokenIndex !== -1) user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
+        // save user
+        let savedUser = await user.save();
+        // delete refresh token from cookies
+        res.clearCookie("refreshToken", AUTH_COOKIE_OPTIONS);
+        res.clearCookie("jwtToken", AUTH_COOKIE_OPTIONS);
+        return res.status(200).send({ message: "Logout successful." });
+    } catch (err) { return res.status(500).send(err); }
+})
+
+// TODO: urgent change to post 
+/**
+ * set user status to Active if the supplied email verification code is valid
+ * @name get/verify-email
+ * @function
+ * @memberof module:api/users~usersRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+router.get("/verify-email/:verificationCode", async (req, res) => {
+    try {
+        let user = await User.findOne({ verificationCode: {$eq: req.params.verificationCode} });
+        if (!user) return res.status(404).send({ message: "User not found..." });
+        user.status = "Active";
+        let savedUser = await user.save();
+        return res.status(200).send({ message: `Verification for ${savedUser.email} successful!` });
+    } catch (err) { return res.status(500).send({ error: err }); }
+})
 
 module.exports = router;

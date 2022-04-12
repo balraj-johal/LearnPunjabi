@@ -1,4 +1,15 @@
+#course-container {
+    width: 60%;
+    padding: 0 10%;
+    margin: 0;
+    border-right: $border-thickness solid black;
+}
 .container {
-    width: 80%;
-    margin: auto;
+    height: calc(100vh - 99px);
+    @include vScroll;
+
+    display: flex;
+}
+.sidebar {
+    width: 40%;
 }

@@ -1,18 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import Topbar from "./Topbar";
+import Course from "./CourseComponents/Course";
+import Sidebar from "./Sidebar";
 
 function Dashboard(props) {
+    // determine which responsive layout to use
+    let [mobile, setMobile] = useState(true);
+    
+    // set up resize handlers
+    useEffect(() => {
+        let onResize = () => {
+            window.innerWidth < 768 ? setMobile(true) : setMobile(false);
+        }
+        onResize();
+        // TODO: throttle event?
+        window.addEventListener("resize", onResize);
+        return () => {
+            window.removeEventListener("resize", onResize);
+        }
+    }, [])
 
     return(
-        <div id="main">
-            <Topbar />
-            <div class="container">
-                <h1>
-                    Root.
-                </h1>
-            </div>
-        </div>
+        mobile ? <MobileDashboard /> : <DesktopDashboard />
+    )
+}
+
+function MobileDashboard(props) {
+    return(
+        <>
+            <Course />
+        </>
+    )
+}
+function DesktopDashboard(props) {
+    return(
+        <>
+            <Course />
+            <Sidebar />
+        </>
     )
 }
 
