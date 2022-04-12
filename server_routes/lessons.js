@@ -10,9 +10,7 @@ const express = require("express");
  */
 const router = express.Router();
 
-const { 
-    verifyToken,
-} = require("../authentication");
+const { verifyToken } = require("../utilities/authentication");
 
 const LESSONS = [
     {
@@ -341,6 +339,9 @@ router.get("/:lessonID", (req, res) => {
             } else {
                 res.status(404).send({ message: "lesson not found..." });
             }
+            return res.status(401).send({
+                error: "User does not have correct role for this resource."
+            });
         })
         .catch(err => {
             return res.status(500).send({error: err});

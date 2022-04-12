@@ -102,13 +102,13 @@ let pushGroupsToDb = (groups) => {
                         groupID: updateData.groupID,
                     })
                     newGroup.save()
-                        .then(saved => { console.log("group saved"); })
+                        // .then(saved => { console.log("group saved"); })
                         .catch(err => { console.log("save failed: ", err); })
                 } else {
                     // if group already exists, update and save properties
                     DbGroup.users = updateData.users;
                     DbGroup.save()
-                        .then(saved => { console.log("group saved"); })
+                        // .then(saved => { console.log("group saved"); })
                         .catch(err => { console.log("save failed: ", err); })
                 }
                 // update associated users linking them to new groups
@@ -118,7 +118,7 @@ let pushGroupsToDb = (groups) => {
                             user.groupID = updateData.groupID;
                             user.weeklyXP = 0;
                             user.save()
-                                .then(saved => { console.log("user saved"); })
+                                // .then(saved => { console.log("user saved"); })
                                 .catch(err => { console.log("save failed: ", err); })
                         })
                 });

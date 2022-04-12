@@ -12,7 +12,7 @@ const router = express.Router();
 
 const { 
     verifyToken,
-} = require("../../authentication");
+} = require("../../utilities/authentication");
 
 
 /** 
