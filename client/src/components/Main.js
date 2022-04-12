@@ -20,6 +20,7 @@ import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
+import Welcome2 from "./Welcome2";
 
 
 function Main(props) {
@@ -62,9 +63,10 @@ function Main(props) {
 
     return(
         <Router>
-            <Topbar />
-            <div className="container">
+            {/* <Topbar /> */}
+            {/* <div className="container"> */}
                 <Routes>
+                    <Route path="/welcome" element={ <Welcome2 /> } />
                     <Route path="/" element={
                         <ProtectedComponent component={<Dashboard />} />
                     } />
@@ -76,8 +78,9 @@ function Main(props) {
                     <Route path="/account" element={<AccountManager />} />
                     <Route path="/reset-password/:code" element={ <ResetPassword /> } />
                     <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
+                    <Route path="/welcome" element={ <Welcome2 /> } />
                 </Routes>
-            </div>
+            {/* </div> */}
         </Router>
     )
 }

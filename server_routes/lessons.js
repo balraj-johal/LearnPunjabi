@@ -335,9 +335,9 @@ router.get("/:lessonID", (req, res) => {
         .then(user => {
             let lesson = LESSONS.find(lesson => lesson.id === req.params.lessonID);
             if (lesson) {
-                res.status(200).send({ lesson: lesson });
+                return res.status(200).send({ lesson: lesson });
             } else {
-                res.status(404).send({ message: "lesson not found..." });
+                return res.status(404).send({ message: "lesson not found..." });
             }
             return res.status(401).send({
                 error: "User does not have correct role for this resource."
