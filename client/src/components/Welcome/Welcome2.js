@@ -1,7 +1,7 @@
 import React, { Suspense, useRef, useEffect } from "react";
 
-import { Canvas, useThree } from '@react-three/fiber';
-// import { LayerMaterial, Depth, Noise } from 'lamina'
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+// import { LayerMaterial, Depth, Noise } from 'lamina';
 
 import ScrollPrompt from "./ScrollPrompt";
 import Cubone from "./ThreeJS/Cubone";
@@ -11,9 +11,9 @@ import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
 import RiversMid from "./RiversSVGs/RiversMid";
 
+
 import { degreesToRads } from "../../utils/math";
 
-const NO_PAGES = 3;
 function Welcome(props) {
     // initialise listeners for scroll tracking
     const top = useRef();
@@ -52,8 +52,10 @@ function Welcome(props) {
             </div>
             <div id="welcome-3" className="welcome-div grad-mid">
                 <div id="stick">
-                    <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 22 }}>
-                        <ThreeStuff />
+                    <Canvas 
+                        dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 22 }}
+                    >
+                        <ThreeStuff ref={top} />
                     </Canvas>
                 </div>
             </div>
@@ -64,18 +66,18 @@ function Welcome(props) {
     )
 }
 
-function ThreeStuff(props) {
-    const { viewport } = useThree();
+let ThreeStuff = React.forwardRef((props, ref) => {
     // set initial camera rotation
     useThree(({camera}) => {
-        camera.rotation.set(degreesToRads(-5), degreesToRads(1), 0);
+        camera.rotation.set(degreesToRads(0), degreesToRads(0), 0);
     });
+
     return(
         <Suspense fallback={null}>
-            <Cubone position={[0, 0, 0]} />
-            <Cubone position={[0, viewport.height, 0]} />
-            <Cubone position={[0, viewport.height * 1, 0]} />
-            <Caption>Cubone by Tipatat Chennavasin [CC-BY], via Poly Pizza</Caption>
+            <Caption>
+                Cubone by Tipatat Chennavasin [CC-BY], via Poly Pizza
+            </Caption>
+            <Cubone ref={ref} position={[0, 0, 0]} />
             <rectAreaLight
                 width={3}
                 height={3}
@@ -88,7 +90,7 @@ function ThreeStuff(props) {
             />
         </Suspense>
     )
-}
+})
 
 
 
