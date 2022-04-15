@@ -1,4 +1,4 @@
-@mixin noDrag {
+@mixin noHighlighting {
     user-select: none; /* supported by Chrome and Opera */
    -webkit-user-select: none; /* Safari */
    -moz-user-select: none; /* Firefox */

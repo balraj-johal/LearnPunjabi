@@ -1,7 +1,9 @@
 #welcome {
     background: rgb(240,166,255);
     background: linear-gradient(0deg, rgba(240,166,255,1) 0%, rgb(195, 255, 255) 100%);
-    // background: linear-gradient(0deg, rgba(240,166,255,1) 0%, rgba(211,255,255,1) 100%);
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 #logo-welcome {
     width: 422px;
@@ -10,12 +12,52 @@
 
 .welcome-div {
     height: 100vh;
-    border: 1px green solid;
     position: relative;
+    color: white;
+    border: rgba(128, 128, 128, 0.306) 2px solid; // debug
 
+    font-family: "Lekton";
+
+    #middle-bit {
+        @include noHighlighting();
+        position: absolute;
+        z-index: 2;
+        height: 30%;
+        top: 40%;
+        width: 80%;
+        left: 5%;
+        // border: rgba(128, 128, 128, 0.306) 2px solid; // debug
+        font-size: 24px;
+        font-weight: bold;
+        #examples-scroller {
+            display: flex;
+            flex-direction: column;
+            #punjabi {
+                font-weight: normal;
+                font-size: 36px;
+                height: 40px;
+            }
+            #translation {
+                padding-top: 10px;
+                font-weight: normal;
+                font-style: italic;
+                font-size: 16px;
+            }
+        }
+        #prompt-text {
+            margin-top: 30px;
+            line-height: 1.25em;
+            font-size: 18px;
+        }
+        .action-button {
+            position: relative;
+            margin-top: 50px;
+            // bottom: 0;
+        }
+    }
     #scroll-prompt {
         position: absolute;
-        bottom: 5%;
+        bottom: 30px;
         left: 0;
         width: 100%;
         display: flex;
@@ -24,14 +66,34 @@
         align-items: center;
 
         font-family: "Lekton";
-        color: white;
-        font-size: 24px;
+        font-size: 16px;
         font-weight: 1000;
         svg {
             margin-top: 15px;
         }
     }
 }
+
+#welcome-2 {
+    #three-things {
+        height: 60%;
+        padding: 40% 10% 40% 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+}
+
+#welcome-3 {
+    height: 300vh !important;
+    #stick {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.071);
+    }
+}
+
 #lp-logo {
     z-index: 2;
     transform: translate(0.5%, -9%) scaleX(102%);
@@ -59,4 +121,36 @@
 }
 .grad-end {
     background: linear-gradient(180deg, #86E2FF 0%, #E786FF 91.67%, #E786FF 100%);
+}
+
+@media (min-width: 1300px) {
+    #middle-bit {
+        position: absolute;
+        width: 35% !important;
+        font-size: 24px !important;
+        font-weight: bold;
+        #examples-scroller {
+            align-items: center;
+            flex-direction: row !important;
+            align-items: center;
+            #punjabi {
+                font-size: 52px !important;
+                height: 60px !important;
+                margin: 0 30px 0 0;
+            }
+            #translation {
+                font-size: 24px !important;
+            }
+        }
+        #prompt-text {
+            font-size: 24px !important;
+            margin-top: 30px;
+        }
+        .action-button {
+            margin-top: 50px;
+        }
+    }
+    #scroll-prompt {
+        font-size: 24px !important;
+    }
 }
