@@ -1,6 +1,6 @@
 import React, { Suspense, useRef, useEffect } from "react";
 
-import { Canvas, useThree, useFrame } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 // import { LayerMaterial, Depth, Noise } from 'lamina'
 
 import ScrollPrompt from "./ScrollPrompt";
@@ -11,10 +11,11 @@ import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
 import RiversMid from "./RiversSVGs/RiversMid";
 
+import { degreesToRads } from "../../utils/math";
+
 const NO_PAGES = 3;
-
 function Welcome(props) {
-
+    // initialise listeners for scroll tracking
     const top = useRef();
     const scrollArea = useRef();
     const onScroll = e => { top.current = e.target.scrollTop; };
@@ -64,10 +65,10 @@ function Welcome(props) {
 }
 
 function ThreeStuff(props) {
-    const deg2rad = degrees => degrees * (Math.PI / 180);
     const { viewport } = useThree();
+    // set initial camera rotation
     useThree(({camera}) => {
-        camera.rotation.set(deg2rad(-5), deg2rad(1), 0);
+        camera.rotation.set(degreesToRads(-5), degreesToRads(1), 0);
     });
     return(
         <Suspense fallback={null}>
