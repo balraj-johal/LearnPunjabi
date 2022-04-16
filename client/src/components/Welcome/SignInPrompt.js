@@ -8,7 +8,7 @@ function SignInPrompt(props) {
 
     return(
         <div id="middle-bit">
-            <TranslationsScroller />
+            <TranslationsScroller timeout={2000} />
             <div id="prompt-text">Learn Punjabi quickly and effectively using our intuitive learning system.</div>
             <ActionButton text="Sign In" onClick={() => {
                 navigate("/account");

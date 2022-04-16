@@ -20,7 +20,6 @@ function TranslationsScroller(props) {
     let [translationIndex, setTranslationIndex] = useState(0);
 
     let changeToNextTranslation = e => {
-        console.log(e.animationName);
         if (e.animationName === "moveUpAndFadeOut") {
             setChanging(false);
             if (translationIndex + 1 === TRANSLATIONS.length) return setTranslationIndex(0);
@@ -28,7 +27,7 @@ function TranslationsScroller(props) {
         }
         setTimeout(() => {
             setChanging(true);
-        }, 2000);
+        }, props.timeout);
     }
 
     return(

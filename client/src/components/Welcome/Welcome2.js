@@ -11,8 +11,8 @@ import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
 import RiversMid from "./RiversSVGs/RiversMid";
 
-
 import { degreesToRads } from "../../utils/math";
+import ThreeThings from "./ThreeThings";
 
 function Welcome(props) {
     // initialise listeners for scroll tracking
@@ -28,30 +28,18 @@ function Welcome(props) {
         <div id="welcome" ref={scrollArea} onScroll={onScroll} >
             <div id="welcome-1" className="welcome-div grad-top">
                 <Logo2 />
-                <RiversEnds />
+                <RiversEnds top={true} />
                 <SignInPrompt />
                 <ScrollPrompt />
             </div>
 
             <div id="welcome-2" className="welcome-div grad-mid">
-                <div id="three-things">
-                    <div id="thing-1" className="thing">
-                        <div className="title">TITLE</div>
-                        <div className="text">Learn Punjabi quickly and effectively using our intuitive learning system.</div>
-                    </div> 
-                    <div id="thing-2" className="thing">
-                        <div className="title">TITLE</div>
-                        <div className="text">Learn Punjabi quickly and effectively using our intuitive learning system.</div>
-                    </div> 
-                    <div id="thing-3" className="thing">
-                        <div className="title">TITLE</div>
-                        <div className="text">Learn Punjabi quickly and effectively using our intuitive learning system.</div>
-                    </div> 
-                </div>
+                <ThreeThings />
                 <RiversMid />
             </div>
             <div id="welcome-3" className="welcome-div grad-mid">
                 <div id="stick">
+                    <RiversMid />
                     <Canvas 
                         dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 22 }}
                     >
@@ -60,7 +48,7 @@ function Welcome(props) {
                 </div>
             </div>
             <div id="welcome-4" className="welcome-div grad-end">
-                
+                <RiversEnds top={false} />
             </div>
         </div>
     )

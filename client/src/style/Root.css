@@ -1,7 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400&display=swap");
+.animDelay500 {
+  -webkit-animation-delay: 500ms;
+          animation-delay: 500ms;
+}
+
 .moveUpAndFadeOut {
   -webkit-animation: moveUpAndFadeOut 1s ease-in;
           animation: moveUpAndFadeOut 1s ease-in;
@@ -38,6 +40,8 @@
 .fadeIn {
   -webkit-animation: fadeIn 1s ease-in;
           animation: fadeIn 1s ease-in;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
 }
 
 @-webkit-keyframes fadeIn {
@@ -56,6 +60,23 @@
   100% {
     opacity: 1;
   }
+}
+
+@font-face {
+  font-family: "Lekton";
+  src: url("fonts/Lekton-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lekton";
+  src: url("fonts/Lekton-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Lekton";
+  src: url("fonts/Lekton-Italic.ttf");
+  font-style: italic;
 }
 
 #logo-full {
@@ -537,9 +558,19 @@
   margin-top: 15px;
 }
 
+#welcome-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 #welcome-2 #three-things {
   height: 60%;
-  padding: 40% 10% 40% 15px;
+  width: 60%;
+  padding-left: 10%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -550,6 +581,21 @@
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
+}
+
+#welcome-2 #three-things .thing {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0;
+  -webkit-transition: 1s ease-in-out;
+  transition: 1s ease-in-out;
+  background-color: #ffffff83;
+  color: black;
+  border-radius: 5px;
+}
+
+#welcome-2 #three-things .thing.visible {
+  opacity: 1 !important;
 }
 
 #welcome-3 {
@@ -680,6 +726,7 @@ code {
 #root {
   overflow-x: hidden;
   height: 100vh;
+  background-color: #E786FF;
 }
 
 .button {
