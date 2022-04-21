@@ -458,12 +458,20 @@
 }
 
 #welcome {
-  background: #f0a6ff;
+  background-color: #E786FF;
   background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), to(#c3ffff));
   background: linear-gradient(0deg, #f0a6ff 0%, #c3ffff 100%);
   height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  user-select: none;
+  /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
 }
 
 #logo-welcome {
@@ -726,7 +734,6 @@ code {
 #root {
   overflow-x: hidden;
   height: 100vh;
-  background-color: #E786FF;
 }
 
 .button {

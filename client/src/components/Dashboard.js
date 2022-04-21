@@ -8,29 +8,19 @@ function Dashboard(props) {
     let [mobile, setMobile] = useState(true);
     
     // set up resize handlers
-    useEffect(() => {
-        let onResize = () => {
-            window.innerWidth < 768 ? setMobile(true) : setMobile(false);
-        }
-        onResize();
         // TODO: throttle event?
+    useEffect(() => {
+        let onResize = () => { window.innerWidth < 768 ? setMobile(true) : setMobile(false); }
         window.addEventListener("resize", onResize);
-        return () => {
-            window.removeEventListener("resize", onResize);
-        }
+        onResize();
+        return () => { window.removeEventListener("resize", onResize); }
     }, [])
 
-    return(
-        mobile ? <MobileDashboard /> : <DesktopDashboard />
-    )
+    return( mobile ? <MobileDashboard /> : <DesktopDashboard /> )
 }
 
 function MobileDashboard(props) {
-    return(
-        <>
-            <Course />
-        </>
-    )
+    return( <Course /> )
 }
 function DesktopDashboard(props) {
     return(
