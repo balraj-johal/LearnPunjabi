@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, {  } from "react";
 
-function Logo2(props) {
-    useEffect(() => {console.log(props.xTranslation)}, [props.xTranslation])
+function WelcomeLogo(props) {
+    // useEffect(() => {console.log(props.xTranslation)}, [props.xTranslation]);
     return(
         <svg 
             id="lp-logo" width="100%" height="11.5739vw" viewBox="0 0 1852 215" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -10,4 +10,4 @@ function Logo2(props) {
     )
 }
 
-export default Logo2;
+export default WelcomeLogo;

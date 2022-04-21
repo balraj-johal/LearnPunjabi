@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 
 import ScrollPrompt from "./ScrollPrompt";
 import Cubone from "./ThreeJS/Cubone";
-import Logo2 from "./Logo2";
+import WelcomeLogo from "./WelcomeLogo";
 import RiversEnds from "./RiversSVGs/RiversEnds";
 import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
@@ -27,7 +27,7 @@ function Welcome(props) {
     return(
         <div id="welcome" ref={scrollArea} onScroll={onScroll} >
             <div id="welcome-1" className="welcome-div grad-top">
-                <Logo2 />
+                <WelcomeLogo />
                 <RiversEnds top={true} />
                 <SignInPrompt />
                 <ScrollPrompt />

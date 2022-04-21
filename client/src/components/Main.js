@@ -12,11 +12,11 @@ import { getUserData, useRefreshToken } from "../actions/authActions";
 import { setCSRFReady } from "../actions/csrfActions";
 
 // component imports
+import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManager';
 import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
-import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
@@ -68,17 +68,41 @@ function Main(props) {
                 <Routes>
                     <Route path="/" element={ <Welcome /> } />
                     <Route path="/dashboard" element={
-                        <ProtectedComponent component={<Dashboard />} />
+                        <InternalPage>
+                            <ProtectedComponent component={<Dashboard />} />
+                        </InternalPage>
                     } />
-                    <Route path="/lesson" element={<Lessons />} >
+                    <Route path="/lesson" element={
+                        <InternalPage>
+                            <Lessons />
+                        </InternalPage>
+                    } >
                         <Route path=":id" element={
-                            <ProtectedComponent component={<Lesson />} />
+                            <InternalPage>
+                                <ProtectedComponent component={<Lesson />} />
+                            </InternalPage>
                         } />
                     </Route>
-                    <Route path="/account" element={<AccountManager />} />
-                    <Route path="/reset-password/:code" element={ <ResetPassword /> } />
-                    <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
-                    <Route path="/welcome" element={ <Welcome /> } />
+                    <Route path="/account" element={
+                        <InternalPage>
+                            <AccountManager />
+                        </InternalPage>
+                    } />
+                    <Route path="/reset-password/:code" element={
+                        <InternalPage>
+                            <ResetPassword /> 
+                        </InternalPage>
+                    } />
+                    <Route path="/verify-email/:code" element={
+                        <InternalPage>
+                            <VerifyEmail /> 
+                        </InternalPage>
+                    } />
+                    <Route path="/welcome" element={
+                        <InternalPage>
+                            <Welcome /> 
+                        </InternalPage>
+                    } />
                 </Routes>
             {/* </div> */}
         </Router>
