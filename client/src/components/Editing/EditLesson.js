@@ -21,8 +21,8 @@ function EditLesson(props) {
     
     let [lesson, setLesson] = useState();
     let [ready, setReady] = useState(false);
-
-    let [successful, setSuccessful] = useState(false);
+    let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+    let [submitSuccess, setSubmitSuccess] = useState(false);
     let [errors, setErrors] = useState({});
     
     // when lesson ID is updated, get and save lesson data from server
@@ -136,6 +136,31 @@ function EditLesson(props) {
 
     if (!ready) return <Loader />;
     return(
+        <>
+            <div className={`w-screen h-screen flex justify-center items-center
+                z-10 absolute top-0 left-0
+                ${showSubmitConfirm ? "" : "hidden"}    
+            `}>
+                <div className="opacity-50 w-screen h-screen bg-green-500 absolute">
+                </div>
+                <div className="opacity-100 z-20 flex justify-between w-5/12 items-center">
+                    Are you sure?
+                    <div>
+                        <button
+                            className="capitalize h-10 bg-blue-500 rounded text-white px-4"
+                            onClick={() => { saveLesson() }}
+                        >
+                            Yes
+                        </button>
+                        <button
+                            className="capitalize h-10 bg-red-500 rounded text-white px-4"
+                            onClick={() => { setShowSubmitConfirm(false) }}
+                        >
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
         <div className="edit-lesson container mx-auto pt-5
                 flex justify-center pt-10 mb-10">
             <form 
@@ -238,6 +263,7 @@ function EditLesson(props) {
                 <FormSubmitButton dataElem="edit-lesson" text={"Submit Lesson"} />
             </form>
         </div>
+        </>
     )
 }
 
