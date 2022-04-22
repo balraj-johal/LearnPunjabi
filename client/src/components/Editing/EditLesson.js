@@ -63,6 +63,8 @@ function EditLesson(props) {
                 case "SpecificOrder":
                     delete task.correctAnswerIndex;
                     break;
+                default:
+                    break;
             }
         });
         return lesson;
@@ -174,7 +176,7 @@ function EditLesson(props) {
         <>
             <div className={`w-screen h-screen flex justify-center items-center
                 z-10 absolute top-0 left-0
-                ${showSubmitConfirm ? "" : "hidden"}    
+                ${showSubmitConfirm && !submitSuccess ? "" : "hidden"}    
             `}>
                 <div className="opacity-50 w-screen h-screen bg-green-500 absolute">
                 </div>

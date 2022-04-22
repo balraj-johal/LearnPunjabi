@@ -51,6 +51,8 @@ function EditOverview(props) {
                     valid = true;
                 }
                 break;
+            default:
+                break;
         }
         if (valid) {
             setCourseData([...courseData]);
