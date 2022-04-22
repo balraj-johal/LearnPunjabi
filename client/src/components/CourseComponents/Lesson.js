@@ -19,8 +19,8 @@ function Lesson(props) {
 
     // initialise states
     let [lesson, setLesson] = useState();
-    let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     let [ready, setReady] = useState(false);
+    let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     let [answerTracking, setAnswerTracking] = useState({
         noCorrect: 0,
         noWrong: 0,
@@ -40,7 +40,7 @@ function Lesson(props) {
     useEffect(() => {
         axiosClient.get(`/api/v1/lessons/${String(id)}`)
             .then(res => {
-                let data = res.data.lesson;
+                let data = res.data;
                 if (data.shuffle) {
                     data.tasks = shuffle(data.tasks);
                 }

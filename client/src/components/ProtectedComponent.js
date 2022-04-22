@@ -17,12 +17,24 @@ function ProtectedComponent({ component, ...props}) {
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (!props.isLoading) {
-            if (props.isAuthenticated) {
-                setReady(true);
-            } else {
-                props.useRefreshToken();
-                navigate("/account");
+        if (props.role) {
+            if (!props.isLoading) {
+                if (props.auth.user.role === props.role) {
+                    setReady(true);
+                } else {
+                    console.log(props.auth);
+                    props.useRefreshToken();
+                    navigate("/restricted");
+                }
+            }
+        } else {
+            if (!props.isLoading) {
+                if (props.isAuthenticated) {
+                    setReady(true);
+                } else {
+                    props.useRefreshToken();
+                    navigate("/account");
+                }
             }
         }
     }, [props.auth]);

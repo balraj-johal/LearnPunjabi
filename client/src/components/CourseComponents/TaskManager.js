@@ -24,16 +24,15 @@ function TaskManager(props) {
                     submitAnswer={props.submitAnswer}
                 />
             );
-        // case "SpecifiedOrder":
-        //     return(
-        //         <SpecifiedOrder 
-        //             data={props.taskData} 
-        //             submit={props.submitAnswer}
-        //             stats={props.stats}
-        //         />
-        //     );
         case "SpecifiedOrder":
-        // case "DrawLetter":
+            return(
+                <SpecifiedOrder 
+                    data={props.taskData} 
+                    submit={props.submitAnswer}
+                    stats={props.stats}
+                />
+            );
+        case "DrawLetter":
             return(
                 <DrawLetter 
                     data={props.taskData} 

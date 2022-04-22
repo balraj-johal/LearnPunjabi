@@ -1,0 +1,27 @@
+.edit-overview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: $border-thickness solid black;
+    border-top: $border-thickness/2 solid black;
+    border-bottom: $border-thickness/2 solid black;
+    height: 50px;
+    padding: 15px 1em;
+    // :last-of-type {
+    //     border-bottom: $border-thickness solid black;
+    // }
+}
+.edit-wrap {
+    width: 60%;
+    margin: auto;
+}
+
+.edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #00a2ff;
+    width: 50px;
+    height: 25px;
+}

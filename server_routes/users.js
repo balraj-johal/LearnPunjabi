@@ -11,6 +11,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
 
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
@@ -25,14 +26,27 @@ const {
     getNewRefreshToken, 
     verifyToken,
     verifyRefreshToken,
-} = require("../utilities/authentication");
+} = require("../authentication");
 
 const { 
     sendVerifCodeEmail,
     sendPWResetEmail
-} = require("../utilities/email");
+} = require("../email");
 
-const { genVerificationCode } = require("../utilities/cryptography");
+
+/**
+ * Generates cryptographically secure random string of specified length
+ * @name genVerificationCode
+ * @param  {Number} length
+ * @returns {String} code
+ */
+let genVerificationCode = (length) => {
+    let code = crypto
+        .randomBytes(length)
+        .toString('base64')
+        .slice(0, length)
+    return escape(code);
+}
 
 /**
  * Register a new user.
@@ -42,14 +56,17 @@ const { genVerificationCode } = require("../utilities/cryptography");
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.post("/", async (req, res) => {
+router.post("/", (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) return res.status(400).json(errors);
-    try {
-        // attempt to find user
-        let user = await User.findOne({ username: {$eq: req.body.username} });
-        if (user) return res.status(400).json({ username: "User already exists!" });
+    //look for user in db by username
+    User.findOne({
+        username: {$eq: req.body.username},
+    }).then(user => {
+        if (user) return res.status(400).json({
+            username: "User already exists!"
+        });
         // if not found, create new user
         const newUser = new User({
             username: req.body.username,
@@ -63,35 +80,65 @@ router.post("/", async (req, res) => {
             pwResetCode: genVerificationCode(8),
             pwResetCodeExpiry: Date.now(),
         })
-        // salt, hash and save user password
-        let salt = await bcrypt.genSalt();
-        let hashedPassword = await bcrypt.hash(newUser.password, salt);
-        newUser.password = hashedPassword;
-        // generate refresh token and save to user
-        const refreshToken = getNewRefreshToken(newUser._id);
-        newUser.refreshToken.push({refreshToken});
-        // assign user to random leaderboard group
-        let groupCount = await Group.count();
-        let randomIndex = Math.floor(Math.random() * groupCount);
-        let randGroup = await Group.findOne().skip(randomIndex);
-        randGroup.users.push({
-            username: newUser.username,
-            _id: newUser._id,
-            weeklyXP: 0
-        });
-        let savedGroup = await randGroup.save();
-        newUser.groupID = savedGroup.groupID;
-        // save user
-        let savedUser = await newUser.save();
-        // send user a verification email
-        sendVerifCodeEmail({
-            recipient: savedUser.email,
-            code: savedUser.verificationCode,
-            host: req.get('host')
-        });
-        return res.status(201).json({ message: `Check ${savedUser.email} for a verification link!` });
-    } catch (err) { 
-        return res.status(500).json({ registration: "Error creating user." }); }
+        // salt and hash pw
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) throw err;
+                newUser.password = hash;
+                // generate refresh token and save to user
+                const refreshToken = getNewRefreshToken(newUser._id);
+                newUser.refreshToken.push({refreshToken});
+                // save user to random leaderboard group
+                Group.count()
+                    .then(count => {
+                        let randomIndex = Math.floor(Math.random() * count)
+                        // query all users but only fetch document offset by the random index
+                        Group.findOne()
+                            .skip(randomIndex)
+                            .then(group => {
+                                group.users.push({
+                                    username: newUser.username,
+                                    _id: newUser._id,
+                                    weeklyXP: 0
+                                });
+                                group.save()
+                                    .catch(err => { console.log(err); })
+                                newUser.groupID = group.groupID;
+
+                                /**
+                                 * // TODO:
+                                 * after 12 hours
+                                 *      if user.status === Pending
+                                 *          delete user
+                                 */
+
+                                // save user to db
+                                newUser
+                                    .save()
+                                    .then(user => {
+                                        sendVerifCodeEmail({
+                                            recipient: user.email,
+                                            code: user.verificationCode,
+                                            host: req.get('host')
+                                        });
+                                        return res.status(201).json({
+                                            message: `Check ${user.email} for a verification link!`
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        return res.status(500).json({
+                                            registration: "Error creating user."
+                                        });
+                                    })
+                            })
+                    })
+            })
+            if (err) return res.status(500).json({
+                registration: "Error creating user."
+            });
+        })
+    })
 })
 
 /**
@@ -102,33 +149,45 @@ router.post("/", async (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.post("/login", async (req, res) => {
-    // validate user credentials
+router.post("/login", (req, res) => {
+    // validate user data
     const { errors, isValid } = validateLogin(req.body);
     if (!isValid) return res.status(400).json(errors);
-    try {
-        const username = req.body.username;
-        const password = req.body.password;
-        // attempt to find user
-        let user = await User.findOne({ username: {$eq: username} });
-        if (!user) return res.status(404).json({ username: "no user found." });
-        if (user.status !== "Active") return res.status(401).json({
-            verification: "Please verify your email first!" 
-        });
-        // check if password is correct
-        let isPWMatch = await bcrypt.compare(password, user.password);
-        if (!isPWMatch) return res.status(400).json({ password: "Wrong password." });
-        // generate new refresh token and store in user entry
-        const newRefreshToken = getNewRefreshToken(user._id);
-        user.refreshToken.push({ refreshToken: newRefreshToken });
-        // save user
-        let savedUser = await user.save();
-        // set auth tokens in cookies
-        const token = getNewToken(savedUser._id);
-        res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
-        res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
-        return res.status(200).send({ message: `login for user ${savedUser._id} successful!` });
-    } catch (err) { res.status(500).json(err); }
+
+    // look for user in database
+    const username = req.body.username;
+    const password = req.body.password;
+    User.findOne({ username: {$eq: username} })
+        .then(user => {
+            if (!user) return res.status(404).json({ username: "no user found." });
+            if (user.status !== "Active") return res.status(401).json({
+                verification: "Please verify your email first!" 
+            });
+            // check password against stored hash
+            bcrypt
+                .compare(password, user.password)
+                .then(isMatch => {
+                    if (!isMatch) return res.status(400).json({ password: "Wrong password." });
+                    // generate new refresh token and store in user entry
+                    const newRefreshToken = getNewRefreshToken(user._id);
+                    user.refreshToken.push({ refreshToken: newRefreshToken });
+                    user
+                        .save()
+                        .then(saveResult => {
+                            const token = getNewToken( saveResult._id );
+                            res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
+                            res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
+                            return res.send({
+                                success: true,
+                                userID: saveResult._id
+                            });
+                        });
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err)
+        })
 });
 
 
@@ -146,23 +205,32 @@ const forgotPasswordLimiter = rateLimit({
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
- router.post("/forgot-password", forgotPasswordLimiter, async (req, res) => {
-    try {
-        let user = await User.findOne({ email: {$eq: req.body.email} });
-        // if no user is found by that email
-        if (!user) return res.status(404).json({ email: "no user found." });
-        user.pwResetCode = genVerificationCode(8);
-        user.pwResetCodeExpiry = Date.now() + (3 * 60 * 1000) // 3 mins from now 
-        let savedUser = await user.save();
-        sendPWResetEmail({
-            recipient: savedUser.email,
-            code: savedUser.pwResetCode,
-            host: req.get('host')
+ router.post("/forgot-password", forgotPasswordLimiter, (req, res) => {
+    User.findOne({ email: {$eq: req.body.email} })
+        .then(user => {
+            if (!user) return res.status(404).json({ email: "no user found." })
+            user.pwResetCode = genVerificationCode(8);
+            user.pwResetCodeExpiry = Date.now() + (3 * 60 * 1000) // 3 mins from now 
+            user.save((err, user) => {
+                if (err) return res.status(500).send(err);
+                sendPWResetEmail({
+                    recipient: user.email,
+                    code: user.pwResetCode,
+                    host: req.get('host')
+                })
+                return res.send({ 
+                    success: true,
+                    message: "Password reset link set!"
+                })
+            })
         })
-        return res.status(200).send({ message: "Password reset link set!" })
-    } catch (err) { return res.status(500).send(err); }
+        .catch(err => {
+            // TODO: should a success message be faked here? 
+            // i.e. should we say if an email isn't found or not
+            console.log(err);
+            res.status(500).json(err)
+        })
 }); 
-
 /**
  * Resets password if code is valid
  * @name post/resetPassword
@@ -170,64 +238,104 @@ const forgotPasswordLimiter = rateLimit({
  * @memberof module:api/users~usersRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
-*/
-router.post("/reset-password/:resetCode", async (req, res) => {
-    try {
-        let user = await User.findOne({ 
-            pwResetCode: {$eq: req.params.resetCode},
-            email: {$eq: req.body.email},
-            pwResetCodeExpiry: {$gt: Date.now()}
-        });
-        if (!user) return res.status(404).json({ error: "Token is invalid or has expired." });
-        
-        // validate new password
-        const newPassword = req.body.newPW;
-        const { errors, isValid } = validatePassword({ password: newPassword });
-        if (!isValid) return res.status(400).json(errors);
-
-        let salt = await bcrypt.genSalt();
-        let hashedPassword = await bcrypt.hash(newPassword, salt);
-
-        user.password = hashedPassword;
-        user.pwResetCodeExpiry = Date.now() - 100000;
-        user.pwResetCode = genVerificationCode(8);
-
-        let savedUser = await user.save();
-        if (savedUser) return res.status(201).json({});
-        return res.status(500).json({ error: "Error saving password." });
-    } catch (err) {
-        res.status(500).json(err);
-    }
+ */
+ router.post("/reset-password/:resetCode", (req, res) => {
+    // look for user in database
+    User.findOne({ 
+        pwResetCode: {$eq: req.params.resetCode},
+        email: {$eq: req.body.email},
+        pwResetCodeExpiry: {$gt: Date.now()}
+    })
+        .then(user => {
+            if (!user) return res.status(404).json({ 
+                error: "Password reset token is invalid or has expired." 
+            });
+            const PASSWORD = req.body.newPW;
+            //validate userData
+            const { errors, isValid } = validatePassword({ password: PASSWORD });
+            if (!isValid) return res.status(400).json(errors);
+            // salt and hash pw
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(PASSWORD, salt, (err, hash) => {
+                    if (err) { throw err; }
+                    user.password = hash;
+                    user.pwResetCodeExpiry = Date.now() - 100000;
+                    user.pwResetCode = genVerificationCode(8);
+                    // save user to db
+                    user
+                        .save()
+                        .then(user => { return res.status(201).json({}); })
+                        .catch(err => {
+                            console.log(err);
+                            return res.status(500).json({ error: "Error saving password." });
+                        })
+                })
+                if (err) return res.status(500).json({ error: "Error salting new password." });
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err)
+        })
 });
 
 /**
  * If user is verified, get user's data (that is publically accessible);
- * @name get/
+ * @name get/data
  * @function
  * @memberof module:api/users~usersRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/", async (req, res) => {
-    try {
-        let user = await verifyToken(req);
-        return res.send({
-            user: {
-                _id: user._id,
-                username: user.username,
-                firstName: user.firstName,
-                progress: user.progress,
-                groupID: user.groupID,
-                weeklyXP: user.weeklyXP,
-                XP: user.XP,
-                role: user.role,
-            }
+router.get("/data", (req, res, next) => {
+    verifyToken(req)
+        .then(user => {
+            return res.send({
+                user: {
+                    _id: user._id,
+                    username: user.username,
+                    firstName: user.firstName,
+                    progress: user.progress,
+                    groupID: user.groupID,
+                    weeklyXP: user.weeklyXP,
+                    XP: user.XP,
+                    role: user.role,
+                }
+            })
         })
-    } catch (err) {
-        // TODO: correct request codes
-        return res.status(500).send({ error: err })
-    }
+        .catch(err => { return res.status(500).send({ error: err }); })
 })
+
+// router.get("/adminRoleTest", (req, res, next) => {
+//     verifyToken(req)
+//         .then(user => {
+//             if (user.role === "Admin") {
+//                 res.status(200).send("success");
+//             } else {
+//                 return res.status(401).send({
+//                     error: "User does not have correct role for this resource."
+//                 });
+//             }
+//         })
+//         .catch(err => {
+//             return res.status(500).send({error: err});
+//         })
+// })
+// router.get("/userRoleTest", (req, res, next) => {
+//     verifyToken(req)
+//         .then(user => {
+//             if (user.role === "User" || user.role === "Admin") {
+//                 res.status(200).send("success");
+//             } else {
+//                 return res.status(401).send({
+//                     error: "User does not have correct role for this resource."
+//                 });
+//             }
+//         })
+//         .catch(err => {
+//             return res.status(500).send({error: err});
+//         })
+// })
 
 /**
  * If supplied refreshToken is valid, generate new JWT and refreshToken
@@ -247,16 +355,18 @@ router.post("/refreshToken", (req, res, next) => {
             let count = 0;
             user.refreshToken.forEach(element => {
                 storedToken = element.refreshToken;
-                if (storedToken === cookieRefreshToken) tokenIndex = count;
+                if (storedToken === cookieRefreshToken) {
+                    tokenIndex = count;
+                }
                 count++;
             });
             // if the refresh token is not present in the user's db entry
             if (tokenIndex == -1) {
-                console.log("refresh token not present in user db");
-                return res.status(401).send("Unauthorized");
+                console.log("refresh token not present in user db")
+                return res.status(401).send("Unauthorized1")
             }
             // generate new jwt token
-            const JWTtoken = getNewToken( user._id )
+            const token = getNewToken( user._id )
             // create new refresh token and save in user's db entry
             const newRefreshToken = getNewRefreshToken(user._id)
             // replace old refresh token with the new token
@@ -264,13 +374,20 @@ router.post("/refreshToken", (req, res, next) => {
             // save user
             user.save((err, user) => {
                 if (err) return res.status(500).send(err);
+
                 // send new jwt token and store refresh token in cookies
                 res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
-                res.cookie("jwtToken", JWTtoken, AUTH_COOKIE_OPTIONS);
-                return res.status(200).send({ userID: user._id });
+                res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
+                return res.send({ 
+                    success: true,
+                    userID: user._id
+                })
             })
         })
-        .catch(err => { res.status(500).send({ error: err }); })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({ error: err });
+        })
 })
 
 /**
@@ -281,28 +398,36 @@ router.post("/refreshToken", (req, res, next) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.post("/logout", async (req, res) => {
-    try {
-        let user = await verifyToken(req);
-        let tokenIndex = -1;
-        let count = 0;
-        let cookieRefreshToken = req.cookies.refreshToken;
-        if (!cookieRefreshToken) return res.status(401).send("Refresh token not present.");
-    
-        user.refreshToken.forEach(element => {
-            storedToken = element.refreshToken;
-            if (storedToken === cookieRefreshToken) tokenIndex = count;
-            count++;
-        });
-        // if refresh token is present, delete the token
-        if (tokenIndex !== -1) user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
-        // save user
-        let savedUser = await user.save();
-        // delete refresh token from cookies
-        res.clearCookie("refreshToken", AUTH_COOKIE_OPTIONS);
-        res.clearCookie("jwtToken", AUTH_COOKIE_OPTIONS);
-        return res.status(200).send({ message: "Logout successful." });
-    } catch (err) { return res.status(500).send(err); }
+router.post("/logout", (req, res, next) => {
+    verifyToken(req)
+        .then(user => {
+            let tokenIndex = -1;
+            let count = 0;
+            let cookieRefreshToken = req.cookies.refreshToken;
+            if (!cookieRefreshToken) return res.status(401).send("refresh token not present.")
+
+            user.refreshToken.forEach(element => {
+                storedToken = element.refreshToken;
+                if (storedToken === cookieRefreshToken) tokenIndex = count;
+                count++;
+            });
+            // if refresh token is present, delete the token
+            if (tokenIndex !== -1) {
+                user.refreshToken.id(user.refreshToken[tokenIndex]._id).remove()
+            }
+            // save user
+            user.save((err, result) => {
+                if (err) return res.status(500).send(err);
+                // delete refresh token from cookies
+                res.clearCookie("refreshToken", AUTH_COOKIE_OPTIONS);
+                res.clearCookie("jwtToken", AUTH_COOKIE_OPTIONS);
+                return res.send({ success: true });
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).send({ error: err });
+        })
 })
 
 // TODO: urgent change to post 
@@ -314,14 +439,18 @@ router.post("/logout", async (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/verify-email/:verificationCode", async (req, res) => {
-    try {
-        let user = await User.findOne({ verificationCode: {$eq: req.params.verificationCode} });
-        if (!user) return res.status(404).send({ message: "User not found..." });
-        user.status = "Active";
-        let savedUser = await user.save();
-        return res.status(200).send({ message: `Verification for ${savedUser.email} successful!` });
-    } catch (err) { return res.status(500).send({ error: err }); }
+router.get("/verify-email/:verificationCode", (req, res, next) => {
+    User.findOne({ verificationCode: {$eq: req.params.verificationCode} })
+        .then(user => {
+            if (!user) return res.status(404).send({ message: "User not found..." });
+            user.status = "Active";
+            user.save()
+                .then(savedUser => { return res.status(200).send({}); })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(500).send({ error: err });
+                })
+        })
 })
 
 module.exports = router;

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "abstracts/mixins";
 @import "abstracts/animations";
 @import "abstracts/variables";
@@ -15,6 +19,8 @@
 @import "components/multipleChoice/multipleChoice";
 @import "components/multipleChoice/answer";
 @import "components/specifiedOrder/specifiedOrder";
+
+@import "components/edit/overview";
 // @import "components/multipleChoice/answer";
 @import "components/drawLetter/drawLetter";
 

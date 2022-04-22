@@ -2,6 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 #logo-full {
   margin: 1.5em 2em 0.5em;
   width: 210px;
@@ -163,6 +166,8 @@
 
 .task {
   margin-top: 50px;
+  width: 60%;
+  margin: auto;
 }
 
 #leaderboard {
@@ -272,12 +277,13 @@
   height: 1em;
 }
 
-.specified-order .answers-wrap {
+.specified-order .answers-wrap, .specified-order #answers, .specified-order #possibilites {
   margin: 1em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   list-style-type: none;
+  min-height: 25px;
   padding: 2px;
   border-bottom: 1px solid rgba(128, 128, 128, 0.226);
 }
@@ -330,6 +336,44 @@
           align-items: center;
 }
 
+.edit-overview {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 3px solid black;
+  border-top: 1.5px solid black;
+  border-bottom: 1.5px solid black;
+  height: 50px;
+  padding: 15px 1em;
+}
+
+.edit-wrap {
+  width: 60%;
+  margin: auto;
+}
+
+.edit-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: white;
+  background-color: #00a2ff;
+  width: 50px;
+  height: 25px;
+}
+
 .task.draw-letter {
   width: 100%;
   display: -webkit-box;
@@ -352,15 +396,15 @@
   height: 320px;
 }
 
-#course-container {
+#course-custom-container {
   width: 60%;
   padding: 0 10%;
   margin: 0;
   border-right: 3px solid black;
 }
 
-.container {
-  height: calc(100vh - 99px);
+#custom-container {
+  height: calc(100vh - 94px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;
