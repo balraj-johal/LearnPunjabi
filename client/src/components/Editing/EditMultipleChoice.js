@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 function EditMultipleChoice(props) {
     // TODO: bottomText & middleText params
     let [data, setData] = useState({
-        possibleAnswers: props.task.possibleAnswers,
-        correctAnswerIndex: props.task.correctAnswerIndex || 0
+        possibleAnswers: props.task.possibleAnswers || [],
+        correctAnswerIndex: props.task.correctAnswerIndex || 0,
     })
 
     let onFieldChange = e => {
@@ -76,8 +76,10 @@ function EditMultipleChoice(props) {
                             -
                         </div>
                         <div
-                            className="absolute top-0 left-0 h-12 w-12 text-lg 
-                                flex justify-center items-center text-green-500" 
+                            className={`absolute top-0 left-0 h-12 w-12 text-lg 
+                                flex justify-center items-center text-green-500
+                                ${data.correctAnswerIndex === index ? "hidden" : ""} transition-all  
+                            `}
                             onClick={() => {selectAnswerAsCorrect(index)}} 
                         >
                             ✓

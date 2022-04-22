@@ -166,6 +166,8 @@
 
 .task {
   margin-top: 50px;
+  width: 60%;
+  margin: auto;
 }
 
 #leaderboard {
@@ -275,12 +277,13 @@
   height: 1em;
 }
 
-.specified-order .answers-wrap {
+.specified-order .answers-wrap, .specified-order #answers, .specified-order #possibilites {
   margin: 1em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   list-style-type: none;
+  min-height: 25px;
   padding: 2px;
   border-bottom: 1px solid rgba(128, 128, 128, 0.226);
 }

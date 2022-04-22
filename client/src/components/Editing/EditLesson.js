@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import axiosClient from "../../axiosDefaults";
+import qs from "qs";
 import { _moveArrayIndex } from "../../utils/arrays";
 
 import Loader from "../Loader";
@@ -40,11 +41,15 @@ function EditLesson(props) {
         }
     }, [id]);
 
-    let onSubmit = e => {
-        e.preventDefault();
-        
-        let lessonCopy = {...lesson};
-        lessonCopy.tasks.forEach(task => {
+    /**
+     * strips each task in the lesson of all the unnecessary
+     * @name removeUnnecessaryTaskProperties
+     * @param {Object} lesson
+     * @returns {Object} lesson with only the properties relevant to its tasks
+     */
+    // TODO: improve removal of properties in possible answers of spec order etc.
+    let removeUnnecessaryTaskProperties = (lesson) => {
+        lesson.tasks.forEach(task => {
             // delete unneeded properties
             switch (task.type) {
                 case "TextOnly":
@@ -57,24 +62,29 @@ function EditLesson(props) {
                 case "SpecificOrder":
                     delete task.correctAnswerIndex;
                     break;
-                default:
-                    break;
             }
         });
+        return lesson;
+    }
 
-        lessonCopy.id = `l-${lessonCopy.name}`
-
-        console.log(lessonCopy);
-        // axiosClient.post(`/api/v1/lessons/${String(id)}`, qs.stringify(lesson))
-        //     .then(res => { setSuccessful(true); })
-        //     .catch(err => { setErrors(err.response.data); })
+    let onSubmit = e => {
+        e.preventDefault();
+        setShowSubmitConfirm(true);
+    }
+    let saveLesson = () => {
+        let lessonCopy = {...lesson};
+        lessonCopy = removeUnnecessaryTaskProperties(lesson);
+        lessonCopy.id = `lesson-${lessonCopy.name}`;
+        console.log("submitting: ", lessonCopy);
+        axiosClient.post(`/api/v1/lessons/${String(id)}`, qs.stringify(lesson))
+            .then(res => { setSubmitSuccess(true); })
+            .catch(err => { setErrors(err.response.data); })
     }
 
     let onChange = e => {
         let lessonCopy = {...lesson};
         const target = e.target;
         let value = target.type === "checkbox" ? target.checked : target.value;
-        console.log(`${target.id} is ${value}`)
         lessonCopy[target.id] = value;
         setLesson(lessonCopy);
     }
@@ -161,108 +171,108 @@ function EditLesson(props) {
                     </div>
                 </div>
             </div>
-        <div className="edit-lesson container mx-auto pt-5
-                flex justify-center pt-10 mb-10">
-            <form 
-                className="edit-lesson-form w-8/12" 
-                noValidate 
-                onSubmit={ onSubmit }
-            >
-                <h1 className="text-xl font-bold" >
-                    Edit Lesson {lesson.name}
-                </h1>
-                <div className="input-field my-4 flex flex-col">
-                    <div 
-                        htmlFor="name"
-                        style={{textTransform: "capitalize"}}
-                        className=""
-                    >
-                        Name:
-                    </div>
-                    <input
-                        onChange={onChange}
-                        value={lesson.name}
-                        placeholder={"Lesson Name"}
-                        id="name"
-                        error={errors.name}
-                        className="rounded border-2 border-black px-1 
-                            py-0.5 w-5/12 my-1"
-                    />
-                </div>
-
-                <div className="input-field my-4 flex flex-col">
-                    <label 
-                        htmlFor="requiredCompletions"
-                        style={{textTransform: "capitalize"}}
-                    >
-                        Required Completions:
-                    </label>
-                    <input
-                        className="rounded border-2 border-black px-1 
-                            py-0.5 w-5/12 my-1"
-                        onChange={onChange}
-                        value={lesson.requiredCompletions}
-                        error={errors.requiredCompletions}
-                        id="requiredCompletions"
-                        type="number"
-                    />
-                </div>
-
-                <div className="input-field my-4 flex items-center">
-                    <label 
-                        htmlFor="shuffle"
-                        style={{textTransform: "capitalize"}}
-                    >
-                        Shuffle Tasks:
-                    </label>
-                    <input
-                        className="rounded border-2 border-black w-6 h-6 
-                            px-1 py-0.5 mx-3"
-                        onChange={onChange}
-                        checked={lesson.shuffle}
-                        error={errors.shuffle}
-                        id="shuffle"
-                        type="checkbox"
-                    />
-                </div>
-
-                <div className="mt-8">
+            <div className="edit-lesson container mx-auto pt-5
+                    flex justify-center pt-10 mb-10">
+                <form 
+                    className="edit-lesson-form w-8/12" 
+                    noValidate 
+                    onSubmit={ onSubmit }
+                >
                     <h1 className="text-xl font-bold" >
-                        Tasks:
+                        Edit Lesson {lesson.name}
                     </h1>
-                    {lesson.tasks.map((task, index) => (
-                        <TaskForm 
-                            task = {task}
-                            key = {task.taskID}
-                            shuffle = {lesson.shuffle}
-                            index = {index}
-                            listEndsState = {getListEndsState(index, lesson.tasks)}
-                            onTasksChange = {onTasksChange} 
-                            shiftTaskDown = {shiftTaskDown}
-                            shiftTaskUp = {shiftTaskUp}
-                        />
-                    ))}
-                    <div
-                        className="flex flex-col justify-evenly items-center
-                            rounded border-2 border-black p-4 first:my-4 my-8
-                            group hover:bg-blue-400 hover:text-white 
-                            hover:border-blue-400 transition-all
-                            w-32 h-32 mx-auto"
-                        onClick={() => {
-                            addNewTask();
-                        }}
-                    >
-                        Add new task
+                    <div className="input-field my-4 flex flex-col">
                         <div 
-                            className="text-3xl text-blue-400
-                                group-hover:text-white transition-all"
-                        >+</div>
+                            htmlFor="name"
+                            style={{textTransform: "capitalize"}}
+                            className=""
+                        >
+                            Name:
+                        </div>
+                        <input
+                            onChange={onChange}
+                            value={lesson.name}
+                            placeholder={"Lesson Name"}
+                            id="name"
+                            error={errors.name}
+                            className="rounded border-2 border-black px-1 
+                                py-0.5 w-5/12 my-1"
+                        />
                     </div>
-                </div>
 
-                <FormSubmitButton dataElem="edit-lesson" text={"Submit Lesson"} />
-            </form>
-        </div>
+                    <div className="input-field my-4 flex flex-col">
+                        <label 
+                            htmlFor="requiredCompletions"
+                            style={{textTransform: "capitalize"}}
+                        >
+                            Required Completions:
+                        </label>
+                        <input
+                            className="rounded border-2 border-black px-1 
+                                py-0.5 w-5/12 my-1"
+                            onChange={onChange}
+                            value={lesson.requiredCompletions}
+                            error={errors.requiredCompletions}
+                            id="requiredCompletions"
+                            type="number"
+                        />
+                    </div>
+
+                    <div className="input-field my-4 flex items-center">
+                        <label 
+                            htmlFor="shuffle"
+                            style={{textTransform: "capitalize"}}
+                        >
+                            Shuffle Tasks:
+                        </label>
+                        <input
+                            className="rounded border-2 border-black w-6 h-6 
+                                px-1 py-0.5 mx-3"
+                            onChange={onChange}
+                            checked={lesson.shuffle}
+                            error={errors.shuffle}
+                            id="shuffle"
+                            type="checkbox"
+                        />
+                    </div>
+
+                    <div className="mt-8">
+                        <h1 className="text-xl font-bold" >
+                            Tasks:
+                        </h1>
+                        {lesson.tasks.map((task, index) => (
+                            <TaskForm 
+                                task = {task}
+                                key = {task.taskID}
+                                shuffle = {lesson.shuffle}
+                                index = {index}
+                                listEndsState = {getListEndsState(index, lesson.tasks)}
+                                onTasksChange = {onTasksChange} 
+                                shiftTaskDown = {shiftTaskDown}
+                                shiftTaskUp = {shiftTaskUp}
+                            />
+                        ))}
+                        <div
+                            className="flex flex-col justify-evenly items-center
+                                rounded border-2 border-black p-4 first:my-4 my-8
+                                group hover:bg-blue-400 hover:text-white 
+                                hover:border-blue-400 transition-all
+                                w-32 h-32 mx-auto"
+                            onClick={() => {
+                                addNewTask();
+                            }}
+                        >
+                            Add new task
+                            <div 
+                                className="text-3xl text-blue-400
+                                    group-hover:text-white transition-all"
+                            >+</div>
+                        </div>
+                    </div>
+
+                    <FormSubmitButton dataElem="edit-lesson" text={"Submit Lesson"} />
+                </form>
+            </div>
         </>
     )
 }

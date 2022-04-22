@@ -83,25 +83,12 @@ function SpecifiedOrder(props) {
     return(
         <div className="task specified-order">
             { props.data.text }
-            { props.data.audioSrc ? (
-                <div className="audio">
-                    <audio 
-                        id={`audio-${props.data.audioSrc}`} 
-                        src={ `https://d2hks59q0iv04y.cloudfront.net/${props.data.audioSrc}` }
-                        autoPlay={true}
-                    />
-                    <div className="replay-audio-button button" onClick={() => {
-                        let audElem = document.getElementById(`audio-${props.data.audioSrc}`);
-                        audElem.currentTime = 0;
-                        audElem.play();
-                    }}>replay</div>
-                </div>
-            ) : null }
-
+            { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <DragDropContext onDragEnd={handleDragEnd} >
                 <Droppable droppableId="characters" direction="horizontal" >
                     {(provided) => (
                         <ul 
+                            id="answers"
                             {...provided.droppableProps} 
                             ref={provided.innerRef}
                         >
@@ -120,7 +107,7 @@ function SpecifiedOrder(props) {
             </DragDropContext>
             
             <div id="possible-fragments">
-                <ul className="possiblities-wrap">
+                <ul className="possiblities-wrap" id="possibilites">
                     {possibleFrags.map((data, index) => 
                         <PossAnswerFragment 
                             possible={data}

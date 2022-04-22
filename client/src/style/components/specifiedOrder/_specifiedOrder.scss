@@ -1,8 +1,10 @@
 .specified-order {
-    .answers-wrap {
+    .answers-wrap, #answers, #possibilites {
         margin: 1em;
         display: flex;
         list-style-type: none;
+
+        min-height: 25px;
 
         padding: 2px;
         border-bottom: 1px solid rgba(128, 128, 128, 0.226);

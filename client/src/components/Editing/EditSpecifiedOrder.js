@@ -3,29 +3,46 @@ import React, { useState, useEffect } from "react";
 function EditSpecifiedOrder(props) {
     // TODO: bottomText & middleText params
     let [data, setData] = useState({
-        possibleAnswers: props.task.possibleAnswers,
-        correctAnswer: props.task.correctAnswer
+        possibleAnswers: props.task.possibleAnswers || [],
+        correctAnswer: props.task.correctAnswer || "",
     })
 
     let onChange = e => {
-        console.log(`changing ${e.target.id} to ${e.target.value}`)
         let dataCopy = {...data};
         if (e.target.id.includes("possible-answer-")) {
             let index = Number(e.target.id.substring(16));
-            dataCopy.possibleAnswers[index].middleText = e.target.value;
+            dataCopy.possibleAnswers[index].text = e.target.value;
         } else { 
             dataCopy[e.target.id] = e.target.value;
         }
         setData(dataCopy);
     }
 
+    /** gets index of first currently unused answer ID number
+     * @name getNewAnswerID
+     * @returns {Number} index
+     */
+    let getNewAnswerID = () => {
+        let answers = data.possibleAnswers;
+        let found = new Array(answers.length);
+        found.fill(0);
+        answers.forEach(answer => {
+            found[Number(answer.id.replace("a-", ""))] = 1;
+        });
+        console.log("found", found);
+        for (let i = 0; i < found.length; i++) {
+            if (found[i] === 0) return i;
+        }
+        return answers.length;
+    }
+
     let addNewAnswer = () => {
         let dataCopy = {...data};
-        let newAnswer = {
-            middleText: "",
-            bottomText: ""
-        }
         if (!dataCopy.possibleAnswers) dataCopy.possibleAnswers = [];
+        let newAnswer = {
+            text: "",
+            id: `a-${getNewAnswerID()}`
+        }
         dataCopy.possibleAnswers.push(newAnswer);
         setData(dataCopy);
     }
@@ -52,7 +69,7 @@ function EditSpecifiedOrder(props) {
                         <input
                             className="rounded border-2 border-black px-1 py-0.5 
                                 w-28 h-28 text-center m-3"
-                            value={possible.middleText} 
+                            value={possible.text} 
                             id={`possible-answer-${index}`} 
                             onChange={onChange}
                             // onClick={() => {selectAnswerAsCorrect(index)}}

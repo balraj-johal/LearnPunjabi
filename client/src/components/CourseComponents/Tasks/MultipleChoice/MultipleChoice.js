@@ -13,7 +13,7 @@ function MultipleChoice(props) {
 
     let checkAnswer = () => {
         if (choice !== null) {
-            if (choice === props.data.correctAnswerIndex) {
+            if (choice === Number(props.data.correctAnswerIndex)) {
                 alert("answer right")
                 props.submitAnswer(true);
             } else {
@@ -29,10 +29,8 @@ function MultipleChoice(props) {
     return(
         <div className="task multiple-choice">
             { props.data.text }
-            { props.data.audioSrc ? (
-                <AudioClip src={props.data.audioSrc} />
-            ) : null }
-            <div className="">
+            { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
+            <div className="answers-wrap">
                 { props.data.possibleAnswers.map((possible, index) => 
                     <PossibleAnswer 
                         chosen={ (choice === index) ? true : false }
