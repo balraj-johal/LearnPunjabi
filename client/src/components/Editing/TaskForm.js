@@ -82,6 +82,23 @@ function TaskForm(props) {
                         w-full h-28 my-0.5"
                 />
             </div>
+            <div className="input-field my-4 flex flex-col w-5/12">
+                <label 
+                    htmlFor="audioSrc"
+                    style={{textTransform: "capitalize"}}
+                >
+                    Audio FIlename - if needed:
+                </label>
+                <input
+                    onChange={onChange}
+                    value={task.audioSrc}
+                    placeholder="enter audio filename here"
+                    id="audioSrc"
+                    type="text"
+                    className="rounded border-2 border-black px-1 py-0.5 
+                        w-full my-0.5"
+                />
+            </div>
             <div className="answers-wrap my-4 w-10/12">
                 <EditTextOnly 
                     task={task}
