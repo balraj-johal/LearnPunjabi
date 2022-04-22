@@ -60,20 +60,17 @@ router.get("/", (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/:lessonID", (req, res) => {
-    verifyToken(req)
-        .then(user => {
-            Lesson.findOne({ strId: { $eq: req.params.lessonID } })
-                .then(lesson => {
-                    if (lesson) {
-                        return res.status(200).send(lesson);
-                    } else {
-                        return res.status(404).send("Lesson not found.");
-                    }
-                })
-                .catch(err => { return res.status(500).send({error: err}); })
-        })
-        .catch(err => { return res.status(500).send({error: err}); })
+router.get("/:lessonID", async (req, res) => {
+    try {
+        let user = await verifyToken(req);
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.")
+        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
+        if (!lesson) return res.status(404).send("Lesson not found.");
+        return res.status(200).send(lesson);
+    } catch (err) {
+        // TODO: correct response codes
+        return res.status(500).send({ error: err })
+    }
 })
 
 /**
@@ -84,42 +81,27 @@ router.get("/:lessonID", (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.post("/:lessonID", (req, res) => {
-    verifyToken(req)
-        .then(user => {
-            if (user.role === "Admin") {
-                Lesson.findOne({ strId: { $eq: req.params.lessonID } })
-                    .then(lesson => {
-                        if (!lesson) {
-                            lesson = new Lesson({
-                                name: req.body.name,
-                                strId: req.body.strId,
-                                requiredCompletions: req.body.requiredCompletions,
-                                shuffle: req.body.shuffle,
-                                tasks: req.body.tasks,
-                            })
-                        } else {
-                            lesson.name = req.body.name;
-                            lesson.strId = req.body.strId;
-                            lesson.requiredCompletions = req.body.requiredCompletions;
-                            lesson.shuffle = req.body.shuffle;
-                            lesson.tasks = req.body.tasks;
-                        }
-                        lesson.save()
-                            .then(saved => {
-                                return res.status(200).send(saved);
-                            })
-                            .catch(err => {
-                                return res.status(500).send("Error saving lesson: ", err);
-                            })
-                    })
-                    .catch(err => { return res.status(500).send({error: err}); })
-            } else {
-                return res.status(401).send({
-                    error: "User does not have correct role for this resource."
-                });
-            }
-        })
+router.post("/:lessonID", async (req, res) => {
+    try {
+        let user = await verifyToken(req);
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.")
+        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
+        if (!lesson) lesson = new Lesson()
+        lesson.name = req.body.name;
+        lesson.strId = req.body.strId;
+        lesson.requiredCompletions = req.body.requiredCompletions;
+        lesson.shuffle = req.body.shuffle;
+        lesson.tasks = req.body.tasks;
+        lesson.save()
+            .then(saved => { return res.status(200).send({
+                savedLesson : saved,
+                message: "Save successful."
+            }); })
+            .catch(err => { return res.status(500).send("Error saving lesson: ", err); })
+    } catch (err) {
+        // TODO: correct response codes
+        return res.status(500).send({ error: err })
+    }
 })
 
 module.exports = router;
