@@ -27,7 +27,7 @@ function EditSpecifiedOrder(props) {
         let found = new Array(answers.length);
         found.fill(0);
         answers.forEach(answer => {
-            found[Number(answer.id.replace("a-", ""))] = 1;
+            found[Number(answer.id?.replace("a-", ""))] = 1;
         });
         console.log("found", found);
         for (let i = 0; i < found.length; i++) {
