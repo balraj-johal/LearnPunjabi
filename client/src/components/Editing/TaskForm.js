@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 
-import EditTextOnly from "./EditTextOnly";
-import EditMultipleChoice from "./EditMultipleChoice";
-import EditSpecifiedOrder from "./EditSpecifiedOrder";
+import EditMultipleChoice from "./MultipleChoice/EditMultipleChoice";
+import EditSpecifiedOrder from "./SpecifiedOrder/EditSpecifiedOrder";
 
 function TaskForm(props) {
     let [task, setTask] = useState(props.task);
 
+    /** updates form state on change of form field value
+     * @name onChange
+     * @param {Object} e - change event
+    */
     let onChange = e => {
         let taskCopy = {...task};
         taskCopy[e.target.id] = e.target.value;
@@ -14,6 +17,11 @@ function TaskForm(props) {
         props.onTasksChange(taskCopy);
     }
     
+    /** updates task with new answers data fully, 
+     * ensuring each property is matched
+     * @name onChange
+     * @param {Object} aData - answers data
+    */
     let onAnswerDataChange = (aData) => {
         let taskCopy = {...task};
         for (const property in aData) {
@@ -100,11 +108,6 @@ function TaskForm(props) {
                 />
             </div>
             <div className="answers-wrap my-4 w-10/12">
-                <EditTextOnly 
-                    task={task}
-                    show={task.type === "TextOnly"}
-                    onAnswerDataChange={onAnswerDataChange}
-                />
                 <EditMultipleChoice 
                     task={task}
                     show={task.type === "MultipleChoice"}

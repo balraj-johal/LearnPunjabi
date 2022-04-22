@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../axiosDefaults";
 
-import { _moveArrayIndex } from "../../utils/arrays";
+import { _moveArrayIndex, _getListEndsState } from "../../utils/arrays";
 
 import EditOverviewEntry from "./EditOverviewEntry";
 import Loader from "../Loader";
@@ -27,13 +27,12 @@ function EditOverview(props) {
             .then(res => { setCourseData(res.data.overview); })
             .catch(err => { console.log(err); })
     }, []);
-
-    let getListEndsState = (index, tasks) => {
-        if (index === 0) return "first"
-        if (index === tasks.length - 1) return "last"
-        return "middle"
-    }
     
+    /** Moves specified lesson back or forwards in course order
+     * @name shiftLesson
+     * @param {String} lessonID
+     * @param {String} direction
+     */
     let shiftLesson = (lessonID, direction) => {
         let oldIndex = courseData.findIndex(elem => elem.id === lessonID);
         let valid = false;
@@ -64,15 +63,14 @@ function EditOverview(props) {
     }
 
     if (courseData.length === 0) return <Loader />;
-
     return(
         <div className="edit-wrap">
             {courseData.map((lesson, index) => 
                 <EditOverviewEntry
                     lesson={lesson}
                     key={index}
-                    getListEndsState={getListEndsState}
-                    listEndsState={getListEndsState(index, courseData)}
+                    _getListEndsState={_getListEndsState}
+                    listEndsState={_getListEndsState(index, courseData)}
                     shiftLesson={shiftLesson}
                 />
             )}
@@ -82,6 +80,7 @@ function EditOverview(props) {
     )
 }
 
+// TODO: atomise
 function SaveButton(props) {
     return(
         <div 

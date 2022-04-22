@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 
 import AudioClip from "../../AudioClip";
 import PossibleAnswer from "./PossibleAnswer";
@@ -7,10 +6,14 @@ import PossibleAnswer from "./PossibleAnswer";
 function MultipleChoice(props) {
     let [choice, setChoice] = useState(null);
 
+    // clear chosen answer when task data changes
     useEffect(() => {
         setChoice(null);
     }, [props.data])
 
+    /** checks if answer is correct and handles outcome 
+     * @name checkAnswer
+     */
     let checkAnswer = () => {
         if (choice !== null) {
             if (choice === Number(props.data.correctAnswerIndex)) {
@@ -50,12 +53,4 @@ function MultipleChoice(props) {
     );
 };
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-});
-
-export default connect(
-    mapStateToProps,
-    {
-    }
-)(MultipleChoice);
+export default MultipleChoice;

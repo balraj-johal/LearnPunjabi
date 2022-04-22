@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 
 import axiosClient from "../../axiosDefaults";
 import qs from "qs";
-import { _moveArrayIndex } from "../../utils/arrays";
+import { _moveArrayIndex, _getListEndsState } from "../../utils/arrays";
 
 import Loader from "../Loader";
 import TaskForm from "./TaskForm";
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
+// TODO: where best to store new lesson template?
 const NEW_LESSON = {
     name: "",
     id: "new",
@@ -26,7 +27,7 @@ function EditLesson(props) {
     let [submitSuccess, setSubmitSuccess] = useState(false);
     let [errors, setErrors] = useState({});
     
-    // when lesson ID is updated, get and save lesson data from server
+    // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
         if (id === "new") {
             setLesson(NEW_LESSON);
@@ -67,10 +68,18 @@ function EditLesson(props) {
         return lesson;
     }
 
+    /** On form submit, show the confirmation modal
+     * @name onSubmit
+     * @param {Object} e - submit event
+    */
     let onSubmit = e => {
         e.preventDefault();
         setShowSubmitConfirm(true);
     }
+
+    /** If user has confirmed intention to save, post current form state to server
+     * @name saveLesson
+     */
     let saveLesson = () => {
         let lessonCopy = {...lesson};
         lessonCopy = removeUnnecessaryTaskProperties(lesson);
@@ -81,6 +90,10 @@ function EditLesson(props) {
             .catch(err => { setErrors(err.response.data); })
     }
 
+    /** updates form state on change of form field value
+     * @name onChange
+     * @param {Object} e - change event
+    */
     let onChange = e => {
         let lessonCopy = {...lesson};
         const target = e.target;
@@ -89,6 +102,11 @@ function EditLesson(props) {
         setLesson(lessonCopy);
     }
 
+    /** ensures that any changes to a task object are reflected 
+     * fully in the lesson state, i.e. ensures deep copy
+     * @name onTasksChange
+     * @param {Object} updatedTask
+    */
     let onTasksChange = updatedTask => {
         let tasksCopy = lesson.tasks;
         let targetIndex;
@@ -102,8 +120,10 @@ function EditLesson(props) {
         setLesson(updatedLesson);
     }
 
+    /** Adds new task to the current lesson
+     * @name addNewAnswer
+     */
     let addNewTask = () => {
-        console.log("add new task called")
         let tasksCopy = lesson.tasks;
         tasksCopy.push({
             taskID: String(tasksCopy.length + 1),
@@ -111,17 +131,23 @@ function EditLesson(props) {
             type: "TextOnly",
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
-        console.log(updatedLesson)
         setLesson(updatedLesson);
         scrollToBottom();
     }
 
     // TODO: fix 
+    /** should scroll the window to the bottom of the page - BROKEN
+     * @name scrollToBottom
+     */
     let scrollToBottom = () => {
         let container = document.getElementById("custom-container");
         container.scrollTop = container.scrollHeight;
     }
 
+    /** Moves a specific task back in the lesson order
+     * @name shiftTaskUp
+     * @param {String} taskID
+     */
     let shiftTaskUp = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem.taskID === taskID);
@@ -129,6 +155,11 @@ function EditLesson(props) {
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
     }
+
+    /** Moves a specific task forward in the lesson order
+     * @name shiftTaskUp
+     * @param {String} taskID
+     */
     let shiftTaskDown = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem?.taskID === taskID);
@@ -136,12 +167,6 @@ function EditLesson(props) {
         if (oldIndex < tasksCopy.length) _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
-    }
-
-    let getListEndsState = (index, tasks) => {
-        if (index === 0) return "first"
-        if (index === tasks.length - 1) return "last"
-        return "middle"
     }
 
     if (!ready) return <Loader />;
@@ -246,7 +271,7 @@ function EditLesson(props) {
                                 key = {task.taskID}
                                 shuffle = {lesson.shuffle}
                                 index = {index}
-                                listEndsState = {getListEndsState(index, lesson.tasks)}
+                                listEndsState = {_getListEndsState(index, lesson.tasks)}
                                 onTasksChange = {onTasksChange} 
                                 shiftTaskDown = {shiftTaskDown}
                                 shiftTaskUp = {shiftTaskUp}
