@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 function EditMultipleChoice(props) {
     let [data, setData] = useState({
         possibleAnswers: props.task.possibleAnswers || [],
-        correctAnswerIndex: props.task.correctAnswerIndex || 0,
+        correctAnswerIndex: Number(props.task.correctAnswerIndex) || 0,
     })
 
     /** updates form state on change of form field value
