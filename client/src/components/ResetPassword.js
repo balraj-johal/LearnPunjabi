@@ -9,7 +9,7 @@ import { resetPassword } from "../actions/authActions";
 
 // form components
 import FormError from "./FormComponents/FormError";
-import FormInputField from "./FormComponents/FormInputField";
+import FormInput from "./FormComponents/FormInput";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function ResetPassword(props) {
@@ -35,23 +35,25 @@ function ResetPassword(props) {
                 noValidate 
                 onSubmit={ onSubmit }
             >
-                <FormInputField 
-                    dataElem="email"
+                <FormInput 
+                    for="email"
                     onChange={ e => setEmail(e.target.value) }
                     value={ email }
                     error={ props.errors.email }
+                    type="text"
                 />
                 <FormError 
-                    dataElem="email" 
+                    for="email" 
                     errors={ props.errors } 
                 />
-                <FormInputField 
-                    dataElem="newPW"
+                <FormInput 
+                    for="newPW"
                     onChange={ e => setNewPW(e.target.value) }
                     value={ newPW }
                     error={ props.errors.newPW }
+                    type="password"
                 />
-                <FormSubmitButton dataElem="reset-password" />
+                <FormSubmitButton for="reset-password" text="Submit" />
             </form>
         </div>
     )

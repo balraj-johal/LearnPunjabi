@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-// this component contains the form used to edit a
-// task of type SpecifiedOrder
+import AddButton from "../../../FormComponents/AddButton";
+import FormInput from "../../../FormComponents/FormInput";
+import TaskAnswer from "../TaskAnswer";
+
+// this component contains the form used to edit 
+// a task of type SpecifiedOrder
 function EditSpecifiedOrder(props) {
     let [data, setData] = useState({
         possibleAnswers: props.task.possibleAnswers || [],
@@ -31,10 +35,7 @@ function EditSpecifiedOrder(props) {
         let answers = data.possibleAnswers;
         let found = new Array(answers.length);
         found.fill(0);
-        answers.forEach(answer => {
-            found[Number(answer.id?.replace("a-", ""))] = 1;
-        });
-        console.log("found", found);
+        answers.forEach(answer => { found[Number(answer.id?.replace("a-", ""))] = 1; });
         for (let i = 0; i < found.length; i++) {
             if (found[i] === 0) return i;
         }
@@ -47,10 +48,7 @@ function EditSpecifiedOrder(props) {
     let addNewAnswer = () => {
         let dataCopy = {...data};
         if (!dataCopy.possibleAnswers) dataCopy.possibleAnswers = [];
-        let newAnswer = {
-            text: "",
-            id: `a-${getNewAnswerID()}`
-        }
+        let newAnswer = { text: "", id: `a-${getNewAnswerID()}` };
         dataCopy.possibleAnswers.push(newAnswer);
         setData(dataCopy);
     }
@@ -66,9 +64,7 @@ function EditSpecifiedOrder(props) {
 
     // when the form state changes, 
     // propogate the data to the parent lesson components state
-    useEffect(() => {
-        props.onAnswerDataChange(data);
-    }, [data])
+    useEffect(() => { props.onAnswerDataChange(data); }, [data])
 
     return(
         <div style={{display: props.show ? "initial" : "none"}}>
@@ -76,44 +72,29 @@ function EditSpecifiedOrder(props) {
             <div className="possible-answers flex flex-wrap w-100 
                 justify-center flex-row">
                 {data.possibleAnswers?.map((possible, index) => (
-                <div 
-                    className="relative" 
-                    key={index}
-                >
-                        <input
-                            className="rounded border-2 border-black px-1 py-0.5 
-                                w-28 h-28 text-center m-3 transition-all" 
-                            value={possible.text} 
-                            id={`possible-answer-${index}`} 
-                            onChange={onChange}
-                        />
+                    <TaskAnswer 
+                        key={index} 
+                        index={index} 
+                        value={possible.text} 
+                        onChange={onChange}
+                    >
                         <div
                             className="absolute top-0 right-0 h-12 w-12 text-3xl 
                                 flex justify-center items-center text-red-600" 
                             onClick={() => {deleteAnswer(index)}} 
                         > - </div>
-                    </div>
+                    </TaskAnswer>
                 ))}
-                <div 
-                    className="rounded border-2 border-black px-1 py-0.5 
-                        w-28 h-28 text-center flex justify-center items-center
-                        text-3xl text-blue-500 m-3" 
-                    onClick={addNewAnswer}
-                > + </div>
+                <AddButton addNew={addNewAnswer} size="28" />
             </div>
-            <div className="input-field my-4 flex flex-col w-6/12 m-auto">
-                <div 
-                    htmlFor="name"
-                    style={{textTransform: "capitalize"}}
-                    className=""
-                > Correct Answer: </div>
-                <input
-                    onChange={onChange}
-                    value={data.correctAnswer}
-                    id="correctAnswer"
-                    className="rounded border-2 border-black px-1 py-0.5 w-full my-0.5"
-                />
-            </div>
+            <FormInput
+                for="correctAnswer" 
+                onChange={onChange}
+                placeholder={"Lesson Name"}
+                value={data.correctAnswer}
+                extraStyles="w-5/12" // TODO: width not being overwritten
+                type="text" 
+            /> 
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { forgotPassword } from "../actions/authActions";
 
 // form components
 import FormError from "./FormComponents/FormError";
-import FormInputField from "./FormComponents/FormInputField";
+import FormInput from "./FormComponents/FormInput";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function ForgotPassword(props) {
@@ -25,17 +25,18 @@ function ForgotPassword(props) {
                 noValidate 
                 onSubmit={ onSubmit }
             >
-                <FormInputField 
-                    dataElem="email"
+                <FormInput 
+                    for="email"
                     onChange={e => setEmail(e.target.value) }
                     value={ email }
                     error={ props.errors.email }
+                    type="text"
                 />
                 {/* <FormError 
                     dataElem="email" 
                     errors={ this.props.errors } 
                 /> */}
-                <FormSubmitButton dataElem="forgot-password" />
+                <FormSubmitButton for="forgot-password" text="Submit" />
             </form>
         </div>
     )

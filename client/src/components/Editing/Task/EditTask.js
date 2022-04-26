@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import EditTaskInput from "./EditTaskInput";
+import FormInput from "../../FormComponents/FormInput";
 
 import EditMultipleChoice from "./MultipleChoice/EditMultipleChoice";
 import EditSpecifiedOrder from "./SpecifiedOrder/EditSpecifiedOrder";
-import UpDownShifter from "./UpDownShifter";
+import UpDownShifter from "../UpDownShifter";
 
-function TaskForm(props) {
+function EditTask(props) {
     let [task, setTask] = useState(props.task);
 
     /** updates form state on change of form field value
@@ -47,9 +47,11 @@ function TaskForm(props) {
                 id={task.taskID}
                 index={props.index}
             />
-            <EditTaskInput type="taskType" for="text" task={task} onChange={onChange} />
-            <EditTaskInput type="textarea" for="text" task={task} onChange={onChange} />
-            <EditTaskInput type="textInput" for="audioSrc" task={task} onChange={onChange} />
+            <div className="w-5/12">
+                <FormInput type="taskType" for="taskType" value={task.type} onChange={onChange} />
+                <FormInput type="textarea" for="text" value={task.text} onChange={onChange} />
+                <FormInput type="text" for="audioSrc" value={task.audioSrc || ""} onChange={onChange} />
+            </div>
             <div className="answers-wrap my-4 w-10/12">
                 <EditMultipleChoice 
                     task={task}
@@ -66,4 +68,4 @@ function TaskForm(props) {
     )
 }
 
-export default TaskForm;
+export default EditTask;

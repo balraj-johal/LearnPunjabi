@@ -97,7 +97,7 @@ router.post("/:lessonID", async (req, res) => {
                 savedLesson : saved,
                 message: "Save successful."
             }); })
-            .catch(err => { return res.status(500).send("Error saving lesson: ", err); })
+            .catch(err => { return res.status(500).send("Error saving lesson: " + err); })
     } catch (err) {
         // TODO: correct response codes
         return res.status(500).send({ error: err })

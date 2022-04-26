@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axiosClient from "../../axiosDefaults";
+import axiosClient from "../../../axiosDefaults";
 
-import { _moveArrayIndex, _getListEndsState } from "../../utils/arrays";
+import { _moveArrayIndex, _getListEndsState } from "../../../utils/arrays";
 
 import EditOverviewEntry from "./EditOverviewEntry";
-import Loader from "../Loader";
+import Loader from "../../Loader";
+import SaveButton from "../SaveButton";
 
-
-// TODO: this seems wrong
+// TODO: decide where best to store this
 const NEW_LESSON = {
     name: "",
     id: "new",
@@ -20,8 +20,8 @@ function EditOverview(props) {
     let [courseData, setCourseData] = useState([]);
     let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
-    // on mount retrieve all lessons
     // TODO: change this to only request specific properties from the API Get Request
+    // on mount retrieve all lessons
     useEffect(() => {
         axiosClient.get("/api/v1/lessons/")
             .then(res => { setCourseData(res.data.overview); })
@@ -32,7 +32,7 @@ function EditOverview(props) {
      * @name shiftLesson
      * @param {String} lessonID
      * @param {String} direction
-     */
+    */
     let shiftLesson = (lessonID, direction) => {
         let oldIndex = courseData.findIndex(elem => elem.id === lessonID);
         let valid = false;
@@ -78,20 +78,6 @@ function EditOverview(props) {
             )}
             <EditOverviewEntry lesson={NEW_LESSON} new={true} />
             <SaveButton save={saveUpdatedCourseData} show={lessonOrderChanged} />
-        </div>
-    )
-}
-
-// TODO: atomise
-function SaveButton(props) {
-    return(
-        <div 
-            className={`capitalize h-10 bg-blue-500 rounded w-4/12 float-right mt-12
-                text-white px-4 cursor-pointer flex justify-center items-center
-                ${props.show ? "" : "hidden"}`}
-            onClick={() => { props.save(); }}
-        >
-            Save Order
         </div>
     )
 }
