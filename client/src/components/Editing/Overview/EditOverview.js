@@ -71,6 +71,7 @@ function EditOverview(props) {
                 <EditOverviewEntry
                     lesson={lesson}
                     key={index}
+                    index={index}
                     _getListEndsState={_getListEndsState}
                     listEndsState={_getListEndsState(index, courseData)}
                     shiftLesson={shiftLesson}

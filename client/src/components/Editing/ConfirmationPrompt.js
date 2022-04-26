@@ -12,7 +12,7 @@ function ConfirmationPrompt(props) {
                 Are you sure?
                 <div>
                     <button
-                        className="capitalize h-10 bg-blue-500 rounded text-white px-4"
+                        className="capitalize h-10 bg-primary rounded text-white px-4"
                         onClick={() => { props.saveLesson() }}
                     >
                         Yes
