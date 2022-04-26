@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "../../FormComponents/FormInput";
 
 import EditMultipleChoice from "./MultipleChoice/EditMultipleChoice";
@@ -48,20 +48,22 @@ function EditTask(props) {
                 index={props.index}
             />
             <div className="w-5/12">
-                <FormInput type="taskType" for="taskType" value={task.type} onChange={onChange} />
-                <FormInput type="textarea" for="text" value={task.text} onChange={onChange} />
-                <FormInput type="text" for="audioSrc" value={task.audioSrc || ""} onChange={onChange} />
+                <FormInput type="taskType" for="taskType" value={task.type} onChange={onChange} errors={props.errors[task.taskID]} />
+                <FormInput type="textarea" for="text" value={task.text} onChange={onChange} errors={props.errors[task.taskID]} />
+                <FormInput type="text" for="audioSrc" value={task.audioSrc || ""} onChange={onChange} errors={props.errors[task.taskID]} />
             </div>
             <div className="answers-wrap my-4 w-10/12">
                 <EditMultipleChoice 
                     task={task}
                     show={task.type === "MultipleChoice"}
                     onAnswerDataChange={onAnswerDataChange}
+                    errors={props.errors[task.taskID]}
                 />
                 <EditSpecifiedOrder 
                     task={task}
                     show={task.type === "SpecifiedOrder"}
                     onAnswerDataChange={onAnswerDataChange}
+                    errors={props.errors[task.taskID]}
                 />
             </div>
         </div>

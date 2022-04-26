@@ -1,4 +1,5 @@
 import React, {  } from "react";
+import FormError from "./FormError";
 import FormLabel from "./FormLabel";
 
 function FormInput(props) {
@@ -81,6 +82,7 @@ function FormInput(props) {
         <div className={`"input-field my-4 flex flex-${props.row ? "row" : "col"}`}>
             <FormLabel for={props.for} />
             {component}
+            <FormError for={props.for} errors={props.errors} />
         </div>
     )
 }

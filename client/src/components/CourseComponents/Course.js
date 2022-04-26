@@ -18,6 +18,8 @@ function Course(props) {
         axiosClient.get("/api/v1/lessons/")
             .then(res => { setCourseData(res.data.overview); })
             .catch(err => { console.log(err); })
+
+        // TODO: add cleanup function here
     }, [])
 
     /**

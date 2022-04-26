@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import axiosClient from "../../../axiosDefaults";
 import qs from "qs";
-import { _moveArrayIndex, _getListEndsState } from "../../../utils/arrays";
+import { 
+    _moveArrayIndex, 
+    _getListEndsState 
+} from "../../../utils/arrays";
+import { 
+    _getLessonValidationErrors, 
+    _isObjectEmpty 
+} from "../../../utils/validation/validateLesson";
 
 import Loader from "../../Loader";
 import EditTask from "../Task/EditTask";
@@ -12,6 +19,7 @@ import FormTitle from "../../FormComponents/FormTitle";
 import ConfirmationPrompt from "../ConfirmationPrompt";
 import FormInput from "../../FormComponents/FormInput";
 import AddButton from "../../FormComponents/AddButton";
+import FormError from "../../FormComponents/FormError";
 
 // TODO: where best to store new lesson template?
 const NEW_LESSON = {
@@ -91,6 +99,10 @@ function EditLesson(props) {
         lessonCopy = removeUnnecessaryTaskProperties(lesson);
         lessonCopy.strId = `lesson-${lessonCopy.name}`;
         console.log("submitting: ", lessonCopy);
+        let validationErrors = _getLessonValidationErrors(lessonCopy);
+        setErrors(validationErrors);
+        console.log(validationErrors);
+        if (!_isObjectEmpty(validationErrors)) return;
         axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, qs.stringify(lesson))
             .then(res => { setSubmitSuccess(true); })
             .catch(err => { setErrors(err.response.data); })
@@ -183,7 +195,10 @@ function EditLesson(props) {
                 submitSuccess={submitSuccess}
                 saveLesson={saveLesson}
             />
-            <div className="edit-lesson container mx-auto pt-5
+            <Link className="absolute p-2 text-sm text-primary" to="/edit/overview" replace>
+                &lt; back to overview
+            </Link>
+            <div className="edit-lesson container mx-auto 
                     flex justify-center pt-10 mb-10">
                 <form 
                     className="edit-lesson-form w-8/12" 
@@ -196,13 +211,15 @@ function EditLesson(props) {
                         onChange={onChange}
                         placeholder={"Lesson Name"}
                         value={lesson.name}
-                        type="text" 
-                    /> 
+                        type="text"
+                        errors={errors}
+                    />
                     <FormInput
                         for="requiredCompletions" 
                         onChange={onChange}
                         value={lesson.requiredCompletions}
                         type="number" 
+                        errors={errors}
                     /> 
                     <FormInput
                         for="shuffle" 
@@ -210,6 +227,7 @@ function EditLesson(props) {
                         value={lesson.shuffle}
                         type="checkbox"
                         row={true}
+                        errors={errors}
                     /> 
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
@@ -223,6 +241,7 @@ function EditLesson(props) {
                                 onTasksChange = {onTasksChange} 
                                 shiftTaskDown = {shiftTaskDown}
                                 shiftTaskUp = {shiftTaskUp}
+                                errors = {errors}
                             />
                         ))}
                     </div>
@@ -232,6 +251,7 @@ function EditLesson(props) {
                         size="32" 
                         extraStyles="mx-auto"
                     />
+                    <FormError for="tasks" errors={errors} />
                     <FormSubmitButton for="edit-lesson" text="Submit Lesson" />
                 </form>
             </div>

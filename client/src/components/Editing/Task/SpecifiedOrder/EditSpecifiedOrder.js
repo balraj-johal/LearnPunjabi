@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import AddButton from "../../../FormComponents/AddButton";
 import FormInput from "../../../FormComponents/FormInput";
+import FormError from "../../../FormComponents/FormError";
 import TaskAnswer from "../TaskAnswer";
 
 // this component contains the form used to edit 
@@ -94,7 +95,9 @@ function EditSpecifiedOrder(props) {
                 value={data.correctAnswer}
                 extraStyles="w-5/12" // TODO: width not being overwritten
                 type="text" 
+                errors={props.errors}
             /> 
+            <FormError for="specifiedOrder" errors={props.errors} />
         </div>
     )
 }

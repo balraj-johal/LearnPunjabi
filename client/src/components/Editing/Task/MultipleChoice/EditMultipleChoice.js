@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import TaskAnswer from "../TaskAnswer";
 import AddButton from "../../../FormComponents/AddButton";
+import FormError from "../../../FormComponents/FormError";
 
 // this component contains the form used to edit a
 // task of type MultipleChoice
@@ -105,6 +106,7 @@ function EditMultipleChoice(props) {
                 ))}
                 <AddButton addNew={addNewAnswer} size="28" />
             </div>
+            <FormError for="multipleChoice" errors={props.errors} />
         </div>
     )
 }
