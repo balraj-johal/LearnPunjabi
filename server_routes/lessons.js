@@ -28,7 +28,8 @@ let buildOverviewObject = async () => {
         overview.push({
             name: lesson.name,
             id: lesson.strId,
-            requiredCompletions: lesson.requiredCompletions
+            requiredCompletions: lesson.requiredCompletions,
+            tasksLength: lesson.tasks.length
         })
     }
     return overview;
