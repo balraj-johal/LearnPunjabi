@@ -28,7 +28,8 @@ let buildOverviewObject = async () => {
         overview.push({
             name: lesson.name,
             id: lesson.strId,
-            requiredCompletions: lesson.requiredCompletions
+            requiredCompletions: lesson.requiredCompletions,
+            tasksLength: lesson.tasks.length
         })
     }
     return overview;
@@ -97,7 +98,7 @@ router.post("/:lessonID", async (req, res) => {
                 savedLesson : saved,
                 message: "Save successful."
             }); })
-            .catch(err => { return res.status(500).send("Error saving lesson: ", err); })
+            .catch(err => { return res.status(500).send("Error saving lesson: " + err); })
     } catch (err) {
         // TODO: correct response codes
         return res.status(500).send({ error: err })

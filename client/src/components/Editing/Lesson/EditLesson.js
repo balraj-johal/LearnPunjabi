@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import axiosClient from "../../axiosDefaults";
+import axiosClient from "../../../axiosDefaults";
 import qs from "qs";
-import { _moveArrayIndex, _getListEndsState } from "../../utils/arrays";
+import { 
+    _moveArrayIndex, 
+    _getListEndsState 
+} from "../../../utils/arrays";
+import { 
+    _getLessonValidationErrors, 
+    _isObjectEmpty 
+} from "../../../utils/validation/validateLesson";
 
-import Loader from "../Loader";
-import TaskForm from "./TaskForm";
-import FormSubmitButton from "../FormComponents/FormSubmitButton";
+import Loader from "../../Loader";
+import EditTask from "../Task/EditTask";
+import FormSubmitButton from "../../FormComponents/FormSubmitButton";
+import FormTitle from "../../FormComponents/FormTitle";
+import ConfirmationPrompt from "../ConfirmationPrompt";
+import FormInput from "../../FormComponents/FormInput";
+import AddButton from "../../FormComponents/AddButton";
+import FormError from "../../FormComponents/FormError";
 
 // TODO: where best to store new lesson template?
 const NEW_LESSON = {
     name: "",
-    id: "new",
+    strId: "new",
     requiredCompletions: 1,
     shuffle: false,
     tasks: []
@@ -85,9 +97,13 @@ function EditLesson(props) {
     let saveLesson = () => {
         let lessonCopy = {...lesson};
         lessonCopy = removeUnnecessaryTaskProperties(lesson);
-        lessonCopy.id = `lesson-${lessonCopy.name}`;
+        lessonCopy.strId = `lesson-${lessonCopy.name}`;
         console.log("submitting: ", lessonCopy);
-        axiosClient.post(`/api/v1/lessons/${String(id)}`, qs.stringify(lesson))
+        let validationErrors = _getLessonValidationErrors(lessonCopy);
+        setErrors(validationErrors);
+        console.log(validationErrors);
+        if (!_isObjectEmpty(validationErrors)) return;
+        axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, qs.stringify(lesson))
             .then(res => { setSubmitSuccess(true); })
             .catch(err => { setErrors(err.response.data); })
     }
@@ -123,7 +139,7 @@ function EditLesson(props) {
     }
 
     /** Adds new task to the current lesson
-     * @name addNewAnswer
+     * @name addNewTask
      */
     let addNewTask = () => {
         let tasksCopy = lesson.tasks;
@@ -135,6 +151,16 @@ function EditLesson(props) {
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
         scrollToBottom();
+    }
+
+    /** Deletes task from lesson
+     * @name deleteTask
+     * @param {String} taskID - id of task to delete
+     */
+    let deleteTask = (taskID) => {
+        let newTasks = lesson.tasks.filter(item => item.taskID !== taskID);
+        let updatedLesson = {...lesson, tasks: newTasks}
+        setLesson(updatedLesson);
     }
 
     // TODO: fix 
@@ -165,7 +191,6 @@ function EditLesson(props) {
     let shiftTaskDown = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem?.taskID === taskID);
-        console.log(`id ${taskID} old index: ${oldIndex} len: ${tasksCopy.length}`)
         if (oldIndex < tasksCopy.length) _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
@@ -174,101 +199,50 @@ function EditLesson(props) {
     if (!ready) return <Loader />;
     return(
         <>
-            <div className={`w-screen h-screen flex justify-center items-center
-                z-10 absolute top-0 left-0
-                ${showSubmitConfirm && !submitSuccess ? "" : "hidden"}    
-            `}>
-                <div className="opacity-50 w-screen h-screen bg-green-500 absolute">
-                </div>
-                <div className="opacity-100 z-20 flex justify-between w-5/12 items-center">
-                    Are you sure?
-                    <div>
-                        <button
-                            className="capitalize h-10 bg-blue-500 rounded text-white px-4"
-                            onClick={() => { saveLesson() }}
-                        >
-                            Yes
-                        </button>
-                        <button
-                            className="capitalize h-10 bg-red-500 rounded text-white px-4"
-                            onClick={() => { setShowSubmitConfirm(false) }}
-                        >
-                            No
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div className="edit-lesson container mx-auto pt-5
+            <ConfirmationPrompt 
+                showSubmitConfirm={showSubmitConfirm}
+                setShowSubmitConfirm={setShowSubmitConfirm}
+                submitSuccess={submitSuccess}
+                saveLesson={saveLesson}
+            />
+            <Link className="absolute p-2 text-sm text-primary" to="/edit/overview" replace>
+                &lt; back to overview
+            </Link>
+            <div className="edit-lesson container mx-auto 
                     flex justify-center pt-10 mb-10">
                 <form 
                     className="edit-lesson-form w-8/12" 
                     noValidate 
-                    onSubmit={ onSubmit }
+                    onSubmit={onSubmit}
                 >
-                    <h1 className="text-xl font-bold" >
-                        Edit Lesson {lesson.name}
-                    </h1>
-                    <div className="input-field my-4 flex flex-col">
-                        <div 
-                            htmlFor="name"
-                            style={{textTransform: "capitalize"}}
-                            className=""
-                        >
-                            Name:
-                        </div>
-                        <input
-                            onChange={onChange}
-                            value={lesson.name}
-                            placeholder={"Lesson Name"}
-                            id="name"
-                            error={errors.name}
-                            className="rounded border-2 border-black px-1 
-                                py-0.5 w-5/12 my-1"
-                        />
-                    </div>
-
-                    <div className="input-field my-4 flex flex-col">
-                        <label 
-                            htmlFor="requiredCompletions"
-                            style={{textTransform: "capitalize"}}
-                        >
-                            Required Completions:
-                        </label>
-                        <input
-                            className="rounded border-2 border-black px-1 
-                                py-0.5 w-5/12 my-1"
-                            onChange={onChange}
-                            value={lesson.requiredCompletions}
-                            error={errors.requiredCompletions}
-                            id="requiredCompletions"
-                            type="number"
-                        />
-                    </div>
-
-                    <div className="input-field my-4 flex items-center">
-                        <label 
-                            htmlFor="shuffle"
-                            style={{textTransform: "capitalize"}}
-                        >
-                            Shuffle Tasks:
-                        </label>
-                        <input
-                            className="rounded border-2 border-black w-6 h-6 
-                                px-1 py-0.5 mx-3"
-                            onChange={onChange}
-                            checked={lesson.shuffle}
-                            error={errors.shuffle}
-                            id="shuffle"
-                            type="checkbox"
-                        />
-                    </div>
-
+                    <FormTitle text={`Edit Lesson ${lesson.name}`} />
+                    <FormInput
+                        for="name" 
+                        onChange={onChange}
+                        placeholder={"Lesson Name"}
+                        value={lesson.name}
+                        type="text"
+                        errors={errors}
+                    />
+                    <FormInput
+                        for="requiredCompletions" 
+                        onChange={onChange}
+                        value={lesson.requiredCompletions}
+                        type="number" 
+                        errors={errors}
+                    /> 
+                    <FormInput
+                        for="shuffle" 
+                        onChange={onChange}
+                        value={lesson.shuffle}
+                        type="checkbox"
+                        row={true}
+                        errors={errors}
+                    /> 
                     <div className="mt-8">
-                        <h1 className="text-xl font-bold" >
-                            Tasks:
-                        </h1>
+                        <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (
-                            <TaskForm 
+                            <EditTask 
                                 task = {task}
                                 key = {task.taskID}
                                 shuffle = {lesson.shuffle}
@@ -277,27 +251,19 @@ function EditLesson(props) {
                                 onTasksChange = {onTasksChange} 
                                 shiftTaskDown = {shiftTaskDown}
                                 shiftTaskUp = {shiftTaskUp}
+                                errors = {errors}
+                                deleteTask = {deleteTask}
                             />
                         ))}
-                        <div
-                            className="flex flex-col justify-evenly items-center
-                                rounded border-2 border-black p-4 first:my-4 my-8
-                                group hover:bg-blue-400 hover:text-white 
-                                hover:border-blue-400 transition-all
-                                w-32 h-32 mx-auto"
-                            onClick={() => {
-                                addNewTask();
-                            }}
-                        >
-                            Add new task
-                            <div 
-                                className="text-3xl text-blue-400
-                                    group-hover:text-white transition-all"
-                            >+</div>
-                        </div>
                     </div>
-
-                    <FormSubmitButton dataElem="edit-lesson" text={"Submit Lesson"} />
+                    <AddButton 
+                        addNew={addNewTask} 
+                        text="Add new task" 
+                        size="32" 
+                        extraStyles="mx-auto"
+                    />
+                    <FormError for="tasks" errors={errors} />
+                    <FormSubmitButton for="edit-lesson" text="Submit Lesson" />
                 </form>
             </div>
         </>

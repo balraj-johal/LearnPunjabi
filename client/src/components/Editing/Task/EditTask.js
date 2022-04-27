@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import EditTaskInput from "./EditTaskInput";
+import React, { useEffect, useState } from "react";
+import FormInput from "../../FormComponents/FormInput";
 
 import EditMultipleChoice from "./MultipleChoice/EditMultipleChoice";
 import EditSpecifiedOrder from "./SpecifiedOrder/EditSpecifiedOrder";
-import UpDownShifter from "./UpDownShifter";
+import UpDownShifter from "../UpDownShifter";
 
-function TaskForm(props) {
+function EditTask(props) {
     let [task, setTask] = useState(props.task);
 
     /** updates form state on change of form field value
@@ -34,8 +34,7 @@ function TaskForm(props) {
     }
 
     return(
-        <div 
-            className="edit-task flex flex-col items-center relative
+        <div className="edit-task flex flex-col items-center relative
                 rounded border-2 border-black p-4 first:my-4 my-8" 
             id={`edit-task-${task.taskID}`}
         >
@@ -47,23 +46,47 @@ function TaskForm(props) {
                 id={task.taskID}
                 index={props.index}
             />
-            <EditTaskInput type="taskType" for="text" task={task} onChange={onChange} />
-            <EditTaskInput type="textarea" for="text" task={task} onChange={onChange} />
-            <EditTaskInput type="textInput" for="audioSrc" task={task} onChange={onChange} />
+            <div className="absolute top-0 right-0 text-md text-red-400 my-2 mx-3" 
+                onClick={() => { props.deleteTask(task.taskID) }}>delete</div>
+            <div className="w-5/12">
+                <FormInput 
+                    type="taskType" 
+                    for="taskType" 
+                    value={task.type} 
+                    onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+                <FormInput 
+                    type="textarea" 
+                    for="text" 
+                    value={task.text} 
+                    onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+                <FormInput 
+                    type="text" 
+                    for="audioSrc" 
+                    value={task.audioSrc || ""} 
+                    onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+            </div>
             <div className="answers-wrap my-4 w-10/12">
                 <EditMultipleChoice 
                     task={task}
                     show={task.type === "MultipleChoice"}
                     onAnswerDataChange={onAnswerDataChange}
+                    errors={props.errors[task.taskID]}
                 />
                 <EditSpecifiedOrder 
                     task={task}
                     show={task.type === "SpecifiedOrder"}
                     onAnswerDataChange={onAnswerDataChange}
+                    errors={props.errors[task.taskID]}
                 />
             </div>
         </div>
     )
 }
 
-export default TaskForm;
+export default EditTask;

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+import TaskAnswer from "../TaskAnswer";
+import AddButton from "../../../FormComponents/AddButton";
+import FormError from "../../../FormComponents/FormError";
+
 // this component contains the form used to edit a
 // task of type MultipleChoice
 function EditMultipleChoice(props) {
@@ -79,18 +83,13 @@ function EditMultipleChoice(props) {
             <div className="possible-answers flex flex-wrap w-100 
                 justify-center flex-row">
                 {data.possibleAnswers?.map((possible, index) => (
-                    <div 
-                        className="relative"
+                    <TaskAnswer 
                         key={index} 
+                        index={index} 
+                        value={possible.middleText} 
+                        onChange={onChange}
+                        extraStyles={returnSelectedStyleClasses(index)}
                     >
-                        <input
-                            className={`rounded border-2 border-black px-1 py-0.5 
-                                w-28 h-28 text-center m-3 transition-all
-                                ${returnSelectedStyleClasses(index)}`}
-                            value={possible.middleText} 
-                            id={`possible-answer-${index}`} 
-                            onChange={onChange}
-                        />
                         <div
                             className="absolute top-0 right-0 h-12 w-12 text-3xl 
                                 flex justify-center items-center text-red-600" 
@@ -103,15 +102,11 @@ function EditMultipleChoice(props) {
                             `}
                             onClick={() => {selectAnswerAsCorrect(index)}} 
                         > ✓ </div>
-                    </div>
+                    </TaskAnswer>
                 ))}
-                <div 
-                    className="rounded border-2 border-black px-1 py-0.5 
-                        w-28 h-28 text-center flex justify-center items-center
-                        text-3xl text-blue-500 m-3" 
-                    onClick={addNewAnswer}
-                > + </div>
+                <AddButton addNew={addNewAnswer} size="28" />
             </div>
+            <FormError for="multipleChoice" errors={props.errors} />
         </div>
     )
 }

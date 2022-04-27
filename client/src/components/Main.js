@@ -20,9 +20,9 @@ import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
-import EditLesson from "./Editing/EditLesson";
+import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
-import EditOverview from "./Editing/EditOverview";
+import EditOverview from "./Editing/Overview/EditOverview";
 
 
 function Main(props) {

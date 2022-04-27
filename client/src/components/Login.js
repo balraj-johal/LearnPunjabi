@@ -5,7 +5,7 @@ import { loginUser } from "../actions/authActions";
 
 // form components
 import FormError from "./FormComponents/FormError";
-import FormInputField from "./FormComponents/FormInputField";
+import FormInput from "./FormComponents/FormInput";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function Login(props) {
@@ -23,35 +23,34 @@ function Login(props) {
 
     return(
         <div className="login">
-            <h2>Login</h2>
             <form className="login-form" noValidate onSubmit={ onSubmit }>
-                <FormInputField 
-                    dataElem="username"
+                <FormInput 
+                    for="username"
                     onChange={ e => setUsername(e.target.value) }
                     value={ username }
                     error={ props.errors.username }
                     type="username"
                 />
                 <FormError 
-                    dataElem="username" 
+                    for="username" 
                     errors={ props.errors } 
                 />
-                <FormInputField 
-                    dataElem="password"
+                <FormInput 
+                    for="password"
                     onChange={ e => setPassword(e.target.value) }
                     value={ password }
                     error={ props.errors.password }
                     type="password"
                 />
                 <FormError 
-                    dataElem="password" 
+                    for="password" 
                     errors={ props.errors } 
                 />
                 <FormError 
-                    dataElem="verification" 
+                    for="verification" 
                     errors={ props.errors } 
                 />
-                <FormSubmitButton dataElem="login" />
+                <FormSubmitButton for="login" />
                 <div onClick={() => {
                     props.setManagerState("ForgotPassword");
                 }}>
