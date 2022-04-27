@@ -128,9 +128,7 @@ let pushGroupsToDb = (groups) => {
 
 // update leaderboard groups
 createNewServerGroups()
-    .then(groups => {
-        pushGroupsToDb(groups);
-    })
+    .then(groups => { pushGroupsToDb(groups) })
 
 /**
  * Returns the username and weeklyXP for every user in the specified group.

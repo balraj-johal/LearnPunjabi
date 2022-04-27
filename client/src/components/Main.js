@@ -12,17 +12,15 @@ import { getUserData, useRefreshToken } from "../actions/authActions";
 import { setCSRFReady } from "../actions/csrfActions";
 
 // component imports
+import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManager';
 import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
-import Topbar from "./Topbar";
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
-import EditLesson from "./Editing/Lesson/EditLesson";
-import NotAuthorised from "./NotAuthorised";
-import EditOverview from "./Editing/Overview/EditOverview";
+import Welcome from "./Welcome/Welcome";
 
 
 function Main(props) {
@@ -65,31 +63,45 @@ function Main(props) {
 
     return(
         <Router>
-            <Topbar />
-            <div id="custom-container" role="main">
-                <Routes>
-                    <Route path="/" element={
+            <Routes>
+                <Route path="/" element={ <Welcome /> } />
+                <Route path="/dashboard" element={
+                    <InternalPage>
                         <ProtectedComponent component={<Dashboard />} />
-                    } />
-                    <Route path="/lesson" element={<Lessons />} >
-                        <Route path=":id" element={
+                    </InternalPage>
+                } />
+                <Route path="/lesson" element={
+                    <InternalPage>
+                        <Lessons />
+                    </InternalPage>
+                } >
+                    <Route path=":id" element={
+                        <InternalPage>
                             <ProtectedComponent component={<Lesson />} />
-                        } />
-                    </Route>
-                    <Route path="/edit" >
-                        <Route path="/edit/overview" element={
-                            <ProtectedComponent component={<EditOverview />} role={"Admin"} />
-                        } />
-                        <Route path=":id" element={
-                            <ProtectedComponent component={<EditLesson />} role={"Admin"} />
-                        } />
-                    </Route>
-                    <Route path="/restricted" element={<NotAuthorised />} />
-                    <Route path="/account" element={<AccountManager />} />
-                    <Route path="/reset-password/:code" element={ <ResetPassword /> } />
-                    <Route path="/verify-email/:code" element={ <VerifyEmail /> } />
-                </Routes>
-            </div>
+                        </InternalPage>
+                    } />
+                </Route>
+                <Route path="/account" element={
+                    <InternalPage>
+                        <AccountManager />
+                    </InternalPage>
+                } />
+                <Route path="/reset-password/:code" element={
+                    <InternalPage>
+                        <ResetPassword /> 
+                    </InternalPage>
+                } />
+                <Route path="/verify-email/:code" element={
+                    <InternalPage>
+                        <VerifyEmail /> 
+                    </InternalPage>
+                } />
+                <Route path="/welcome" element={
+                    <InternalPage>
+                        <Welcome /> 
+                    </InternalPage>
+                } />
+            </Routes>
         </Router>
     )
 }

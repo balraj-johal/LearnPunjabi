@@ -91,12 +91,8 @@ export const getUserDataPromise = () => {
 }
 export const getUserData = () => dispatch => {
     getUserDataPromise()
-        .then(userData => {
-            dispatch(setCurrentUser(userData));
-        })
-        .catch(err => {
-            console.log("get /users/data error: ", err)
-        })
+        .then(userData => { dispatch(setCurrentUser(userData)); })
+        .catch(err => { console.log("get /users/data error: ", err) })
 }
 
 export const logoutUser = userID => dispatch => {
