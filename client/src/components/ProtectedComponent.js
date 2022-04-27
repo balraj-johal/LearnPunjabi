@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -6,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useRefreshToken } from "../actions/authActions";
 import Loader from "./Loader";
 
-/**
- * Compnent wrapper to redirect to login page if user is not authenticated
+/** Compnent wrapper to redirect to login page if user is not authenticated
  * @name ProtectedComponent
- * @param  {Component} component - component to render if authenticated
- * @param  {Object} props
+ * @param {Component} component - component to render if authenticated
+ * @param {Object} props
  */
 function ProtectedComponent({ component, ...props}) {
     let [ready, setReady] = useState(false);
@@ -39,13 +38,8 @@ function ProtectedComponent({ component, ...props}) {
         }
     }, [props.auth]);
     
-    if (ready) {
-        return component;
-    } else {
-        return(
-            <Loader />
-        );
-    }
+    if (ready) return component;
+    return <Loader />;
 }
 
 //pull relevant props from redux state
