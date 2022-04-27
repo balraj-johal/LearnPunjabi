@@ -139,7 +139,7 @@ function EditLesson(props) {
     }
 
     /** Adds new task to the current lesson
-     * @name addNewAnswer
+     * @name addNewTask
      */
     let addNewTask = () => {
         let tasksCopy = lesson.tasks;
@@ -151,6 +151,16 @@ function EditLesson(props) {
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
         scrollToBottom();
+    }
+
+    /** Deletes task from lesson
+     * @name deleteTask
+     * @param {String} taskID - id of task to delete
+     */
+    let deleteTask = (taskID) => {
+        let newTasks = lesson.tasks.filter(item => item.taskID !== taskID);
+        let updatedLesson = {...lesson, tasks: newTasks}
+        setLesson(updatedLesson);
     }
 
     // TODO: fix 
@@ -242,6 +252,7 @@ function EditLesson(props) {
                                 shiftTaskDown = {shiftTaskDown}
                                 shiftTaskUp = {shiftTaskUp}
                                 errors = {errors}
+                                deleteTask = {deleteTask}
                             />
                         ))}
                     </div>
