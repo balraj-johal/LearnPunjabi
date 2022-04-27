@@ -34,8 +34,7 @@ function EditTask(props) {
     }
 
     return(
-        <div 
-            className="edit-task flex flex-col items-center relative
+        <div className="edit-task flex flex-col items-center relative
                 rounded border-2 border-black p-4 first:my-4 my-8" 
             id={`edit-task-${task.taskID}`}
         >
@@ -48,9 +47,27 @@ function EditTask(props) {
                 index={props.index}
             />
             <div className="w-5/12">
-                <FormInput type="taskType" for="taskType" value={task.type} onChange={onChange} errors={props.errors[task.taskID]} />
-                <FormInput type="textarea" for="text" value={task.text} onChange={onChange} errors={props.errors[task.taskID]} />
-                <FormInput type="text" for="audioSrc" value={task.audioSrc || ""} onChange={onChange} errors={props.errors[task.taskID]} />
+                <FormInput 
+                    type="taskType" 
+                    for="taskType" 
+                    value={task.type} 
+                    onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+                <FormInput 
+                    type="textarea" 
+                    for="text" 
+                    value={task.text} 
+                    onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+                <FormInput 
+                    type="text" 
+                    for="audioSrc" 
+                    value={task.audioSrc || ""} 
+                    onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
             </div>
             <div className="answers-wrap my-4 w-10/12">
                 <EditMultipleChoice 
