@@ -88,9 +88,6 @@ app.get('/csrf-token', (req, res) => {
     res.json({ token: req.csrfToken() });
 });
 
-// Passport config
-require("./config/passport")(passport);
-
 // declare routes
 // app.use("/api/s3", s3);
 app.use("/api/v1/users", users);

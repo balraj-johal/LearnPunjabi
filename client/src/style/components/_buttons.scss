@@ -9,10 +9,31 @@
     justify-content: center;
     align-items: center;
     img {
-        @include noDrag();
+        @include noHighlighting();
         width: 30px;
         height: 30px;
     }
     margin: 0;
     margin-top: 7px;
+}
+
+.action-button {
+    font-family: "Lekton";
+    font-weight: bold;
+    background: #00A3FF;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 2em;
+    width: 150px;
+    font-size: 18px;
+}
+@media (min-width: 1300px) {
+    .action-button {
+        height: 50px;
+        width: 200px;
+        font-size: 24px;
+    }
 }

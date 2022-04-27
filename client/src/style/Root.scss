@@ -19,10 +19,11 @@
 @import "components/multipleChoice/multipleChoice";
 @import "components/multipleChoice/answer";
 @import "components/specifiedOrder/specifiedOrder";
+@import "components/drawLetter/drawLetter";
 
 @import "components/edit/overview";
-// @import "components/multipleChoice/answer";
-@import "components/drawLetter/drawLetter";
+
+@import "pages/welcome";
 
 @import "layout/content";
 @import "layout/navigation";

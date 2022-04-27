@@ -1,10 +1,87 @@
-@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.animDelay500 {
+  -webkit-animation-delay: 500ms;
+          animation-delay: 500ms;
+}
+
+.moveUpAndFadeOut {
+  -webkit-animation: moveUpAndFadeOut 1s ease-in;
+          animation: moveUpAndFadeOut 1s ease-in;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes moveUpAndFadeOut {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, -50px);
+            transform: translate(0, -50px);
+    opacity: 0;
+  }
+}
+
+@keyframes moveUpAndFadeOut {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate(0, -50px);
+            transform: translate(0, -50px);
+    opacity: 0;
+  }
+}
+
+.fadeIn {
+  -webkit-animation: fadeIn 1s ease-in;
+          animation: fadeIn 1s ease-in;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@font-face {
+  font-family: "Lekton";
+  src: url("fonts/Lekton-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lekton";
+  src: url("fonts/Lekton-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Lekton";
+  src: url("fonts/Lekton-Italic.ttf");
+  font-style: italic;
+}
+
 #logo-full {
   margin: 1.5em 2em 0.5em;
   width: 210px;
@@ -59,6 +136,34 @@
   /* Internet Explorer/Edge */
   width: 30px;
   height: 30px;
+}
+
+.action-button {
+  font-family: "Lekton";
+  font-weight: bold;
+  background: #00A3FF;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  height: 2em;
+  width: 150px;
+  font-size: 18px;
+}
+
+@media (min-width: 1300px) {
+  .action-button {
+    height: 50px;
+    width: 200px;
+    font-size: 24px;
+  }
 }
 
 .accounts-wrap {
@@ -336,6 +441,28 @@
           align-items: center;
 }
 
+.task.draw-letter {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.task.draw-letter #drawing-canvas {
+  width: 320px;
+  height: 320px;
+}
+
 .edit-overview {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -374,7 +501,92 @@
   height: 25px;
 }
 
-.task.draw-letter {
+#welcome {
+  background-color: #E786FF;
+  background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), to(#c3ffff));
+  background: linear-gradient(0deg, #f0a6ff 0%, #c3ffff 100%);
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  user-select: none;
+  /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+}
+
+#logo-welcome {
+  width: 422px;
+  height: 110px;
+}
+
+.welcome-div {
+  height: 100vh;
+  position: relative;
+  color: white;
+  font-family: "Lekton";
+}
+
+.welcome-div #middle-bit {
+  user-select: none;
+  /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  position: absolute;
+  z-index: 2;
+  height: 30%;
+  top: 40%;
+  width: 80%;
+  left: 5%;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.welcome-div #middle-bit #examples-scroller {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.welcome-div #middle-bit #examples-scroller #punjabi {
+  font-weight: normal;
+  font-size: 36px;
+  height: 40px;
+}
+
+.welcome-div #middle-bit #examples-scroller #translation {
+  padding-top: 10px;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.welcome-div #middle-bit #prompt-text {
+  margin-top: 30px;
+  line-height: 1.25em;
+  font-size: 18px;
+}
+
+.welcome-div #middle-bit .action-button {
+  position: relative;
+  margin-top: 50px;
+}
+
+.welcome-div #scroll-prompt {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -383,17 +595,145 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  font-family: "Lekton";
+  font-size: 16px;
+  font-weight: 1000;
+}
+
+.welcome-div #scroll-prompt svg {
+  margin-top: 15px;
+}
+
+#welcome-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#welcome-2 #three-things {
+  height: 60%;
+  width: 60%;
+  padding-left: 10%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
 }
 
-.task.draw-letter #drawing-canvas {
-  width: 320px;
-  height: 320px;
+#welcome-2 #three-things .thing {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0;
+  -webkit-transition: 1s ease-in-out;
+  transition: 1s ease-in-out;
+  background-color: #ffffff83;
+  color: black;
+  border-radius: 5px;
+}
+
+#welcome-2 #three-things .thing.visible {
+  opacity: 1 !important;
+}
+
+#welcome-3 {
+  height: 300vh !important;
+}
+
+#welcome-3 #stick {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+#lp-logo {
+  z-index: 2;
+  -webkit-transform: translate(0.5%, -9%) scaleX(102%);
+          transform: translate(0.5%, -9%) scaleX(102%);
+  position: relative;
+}
+
+#lp-logo path {
+  position: absolute;
+  top: 0;
+}
+
+#rivers-top, #rivers-mid {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+#rivers-mid {
+  -webkit-transform: translate(0, -5.5%);
+          transform: translate(0, -5.5%);
+}
+
+.grad-top {
+  background: -webkit-gradient(linear, left top, left bottom, from(#E786FF), color-stop(8.33%, #E786FF), to(#86E2FF));
+  background: linear-gradient(180deg, #E786FF 0%, #E786FF 8.33%, #86E2FF 100%);
+}
+
+.grad-mid {
+  background-color: #86E2FF;
+}
+
+.grad-end {
+  background: -webkit-gradient(linear, left top, left bottom, from(#86E2FF), color-stop(91.67%, #E786FF), to(#E786FF));
+  background: linear-gradient(180deg, #86E2FF 0%, #E786FF 91.67%, #E786FF 100%);
+}
+
+@media (min-width: 1300px) {
+  #middle-bit {
+    position: absolute;
+    width: 35% !important;
+    font-size: 24px !important;
+    font-weight: bold;
+  }
+  #middle-bit #examples-scroller {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: horizontal !important;
+    -webkit-box-direction: normal !important;
+        -ms-flex-direction: row !important;
+            flex-direction: row !important;
+    align-items: center;
+  }
+  #middle-bit #examples-scroller #punjabi {
+    font-size: 52px !important;
+    height: 60px !important;
+    margin: 0 30px 0 0;
+  }
+  #middle-bit #examples-scroller #translation {
+    font-size: 24px !important;
+  }
+  #middle-bit #prompt-text {
+    font-size: 24px !important;
+    margin-top: 30px;
+  }
+  #middle-bit .action-button {
+    margin-top: 50px;
+  }
+  #scroll-prompt {
+    font-size: 24px !important;
+  }
 }
 
 #course-custom-container {
