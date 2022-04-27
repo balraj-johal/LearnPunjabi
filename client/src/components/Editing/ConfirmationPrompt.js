@@ -12,13 +12,13 @@ function ConfirmationPrompt(props) {
                 Are you sure?
                 <div>
                     <button
-                        className="capitalize h-10 bg-primary rounded text-white px-4"
+                        className="capitalize h-10 bg-primary rounded text-white px-4 mx-2 w-24"
                         onClick={() => { props.saveLesson() }}
                     >
                         Yes
                     </button>
                     <button
-                        className="capitalize h-10 bg-red-500 rounded text-white px-4"
+                        className="capitalize h-10 bg-red-500 rounded text-white px-4 mx-2 w-24"
                         onClick={() => { props.setShowSubmitConfirm(false) }}
                     >
                         No
