@@ -1,6 +1,8 @@
 import React, { Suspense, useRef, useEffect } from "react";
+// import { connect } from "react-redux";
 
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useNavigate } from "react-router-dom";
+import { Canvas, useThree } from '@react-three/fiber';
 // import { LayerMaterial, Depth, Noise } from 'lamina';
 
 import ScrollPrompt from "./ScrollPrompt";
@@ -19,9 +21,14 @@ function Welcome(props) {
     const top = useRef();
     const scrollArea = useRef();
     const onScroll = e => { top.current = e.target.scrollTop; };
-    useEffect(() => {
-        onScroll({ target: scrollArea.current });
-    }, [])
+
+    useEffect(() => { onScroll({ target: scrollArea.current }) }, []);
+
+    let navigate = useNavigate();
+    // // redirect to the dashboard if signed in
+    // useEffect(() => {
+    //     if (props.auth.isAuthenticated)  navigate("/dashboard");
+    // }, [props.auth.isAuthenticated]);
     
 
     return(
@@ -79,7 +86,6 @@ let ThreeStuff = React.forwardRef((props, ref) => {
         </Suspense>
     )
 })
-
 
 
 export default Welcome;

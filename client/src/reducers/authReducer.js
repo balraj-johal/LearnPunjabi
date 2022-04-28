@@ -2,6 +2,7 @@ import {
     CLEAR_AUTH_ERRORS,
     SET_AUTH_ERRORS, 
     SET_CURRENT_USER, 
+    SET_HAS_CHECKED, 
     SET_LOADED
 } from "../actions/types";
 
@@ -11,7 +12,8 @@ const initialState = {
     isAuthenticated: false,
     user: {},
     loading: true,
-    errors: {}
+    errors: {},
+    hasChecked: false,
 };
   
 export default function(state = initialState, action) {
@@ -32,6 +34,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 errors: action.payload
+            };
+        case SET_HAS_CHECKED:
+            return {
+                ...state,
+                hasChecked: true
             };
         case CLEAR_AUTH_ERRORS:
             return {

@@ -6,6 +6,7 @@ import {
     CLEAR_AUTH_ERRORS,
     SET_AUTH_ERRORS,
     SET_CURRENT_USER,
+    SET_HAS_CHECKED,
     SET_LOADED,
 } from "./types";
 
@@ -106,24 +107,37 @@ export const logoutUser = userID => dispatch => {
         })
 }
 
-export const useRefreshToken = () => dispatch => {
-    axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}))
-        .then(res => {
-            console.log("token refresh successful!");
-            getUserDataPromise()
-                .then(userData => {
-                    dispatch(setCurrentUser(userData));
-                })
-                .catch(err => {
-                    console.log("post /users/refreshToken error: ", err);
-                })
-        })
-        .catch(err => {
-            console.log("Token refresh error: ", err);
-            dispatch({
-                type: SET_LOADED
-            })
-        })
+export const useRefreshToken = () => async (dispatch) => {
+    try {
+        let success = await axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}));
+        let userData = await getUserDataPromise();
+        if (!userData) return console.log("problem getting userdata");
+        console.log("token refresh successful!");
+        dispatch(setCurrentUser(userData));
+        dispatch({ type: SET_HAS_CHECKED });
+    } catch (err) {
+        console.log("Token refresh error: ", err);
+        dispatch({ type: SET_LOADED });
+        dispatch({ type: SET_HAS_CHECKED });
+    }
+    // axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}))
+    //     .then(res => {
+    //         console.log("token refresh successful!");
+    //         getUserDataPromise()
+    //             .then(userData => {
+    //                 dispatch(setCurrentUser(userData));
+    //             })
+    //             .catch(err => {
+    //                 console.log("post /users/refreshToken error: ", err);
+    //             })
+    //     })
+    //     .catch(err => {
+    //         console.log("Token refresh error: ", err);
+    //         dispatch({
+    //             type: SET_LOADED
+    //         })
+    //     })
+    // dispatch({ type: SET_HAS_CHECKED });
 }
 
 export const setCurrentUser = decodedToken => {

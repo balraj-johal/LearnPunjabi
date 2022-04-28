@@ -5,6 +5,7 @@ export const CLEAR_AUTH_ERRORS = "CLEAR_AUTH_ERRORS";
 export const SET_LOADED = "SET_LOADED";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const RESTART = "RESTART";
+export const SET_HAS_CHECKED = "SET_HAS_CHECKED";
 
 // course actions
 export const SET_PROGRESS = "SET_PROGRESS";

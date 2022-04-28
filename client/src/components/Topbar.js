@@ -10,7 +10,7 @@ function Topbar(props) {
 
     return(
         <div id="topbar">
-            <Link to="/">
+            <Link to="/dashboard">
                 <Logo />
             </Link>
             { props.auth.isAuthenticated ? (

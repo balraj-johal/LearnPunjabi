@@ -15,6 +15,7 @@ function Course(props) {
     let [courseData, setCourseData] = useState([]);
 
     useEffect(() => {
+        // TODO: fix this not loading correctly
         axiosClient.get("/api/v1/lessons/")
             .then(res => { setCourseData(res.data.overview); })
             .catch(err => { console.log(err); })

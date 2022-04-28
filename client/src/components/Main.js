@@ -35,20 +35,24 @@ function Main(props) {
     }, [])
 
     // verify user credentials and refresh their refresh token
-    // TODO: determine why function executes twice
-    const verifyUser = useCallback(async () => {
-        // refresh the jwt with the refresh token
-        if (props.csrf.ready) {
-            props.useRefreshToken();
-            setTimeout(() => {
-                verifyUser();
-            }, 5 * 60 * 1000);
-        }
-    // TODO: confirm that these dependancies are correct
-    }, [props.auth.isAuthenticated, props.csrf.ready]);
+    const verifyUser = () => {
+        // if (!props.csrf.ready || props.auth.isAuthenticated) return;
+        if (!props.csrf.ready) return;
+        props.useRefreshToken();
+        setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
+    };
     useEffect(() => {
         verifyUser();
-    }, [verifyUser])
+    }, [props.csrf.ready, props.auth.isAuthenticated]);
+
+    // const verifyUser = useCallback(async () => {
+    //     if (!props.csrf.ready) return;
+    //     props.useRefreshToken();
+    //     setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
+    // }, [props.auth.isAuthenticated, props.csrf.ready]);
+    // useEffect(() => {
+    //     verifyUser();
+    // }, [verifyUser])
     
     // synchronise logout across open tabs
     const synchLogout = useCallback(event => {
@@ -64,7 +68,7 @@ function Main(props) {
     return(
         <Router>
             <Routes>
-                <Route path="/" element={ <Welcome /> } />
+                <Route path="/" element={ <Welcome loginQueried={props.csrf} /> } />
                 <Route path="/dashboard" element={
                     <InternalPage>
                         <ProtectedComponent component={<Dashboard />} />
