@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import DrawingCanvas from "./DrawingCanvas";
+import NextButton from "../NextButton";
 
 function DrawLetter(props) {
     let [clearing, setClearing] = useState(false);
@@ -11,12 +12,13 @@ function DrawLetter(props) {
 
     return(
         <div className="task draw-letter">
-            { props.data.text }
+            <div className="mb-8">{ props.data.text }</div>
             <DrawingCanvas clearing={clearing} setClearing={setClearing} />
-            <div onClick={()=>{ submitAnswer(); }} >
-                Next &gt;
+            <div className="flex flex-row w-full my-4">
+                <NextButton next={() => {setClearing(true)}} text="Clear" />
+                <NextButton next={() => {submitAnswer()}} />
             </div>
-            <div
+            {/* <div
                 className="task-button" 
                 id="clear-canvas" 
                 onClick={()=>{
@@ -25,7 +27,7 @@ function DrawLetter(props) {
                 }}
             >
                 Clear &gt;
-            </div>
+            </div> */}
         </div>
     );
 }

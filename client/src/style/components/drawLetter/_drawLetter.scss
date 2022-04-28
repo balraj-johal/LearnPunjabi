@@ -1,9 +1,9 @@
 .task.draw-letter {
-    width: 100%;
+    // width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     #drawing-canvas {
         width: 320px;
         height: 320px;

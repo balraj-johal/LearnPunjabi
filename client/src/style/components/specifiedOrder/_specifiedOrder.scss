@@ -4,10 +4,13 @@
         display: flex;
         list-style-type: none;
 
-        min-height: 25px;
+        min-height: 51px;
 
-        padding: 2px;
+        padding: 8px 2px;
         border-bottom: 1px solid rgba(128, 128, 128, 0.226);
+    }
+    #answers {
+        margin-bottom: 0.25em !important;
     }
 
     .audio {
@@ -28,10 +31,11 @@
     }
 
     .specified-order-answer {
-        padding: 0.5em 0.75em;
+        cursor: pointer;
+        padding: 1em 1.25em;
         margin: 0 6px;
-        height: 1.05em;
-        min-width: 10px;
+        height: 2em;
+        min-width: 60px;
         border: 1px solid grey;
         border-radius: 5px;
         

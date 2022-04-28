@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import AudioClip from "../../AudioClip";
+import NextButton from "../NextButton";
 import PossibleAnswer from "./PossibleAnswer";
 
 function MultipleChoice(props) {
@@ -44,11 +45,7 @@ function MultipleChoice(props) {
                     />
                 ) }
             </div>
-            <div onClick={()=>{
-                checkAnswer();
-            }}>
-                Submit &gt;
-            </div>
+            <NextButton next={() => {checkAnswer()}} />
         </div>
     );
 };

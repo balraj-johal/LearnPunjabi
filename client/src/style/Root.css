@@ -270,6 +270,7 @@ button:disabled {
 }
 
 .task, .lesson-end {
+  min-height: 40%;
   margin-top: 50px;
   width: 60%;
   margin: auto;
@@ -342,7 +343,7 @@ button:disabled {
 }
 
 .multiple-choice .answers-wrap {
-  margin: 1em;
+  margin: 2.5em 1em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -365,8 +366,8 @@ button:disabled {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 200px;
-  width: 200px;
+  height: 125px;
+  width: 125px;
   border: 1px solid grey;
   border-radius: 5px;
 }
@@ -389,9 +390,13 @@ button:disabled {
   display: -ms-flexbox;
   display: flex;
   list-style-type: none;
-  min-height: 25px;
-  padding: 2px;
+  min-height: 51px;
+  padding: 8px 2px;
   border-bottom: 1px solid rgba(128, 128, 128, 0.226);
+}
+
+.specified-order #answers {
+  margin-bottom: 0.25em !important;
 }
 
 .specified-order .audio {
@@ -425,10 +430,11 @@ button:disabled {
 }
 
 .specified-order .specified-order-answer {
-  padding: 0.5em 0.75em;
+  cursor: pointer;
+  padding: 1em 1.25em;
   margin: 0 6px;
-  height: 1.05em;
-  min-width: 10px;
+  height: 2em;
+  min-width: 60px;
   border: 1px solid grey;
   border-radius: 5px;
   display: -webkit-box;
@@ -443,7 +449,6 @@ button:disabled {
 }
 
 .task.draw-letter {
-  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -454,9 +459,9 @@ button:disabled {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .task.draw-letter #drawing-canvas {

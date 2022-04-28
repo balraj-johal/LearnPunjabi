@@ -7,6 +7,7 @@ import {
 import DragAnswerFragment from "./DragAnswerFragment";
 import PossAnswerFragment from "./PossAnswerFragment";
 import AudioClip from "../../AudioClip";
+import NextButton from "../NextButton";
 
 function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
@@ -82,7 +83,7 @@ function SpecifiedOrder(props) {
     }
 
     return(
-        <div className="task specified-order">
+        <div className="task specified-order flex flex-col justify-between">
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <DragDropContext onDragEnd={handleDragEnd} >
@@ -120,11 +121,7 @@ function SpecifiedOrder(props) {
                 </ul>
             </div>
 
-            <div onClick={()=>{
-                checkAnswer();
-            }}>
-                Submit &gt;
-            </div>
+            <NextButton next={() => {checkAnswer()}} />
         </div>
     );
 }
