@@ -527,6 +527,7 @@
   height: 100vh;
   position: relative;
   color: white;
+  overflow: hidden;
   font-family: "Lekton";
 }
 
@@ -585,7 +586,7 @@
 
 .welcome-div #scroll-prompt {
   position: absolute;
-  bottom: 30px;
+  bottom: 10px;
   left: 0;
   width: 100%;
   display: -webkit-box;
@@ -602,12 +603,14 @@
       -ms-flex-align: center;
           align-items: center;
   font-family: "Lekton";
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 1000;
 }
 
 .welcome-div #scroll-prompt svg {
-  margin-top: 15px;
+  margin-top: 5px;
+  width: 32px;
+  height: 16px;
 }
 
 #welcome-2 {
@@ -636,8 +639,7 @@
 }
 
 #welcome-2 #three-things .thing {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 14px;
   opacity: 0;
   -webkit-transition: 1s ease-in-out;
   transition: 1s ease-in-out;
@@ -646,12 +648,17 @@
   border-radius: 5px;
 }
 
+#welcome-2 #three-things .thing .title {
+  font-weight: bold;
+}
+
 #welcome-2 #three-things .thing.visible {
   opacity: 1 !important;
 }
 
 #welcome-3 {
   height: 300vh !important;
+  overflow: initial !important;
 }
 
 #welcome-3 #stick {
@@ -674,10 +681,24 @@
 }
 
 #rivers-top, #rivers-mid {
+  height: auto;
   position: absolute;
   right: 0;
-  top: 0;
   z-index: 1;
+}
+
+#rivers-top {
+  top: 0;
+}
+
+#rivers-end {
+  height: auto;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  -webkit-transform: scaleY(-1);
+  transform: scaleY(-1);
 }
 
 #rivers-mid {
@@ -732,7 +753,26 @@
     margin-top: 50px;
   }
   #scroll-prompt {
+    bottom: 30px !important;
     font-size: 24px !important;
+  }
+  #scroll-prompt svg {
+    margin-top: 15px !important;
+    width: 62px !important;
+    height: 31px !important;
+  }
+  .thing {
+    font-size: 24px !important;
+    font-weight: bold;
+    opacity: 0;
+    -webkit-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
+    background-color: #ffffff83;
+    color: black;
+    border-radius: 5px;
+  }
+  .thing.visible {
+    opacity: 1 !important;
   }
 }
 

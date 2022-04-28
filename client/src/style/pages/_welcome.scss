@@ -15,7 +15,7 @@
     height: 100vh;
     position: relative;
     color: white;
-    // border: rgba(128, 128, 128, 0.306) 2px solid; // debug
+    overflow: hidden;
 
     font-family: "Lekton";
 
@@ -58,7 +58,7 @@
     }
     #scroll-prompt {
         position: absolute;
-        bottom: 30px;
+        bottom: 10px;
         left: 0;
         width: 100%;
         display: flex;
@@ -67,10 +67,12 @@
         align-items: center;
 
         font-family: "Lekton";
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 1000;
         svg {
-            margin-top: 15px;
+            margin-top: 5px;
+            width: 32px;
+            height: 16px;
         }
     }
 }
@@ -86,8 +88,10 @@
         flex-direction: column;
         justify-content: space-evenly;
         .thing {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 14px;
+            .title {
+                font-weight: bold;
+            }
             opacity: 0;
             transition: 1s ease-in-out;
             background-color: #ffffff83;
@@ -102,6 +106,7 @@
 
 #welcome-3 {
     height: 300vh !important;
+    overflow: initial !important;
     #stick {
         position: sticky;
         top: 0;
@@ -120,10 +125,23 @@
     }
 }
 #rivers-top, #rivers-mid {
+    height: auto;
     position: absolute;
     right: 0;
-    top: 0;
+    // top: 0;
     z-index: 1;
+}
+#rivers-top {
+    top: 0;
+}
+#rivers-end {
+    height: auto;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
 }
 #rivers-mid {
     transform: translate(0, -5.5%);
@@ -167,6 +185,24 @@
         }
     }
     #scroll-prompt {
+        bottom: 30px !important;
         font-size: 24px !important;
+        svg {
+            margin-top: 15px !important;
+            width: 62px !important;
+            height: 31px !important;
+        }
+    }
+    .thing {
+        font-size: 24px !important;
+        font-weight: bold;
+        opacity: 0;
+        transition: 1s ease-in-out;
+        background-color: #ffffff83;
+        color: black;
+        border-radius: 5px;
+        &.visible {
+            opacity: 1 !important;
+        }
     }
 }
