@@ -13,6 +13,7 @@ import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function Register(props) {
     // initalise form state
+    let [submitting, setSubmitting] = useState(false);
     let [username, setUsername] = useState("");
     let [firstName, setFirstName] = useState("");
     let [email, setEmail] = useState("");
@@ -21,17 +22,23 @@ function Register(props) {
     let [successful, setSuccessful] = useState(false);
     let [errors, setErrors] = useState({});
 
-    let onSubmit = e => {
+    let onSubmit = async e => {
         e.preventDefault();
+        setSubmitting(true);
         let formData = {
             username: username,
             password: password,
             email: email,
             firstName: firstName
         }
-        axiosClient.post("/api/v1/users/", qs.stringify(formData))
-            .then(res => { setSuccessful(true); })
-            .catch(err => { setErrors(err.response.data); })
+        try {
+            await axiosClient.post("/api/v1/users/", qs.stringify(formData));
+            setSuccessful(true);
+            setSubmitting(false);
+        } catch (error) {
+            setErrors(error.response.data);
+            setSubmitting(false);
+        }
     }
 
     return(
@@ -86,7 +93,7 @@ function Register(props) {
                         for="verification" 
                         errors={ errors } 
                     />
-                    <FormSubmitButton for="register" />
+                    <FormSubmitButton for="register" disabled={submitting} />
                 </form>
             </div>
         )
