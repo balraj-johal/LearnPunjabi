@@ -15,12 +15,15 @@ function Course(props) {
     let [courseData, setCourseData] = useState([]);
 
     useEffect(() => {
-        // TODO: fix this not loading correctly
-        axiosClient.get("/api/v1/lessons/")
-            .then(res => { setCourseData(res.data.overview); })
-            .catch(err => { console.log(err); })
+        let reqTimeout = setTimeout(() => {
+            axiosClient.get("/api/v1/lessons/")
+                .then(res => { setCourseData(res.data.overview); })
+                .catch(err => { console.log(err); })
+        }, 200);
 
-        // TODO: add cleanup function here
+        return () => {
+            clearTimeout(reqTimeout);
+        }
     }, [])
 
     /**
@@ -66,9 +69,9 @@ function Course(props) {
      */
     let getWrapHeight = () => {
         if (courseData.length > 0) {
-            return `${courseData.length * (182)}px`
+            return `${courseData.length * (190)}px`
         } else {
-            return `calc(100vh - 99px)`
+            return `calc(100vh - 94px)`
         }
     }
 

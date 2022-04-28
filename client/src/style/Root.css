@@ -166,6 +166,10 @@
   }
 }
 
+button:disabled {
+  background: #00a2ff72;
+}
+
 .accounts-wrap {
   width: 85%;
   height: 48vh;
@@ -200,6 +204,8 @@
 }
 
 .lesson-wrap {
+  background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), to(#c3ffff));
+  background: linear-gradient(0deg, #f0a6ff 0%, #c3ffff 100%);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -503,8 +509,8 @@
 
 #welcome {
   background-color: #E786FF;
-  background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), to(#c3ffff));
-  background: linear-gradient(0deg, #f0a6ff 0%, #c3ffff 100%);
+  background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), color-stop(10%, #f0a6ff), color-stop(90%, #c3ffff), to(#c3ffff));
+  background: linear-gradient(0deg, #f0a6ff 0%, #f0a6ff 10%, #c3ffff 90%, #c3ffff 100%);
   height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -784,6 +790,16 @@
 }
 
 #custom-container {
+  height: calc(100vh - 94px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container {
+  max-width: 100vw !important;
   height: calc(100vh - 94px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

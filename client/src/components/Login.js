@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import { loginUser } from "../actions/authActions";
+import axiosClient from "../axiosDefaults";
+import qs from 'qs';
+
+import { loginUser, setUser, setAuthErrors } from "../actions/authActions";
 
 // form components
 import FormError from "./FormComponents/FormError";
@@ -10,15 +13,21 @@ import FormSubmitButton from "./FormComponents/FormSubmitButton";
 
 function Login(props) {
     // initialise form states
-    let [username, setUsername] = useState("")
-    let [password, setPassword] = useState("")
+    let [submitting, setSubmitting] = useState(false);
+    let [username, setUsername] = useState("");
+    let [password, setPassword] = useState("");
 
-    let onSubmit = e => {
+    let onSubmit = async e => {
         e.preventDefault();
-        props.loginUser({
-            username: username,
-            password: password
-        });
+        setSubmitting(true);
+        try {
+            await axiosClient.post("/api/v1/users/login", 
+                qs.stringify({ username: username, password: password }));
+            props.setUser();
+        } catch (error) {
+            props.setAuthErrors(error.response.data);
+            setSubmitting(false);
+        }
     }
 
     return(
@@ -50,7 +59,7 @@ function Login(props) {
                     for="verification" 
                     errors={ props.errors } 
                 />
-                <FormSubmitButton for="login" />
+                <FormSubmitButton for="login" disabled={submitting} />
                 <div onClick={() => {
                     props.setManagerState("ForgotPassword");
                 }}>
@@ -70,5 +79,5 @@ const mapStateToProps = state => ({
 //connect to redux
 export default connect(
     mapStateToProps,
-    { loginUser }
+    { loginUser, setUser, setAuthErrors }
 )(Login);

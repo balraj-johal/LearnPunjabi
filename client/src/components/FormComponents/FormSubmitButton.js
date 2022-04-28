@@ -6,6 +6,7 @@ function FormSubmitButton(props) {
             <button
                 type="submit"
                 className="capitalize h-10 bg-primary rounded text-white px-4"
+                disabled={props.disabled || false}
             >
                 {props.text || props.for}
             </button>

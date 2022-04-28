@@ -37,3 +37,9 @@
         font-size: 24px;
     }
 }
+
+button {
+    &:disabled {
+        background: #00a2ff72;
+    }
+}

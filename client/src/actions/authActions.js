@@ -53,6 +53,24 @@ export const loginUser = userData => dispatch => {
         })
 }
 
+export const setUser = () => async (dispatch) => {
+    try {
+        let userData = await getUserDataPromise();
+        dispatch(setCurrentUser(userData));
+    } catch (error) {
+        dispatch({
+            type: SET_AUTH_ERRORS,
+            payload: error
+        })
+    }
+}
+export const setAuthErrors = errors => dispatch => {
+    dispatch({
+        type: SET_AUTH_ERRORS,
+        payload: errors
+    })
+}
+
 export const forgotPassword = userData => dispatch => {
     axiosClient.post("/api/v1/users/forgot-password", qs.stringify(userData))
         .then(res => { console.log(); })
