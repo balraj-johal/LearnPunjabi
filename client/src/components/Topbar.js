@@ -13,12 +13,15 @@ function Topbar(props) {
             <Link to="/dashboard">
                 <Logo />
             </Link>
-            { props.auth.isAuthenticated ? (
-                <div>Hello {props.auth.user.username}!</div>
-            ) : null }
+            
             <Link to="/account">
-                <div className="account-button">
-                    <img src={AccountIcon} alt="account-open-button-icon" />
+                <div className="flex flex-row items-center mr-6">
+                    { props.auth.isAuthenticated ? (
+                        <div className="mr-5 mt-1">Hello {props.auth.user.username}!</div>
+                    ) : null }
+                    <div className="account-button">
+                        <img src={AccountIcon} alt="account-open-button-icon" />
+                    </div>
                 </div>
             </Link>
         </div>

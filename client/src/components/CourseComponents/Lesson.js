@@ -110,7 +110,7 @@ function Lesson(props) {
         if (nextIndex >= lesson.tasks.length) {
             endLesson(lesson.id);
             props.getUserData();
-            navigate("/");
+            navigate("/dashboard");
         } else {
             setCurrentTaskIndex(nextIndex);
         }

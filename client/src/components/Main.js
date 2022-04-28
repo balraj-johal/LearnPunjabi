@@ -80,9 +80,7 @@ function Main(props) {
                     </InternalPage>
                 } >
                     <Route path=":id" element={
-                        <InternalPage>
-                            <ProtectedComponent component={<Lesson />} />
-                        </InternalPage>
+                        <ProtectedComponent component={<Lesson />} />
                     } />
                 </Route>
                 <Route path="/account" element={

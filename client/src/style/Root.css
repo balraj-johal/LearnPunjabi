@@ -100,11 +100,6 @@
   border-bottom: 3px solid black;
 }
 
-#topbar a {
-  width: 50px;
-  margin-right: 2em;
-}
-
 .account-button {
   width: 50px;
   height: 50px;
@@ -236,9 +231,9 @@ button:disabled {
       flex-shrink: 0;
   width: 150px;
   height: 150px;
-  border: 1px grey solid;
   border-radius: 10px;
   margin: 15px;
+  padding: 15px;
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
   -webkit-transition: -webkit-transform 0.5s ease;
@@ -258,7 +253,7 @@ button:disabled {
 }
 
 .lesson-wrap .lesson.incomplete {
-  background-color: transparent;
+  background-color: white;
 }
 
 @media (max-width: 768px) {
@@ -274,7 +269,7 @@ button:disabled {
   }
 }
 
-.task {
+.task, .lesson-end {
   margin-top: 50px;
   width: 60%;
   margin: auto;
@@ -301,7 +296,8 @@ button:disabled {
 
 #leaderboard #leaderboard-list .user-entry {
   padding: 5px 1em;
-  width: calc(100% - 2em);
+  margin: 0.7em 0 0.4em;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
