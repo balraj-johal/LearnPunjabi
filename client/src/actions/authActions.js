@@ -80,7 +80,7 @@ export const resetPassword = (userData) => dispatch => {
 
 export const getUserDataPromise = () => {
     return new Promise((resolve, reject) => {
-        axiosClient.get(`/api/v1/users/data`)
+        axiosClient.get(`/api/v1/users/`)
             .then(res => {
                 resolve(res.data.user);
             })
