@@ -50,7 +50,7 @@ function TaskManager(props) {
             );
         default:
             return(
-                <div className="task">
+                <div className="task animate-fade-in">
                     {props.taskData.text}
                     Other
                     <div onClick={()=>{

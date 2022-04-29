@@ -5,7 +5,7 @@ function InternalPage({ children, ...props }) {
     return(
         <>
         <Topbar />
-            <div className="container">
+            <div className="container animate-fade-in">
                 { children }
             </div>
         </>

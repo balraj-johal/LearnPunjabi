@@ -39,7 +39,8 @@ function ProtectedComponent({ component, ...props}) {
     }, [props.auth]);
     
     if (ready) return component;
-    return <Loader />;
+    // return <Loader />;
+    return null;
 }
 
 //pull relevant props from redux state

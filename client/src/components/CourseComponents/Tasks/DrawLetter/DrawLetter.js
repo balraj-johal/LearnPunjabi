@@ -12,7 +12,7 @@ function DrawLetter(props) {
     }
 
     return(
-        <div className="task draw-letter">
+        <div className="task animate-fade-in draw-letter">
             <div className="mb-8">{ props.data.text }</div>
             <DrawingCanvas clearing={clearing} setClearing={setClearing} />
             <div className="flex flex-row w-full my-4">
@@ -20,7 +20,7 @@ function DrawLetter(props) {
                 <NextButton next={() => {submitAnswer()}} />
             </div>
             {/* <div
-                className="task-button" 
+                className="task animate-fade-in-button" 
                 id="clear-canvas" 
                 onClick={()=>{
                     console.log("btn clicked")

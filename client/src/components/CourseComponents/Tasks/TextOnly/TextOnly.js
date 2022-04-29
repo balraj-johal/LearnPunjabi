@@ -12,7 +12,7 @@ function TextOnly(props) {
     console.log(props.data)
 
     return(
-        <div className="task text-only flex flex-row">
+        <div className="task animate-fade-in text-only flex flex-row">
             <div className="w-3/12 flex items-center justify-center">
                 <img src={testImg} className="mb-14" />
             </div>
@@ -21,12 +21,6 @@ function TextOnly(props) {
             <div id="text-only-content" className="w-9/12 flex flex-col">
                 { props.data.text } 
                 <NextButton next={submitContinue} />
-                {/* <button className="w-28 text-white h-8 bg-primary cursor-pointer rounded
-                    hover:bg-primary2 my-4 mt-6 hover:drop-shadow-md" 
-                    onClick={()=>{ submitContinue() }}
-                >
-                    Next &gt;
-                </button> */}
             </div>
         </div>
     );

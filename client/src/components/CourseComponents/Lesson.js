@@ -40,7 +40,8 @@ function Lesson(props) {
     useEffect(() => {
         let reqTimeout = setTimeout(async () => {
             try {
-                let res = await axiosClient.get(`/api/v1/lessons/${String(id)}`);
+                let endpoint = `/api/v1/lessons/${String(id)}`;
+                let res = await axiosClient.get(endpoint);
                 let data = res.data;
                 if (data.shuffle) data.tasks = shuffle(data.tasks);
                 // add data for the lesson end screen
@@ -138,7 +139,7 @@ function Lesson(props) {
             .catch(err => { console.log(err); })
     }
     
-    if (!ready) return <Loader />
+    if (!ready) return null;
     return(
         lesson ? (
             <TaskManager

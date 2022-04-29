@@ -24,7 +24,8 @@
         @include hoverScaleUp(1.05);
 
         &.complete {
-            background-color: green;
+            background-color: #00A2FF;
+            // background-color: #f0a6ff;
         }
         &.incomplete {
             background-color: white;
