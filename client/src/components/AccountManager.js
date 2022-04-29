@@ -14,6 +14,7 @@ import Login from "./Login";
 import Register from "./Register";
 import AccountSummary from "./AccountSummary";
 import ForgotPassword from "./ForgotPassword";
+import GenericButton from "./GenericButton";
 
 function AccountManager(props) {
     // initialise state
@@ -33,17 +34,21 @@ function AccountManager(props) {
 
     return(
         <div className="accounts-wrap">
-            <div id="switcher-buttons">
+            <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? (
                     <button onClick={() => {
                         props.logoutUser(props.auth.user._id);
                     }}>Logout</button>
                 ) : (
                     <>
-                        <button onClick={() => { setManagerState("Login") }}>Login</button>
+                        <GenericButton handleClick={() => { setManagerState("Login") }} text="Login" />
+                        <GenericButton handleClick={() => { setManagerState("Register") }} text="Register" />
+                        <GenericButton handleClick={() => { props.setDyslexicOption(true) }} text="DyslexicFont" />
+                        <GenericButton handleClick={() => { props.setDarkMode(true) }} text="DarkMode" />
+                        {/* <button onClick={() => { setManagerState("Login") }}>Login</button>
                         <button onClick={() => { setManagerState("Register") }}>Register</button>
                         <button onClick={() => { props.setDyslexicOption(true) }}>Dyslexia Test</button>
-                        <button onClick={() => { props.setDarkMode(true) }}>DarkMode</button>
+                        <button onClick={() => { props.setDarkMode(true) }}>DarkMode</button> */}
                     </>
                 )}
             </div>
