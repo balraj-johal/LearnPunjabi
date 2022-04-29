@@ -2,7 +2,7 @@ import React from "react";
 
 function FormSubmitButton(props) {
     return(
-        <div className={`button-wrap-${props.for} my-8`} >
+        <div className={`button-wrap-${props.for} my-4`} >
             <button
                 type="submit"
                 className="capitalize h-10 bg-primary rounded text-white px-4"

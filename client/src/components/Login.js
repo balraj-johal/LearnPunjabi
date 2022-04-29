@@ -31,39 +31,32 @@ function Login(props) {
     }
 
     return(
-        <div className="login">
+        <div className="login mt-2">
             <form className="login-form" noValidate onSubmit={ onSubmit }>
                 <FormInput 
                     for="username"
                     onChange={ e => setUsername(e.target.value) }
                     value={ username }
-                    error={ props.errors.username }
+                    errors={ props.errors }
                     type="username"
-                />
-                <FormError 
-                    for="username" 
-                    errors={ props.errors } 
                 />
                 <FormInput 
                     for="password"
                     onChange={ e => setPassword(e.target.value) }
                     value={ password }
-                    error={ props.errors.password }
+                    errors={ props.errors }
                     type="password"
-                />
-                <FormError 
-                    for="password" 
-                    errors={ props.errors } 
                 />
                 <FormError 
                     for="verification" 
                     errors={ props.errors } 
                 />
                 <FormSubmitButton for="login" disabled={submitting} />
-                <div onClick={() => {
-                    props.setManagerState("ForgotPassword");
-                }}>
-                    Forgot Password?
+                <div 
+                    onClick={() => { props.setManagerState("ForgotPassword"); }}
+                    className="text-sm text-primary w-full"    
+                >
+                    - Forgot Password?
                 </div>
             </form>
         </div>

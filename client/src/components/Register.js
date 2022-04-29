@@ -47,53 +47,34 @@ function Register(props) {
                 <form className="register-form" noValidate onSubmit={ onSubmit }>
                     <FormInput 
                         for="username"
-                        onChange={e => setUsername(e.target.value) }
+                        onChange={ e => setUsername(e.target.value) }
                         value={ username }
-                        error={ errors.username }
+                        errors={ errors }
                         type="username"
-                    />
-                    <FormError 
-                        for="username" 
-                        errors={ errors } 
                     />
                     <FormInput 
                         for="firstName"
                         onChange={ e => setFirstName(e.target.value) }
                         value={ firstName }
-                        error={ errors.firstName }
+                        errors={ errors }
                         type="text"
-                    />
-                    <FormError 
-                        for="firstName" 
-                        errors={ errors } 
                     />
                     <FormInput 
                         for="email"
                         onChange={ e => setEmail(e.target.value) }
                         value={ email }
-                        error={ errors.email }
+                        errors={ errors }
                         type="text"
-                    />
-                    <FormError 
-                        for="email" 
-                        errors={ errors } 
                     />
                     <FormInput 
                         for="password"
                         onChange={ e => setPassword(e.target.value) }
                         value={ password }
-                        error={ errors.password }
+                        errors={ errors }
                         type="password"
                     />
-                    <FormError 
-                        for="password" 
-                        errors={ errors } 
-                    />
-                    <FormError 
-                        for="verification" 
-                        errors={ errors } 
-                    />
-                    <FormSubmitButton for="register" disabled={submitting} />
+                    <FormError for="verification" errors={ errors } />
+                    <FormSubmitButton for="register" disabled={ submitting } />
                 </form>
             </div>
         )
