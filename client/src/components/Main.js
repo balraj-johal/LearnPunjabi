@@ -21,6 +21,9 @@ import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./ResetPassword";
 import VerifyEmail from "./VerifyEmail";
 import Welcome from "./Welcome/Welcome";
+import EditOverview from "./Editing/Overview/EditOverview";
+import EditLesson from "./Editing/Lesson/EditLesson";
+import NotAuthorised from "./NotAuthorised";
 
 
 function Main(props) {
@@ -76,7 +79,24 @@ function Main(props) {
                         <Route path=":id" element={
                             <ProtectedComponent component={<Lesson />} />
                         } />
+                    </Route>                    
+                    <Route path="/edit" >
+                        <Route path="/edit/overview" element={
+                            <InternalPage>
+                                <ProtectedComponent component={<EditOverview />} role={"Admin"} />
+                            </InternalPage>
+                        } />
+                        <Route path=":id" element={
+                            <InternalPage>
+                                <ProtectedComponent component={<EditLesson />} role={"Admin"} />
+                            </InternalPage>
+                        } />
                     </Route>
+                    <Route path="/restricted" element={
+                        <InternalPage>
+                            <NotAuthorised />
+                        </InternalPage>
+                    } />
                     <Route path="/account" element={
                         <InternalPage>
                             <AccountManager />

@@ -12,6 +12,8 @@ import {
     _isObjectEmpty 
 } from "../../../utils/validation/validateLesson";
 
+import { useBeforeunload } from 'react-beforeunload';
+
 import Loader from "../../Loader";
 import EditTask from "../Task/EditTask";
 import FormSubmitButton from "../../FormComponents/FormSubmitButton";
@@ -38,6 +40,9 @@ function EditLesson(props) {
     let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
     let [submitSuccess, setSubmitSuccess] = useState(false);
     let [errors, setErrors] = useState({});
+    
+    // alert prompt if user tries to leave without saving
+    useBeforeunload((e) => { if ("value" !== '') e.preventDefault(); });
     
     // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
@@ -102,10 +107,14 @@ function EditLesson(props) {
         let validationErrors = _getLessonValidationErrors(lessonCopy);
         setErrors(validationErrors);
         console.log(validationErrors);
-        if (!_isObjectEmpty(validationErrors)) return;
+        if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
         axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, qs.stringify(lesson))
-            .then(res => { setSubmitSuccess(true); })
-            .catch(err => { setErrors(err.response.data); })
+            .then(res => { 
+                setSubmitSuccess(true);
+            })
+            .catch(err => { 
+                setErrors(err.response.data); 
+            })
     }
 
     /** updates form state on change of form field value
@@ -208,10 +217,11 @@ function EditLesson(props) {
             <Link className="absolute p-2 text-sm text-primary" to="/edit/overview" replace>
                 &lt; back to overview
             </Link>
-            <div className="edit-lesson container mx-auto 
+            <div className="w-screen mx-auto
                     flex justify-center pt-10 mb-10">
                 <form 
                     className="edit-lesson-form w-8/12" 
+                    id="edit-lesson"
                     noValidate 
                     onSubmit={onSubmit}
                 >

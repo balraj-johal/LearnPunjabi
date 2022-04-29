@@ -42,11 +42,15 @@ let _validateSpecifiedOrder = (task, errors) => {
 }
 let _validateMultipleChoice = (task, errors) => {
     if (task.text.length < 1) errors.text = "Task text is required"
-    if (task.possibleAnswers.length < 2) errors.multipleChoice = "Task must have at least 2 possible answers"
-    task.possibleAnswers.forEach(answer => {
-        if (answer.middleText.length < 1) errors.multipleChoice = "Possible answers cannot be empty"
-    })
-    if (task.correctAnswerIndex === null || task.correctAnswerIndex === undefined) errors.multipleChoice = "Task must have a correct answer"
+    if (task.possibleAnswers) {
+        if (task.correctAnswerIndex === null || task.correctAnswerIndex === undefined) errors.multipleChoice = "Task must have a correct answer"
+        task.possibleAnswers.forEach(answer => {
+            if (answer.middleText.length < 1) errors.multipleChoice = "Possible answers cannot be empty"
+        })
+        if (task.possibleAnswers.length < 2) errors.multipleChoice = "Task must have at least 2 possible answers"
+    } else {
+        errors.multipleChoice = "Task must have at least 2 possible answers"
+    }
 }
 
 let _isObjectEmpty = (object) => {
