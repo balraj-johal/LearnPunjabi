@@ -12,18 +12,21 @@ import {
 } from "../../actions/courseActions";
 
 function Course(props) {
+    let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
 
     useEffect(() => {
-        let reqTimeout = setTimeout(() => {
-            axiosClient.get("/api/v1/lessons/")
-                .then(res => { setCourseData(res.data.overview); })
-                .catch(err => { console.log(err); })
+        let reqTimeout = setTimeout(async () => {
+            try {
+                let res = await axiosClient.get("/api/v1/lessons/");
+                setCourseData(res.data.overview); 
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+            }
         }, 200);
 
-        return () => {
-            clearTimeout(reqTimeout);
-        }
+        return () => { clearTimeout(reqTimeout) }
     }, [])
 
     /**
@@ -34,13 +37,10 @@ function Course(props) {
      */
     let getLessonStatus = (id) => {
         let status = false;
-        if (props.userProgress) {
-            props.userProgress.forEach(lesson => {
-                if (lesson.id === id) {
-                    status = true;
-                }
-            });
-        }
+        if (!props.userProgress) return status;
+        props.userProgress.forEach(lesson => {
+            if (lesson.id === id) status = true;
+        });
         return status;
     }
 
@@ -65,7 +65,7 @@ function Course(props) {
     /**
      * calculate the height the lesson-wrap elem should be
      * @name getWrapHeight
-     * @returns { tring } height - string to set height style to
+     * @returns { String } height - string to set height style to
      */
     let getWrapHeight = () => {
         if (courseData.length > 0) {
@@ -75,10 +75,13 @@ function Course(props) {
         }
     }
 
+    if (loading) return(
+        <div className="lesson-wrap" style={{ height: getWrapHeight() }}>
+            <Loader />
+        </div>
+    )
     return(
-        <div className="lesson-wrap" style={{
-            height: getWrapHeight()
-        }}>
+        <div className="lesson-wrap" style={{ height: getWrapHeight() }}>
             { courseData.length > 0 ? (
                 courseData.map((lesson, index) => 
                     <LessonIcon 
@@ -88,7 +91,11 @@ function Course(props) {
                         key={index} 
                     />
                 )
-            ) : <Loader /> }
+            ) : (
+                <div>
+                    Loading failed. Please refresh and try again!
+                </div>
+            )}
         </div>
     )
 }
@@ -98,9 +105,7 @@ function LessonIcon(props) {
     return(
         <div 
             className={`lesson ${props.status ? "complete" : "incomplete"}`}
-            onClick={() => {
-                navigate(`/lesson/${props.lesson.id}`);
-            }}
+            onClick={() => { navigate(`/lesson/${props.lesson.id}`) }}
         >
             { props.lesson.name }<br/>
             <p>{ props.timesCompleted }/{ props.lesson.requiredCompletions }</p>

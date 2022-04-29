@@ -38,12 +38,11 @@ function Lesson(props) {
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
-        axiosClient.get(`/api/v1/lessons/${String(id)}`)
-            .then(res => {
+        let reqTimeout = setTimeout(async () => {
+            try {
+                let res = await axiosClient.get(`/api/v1/lessons/${String(id)}`);
                 let data = res.data;
-                if (data.shuffle) {
-                    data.tasks = shuffle(data.tasks);
-                }
+                if (data.shuffle) data.tasks = shuffle(data.tasks);
                 // add data for the lesson end screen
                 data.tasks.push({
                     taskID: "end",
@@ -53,8 +52,13 @@ function Lesson(props) {
                 // save modified lesson data to component state
                 setLesson(data);
                 setReady(true);
-            })
-            .catch(err => { console.log("Get lesson error: ", err); })
+            } catch (err) {
+                setReady(true);
+                console.log("Get lesson error: ", err);
+            }
+        }, 200);
+
+        return () => { clearTimeout(reqTimeout) }
     }, [id]);
 
     /**
@@ -97,7 +101,6 @@ function Lesson(props) {
                 ...answerTracking
             });
         }
-        
     }
     
     /** 
@@ -124,7 +127,6 @@ function Lesson(props) {
     let endLesson = (lessonID) => {
         // TODO: submit tracked mistakes here
         let mistakes = answerTracking.wrongTasks;
-        // console.log("mistakes: ", mistakes);
 
         let adjustedXP = Math.floor(25 * getPercentCorrect() / 100);
         let endpoint = `/api/v1/users/progress/${lessonID}`;
@@ -136,14 +138,18 @@ function Lesson(props) {
             .catch(err => { console.log(err); })
     }
     
+    if (!ready) return <Loader />
     return(
-        ready ? (
+        lesson ? (
             <TaskManager
                 taskData={ lesson.tasks[currentTaskIndex] }
                 submitAnswer={ submitAnswer }
                 stats={ `${getPercentCorrect()}%` }
             />
-        ) : <Loader />
+        ) : 
+        <div className="flex justify-center items-center w-full h-full">
+            Loading failed. Please refresh and try again!
+        </div>
     )
 }
 

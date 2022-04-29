@@ -811,7 +811,7 @@ button:disabled {
 }
 
 #custom-container {
-  height: calc(100vh - 94px);
+  height: calc(100vh - 92px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;
@@ -821,7 +821,7 @@ button:disabled {
 
 .container {
   max-width: 100vw !important;
-  height: calc(100vh - 94px);
+  height: calc(100vh - 92px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;

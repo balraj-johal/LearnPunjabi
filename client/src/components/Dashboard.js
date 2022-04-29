@@ -10,10 +10,10 @@ function Dashboard(props) {
     // set up resize handlers
         // TODO: throttle event?
     useEffect(() => {
-        let onResize = () => { window.innerWidth < 768 ? setMobile(true) : setMobile(false); }
+        let onResize = () => { window.innerWidth < 768 ? setMobile(true) : setMobile(false) }
         window.addEventListener("resize", onResize);
         onResize();
-        return () => { window.removeEventListener("resize", onResize); }
+        return () => { window.removeEventListener("resize", onResize) }
     }, [])
 
     return( mobile ? <MobileDashboard /> : <DesktopDashboard /> )

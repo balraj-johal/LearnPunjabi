@@ -5,14 +5,14 @@
     border-right: $border-thickness solid black;
 }
 #custom-container {
-    height: calc(100vh - 94px);
+    height: calc(100vh - 92px);
     @include vScroll;
 
     display: flex;
 }
 .container {
     max-width: 100vw !important;
-    height: calc(100vh - 94px);
+    height: calc(100vh - 92px);
     @include vScroll;
 
     display: flex;
