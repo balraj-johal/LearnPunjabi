@@ -12,3 +12,21 @@
     src: url("fonts/Lekton-Italic.ttf");
     font-style: italic;
 }
+
+@font-face {
+    font-family: "OpenDyslexic";
+    src: url("fonts/OpenDyslexic/OpenDyslexic-Regular.otf");
+}
+@font-face {
+    font-family: "OpenDyslexic";
+    src: url("fonts/OpenDyslexic/OpenDyslexic-Bold.otf");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "OpenDyslexic";
+    src: url("fonts/OpenDyslexic/OpenDyslexic-Italic.otf");
+    font-style: italic;
+}
+.dyslexiaFont {
+    font-family: "OpenDyslexic" !important;
+}

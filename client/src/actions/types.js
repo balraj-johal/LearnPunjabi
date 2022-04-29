@@ -12,3 +12,7 @@ export const SET_PROGRESS = "SET_PROGRESS";
 
 // csrf actions
 export const SET_READY = "SET_READY";
+
+// options actions
+export const SET_DARK_MODE = "SET_DARK_MODE"
+export const SET_DYSLEXIC_OPTION = "SET_DYSLEXIC_OPTION"

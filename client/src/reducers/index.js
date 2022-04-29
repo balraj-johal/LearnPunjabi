@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import courseReducer from "./courseReducer";
 import csrfReducer from "./csrfReducer";
+import optionsReducer from "./optionsReducer";
 
 /*
     reducer defines how to change the state after each
@@ -11,7 +12,8 @@ import csrfReducer from "./csrfReducer";
 const appReducer = combineReducers({
     auth: authReducer,
     course: courseReducer,
-    csrf: csrfReducer
+    csrf: csrfReducer,
+    options: optionsReducer,
 });
 
 const rootReducer = (state, action) => {

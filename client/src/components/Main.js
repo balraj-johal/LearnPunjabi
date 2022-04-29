@@ -36,7 +36,6 @@ function Main(props) {
 
     // verify user credentials and refresh their refresh token
     const verifyUser = () => {
-        // if (!props.csrf.ready || props.auth.isAuthenticated) return;
         if (!props.csrf.ready) return;
         props.useRefreshToken();
         setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
@@ -44,15 +43,6 @@ function Main(props) {
     useEffect(() => {
         verifyUser();
     }, [props.csrf.ready, props.auth.isAuthenticated]);
-
-    // const verifyUser = useCallback(async () => {
-    //     if (!props.csrf.ready) return;
-    //     props.useRefreshToken();
-    //     setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
-    // }, [props.auth.isAuthenticated, props.csrf.ready]);
-    // useEffect(() => {
-    //     verifyUser();
-    // }, [verifyUser])
     
     // synchronise logout across open tabs
     const synchLogout = useCallback(event => {
@@ -66,52 +56,58 @@ function Main(props) {
     }, [synchLogout]);
 
     return(
-        <Router>
-            <Routes>
-                <Route path="/" element={ <Welcome loginQueried={props.csrf} /> } />
-                <Route path="/dashboard" element={
-                    <InternalPage>
-                        <ProtectedComponent component={<Dashboard />} />
-                    </InternalPage>
-                } />
-                <Route path="/lesson" element={
-                    <InternalPage>
-                        <Lessons />
-                    </InternalPage>
-                } >
-                    <Route path=":id" element={
-                        <ProtectedComponent component={<Lesson />} />
+        <div className={`
+            ${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
+            ${props.options.darkMode ? "darkMode" : ""}
+        `} >
+            <Router>
+                <Routes>
+                    <Route path="/" element={ <Welcome loginQueried={props.csrf} /> } />
+                    <Route path="/dashboard" element={
+                        <InternalPage>
+                            <ProtectedComponent component={<Dashboard />} />
+                        </InternalPage>
                     } />
-                </Route>
-                <Route path="/account" element={
-                    <InternalPage>
-                        <AccountManager />
-                    </InternalPage>
-                } />
-                <Route path="/reset-password/:code" element={
-                    <InternalPage>
-                        <ResetPassword /> 
-                    </InternalPage>
-                } />
-                <Route path="/verify-email/:code" element={
-                    <InternalPage>
-                        <VerifyEmail /> 
-                    </InternalPage>
-                } />
-                <Route path="/welcome" element={
-                    <InternalPage>
-                        <Welcome /> 
-                    </InternalPage>
-                } />
-            </Routes>
-        </Router>
+                    <Route path="/lesson" element={
+                        <InternalPage>
+                            <Lessons />
+                        </InternalPage>
+                    } >
+                        <Route path=":id" element={
+                            <ProtectedComponent component={<Lesson />} />
+                        } />
+                    </Route>
+                    <Route path="/account" element={
+                        <InternalPage>
+                            <AccountManager />
+                        </InternalPage>
+                    } />
+                    <Route path="/reset-password/:code" element={
+                        <InternalPage>
+                            <ResetPassword /> 
+                        </InternalPage>
+                    } />
+                    <Route path="/verify-email/:code" element={
+                        <InternalPage>
+                            <VerifyEmail /> 
+                        </InternalPage>
+                    } />
+                    <Route path="/welcome" element={
+                        <InternalPage>
+                            <Welcome /> 
+                        </InternalPage>
+                    } />
+                </Routes>
+            </Router>
+        </div>
     )
 }
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     auth: state.auth,
-    csrf: state.csrf
+    csrf: state.csrf,
+    options: state.options
 });
 
 export default connect(

@@ -7,6 +7,7 @@ import {
     getUserData, 
     clearAuthErrors 
 } from "../actions/authActions";
+import { setDarkMode, setDyslexicOption } from "../actions/optionsActions";
 
 // import components
 import Login from "./Login";
@@ -39,12 +40,10 @@ function AccountManager(props) {
                     }}>Logout</button>
                 ) : (
                     <>
-                        <button onClick={() => {
-                            setManagerState("Login")
-                        }}>Login</button>
-                        <button onClick={() => {
-                            setManagerState("Register")
-                        }}>Register</button>
+                        <button onClick={() => { setManagerState("Login") }}>Login</button>
+                        <button onClick={() => { setManagerState("Register") }}>Register</button>
+                        <button onClick={() => { props.setDyslexicOption(true) }}>Dyslexia Test</button>
+                        <button onClick={() => { props.setDarkMode(true) }}>DarkMode</button>
                     </>
                 )}
             </div>
@@ -89,6 +88,8 @@ export default connect(
     {
         logoutUser,
         getUserData,
-        clearAuthErrors
+        clearAuthErrors,
+        setDarkMode,
+        setDyslexicOption
     }
 )(AccountManager);
