@@ -32,10 +32,11 @@
 
 body {
     overflow: hidden;
+    scroll-behavior: smooth;
     // z-index: 0;
 }
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth !important;
 }
 body {
     margin: 0;

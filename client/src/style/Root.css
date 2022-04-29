@@ -270,7 +270,7 @@ button:disabled {
 }
 
 .lesson-wrap .lesson.complete {
-  background-color: green;
+  background-color: #00A2FF;
 }
 
 .lesson-wrap .lesson.incomplete {
@@ -835,10 +835,11 @@ button:disabled {
 
 body {
   overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
 }
 
 body {
