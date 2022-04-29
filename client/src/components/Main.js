@@ -24,6 +24,7 @@ import Welcome from "./Welcome/Welcome";
 import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
+import PageNotFound from "./PageNotFound";
 
 
 function Main(props) {
@@ -113,6 +114,11 @@ function Main(props) {
                     <Route path="/welcome" element={
                         <InternalPage>
                             <Welcome /> 
+                        </InternalPage>
+                    } />
+                    <Route path="*" element={
+                        <InternalPage>
+                            <PageNotFound /> 
                         </InternalPage>
                     } />
                 </Routes>
