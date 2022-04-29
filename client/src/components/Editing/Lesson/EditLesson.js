@@ -110,7 +110,7 @@ function EditLesson(props) {
     let saveLesson = () => {
         let lessonCopy = {...lesson};
         lessonCopy = removeUnnecessaryTaskProperties(lesson);
-        lessonCopy.strId = `lesson-${lessonCopy.name}`;
+        if (!lessonCopy.strId) lessonCopy.strId = `lesson-${lessonCopy.name}`;
         console.log("submitting: ", lessonCopy);
         let validationErrors = _getLessonValidationErrors(lessonCopy);
         setErrors(validationErrors);
