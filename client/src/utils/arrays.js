@@ -23,4 +23,13 @@ let _getListEndsState = (index, array) => {
     return "middle"
 }
 
-export { _moveArrayIndex, _getListEndsState };
+/**
+ * Returns a shuffled array.
+ * @param {Array} arr - the array to shuffle.
+ * @returns {Array} shuffled array.
+ */
+let _shuffle = (arr) => {
+    return arr.sort(() => Math.random() - 0.5)
+};
+
+export { _moveArrayIndex, _getListEndsState, _shuffle };

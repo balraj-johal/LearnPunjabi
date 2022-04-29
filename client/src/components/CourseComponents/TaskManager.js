@@ -5,6 +5,7 @@ import TextOnly from "./Tasks/TextOnly/TextOnly";
 import End from "./Tasks/End";
 import SpecifiedOrder from "./Tasks/SpecifiedOrder/SpecifiedOrder";
 import DrawLetter from "./Tasks/DrawLetter/DrawLetter";
+import Intersitial from "./Tasks/Intersitial";
 
 // return task component of specified type
 function TaskManager(props) {
@@ -43,6 +44,14 @@ function TaskManager(props) {
         case "End":
             return(
                 <End 
+                    data={props.taskData} 
+                    submit={props.submitAnswer}
+                    stats={props.stats}
+                />
+            );
+        case "Interstitial":
+            return(
+                <Intersitial 
                     data={props.taskData} 
                     submit={props.submitAnswer}
                     stats={props.stats}

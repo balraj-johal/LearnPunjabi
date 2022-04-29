@@ -13,6 +13,8 @@ import { getUserData } from "../../actions/authActions";
 import TaskManager from "./TaskManager";
 import Loader from "../Loader";
 
+import { _shuffle } from "../../utils/arrays";
+
 function Lesson(props) {
     let navigate = useNavigate();
     let { id } = useParams();
@@ -26,15 +28,6 @@ function Lesson(props) {
         noWrong: 0,
     });
     let [mistakeTracker, setMistakeTracker] = useState([]);
-
-    /**
-     * Returns a shuffled array.
-     * @param {Array} arr - the array to shuffle.
-     * @returns {Array} shuffled array.
-     */
-    let shuffle = (arr) => {
-        return arr.sort(() => Math.random() - 0.5)
-    };
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
@@ -43,13 +36,22 @@ function Lesson(props) {
                 let endpoint = `/api/v1/lessons/${String(id)}`;
                 let res = await axiosClient.get(endpoint);
                 let data = res.data;
-                if (data.shuffle) data.tasks = shuffle(data.tasks);
+                if (data.shuffle) data.tasks = _shuffle(data.tasks);
                 // add data for the lesson end screen
                 data.tasks.push({
                     taskID: "end",
                     text: "Congrats! You've finished the lesson!", // TODO: is this needed?
                     type: "End",
                 });
+                const GAP = 3;
+                let noOfInterstitials = Math.floor(data.tasks.length / GAP) - 1;
+                for (let i = 0; i < noOfInterstitials; i++) {
+                    data.tasks.splice((i + 1) * GAP, 0, {
+                        taskID: `interstitial-${i}`,
+                        text: "Congrats! You've finished the lesson!", // TODO: is this needed?
+                        type: "Interstitial",
+                    })
+                }
                 // save modified lesson data to component state
                 setLesson(data);
                 setReady(true);
