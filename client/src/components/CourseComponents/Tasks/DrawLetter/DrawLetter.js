@@ -7,6 +7,7 @@ function DrawLetter(props) {
     let [clearing, setClearing] = useState(false);
 
     let submitAnswer = () => {
+        setClearing(true);
         props.submit(true);
     }
 
