@@ -21,7 +21,6 @@ function ProtectedComponent({ component, ...props}) {
                 if (props.auth.user.role === props.role) {
                     setReady(true);
                 } else {
-                    console.log(props.auth);
                     props.useRefreshToken();
                     navigate("/restricted");
                 }

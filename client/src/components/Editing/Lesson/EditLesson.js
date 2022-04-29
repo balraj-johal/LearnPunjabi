@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import axiosClient from "../../../axiosDefaults";
@@ -11,8 +11,6 @@ import {
     _getLessonValidationErrors, 
     _isObjectEmpty 
 } from "../../../utils/validation/validateLesson";
-
-import { useBeforeunload } from 'react-beforeunload';
 
 import Loader from "../../Loader";
 import EditTask from "../Task/EditTask";
@@ -40,9 +38,17 @@ function EditLesson(props) {
     let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
     let [submitSuccess, setSubmitSuccess] = useState(false);
     let [errors, setErrors] = useState({});
-    
+
+    const handleUnload = useCallback((e) => {
+        e.preventDefault();
+        e.returnValue = "test";
+    }, [submitSuccess]);
+
     // alert prompt if user tries to leave without saving
-    useBeforeunload((e) => { if ("value" !== '') e.preventDefault(); });
+    useEffect(() => {
+        window.addEventListener("beforeunload", handleUnload);
+        return () => { window.removeEventListener("beforeunload", handleUnload)};
+    });
     
     // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
