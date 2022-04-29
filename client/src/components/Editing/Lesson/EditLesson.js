@@ -20,6 +20,7 @@ import ConfirmationPrompt from "../ConfirmationPrompt";
 import FormInput from "../../FormComponents/FormInput";
 import AddButton from "../../FormComponents/AddButton";
 import FormError from "../../FormComponents/FormError";
+import PopInModal from "../PopInModal";
 
 // TODO: where best to store new lesson template?
 const NEW_LESSON = {
@@ -37,6 +38,7 @@ function EditLesson(props) {
     let [ready, setReady] = useState(false);
     let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
     let [submitSuccess, setSubmitSuccess] = useState(false);
+    let [showSuccessModal, setShowSuccessModal] = useState(false);
     let [errors, setErrors] = useState({});
 
     const handleUnload = useCallback((e) => {
@@ -117,6 +119,7 @@ function EditLesson(props) {
         axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, qs.stringify(lesson))
             .then(res => { 
                 setSubmitSuccess(true);
+                setShowSuccessModal(true);
             })
             .catch(err => { 
                 setErrors(err.response.data); 
@@ -183,8 +186,8 @@ function EditLesson(props) {
      * @name scrollToBottom
      */
     let scrollToBottom = () => {
-        let container = document.getElementById("custom-container");
-        container.scrollTop = container.scrollHeight;
+        // let container = document.getElementById("container");
+        // container.scrollTop = container.scrollHeight;
     }
 
     /** Moves a specific task back in the lesson order
@@ -214,6 +217,7 @@ function EditLesson(props) {
     if (!ready) return <Loader />;
     return(
         <>
+            <PopInModal show={showSuccessModal} length={5000} unrender={() => { setShowSuccessModal(false); }} text="Lesson saved successfully!" />
             <ConfirmationPrompt 
                 showSubmitConfirm={showSubmitConfirm}
                 setShowSubmitConfirm={setShowSubmitConfirm}
@@ -279,7 +283,7 @@ function EditLesson(props) {
                         extraStyles="mx-auto"
                     />
                     <FormError for="tasks" errors={errors} />
-                    <FormSubmitButton for="edit-lesson" text="Submit Lesson" />
+                    <FormSubmitButton disabled={submitSuccess} for="edit-lesson" text="Submit Lesson" />
                 </form>
             </div>
         </>

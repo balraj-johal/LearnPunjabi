@@ -14,6 +14,11 @@ function Topbar(props) {
                 <Logo />
             </Link>
             
+            <Link to="/edit/overview">
+                { props.auth.user.role === "Admin" ? (
+                    <div className="mr-5 mt-1">Edit Lessons</div>
+                ) : null }
+            </Link>
             <Link to="/account">
                 <div className="flex flex-row items-center mr-6">
                     { props.auth.isAuthenticated ? (

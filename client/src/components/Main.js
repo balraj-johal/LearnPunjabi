@@ -59,10 +59,8 @@ function Main(props) {
     }, [synchLogout]);
 
     return(
-        <div className={`
-            ${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${props.options.darkMode ? "darkMode" : ""}
-        `} >
+        <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
+            ${props.options.darkMode ? "darkMode" : ""}`} >
             <Router>
                 <Routes>
                     <Route path="/" element={ <Welcome loginQueried={props.csrf} /> } />
