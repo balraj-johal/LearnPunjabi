@@ -8,20 +8,7 @@ import Leaderboard from "./SidebarComponents/Leaderboard";
 import { setMobile } from "../actions/displayActions";
 
 function Dashboard(props) {
-    return( props.mobile ? <MobileDashboard /> : <DesktopDashboard /> )
-}
-
-function MobileDashboard(props) {
-    return (
-        <>
-            <Leaderboard />
-            <Course />
-        </>
-    )
-}
-function DesktopDashboard(props) {
-    return(
-        <>
+    return( props.mobile ? <Course /> : <>
             <Course />
             <Sidebar />
         </>

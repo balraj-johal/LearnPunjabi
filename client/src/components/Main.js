@@ -79,7 +79,8 @@ function Main(props) {
 
     return(
         <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${props.options.darkMode ? "darkMode" : ""}`} 
+            ${props.options.darkMode ? "darkMode" : ""}
+            max-h-full`} 
         >
             <Router>
                 <Routes>

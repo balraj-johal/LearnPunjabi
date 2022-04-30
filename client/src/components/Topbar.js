@@ -9,12 +9,12 @@ import AccountIcon from "../res/icons/user.png";
 function Topbar(props) {
 
     return(
-        <div id="topbar">
-            <Link to="/dashboard">
+        <div id="topbar" className="z-30">
+            <Link to="/dashboard" className="z-30">
                 <Logo />
             </Link>
             
-            <div className="flex flex-row items-center mr-6">
+            <div className="flex flex-row items-center mr-6 z-30">
                 <Link to="/edit/overview">
                     { props.user.role === "Admin" ? (
                         <div className="account-button mr-2">
