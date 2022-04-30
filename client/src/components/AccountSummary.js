@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 function AccountSummary(props) {
     return(
         <>
-            <h2>Hi {props.user.firstName}!</h2>
-            <p>You have completed {props.user.progress.length} lessons.</p>
+            <h2 className="text-md my-2">Hi {props.user.firstName}!</h2>
+            <p className="my-2">You have {props.user.totalXP} total XP!</p>
+            <p className="my-2">You have completed {props.user.progress.length} lessons.</p>
         </>
     )
 }

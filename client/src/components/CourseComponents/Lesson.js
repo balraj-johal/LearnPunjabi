@@ -48,7 +48,7 @@ function Lesson(props) {
                 for (let i = 0; i < noOfInterstitials; i++) {
                     data.tasks.splice((i + 1) * GAP, 0, {
                         taskID: `interstitial-${i}`,
-                        text: "Congrats! You've finished the lesson!", // TODO: is this needed?
+                        text: "",
                         type: "Interstitial",
                     })
                 }

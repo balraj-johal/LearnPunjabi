@@ -35,22 +35,18 @@ function AccountManager(props) {
     return(
         <div className="accounts-wrap">
             <div id="switcher-buttons" className="flex flex-row">
-                {props.isAuthenticated ? (
-                    <button onClick={() => {
-                        props.logoutUser(props.auth.user._id);
-                    }}>Logout</button>
-                ) : (
-                    <>
-                        <GenericButton handleClick={() => { setManagerState("Login") }} text="Login" />
-                        <GenericButton handleClick={() => { setManagerState("Register") }} text="Register" />
-                        <GenericButton handleClick={() => { props.setDyslexicOption(true) }} text="DyslexicFont" />
-                        <GenericButton handleClick={() => { props.setDarkMode(true) }} text="DarkMode" />
-                        {/* <button onClick={() => { setManagerState("Login") }}>Login</button>
-                        <button onClick={() => { setManagerState("Register") }}>Register</button>
-                        <button onClick={() => { props.setDyslexicOption(true) }}>Dyslexia Test</button>
-                        <button onClick={() => { props.setDarkMode(true) }}>DarkMode</button> */}
-                    </>
-                )}
+                {props.isAuthenticated ? 
+                    <GenericButton 
+                        handleClick={() => { props.logoutUser(props.auth.user._id) }} 
+                        text="Logout" 
+                    /> : (
+                        <>
+                            <GenericButton handleClick={() => { setManagerState("Login") }} text="Login" />
+                            <GenericButton handleClick={() => { setManagerState("Register") }} text="Register" />
+                            <GenericButton handleClick={() => { props.setDyslexicOption(true) }} text="DyslexicFont" />
+                            <GenericButton handleClick={() => { props.setDarkMode(true) }} text="DarkMode" />
+                        </>
+                    )}
             </div>
             <Switcher state={managerState} setManagerState={setManagerState} />
         </div>

@@ -219,8 +219,9 @@ router.get("/", async (req, res) => {
                 firstName: user.firstName,
                 progress: user.progress,
                 groupID: user.groupID,
+                totalXP: user.totalXP,
                 weeklyXP: user.weeklyXP,
-                XP: user.XP,
+                // XP: user.XP,
                 role: user.role,
             }
         })

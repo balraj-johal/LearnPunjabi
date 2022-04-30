@@ -126,10 +126,6 @@ let pushGroupsToDb = (groups) => {
     })
 }
 
-// update leaderboard groups
-createNewServerGroups()
-    .then(groups => { pushGroupsToDb(groups) })
-
 /**
  * Returns the username and weeklyXP for every user in the specified group.
  * @name get/groups/:groupID
@@ -151,5 +147,11 @@ createNewServerGroups()
             return res.status(404).send("Group not found...");
         })
 })
+    
+if (process.env.NODE_ENV === "production") {
+    // update leaderboard groups
+    createNewServerGroups()
+        .then(groups => { pushGroupsToDb(groups) })
+}
 
 module.exports = router;
