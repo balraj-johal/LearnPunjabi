@@ -12,23 +12,13 @@ function DrawLetter(props) {
     }
 
     return(
-        <div className="task animate-fade-in draw-letter">
+        <div className="task px-2 animate-fade-in w-11/12 md:w-7/12 draw-letter">
             <div className="mb-8">{ props.data.text }</div>
             <DrawingCanvas clearing={clearing} setClearing={setClearing} />
             <div className="flex flex-row w-full my-4">
                 <NextButton next={() => {setClearing(true)}} text="Clear" />
                 <NextButton next={() => {submitAnswer()}} />
             </div>
-            {/* <div
-                className="task animate-fade-in-button" 
-                id="clear-canvas" 
-                onClick={()=>{
-                    console.log("btn clicked")
-                    setClearing(true);
-                }}
-            >
-                Clear &gt;
-            </div> */}
         </div>
     );
 }

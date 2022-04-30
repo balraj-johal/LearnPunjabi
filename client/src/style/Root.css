@@ -289,10 +289,16 @@ button:disabled {
   }
 }
 
-.task, .lesson-end, .lesson-interstitial {
+.lesson-end, .lesson-interstitial {
   min-height: 40%;
   margin-top: 50px;
   width: 60%;
+  margin: auto;
+}
+
+.task {
+  min-height: 40%;
+  margin-top: 50px;
   margin: auto;
 }
 
@@ -355,7 +361,7 @@ button:disabled {
 }
 
 .multiple-choice .answers-wrap {
-  margin: 2.5em 1em;
+  margin: 2.5em 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -397,7 +403,7 @@ button:disabled {
 }
 
 .specified-order .answers-wrap, .specified-order #answers, .specified-order #possibilites {
-  margin: 1em;
+  margin: 1em 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -812,21 +818,9 @@ button:disabled {
 
 .container {
   max-width: 100vw !important;
-  height: calc(100vh - 147px);
   z-index: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-@media (min-width: 768px) {
-  .container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    height: calc(100vh - 94px) !important;
-    padding-top: 0 !important;
-    top: 0 !important;
-  }
 }
 
 .sidebar {

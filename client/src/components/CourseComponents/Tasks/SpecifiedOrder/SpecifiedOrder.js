@@ -83,7 +83,7 @@ function SpecifiedOrder(props) {
     }
 
     return(
-        <div className="task animate-fade-in specified-order flex flex-col justify-between">
+        <div className="task px-2 animate-fade-in w-11/12 md:w-7/12 specified-order flex flex-col justify-between">
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <DragDropContext onDragEnd={handleDragEnd} >

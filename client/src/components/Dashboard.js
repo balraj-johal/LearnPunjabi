@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, {  } from "react";
 import { connect } from "react-redux";
 
 import Course from "./CourseComponents/Course";
 import Sidebar from "./Sidebar";
-import Leaderboard from "./SidebarComponents/Leaderboard";
-
-import { setMobile } from "../actions/displayActions";
 
 function Dashboard(props) {
-    return( props.mobile ? <Course /> : <>
+    if (props.mobile) return <Course />;
+    return(
+        <>
             <Course />
             <Sidebar />
         </>
-    )
+    );
 }
 
 //pull relevant props from redux state
@@ -22,5 +21,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { setMobile }
+    {  }
 )(Dashboard);

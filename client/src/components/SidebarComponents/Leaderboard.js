@@ -31,7 +31,8 @@ function Leaderboard(props) {
                 })
                 .catch(err => { console.log(err); })
         }
-    }, [props.user.groupID, props.user.weeklyXP])
+    }, [props.user.groupID, props.user.weeklyXP]);
+
 
     // NOTE: I am unhappy with these functions for generating styles. There must be a
     // more readable way of conditionally adding and removing styles in tailwind. This

@@ -31,7 +31,7 @@ function MultipleChoice(props) {
     }
 
     return(
-        <div className="task animate-fade-in multiple-choice">
+        <div className="task px-2 animate-fade-in w-11/12 md:w-7/12 multiple-choice">
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <div className="answers-wrap">

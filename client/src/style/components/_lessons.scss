@@ -47,9 +47,14 @@
     }
 }
 
-.task, .lesson-end, .lesson-interstitial {
+.lesson-end, .lesson-interstitial {
     min-height: 40%;
     margin-top: 50px;
     width: 60%;
+    margin: auto;
+}
+.task {
+    min-height: 40%;
+    margin-top: 50px;
     margin: auto;
 }
