@@ -33,26 +33,29 @@ function Leaderboard(props) {
         }
     }, [props.user.groupID, props.user.weeklyXP])
 
+    // NOTE: I am unhappy with these functions for generating styles. There must be a
+    // more readable way of conditionally adding and removing styles in tailwind. This
+    // would be simple in plain css.
+    // TODO: consider just using plain css here. 
     let _calculateLeaderboardStyles = useCallback((collapsed, mobile) => {
         if (!mobile) return "border-b-[3px] border-black min-h-[30vh] max-h-[40vh]";
-        let styles = "cursor-pointer relative w-full transition-all"
+        let styles = "cursor-pointer relative w-full transition-all bg-white";
         if (collapsed) styles += " translate-y-0";
         if (!collapsed) styles += " -translate-y-[84px]";
         return styles;
     }, [collapsed, props.mobile])
     let _calculateLeaderboardListStyles = useCallback((collapsed, mobile) => {
-        let styles = "relative "
+        let styles = "";
         if (collapsed) styles += " hidden opacity-0";
         if (!collapsed) styles += " opacity-1 h-full";
         if (!mobile) styles += " h-min-[30vh] h-max-[40vh]";
         if (mobile) {
+            styles += " relative"
             if (collapsed) {
-                console.log("unadding scrlck")
                 document.getElementById("root")
                     .classList.remove("scroll-lock");
             } else {
                 styles += " h-screen";
-                console.log("adding scrlck")
                 document.getElementById("root")
                     .classList.add("scroll-lock");
             }
@@ -60,29 +63,24 @@ function Leaderboard(props) {
         return styles;
     }, [collapsed, props.mobile])
     useEffect(() => {
-        setLbStyles(_calculateLeaderboardStyles(collapsed, props.mobile))
-        setListStyles(_calculateLeaderboardListStyles(collapsed, props.mobile))
+        setLbStyles(_calculateLeaderboardStyles(collapsed, props.mobile));
+        setListStyles(_calculateLeaderboardListStyles(collapsed, props.mobile));
     }, [collapsed, props.mobile])
 
     return(
         <div 
             id="leaderboard" 
-            className={`bg-white ${ lbStyles }`}
+            className={`${ lbStyles }`}
             onClick={() => { if (props.mobile) setCollapsed(!collapsed) }}
         >
             <div className="header bg-white" >Weekly Leaderboard</div>
             <div id="leaderboard-list" className={`${listStyles}`} >
                 { data.length > 0 ? (
                     data.map((user, index) => 
-                        <UserEntry 
-                            user={user}
-                            key={index} 
-                        />
+                        <UserEntry user={user} key={index} />
                     )
                 ) : (
-                    <div>
-                        <Loader />
-                    </div>
+                    <Loader />
                 ) }
             </div>
         </div>
