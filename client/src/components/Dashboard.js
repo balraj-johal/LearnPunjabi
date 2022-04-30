@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import Course from "./CourseComponents/Course";
 import Sidebar from "./Sidebar";
+import Leaderboard from "./SidebarComponents/Leaderboard";
+
+import { setMobile } from "../actions/displayActions";
 
 function Dashboard(props) {
-    // determine which responsive layout to use
-    let [mobile, setMobile] = useState(true);
-    
-    // set up resize handlers
-        // TODO: throttle event?
-    useEffect(() => {
-        let onResize = () => { window.innerWidth < 768 ? setMobile(true) : setMobile(false) }
-        window.addEventListener("resize", onResize);
-        onResize();
-        return () => { window.removeEventListener("resize", onResize) }
-    }, [])
-
-    return( mobile ? <MobileDashboard /> : <DesktopDashboard /> )
+    return( props.mobile ? <MobileDashboard /> : <DesktopDashboard /> )
 }
 
 function MobileDashboard(props) {
-    return <Course /> 
+    return (
+        <>
+            <Leaderboard />
+            <Course />
+        </>
+    )
 }
 function DesktopDashboard(props) {
     return(
@@ -31,4 +28,12 @@ function DesktopDashboard(props) {
     )
 }
 
-export default Dashboard;
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    mobile: state.display.mobile,
+});
+
+export default connect(
+    mapStateToProps,
+    { setMobile }
+)(Dashboard);

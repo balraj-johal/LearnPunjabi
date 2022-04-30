@@ -12,11 +12,22 @@
 }
 .container {
     max-width: 100vw !important;
-    height: calc(100vh - 84px);
+    // height: calc(100vh - 84px);
+    height: 100vh;
+    padding-top: 84px;
+    position: absolute;
+    top: 0;
     @include vScroll;
-
-    display: flex;
+}
+@media (min-width: 768px) {
+    .container {
+        display: flex;
+    }
 }
 .sidebar {
     width: 40%;
+}
+
+.scroll-lock {
+    overflow: hidden !important;
 }

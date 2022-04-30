@@ -16,3 +16,6 @@ export const SET_READY = "SET_READY";
 // options actions
 export const SET_DARK_MODE = "SET_DARK_MODE"
 export const SET_DYSLEXIC_OPTION = "SET_DYSLEXIC_OPTION"
+
+// display actions
+export const SET_MOBILE = "SET_MOBILE"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import axiosClient from "../../axiosDefaults";
 
@@ -7,7 +7,10 @@ import Loader from "../Loader";
 import UserEntry from "./UserEntry";
 
 function Leaderboard(props) {
+    let [lbStyles, setLbStyles] = useState("")
+    let [listStyles, setListStyles] = useState("")
     let [data, setData] = useState([]);
+    let [collapsed, setCollapsed] = useState(props.mobile);
 
     /** Sort leaderboard by weeklyXP descending
      * @name sortData
@@ -30,10 +33,45 @@ function Leaderboard(props) {
         }
     }, [props.user.groupID, props.user.weeklyXP])
 
+    let _calculateLeaderboardStyles = useCallback((collapsed, mobile) => {
+        if (!mobile) return "border-y-[3px] border-black min-h-[30vh] max-h-[40vh]";
+        let styles = "cursor-pointer relative w-full transition-all"
+        if (collapsed) styles += " translate-y-0";
+        if (!collapsed) styles += " -translate-y-[84px]";
+        return styles;
+    }, [collapsed, props.mobile])
+    let _calculateLeaderboardListStyles = useCallback((collapsed, mobile) => {
+        let styles = "relative "
+        if (collapsed) styles += " hidden opacity-0";
+        if (!collapsed) styles += " opacity-1 h-full";
+        if (!mobile) styles += " h-min-[30vh] h-max-[40vh]";
+        if (mobile) {
+            if (collapsed) {
+                console.log("unadding scrlck")
+                document.getElementById("internal-page-container")
+                    .classList.remove("scroll-lock");
+            } else {
+                styles += " h-screen";
+                console.log("adding scrlck")
+                document.getElementById("internal-page-container")
+                    .classList.add("scroll-lock");
+            }
+        }
+        return styles;
+    }, [collapsed, props.mobile])
+    useEffect(() => {
+        setLbStyles(_calculateLeaderboardStyles(collapsed, props.mobile))
+        setListStyles(_calculateLeaderboardListStyles(collapsed, props.mobile))
+    }, [collapsed, props.mobile])
+
     return(
-        <div id="leaderboard">
-            <div className="header">Weekly Leaderboard</div>
-            <div id="leaderboard-list">
+        <div 
+            id="leaderboard" 
+            className={`bg-white ${ lbStyles }`}
+            onClick={() => { if (props.mobile) setCollapsed(!collapsed) }}
+        >
+            <div className="header bg-white" >Weekly Leaderboard</div>
+            <div id="leaderboard-list" className={`${listStyles}`} >
                 { data.length > 0 ? (
                     data.map((user, index) => 
                         <UserEntry 
@@ -42,13 +80,7 @@ function Leaderboard(props) {
                         />
                     )
                 ) : (
-                    <div 
-                        style={{
-                            minHeight: "30vh",
-                            maxHeight: "40vh"
-                        }}
-                        className="center" 
-                    >
+                    <div>
                         <Loader />
                     </div>
                 ) }
@@ -61,6 +93,7 @@ function Leaderboard(props) {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user,
+    mobile: state.display.mobile
 });
 
 export default connect(

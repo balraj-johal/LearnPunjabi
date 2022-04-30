@@ -30,7 +30,11 @@ import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
 
+import { setMobile } from "../actions/displayActions";
+
 function Main(props) {
+    // let [styles, setStyles] = useState()
+
     // fetch csrf token and store in redux reducer
     useEffect(() => {
         axiosClient.get("/csrf-token")
@@ -61,10 +65,22 @@ function Main(props) {
         window.addEventListener("storage", synchLogout);
         return () => { window.removeEventListener("storage", synchLogout) };
     }, [synchLogout]);
+    
+    // set up resize handlers
+    useEffect(() => {
+        let onResize = () => {
+            if (window.innerWidth < 768) return props.setMobile(true);
+            return props.setMobile(false);
+        }
+        onResize();
+        window.addEventListener("resize", onResize);
+        return () => { window.removeEventListener("resize", onResize) }
+    }, []);
 
     return(
         <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${props.options.darkMode ? "darkMode" : ""}`} >
+            ${props.options.darkMode ? "darkMode" : ""}`} 
+        >
             <Router>
                 <Routes>
                     <Route path="/" element={ 
@@ -150,6 +166,7 @@ export default connect(
     {
         getUserData,
         useRefreshToken,
-        setCSRFReady
+        setCSRFReady,
+        setMobile
     }
 )(Main);
