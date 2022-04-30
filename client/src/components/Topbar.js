@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, {  } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import Logo from "./Logo";
 
@@ -9,13 +9,14 @@ import EditIcon from "../res/icons/edit.png";
 import Leaderboard from "./SidebarComponents/Leaderboard";
 
 function Topbar(props) {
-    let topbarWrapRef = useRef();
+    // Only render the leaderboard when on the dashboard route
+    // NOTE: this gives whole path, not path pattern
+    let path = useLocation().pathname;
     let child;
-
-    if (props.mobile) child = <Leaderboard />
+    if (props.mobile && path === "/dashboard") child = <Leaderboard />;
 
     return(
-        <div id="topbar-wrap" ref={topbarWrapRef}>
+        <div id="topbar-wrap" >
             <div id="topbar">
                 <Link to="/dashboard">
                     <Logo />
