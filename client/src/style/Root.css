@@ -812,7 +812,7 @@ button:disabled {
 
 .container {
   max-width: 100vw !important;
-  height: calc(100vh - 84px);
+  height: calc(100vh - 147px);
   z-index: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

@@ -48,12 +48,12 @@ function Leaderboard(props) {
         if (mobile) {
             if (collapsed) {
                 console.log("unadding scrlck")
-                document.getElementById("internal-page-container")
+                document.getElementById("root")
                     .classList.remove("scroll-lock");
             } else {
                 styles += " h-screen";
                 console.log("adding scrlck")
-                document.getElementById("internal-page-container")
+                document.getElementById("root")
                     .classList.add("scroll-lock");
             }
         }
