@@ -1,4 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { 
+    useCallback, 
+    useEffect, 
+    useState 
+} from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as 
     Router,
@@ -25,7 +29,6 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
-
 
 function Main(props) {
     // fetch csrf token and store in redux reducer
@@ -64,7 +67,9 @@ function Main(props) {
             ${props.options.darkMode ? "darkMode" : ""}`} >
             <Router>
                 <Routes>
-                    <Route path="/" element={ <Welcome loginQueried={props.csrf} /> } />
+                    <Route path="/" element={ 
+                        <Welcome loginQueried={props.csrf} /> 
+                    } />
                     <Route path="/dashboard" element={
                         <InternalPage>
                             <ProtectedComponent component={<Dashboard />} />
@@ -82,12 +87,18 @@ function Main(props) {
                     <Route path="/edit" >
                         <Route path="/edit/overview" element={
                             <InternalPage>
-                                <ProtectedComponent component={<EditOverview />} role={"Admin"} />
+                                <ProtectedComponent 
+                                    component={<EditOverview />} 
+                                    role={"Admin"} 
+                                />
                             </InternalPage>
                         } />
                         <Route path=":id" element={
                             <InternalPage>
-                                <ProtectedComponent component={<EditLesson />} role={"Admin"} />
+                                <ProtectedComponent 
+                                    component={<EditLesson />} 
+                                    role={"Admin"} 
+                                />
                             </InternalPage>
                         } />
                     </Route>
