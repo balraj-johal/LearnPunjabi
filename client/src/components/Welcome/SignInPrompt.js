@@ -17,7 +17,9 @@ function SignInPrompt(props) {
     return(
         <div id="middle-bit" className="animate-fade-in">
             <TranslationsScroller timeout={2000} />
-            <div id="prompt-text" className="animate-fade-in duration-750">Learn Punjabi quickly and effectively using our intuitive learning system.</div>
+            <div id="prompt-text" className={`${buttonState !== "not ready" ? "animate-fade-in" : "opacity-0"}`}>
+                Learn Punjabi quickly and effectively using our intuitive learning system.
+            </div>
             <SignInButton 
                 buttonState={buttonState}
                 onClick={() => { 
