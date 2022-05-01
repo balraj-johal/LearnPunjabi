@@ -36,7 +36,7 @@ function TaskManager(props) {
 
     // refresh the fade in animation when task data changes
     useEffect(() => {
-        alert("refresh")
+        if (!props.taskData) return;
         ref.current.classList.remove("animate-fade-in");
         ref.current.classList.add("animate-fade-in");
     }, [props.taskData])
