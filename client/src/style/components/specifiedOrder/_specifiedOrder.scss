@@ -30,7 +30,19 @@
         }
     }
 
+    &.correct {
+        .specified-order-answer {
+            background-color: green;
+        }
+    }
+    &.wrong {
+        .specified-order-answer {
+            background-color: red;
+        }
+    }
     .specified-order-answer {
+        transition: all;
+        transition-duration: 200ms;
         cursor: pointer;
         padding: 1em 1.25em;
         margin: 0 6px;

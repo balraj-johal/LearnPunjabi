@@ -447,7 +447,19 @@ button:disabled {
   border-radius: 5px;
 }
 
+.specified-order.correct .specified-order-answer {
+  background-color: green;
+}
+
+.specified-order.wrong .specified-order-answer {
+  background-color: red;
+}
+
 .specified-order .specified-order-answer {
+  -webkit-transition: all;
+  transition: all;
+  -webkit-transition-duration: 200ms;
+          transition-duration: 200ms;
   cursor: pointer;
   padding: 1em 1.25em;
   margin: 0 6px;

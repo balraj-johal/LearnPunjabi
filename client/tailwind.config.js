@@ -1,5 +1,4 @@
 module.exports = {
-    // purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
     content: [
         "./src/**/*.{js, jsx, ts, tsx}",
         './public/index.html'
@@ -22,12 +21,30 @@ module.exports = {
                 'move-up': {
                     '0%': { transform: 'translate(0, 0)' },
                     '100%': { transform: 'translate(0, -7.5rem)' },
+                },
+                'shake-x': {
+                    '0%' : { transform: 'translateX(0px)' },
+                    '17%' : { transform: 'translateX(-20px)' },
+                    '34%' : { transform: 'translateX(20px)' },
+                    '50%' : { transform: 'translateX(-20px)' },
+                    '66%' : { transform: 'translateX(20px)' },
+                    '84%' : { transform: 'translateX(-10px)' },
+                    '100%' : { transform: 'translateX(0px)' }
+                },
+                'bounce-y': {
+                    '0%' : { transform: 'translateY(0px)' },
+                    '20%' : { transform: 'translateY(-20px)' },
+                    '40%' : { transform: 'translateY(0px)' },
+                    '60%' : { transform: 'translateY(-5px)' },
+                    '80%' : { transform: 'translateY(0px)' },
                 }
             },
             animation: {
                 'fade-in': 'fade-in 200ms forwards ease-in-out',
                 'move-down': 'move-down 200ms forwards ease-in-out',
                 'move-up': 'move-up 200ms forwards ease-in-out',
+                'shake-x': 'shake-x 750ms forwards ease-in-out',
+                'bounce-y': 'bounce-y 650ms forwards ease-out',
             }
         },
     },

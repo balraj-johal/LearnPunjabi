@@ -12,16 +12,17 @@ import NextButton from "../NextButton";
 function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
+    let [animating, setAnimating] = useState(false);
+    let [animClasses, setAnimClasses] = useState("");
 
     let resetTask = () => {
         setOrder([]);
         setPossibleFrags(props.data.possibleAnswers);
     }
-
     // initialise state when task data changes
     useEffect(() => {
         resetTask();
-    }, [props.data])
+    }, [props.data]);
 
     /**
      * check if the submitted answer is correct and handle consequences
@@ -30,10 +31,20 @@ function SpecifiedOrder(props) {
     let checkAnswer = () => {
         if (order !== null) {
             if (getAnswerString().includes(props.data.correctAnswer)) {
-                alert("answer right")
-                props.submit(true);
+                setAnimClasses("animate-bounce-y correct");
+                setAnimating(true);
+                setTimeout(() => {
+                    setAnimating(false);
+                    setAnimClasses("");
+                    props.submit(true);
+                }, 750);
             } else {
-                alert("answer wrong");
+                setAnimClasses("animate-shake-x wrong");
+                setAnimating(true);
+                setTimeout(() => {
+                    setAnimating(false);
+                    setAnimClasses(""); 
+                }, 750);
                 props.submit(false);
                 resetTask();
             }
@@ -83,7 +94,12 @@ function SpecifiedOrder(props) {
     }
 
     return(
-        <div className="task px-2 animate-fade-in w-11/12 md:w-7/12 specified-order flex flex-col justify-between">
+        <div 
+            className={`task px-2 w-11/12 md:w-7/12 
+                specified-order flex flex-col justify-between
+                ${animClasses} ${animating ? "pointer-events-none" : ""}
+            `}
+        >
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <DragDropContext onDragEnd={handleDragEnd} >
