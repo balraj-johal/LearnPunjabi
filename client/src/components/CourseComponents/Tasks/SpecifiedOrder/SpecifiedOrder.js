@@ -12,44 +12,29 @@ import NextButton from "../NextButton";
 function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
-    let [animating, setAnimating] = useState(false);
-    let [animClasses, setAnimClasses] = useState("");
 
+    /** resets task state
+     *  @name resetTask
+     */
     let resetTask = () => {
         setOrder([]);
         setPossibleFrags(props.data.possibleAnswers);
     }
+
     // initialise state when task data changes
     useEffect(() => {
         resetTask();
     }, [props.data]);
 
-    /**
-     * check if the submitted answer is correct and handle consequences
+    /** check if the submitted answer is correct and handle consequences
      * @name checkAnswer
      */
     let checkAnswer = () => {
-        if (order !== null) {
-            if (getAnswerString().includes(props.data.correctAnswer)) {
-                setAnimClasses("animate-bounce-y correct");
-                setAnimating(true);
-                setTimeout(() => {
-                    setAnimating(false);
-                    setAnimClasses("");
-                    props.submit(true);
-                }, 750);
-            } else {
-                setAnimClasses("animate-shake-x wrong");
-                setAnimating(true);
-                setTimeout(() => {
-                    setAnimating(false);
-                    setAnimClasses(""); 
-                }, 750);
-                props.submit(false);
-                resetTask();
-            }
+        if (getAnswerString().includes(props.data.correctAnswer)) {
+            props.handleCorrect();
         } else {
-            alert("Please choose an answer...")
+            props.handleWrong();
+            resetTask();
         }
     }
 
@@ -66,7 +51,6 @@ function SpecifiedOrder(props) {
         updatedOrder.splice(result.destination.index, 0, updatedItem);
         setOrder(updatedOrder);
     }
-
     /**
      * get the string containing the current answer state
      * @name getAnswerString
@@ -79,27 +63,27 @@ function SpecifiedOrder(props) {
         })
         return str;
     }
-
+    /** Adds specified fragment to user's answer
+     * @param {Object} frag - answer fragment
+     */
     let addToOrder = (frag) => {
         setOrder(order.concat([frag]));
         setPossibleFrags(possibleFrags.filter(elem => {
-            return elem != frag;
+            return elem !== frag;
         }));
     }
+    /** Removes specified fragment from user's answer
+     * @param {Object} frag - answer fragment
+     */
     let removeFromOrder = (frag) => {
         setOrder(order.filter(elem => {
-            return elem != frag;
+            return elem !== frag;
         }));
         setPossibleFrags(possibleFrags.concat([frag]));
     }
 
     return(
-        <div 
-            className={`task px-2 w-11/12 md:w-7/12 
-                specified-order flex flex-col justify-between
-                ${animClasses} ${animating ? "pointer-events-none" : ""}
-            `}
-        >
+        <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-between`} >
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <DragDropContext onDragEnd={handleDragEnd} >
@@ -123,7 +107,6 @@ function SpecifiedOrder(props) {
                     )}
                 </Droppable>
             </DragDropContext>
-            
             <div id="possible-fragments">
                 <ul className="possiblities-wrap" id="possibilites">
                     {possibleFrags.map((data, index) => 
@@ -136,7 +119,6 @@ function SpecifiedOrder(props) {
                     )}
                 </ul>
             </div>
-
             <NextButton next={() => {checkAnswer()}} />
         </div>
     );

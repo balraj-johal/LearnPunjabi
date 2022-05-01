@@ -12,7 +12,7 @@ function TextOnly(props) {
     console.log(props.data)
 
     return(
-        <div className="task px-2 animate-fade-in w-11/12 md:w-7/12 text-only flex flex-row">
+        <div className="text-only flex flex-row">
             <div className="w-3/12 flex items-center justify-center">
                 <img src={testImg} className="mb-14" />
             </div>

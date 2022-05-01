@@ -24,11 +24,11 @@ module.exports = {
                 },
                 'shake-x': {
                     '0%' : { transform: 'translateX(0px)' },
-                    '17%' : { transform: 'translateX(-20px)' },
-                    '34%' : { transform: 'translateX(20px)' },
-                    '50%' : { transform: 'translateX(-20px)' },
-                    '66%' : { transform: 'translateX(20px)' },
-                    '84%' : { transform: 'translateX(-10px)' },
+                    '17%' : { transform: 'translateX(-10px)' },
+                    '34%' : { transform: 'translateX(10px)' },
+                    '50%' : { transform: 'translateX(-10px)' },
+                    '66%' : { transform: 'translateX(10px)' },
+                    '84%' : { transform: 'translateX(-5px)' },
                     '100%' : { transform: 'translateX(0px)' }
                 },
                 'bounce-y': {
@@ -43,8 +43,8 @@ module.exports = {
                 'fade-in': 'fade-in 200ms forwards ease-in-out',
                 'move-down': 'move-down 200ms forwards ease-in-out',
                 'move-up': 'move-up 200ms forwards ease-in-out',
-                'shake-x': 'shake-x 750ms forwards ease-in-out',
-                'bounce-y': 'bounce-y 650ms forwards ease-out',
+                'shake-x': 'shake-x 600ms forwards ease-out',
+                'bounce-y': 'bounce-y 600ms forwards ease-out',
             }
         },
     },

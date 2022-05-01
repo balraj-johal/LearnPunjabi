@@ -16,22 +16,16 @@ function MultipleChoice(props) {
      * @name checkAnswer
      */
     let checkAnswer = () => {
-        if (choice !== null) {
-            if (choice === Number(props.data.correctAnswerIndex)) {
-                alert("answer right")
-                props.submitAnswer(true);
-            } else {
-                alert("answer wrong")
-                setChoice(null);
-                props.submitAnswer(false);
-            }
+        if (choice === Number(props.data.correctAnswerIndex)) {
+            props.handleCorrect();
         } else {
-            alert("Please choose an answer...")
+            props.handleWrong();
+            setChoice(null);
         }
     }
 
     return(
-        <div className="task px-2 animate-fade-in w-11/12 md:w-7/12 multiple-choice">
+        <div className="multiple-choice">
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <div className="answers-wrap">

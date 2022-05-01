@@ -2,7 +2,7 @@ import React, {} from "react";
 
 function PossAnswerFragment(props) {
     return(
-        <li className={`specified-order-answer`} onClick={() => {
+        <li className={`specified-order-answer answer`} onClick={() => {
             props.addToOrder(props.possible);
         }}>
             { props.possible ? (

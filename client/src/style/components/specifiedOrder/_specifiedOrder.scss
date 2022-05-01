@@ -30,14 +30,18 @@
         }
     }
 
-    &.correct {
-        .specified-order-answer {
-            background-color: green;
+    .correct {
+        .answer {
+            color: white;
+            border: 1px solid transparent;
+            background-color: #9BC53D;
         }
     }
-    &.wrong {
-        .specified-order-answer {
-            background-color: red;
+    .wrong {
+        .answer {
+            color: white;
+            border: 1px solid transparent;
+            background-color: #ff4c55;
         }
     }
     .specified-order-answer {
@@ -54,5 +58,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+}
+
+.correct {
+    .answer {
+        color: white;
+        border: 1px solid transparent;
+        background-color: #9BC53D;
+    }
+}
+.wrong {
+    .answer {
+        color: white;
+        border: 1px solid transparent;
+        background-color: #ff4c55;
     }
 }

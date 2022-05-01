@@ -3,7 +3,7 @@ import React, {  } from "react";
 function PossibleAnswer(props) {
     return(
         <div
-            className={`multiple-choice-answer ${props.chosen ? "chosen" : ""}`}
+            className={`multiple-choice-answer answer ${props.chosen ? "chosen" : ""}`}
             onClick={() => {
                 props.setChoice(props.index)
             }}
