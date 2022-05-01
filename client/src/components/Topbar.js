@@ -1,22 +1,35 @@
-import React, {  } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import Logo from "./Logo";
+
+import { setTopbarHeight } from "../actions/displayActions";
 
 import AccountIcon from "../res/icons/user.png";
 import EditIcon from "../res/icons/edit.png";
 import Leaderboard from "./SidebarComponents/Leaderboard";
 
 function Topbar(props) {
+    let topbarRef = useRef();
+
     // Only render the leaderboard when on the dashboard route
     // NOTE: this gives whole path, not path pattern
     let path = useLocation().pathname;
     let child;
     if (props.mobile && path === "/dashboard") child = <Leaderboard />;
 
+    // attempt to update redux topbar height value on change of ref height
+    let setRefHeight = useCallback(() => {
+        if (topbarRef.current.clientHeight === 227) return props.setTopbarHeight(147); // TODO: remove hardcoded case
+        props.setTopbarHeight(topbarRef.current.clientHeight);
+    }, [topbarRef, child, path])
+    useEffect(() => {
+        setRefHeight();
+    }, [topbarRef, child, path])
+    
     return(
-        <div id="topbar-wrap" >
+        <div id="topbar-wrap" ref={topbarRef} >
             <div id="topbar">
                 <Link to="/dashboard">
                     <Logo />
@@ -71,5 +84,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { }
+    { setTopbarHeight }
 )(Topbar);

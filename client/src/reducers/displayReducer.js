@@ -1,9 +1,11 @@
 import {
-    SET_MOBILE
+    SET_MOBILE,
+    SET_TOPBAR_HEIGHT
 } from "../actions/types";
 
 const initialState = {
     mobile: false,
+    topbarHeight: 0
 };
 
 export default function(state = initialState, action) {
@@ -12,6 +14,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 mobile: action.payload
+            };
+        case SET_TOPBAR_HEIGHT:
+            return {
+                ...state,
+                topbarHeight: action.payload
             };
         default:
             return state;

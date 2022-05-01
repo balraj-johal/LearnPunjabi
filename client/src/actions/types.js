@@ -19,3 +19,4 @@ export const SET_DYSLEXIC_OPTION = "SET_DYSLEXIC_OPTION"
 
 // display actions
 export const SET_MOBILE = "SET_MOBILE"
+export const SET_TOPBAR_HEIGHT = "SET_TOPBAR_HEIGHT"
