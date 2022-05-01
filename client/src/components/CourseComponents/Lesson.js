@@ -14,6 +14,7 @@ import TaskManager from "./TaskManager";
 import Loader from "../Loader";
 
 import { _shuffle } from "../../utils/arrays";
+import ProgressBar from "./ProgressBar";
 
 function Lesson(props) {
     let navigate = useNavigate();
@@ -142,11 +143,14 @@ function Lesson(props) {
     if (!ready) return null;
     return(
         lesson ? (
-            <TaskManager
-                taskData={ lesson.tasks[currentTaskIndex] }
-                submitAnswer={ submitAnswer }
-                stats={ `${getPercentCorrect()}%` }
-            />
+            <div className="w-full h-full relative flex items-center justify-center">
+                <ProgressBar percent={currentTaskIndex / lesson.tasks.length * 100} />
+                <TaskManager
+                    taskData={ lesson.tasks[currentTaskIndex] }
+                    submitAnswer={ submitAnswer }
+                    stats={ `${getPercentCorrect()}%` }
+                />
+            </div>
         ) : 
         <div className="flex justify-center items-center w-full h-full">
             Loading failed. Please refresh and try again!
