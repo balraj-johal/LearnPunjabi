@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-    useNavigate
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axiosDefaults";
+
+import ReactPullToRefresh from "react-pull-to-refresh";
 import Loader from "../Loader";
 
 // import redux actions
@@ -15,16 +15,31 @@ function Course(props) {
     let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
 
+    let getLessons = async () => {
+        try {
+            let res = await axiosClient.get("/api/v1/lessons/");
+            setCourseData(res.data.overview); 
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+        }
+    }
+
+    let onRefresh = async (resolve, reject) => {
+        setLoading(true);
+        try {
+            let res = await axiosClient.get("/api/v1/lessons/");
+            setCourseData(res.data.overview); 
+            setLoading(false);
+            resolve();
+        } catch (err) {
+            setLoading(false);
+            reject();
+        }
+    }
+    
     useEffect(() => {
-        let reqTimeout = setTimeout(async () => {
-            try {
-                let res = await axiosClient.get("/api/v1/lessons/");
-                setCourseData(res.data.overview); 
-                setLoading(false);
-            } catch (err) {
-                setLoading(false);
-            }
-        }, 200);
+        let reqTimeout = setTimeout(getLessons, 200);
 
         return () => { clearTimeout(reqTimeout) }
     }, [])
@@ -76,27 +91,29 @@ function Course(props) {
     }
 
     if (loading) return(
-        <div className="lesson-wrap" style={{ height: getWrapHeight() }}>
+        <div className="lesson-wrap" style={{ height: "100%" }}>
             <Loader />
         </div>
     )
     return(
-        <div className="lesson-wrap" style={{ height: getWrapHeight() }}>
-            { courseData.length > 0 ? (
-                courseData.map((lesson, index) => 
-                    <LessonIcon 
-                        status={getLessonStatus(lesson.id)} 
-                        lesson={lesson}
-                        timesCompleted={getTimesCompleted(lesson.id)}
-                        key={index} 
-                    />
-                )
-            ) : (
-                <div>
-                    Loading failed. Please refresh and try again!
-                </div>
-            )}
-        </div>
+        <ReactPullToRefresh onRefresh={onRefresh} className="w-full" >
+            <div className="lesson-wrap" style={{ height: getWrapHeight() }}>
+                { courseData.length > 0 ? (
+                    courseData.map((lesson, index) => 
+                        <LessonIcon 
+                            status={getLessonStatus(lesson.id)} 
+                            lesson={lesson}
+                            timesCompleted={getTimesCompleted(lesson.id)}
+                            key={index} 
+                        />
+                    )
+                ) : (
+                    <div>
+                        Loading failed. Please refresh and try again!
+                    </div>
+                )}
+            </div>
+        </ReactPullToRefresh>
     )
 }
 

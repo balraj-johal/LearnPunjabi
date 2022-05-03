@@ -20,6 +20,7 @@
     "react-dom": "^18.1.0",
     "react-in-viewport": "^1.0.0-alpha.26",
     "react-loader-spinner": "^5.1.4",
+    "react-pull-to-refresh": "^1.1.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
