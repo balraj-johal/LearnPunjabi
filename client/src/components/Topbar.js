@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import Logo from "./Logo";
+import LogoIcon from "./LogoIcon"
 
 import { setTopbarHeight } from "../actions/displayActions";
 
@@ -32,7 +33,7 @@ function Topbar(props) {
         <div id="topbar-wrap" ref={topbarRef} >
             <div id="topbar">
                 <Link to="/dashboard">
-                    <Logo />
+                    { props.mobile ? <LogoIcon /> : <Logo /> }
                 </Link>
                 <div className="flex flex-row items-center mr-6">
                 { props.auth.isAuthenticated && !props.mobile ? (
