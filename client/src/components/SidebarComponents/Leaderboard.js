@@ -40,7 +40,7 @@ function Leaderboard(props) {
     // TODO: consider just using plain css here. 
     let _calculateLeaderboardStyles = useCallback((collapsed, mobile) => {
         if (!mobile) return "border-b-[3px] border-black min-h-[30vh] max-h-[40vh]";
-        let styles = "cursor-pointer relative w-full transition-all bg-white";
+        let styles = "cursor-pointer relative w-full transition-all bg-white border-b-[3px] border-black";
         if (collapsed) styles += " translate-y-0";
         if (!collapsed) styles += " -translate-y-[84px]";
         return styles;
@@ -78,7 +78,7 @@ function Leaderboard(props) {
             <div id="leaderboard-list" className={`${listStyles}`} >
                 { data.length > 0 ? (
                     data.map((user, index) => 
-                        <UserEntry user={user} key={index} />
+                        <UserEntry user={user} key={user._id} index={index} />
                     )
                 ) : (
                     <Loader />
