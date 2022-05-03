@@ -10,17 +10,20 @@ import qs from 'qs';
 import FormError from "./FormComponents/FormError";
 import FormInput from "./FormComponents/FormInput";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
+import PopInModal from "./Editing/PopInModal";
 
 function Register(props) {
     // initalise form state
     let [submitting, setSubmitting] = useState(false);
+    let [showSuccessModal, setShowSuccessModal] = useState(true);
+    let [successful, setSuccessful] = useState(false);
+    let [errors, setErrors] = useState({});
+
     let [username, setUsername] = useState("");
     let [firstName, setFirstName] = useState("");
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
 
-    let [successful, setSuccessful] = useState(false);
-    let [errors, setErrors] = useState({});
 
     let onSubmit = async e => {
         e.preventDefault();
@@ -42,7 +45,18 @@ function Register(props) {
     }
 
     return(
-        successful ? <Success /> : (
+        <>
+            { successful ? 
+                <PopInModal 
+                    show={showSuccessModal} 
+                    length={4000} 
+                    unrender={() => { 
+                        setShowSuccessModal(false); 
+                        props.setManagerState("Login"); 
+                    }}
+                    text="Registration successful! Check your emails for verification!" 
+                /> : 
+            null }
             <div className="register">
                 <form className="register-form" noValidate onSubmit={ onSubmit }>
                     <FormInput 
@@ -77,16 +91,6 @@ function Register(props) {
                     <FormSubmitButton for="register" disabled={ submitting } />
                 </form>
             </div>
-        )
-    )
-}
-
-function Success(props) {
-    return(
-        <>
-            Registration successful!
-
-            Please check the email you signed up with to verify your account!
         </>
     )
 }

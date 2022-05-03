@@ -10,7 +10,7 @@ function PopInModal(props) {
             ref.current.classList.add("animate-move-up");
         }, props.length - 500);
         let unrenderTimeout = setTimeout(() => {
-            // props.unrender();
+            props.unrender();
         }, props.length);
 
         return () => { 
@@ -21,13 +21,13 @@ function PopInModal(props) {
 
     return(
         <div ref={ref} 
-            className={`z-10 absolute top-0 w-screen h-12
+            className={`z-10 absolute top-0 left-0 w-screen h-12
                 animate-move-down text-white text-lg
                 flex flex-row justify-center
                 ${props.show ? "" : "hidden"}    
             `}
         >
-            <div className={`min-w-40 w-3/12 h-28 p-10 text-center
+            <div className={`min-w-40 w-10/12 sm:w-6/12 md:w-3/12 h-28 p-10 text-center
             bg-primary drop-shadow-lg
             flex justify-center items-center`}>
                 {props.text}

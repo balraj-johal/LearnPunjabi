@@ -46,6 +46,7 @@ router.post("/", async (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) return res.status(400).json(errors);
+    console.log(isValid, " : ", errors)
     try {
         // attempt to find user
         let user = await User.findOne({ username: {$eq: req.body.username} });
@@ -91,6 +92,7 @@ router.post("/", async (req, res) => {
         });
         return res.status(201).json({ message: `Check ${savedUser.email} for a verification link!` });
     } catch (err) { 
+        console.log(err);
         return res.status(500).json({ registration: "Error creating user." }); }
 })
 
