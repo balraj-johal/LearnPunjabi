@@ -96,7 +96,9 @@ function Course(props) {
         </div>
     )
     return(
-        <ReactPullToRefresh onRefresh={onRefresh} className="w-full" >
+        // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
+        //     // icon={<Loader />} 
+        // >
             <div className="lesson-wrap" style={{ height: getWrapHeight() }}>
                 { courseData.length > 0 ? (
                     courseData.map((lesson, index) => 
@@ -113,7 +115,7 @@ function Course(props) {
                     </div>
                 )}
             </div>
-        </ReactPullToRefresh>
+        // </ReactPullToRefresh>
     )
 }
 
