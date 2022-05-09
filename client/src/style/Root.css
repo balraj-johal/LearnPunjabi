@@ -308,8 +308,8 @@ button:disabled {
 
 #leaderboard .header {
   font-weight: bold;
-  font-size: 22px;
-  padding: 15px;
+  font-size: 18px;
+  padding: 10px 15px;
 }
 
 #leaderboard #leaderboard-list {
@@ -327,6 +327,14 @@ button:disabled {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  #leaderboard .header {
+    font-weight: bold;
+    font-size: 22px !important;
+    padding: 15px !important;
+  }
 }
 
 .audio {
@@ -381,9 +389,9 @@ button:disabled {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .multiple-choice-answer {
@@ -400,22 +408,40 @@ button:disabled {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 125px;
-  width: 125px;
+  max-height: 125px;
+  max-width: 125px;
   border: 1px solid grey;
   border-radius: 5px;
+  margin: 0 3%;
+  width: 23vw;
+  height: 23vw;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+  padding: 10px;
 }
 
 .multiple-choice-answer.chosen {
-  background-color: lightgrey;
+  background-color: #d7d7d7;
+}
+
+@media (min-width: 768px) {
+  .multiple-choice-answer {
+    width: 12vw !important;
+    height: 12vw !important;
+  }
+  .middle-text {
+    font-size: 1.5em !important;
+  }
 }
 
 .middle-text {
-  font-size: 2.5em;
+  font-size: 1.2em;
 }
 
 .bottom-text, .middle-text {
-  height: 1em;
+  width: 100%;
+  overflow-wrap: break-word;
+  text-align: center;
 }
 
 .specified-order .answers-wrap, .specified-order #answers, .specified-order #possibilites {

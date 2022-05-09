@@ -1,8 +1,8 @@
 #leaderboard {
     .header {
         font-weight: bold;
-        font-size: 22px;
-        padding: 15px;
+        font-size: 18px;
+        padding: 10px 15px;
     }
 
     #leaderboard-list {
@@ -14,6 +14,16 @@
 
             display: flex;
             justify-content: space-between;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    #leaderboard {
+        .header {
+            font-weight: bold;
+            font-size: 22px !important;
+            padding: 15px !important;
         }
     }
 }
