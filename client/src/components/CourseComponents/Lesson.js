@@ -82,7 +82,7 @@ function Lesson(props) {
      */
     let getPercentCorrect = () => {
         let total = answerTracking.noCorrect + answerTracking.noWrong;
-        return (answerTracking.noCorrect / total) * 100;
+        return Math.floor((answerTracking.noCorrect / total) * 100);
     }
 
     /** 
