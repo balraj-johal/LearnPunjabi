@@ -395,6 +395,7 @@ button:disabled {
 }
 
 .multiple-choice-answer {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

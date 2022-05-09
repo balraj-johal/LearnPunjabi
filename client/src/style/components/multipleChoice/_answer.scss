@@ -1,4 +1,5 @@
 .multiple-choice-answer {
+    @include disableMobileHighlight();
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
