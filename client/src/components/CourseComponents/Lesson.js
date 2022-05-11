@@ -140,7 +140,11 @@ function Lesson(props) {
             .catch(err => { console.log(err); })
     }
     
-    if (!ready) return null;
+    if (!ready) return(
+        <div className="w-full h-full relative flex items-center justify-center animate-fade-in">
+            <ProgressBar percent={0} />
+        </div>
+    );
     return(
         lesson ? (
             <div className="w-full h-full relative flex items-center justify-center">

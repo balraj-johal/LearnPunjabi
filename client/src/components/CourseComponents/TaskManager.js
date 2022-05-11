@@ -13,6 +13,7 @@ function TaskManager(props) {
     let ref = useRef();
     let [animating, setAnimating] = useState(false);
     let [animClasses, setAnimClasses] = useState("");
+    let [fadeIn, setFadeIn] = useState("0");
     let component;
 
     let handleCorrect = () => {
@@ -36,10 +37,12 @@ function TaskManager(props) {
 
     // refresh the fade in animation when task data changes
     useEffect(() => {
-        if (!props.taskData) return;
-        ref.current.classList.remove("animate-fade-in");
-        ref.current.classList.add("animate-fade-in");
-    }, [props.taskData])
+        if (!props.taskData.taskID) return;
+        setFadeIn("0");
+        setTimeout(() => {
+            setFadeIn("1");
+        }, 50);
+    }, [props.taskData.taskID])
 
     switch (props.taskData.type) {
         case "TextOnly":
@@ -93,9 +96,16 @@ function TaskManager(props) {
     }
 
     return(
-        <div className={`task px-2 w-11/12 md:w-7/12
-            ${animClasses} ${animating ? "pointer-events-none" : ""}`} 
+        <div 
+            className={`task w-11/12 md:w-7/12 h-4/5 
+                pt-6 px-2 pb-2 md:pt-2 
+                ${animClasses} ${animating ? "pointer-events-none" : ""}
+
+                `
+            } 
             ref={ref}
+            fadein={fadeIn || "0"}
+            onAnimationEnd={() => { setFadeIn("2") }}
         >
             { component }
         </div>

@@ -19,9 +19,7 @@ function PossAnswerFragment(props) {
             animating={animating}
             onAnimationEnd={() => { onAnimEnd() }}
         >
-            {/* { props.possible ? ( */}
-                <div className="text"> {props.possible.text} </div>
-            {/*  ) : null } */}
+            <div className="text"> {props.possible.text} </div>
         </li>
     )
 }

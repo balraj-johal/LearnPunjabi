@@ -25,7 +25,7 @@ function MultipleChoice(props) {
     }
 
     return(
-        <div className="multiple-choice">
+        <div className="multiple-choice flex flex-col justify-between h-full">
             { props.data.text }
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <div className="answers-wrap">

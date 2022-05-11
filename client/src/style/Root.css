@@ -304,10 +304,17 @@ button:disabled {
   margin: auto;
 }
 
-.task {
-  min-height: 40%;
-  margin-top: 50px;
-  margin: auto;
+.task[fadein="0"] {
+  opacity: 0;
+}
+
+.task[fadein="1"] {
+  -webkit-animation: fadeIn 250ms ease-in forwards;
+          animation: fadeIn 250ms ease-in forwards;
+}
+
+.task[fadein="2"] {
+  opacity: 1;
 }
 
 #leaderboard .header {

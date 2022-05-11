@@ -6,10 +6,10 @@ import NextButton from "../NextButton";
 
 function TextOnly(props) {
     let submitContinue = () => {
-        props.submit(true);
+        setTimeout(() => {
+            props.submit(true);
+        }, 200);
     }
-
-    console.log(props.data)
 
     return(
         <div className="text-only flex flex-row">
