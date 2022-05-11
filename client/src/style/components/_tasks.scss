@@ -12,3 +12,6 @@
         background-color: #ff4c55;
     }
 }
+.answer {
+    @include disableMobileHighlight();
+}

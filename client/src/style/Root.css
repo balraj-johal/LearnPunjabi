@@ -388,6 +388,10 @@ button:disabled {
   background-color: #ff4c55;
 }
 
+.answer {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 .multiple-choice .answers-wrap {
   margin: 2.5em 0;
   display: -webkit-box;
