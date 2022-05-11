@@ -7,7 +7,7 @@ function InternalPage({ children, ...props }) {
     return(
         <>
             <Topbar />
-            <div className="container flex" style={{height: `calc(100vh - ${props.topbarHeight}px)`}} >
+            <div className="container flex" id="internal-main" style={{height: `calc(100vh - ${props.topbarHeight}px)`}} >
                 { children }
             </div>
         </>
