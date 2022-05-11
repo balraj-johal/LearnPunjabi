@@ -537,6 +537,11 @@ button:disabled {
           align-items: center;
 }
 
+.specified-order .specified-order-answer[animating="1"] {
+  -webkit-animation: fadeIn 100ms ease-in;
+          animation: fadeIn 100ms ease-in;
+}
+
 .correct .answer {
   color: white;
   border: 1px solid transparent;

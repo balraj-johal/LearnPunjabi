@@ -58,6 +58,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+    }
+    .specified-order-answer[animating="1"] {
+        animation: fadeIn 100ms ease-in;
     }
 }
 

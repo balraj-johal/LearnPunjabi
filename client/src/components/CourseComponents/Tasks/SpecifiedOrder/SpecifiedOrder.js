@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { 
     DragDropContext, 
     Droppable, 
@@ -12,15 +12,15 @@ import NextButton from "../NextButton";
 function SpecifiedOrder(props) {
     let [order, setOrder] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
+    let [animatingFrags, setAnimatingFrags] = useState([]);
 
     /** resets task state
      *  @name resetTask
      */
-    let resetTask = () => {
+    let resetTask = useCallback(() => {
         setOrder([]);
         setPossibleFrags(props.data.possibleAnswers);
-    }
-
+    })
     // initialise state when task data changes
     useEffect(() => {
         resetTask();
@@ -64,6 +64,7 @@ function SpecifiedOrder(props) {
         return str;
     }
     /** Adds specified fragment to user's answer
+     * @name addToOrder
      * @param {Object} frag - answer fragment
      */
     let addToOrder = (frag) => {
@@ -71,8 +72,11 @@ function SpecifiedOrder(props) {
         setPossibleFrags(possibleFrags.filter(elem => {
             return elem !== frag;
         }));
+        setAnimatingFrags(animatingFrags.concat([frag]));
     }
+
     /** Removes specified fragment from user's answer
+     * @name removeFromOrder
      * @param {Object} frag - answer fragment
      */
     let removeFromOrder = (frag) => {
@@ -80,6 +84,17 @@ function SpecifiedOrder(props) {
             return elem !== frag;
         }));
         setPossibleFrags(possibleFrags.concat([frag]));
+        setAnimatingFrags(animatingFrags.concat([frag]));
+    }
+
+    /** Removes specified fragment from animating list
+     * @name removeAnimatingFrag
+     * @param {Object} frag - answer fragment
+     */
+    let removeAnimatingFrag = (frag) => {
+        setAnimatingFrags(animatingFrags.filter(elem => {
+            return elem !== frag;
+        }));
     }
 
     return(
@@ -96,6 +111,8 @@ function SpecifiedOrder(props) {
                         >
                             { order.map((data, index) => 
                                 <DragAnswerFragment 
+                                    animating={animatingFrags.includes(data)}
+                                    removeAnimatingFrag={removeAnimatingFrag}
                                     possible={data}
                                     key={index}
                                     index={index}
@@ -111,6 +128,8 @@ function SpecifiedOrder(props) {
                 <ul className="possiblities-wrap" id="possibilites">
                     {possibleFrags.map((data, index) => 
                         <PossAnswerFragment 
+                            animating={animatingFrags.includes(data)}
+                            removeAnimatingFrag={removeAnimatingFrag}
                             possible={data}
                             key={index}
                             index={index}

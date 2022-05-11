@@ -1,7 +1,19 @@
-import React, {} from "react";
+import React, { useState } from "react";
 import { Draggable } from 'react-beautiful-dnd';
 
 function DragAnswerFragment(props) {
+    // if animating is 1, css animation fadeIn is triggered
+    let [animating, setAnimating] = useState(props.animating ? "1" : "0");
+    
+    /** handle animation cleanup
+     * @name onAnimEnd
+     */
+    let onAnimEnd = () => {
+        setAnimating("0"); 
+        props.removeAnimatingFrag(props.possible);
+    }
+
+
     return(
         <Draggable draggableId={String(props.index)} index={props.index} >
             {(provided) => (
@@ -13,6 +25,8 @@ function DragAnswerFragment(props) {
                     onClick={() => {
                         props.removeFromOrder(props.possible);
                     }}
+                    animating={animating}
+                    onAnimationEnd={() => { onAnimEnd() }}
                 >
                     { props.possible.text ? (
                         <div className="text"> {props.possible.text} </div>
