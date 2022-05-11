@@ -97,11 +97,9 @@ function TaskManager(props) {
 
     return(
         <div 
-            className={`task w-11/12 md:w-7/12 h-4/5 
+            className={`task w-11/12 md:w-7/12 h-4/6
                 pt-6 px-2 pb-2 md:pt-2 
-                ${animClasses} ${animating ? "pointer-events-none" : ""}
-
-                `
+                ${animClasses} ${animating ? "pointer-events-none" : ""}`
             } 
             ref={ref}
             fadein={fadeIn || "0"}

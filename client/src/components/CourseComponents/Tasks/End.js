@@ -4,7 +4,7 @@ import NextButton from "./NextButton";
 
 function End(props) {
     return(
-        <div className="lesson-end flex flex-col items-center">
+        <div className="lesson-end flex flex-col items-center h-full justify-center">
             <span>{props.data.text}</span>
             <span className="my-8">
                 You got {props.stats} of your answers correct!
