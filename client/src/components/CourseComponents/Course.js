@@ -95,30 +95,35 @@ function Course(props) {
     }
 
     if (loading) return(
-        <div className="lesson-wrap" style={{ height: "100%" }}>
-            <Loader />
+        <div className="lesson-wrap" style={{ height: "110%" }}>
+            {/* <Loader /> */}
         </div>
     )
     return(
         // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
         //     // icon={<Loader />} 
         // >
-            <div className="lesson-wrap relative" style={{ height: getWrapHeight() }} >
-                { courseData.length > 0 ? (
-                    courseData.map((lesson, index) => 
-                        <LessonIcon 
-                            status={getLessonStatus(lesson.id)} 
-                            lesson={lesson}
-                            timesCompleted={getTimesCompleted(lesson.id)}
-                            key={index} 
-                        />
-                    )
-                ) : (
-                    <div>
-                        Loading failed. Please refresh and try again!
-                    </div>
-                )}
-                <div className="absolute top-0 left-0 w-full h-full z-10">
+            <div 
+                className="lesson-wrap relative" 
+                style={{ height: getWrapHeight() }} 
+            >
+                <div className="animate-fade-in z-10">
+                    { courseData.length > 0 ? (
+                        courseData.map((lesson, index) => 
+                            <LessonIcon 
+                                status={getLessonStatus(lesson.id)} 
+                                lesson={lesson}
+                                timesCompleted={getTimesCompleted(lesson.id)}
+                                key={index} 
+                            />
+                        )
+                    ) : (
+                        <div>
+                            Loading failed. Please refresh and try again!
+                        </div>
+                    )}
+                </div>
+                <div className="absolute top-0 left-0 w-full h-full z-0">
                     <Canvas 
                         dpr={[1, 2]} 
                         camera={{ position: [0, 0, 30], fov: 100 }}

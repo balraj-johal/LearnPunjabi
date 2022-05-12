@@ -317,6 +317,17 @@ button:disabled {
   opacity: 1;
 }
 
+#leaderboard {
+  user-select: none;
+  /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+}
+
 #leaderboard .header {
   font-weight: bold;
   font-size: 18px;

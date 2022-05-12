@@ -33,7 +33,7 @@ function AccountManager(props) {
     }, [managerState])
 
     return(
-        <div className="accounts-wrap">
+        <div className="accounts-wrap animate-fade-in">
             <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? 
                     <GenericButton 

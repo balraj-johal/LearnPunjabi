@@ -39,7 +39,7 @@ function Leaderboard(props) {
     // would be simple in plain css.
     // TODO: consider just using plain css here. 
     let _calculateLeaderboardStyles = useCallback((collapsed, mobile) => {
-        if (!mobile) return "border-b-[3px] border-black h-[40vh]";
+        if (!mobile) return "border-b-[3px] border-black min-h-[40vh]";
         let styles = "cursor-pointer relative w-full transition-all bg-white border-b-[3px] border-black";
         if (collapsed) styles += " translate-y-0";
         if (!collapsed) styles += " -translate-y-[84px]";
@@ -75,15 +75,13 @@ function Leaderboard(props) {
             onClick={() => { if (props.mobile) setCollapsed(!collapsed) }}
         >
             <div className="header bg-white" >Weekly Leaderboard</div>
-            <div id="leaderboard-list" className={`${listStyles}`} >
-                { data.length > 0 ? (
-                    data.map((user, index) => 
+            { data.length > 0 ? (
+                <div id="leaderboard-list" className={`${listStyles} animate-fade-in`} >
+                    {data.map((user, index) => 
                         <UserEntry user={user} key={user._id} index={index} />
-                    )
-                ) : (
-                    <Loader />
-                ) }
-            </div>
+                    )}
+                </div>
+            ) : null }
         </div>
     )
 }
