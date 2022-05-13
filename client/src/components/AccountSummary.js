@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated, config } from 'react-spring';
 
+import GenericButton from "./GenericButton";
+
 function AccountSummary(props) {
     let [xpAnimFinished, setXpAnimFinished] = useState(false);
     const spring = useSpring({ 
@@ -14,6 +16,10 @@ function AccountSummary(props) {
 
     return(
         <div className="flex flex-col justify-evenly h-full absolute top-0 w-full p-10">
+            <GenericButton 
+                handleClick={() => { props.logoutUser() }} 
+                text="Logout" 
+            />
             <div id="acct-name" className="w-full flex items-center justify-evenly my-8 px-4 font-normal">
                 <h2 className="text-4xl my-2">
                     Hi&nbsp;

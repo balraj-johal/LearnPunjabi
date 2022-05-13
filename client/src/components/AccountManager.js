@@ -33,13 +33,9 @@ function AccountManager(props) {
     }, [managerState])
 
     return(
-        <div className="accounts-wrap animate-fade-in relative">
+        <div className="accounts-wrap animate-fade-in">
             <div id="switcher-buttons" className="flex flex-row">
-                {props.isAuthenticated ? 
-                    <GenericButton 
-                        handleClick={() => { props.logoutUser(props.auth.user._id) }} 
-                        text="Logout" 
-                    /> : (
+                {props.isAuthenticated ? null : (
                         <>
                             <GenericButton handleClick={() => { setManagerState("Login") }} text="Login" />
                             <GenericButton handleClick={() => { setManagerState("Register") }} text="Register" />
@@ -48,7 +44,7 @@ function AccountManager(props) {
                         </>
                     )}
             </div>
-            <Switcher state={managerState} setManagerState={setManagerState} />
+            <Switcher state={managerState} setManagerState={setManagerState} logoutUser={() => { props.logoutUser(props.auth.user._id) }} />
         </div>
     )
 }
@@ -69,7 +65,7 @@ function Switcher(props) {
             )
         case "Summary":
             return(
-                <AccountSummary />
+                <AccountSummary logoutUser={props.logoutUser} />
             )
         default:
             return(

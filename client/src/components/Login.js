@@ -54,7 +54,7 @@ function Login(props) {
                 <FormSubmitButton for="login" disabled={submitting} />
                 <div 
                     onClick={() => { props.setManagerState("ForgotPassword"); }}
-                    className="text-sm text-primary w-full"    
+                    className="text-sm text-primary w-full cursor-pointer hover:text-primary2"    
                 >
                     - Forgot Password?
                 </div>

@@ -82,7 +82,6 @@ export const forgotPassword = userData => dispatch => {
         })
 }
 export const resetPassword = (userData) => dispatch => {
-    console.log(userData)
     axiosClient.post(`/api/v1/users/reset-password/${userData.code}`, qs.stringify(userData))
         .then(res => {
             console.log("reset successful");

@@ -153,7 +153,7 @@ router.post("/forgot-password", forgotPasswordLimiter, async (req, res) => {
 try {
     let user = await User.findOne({ email: {$eq: req.body.email} });
     // if no user is found by that email
-    if (!user) return res.status(404).json({ email: "no user found." });
+    if (!user) return res.status(404).json({ email: "Error finding user." });
     user.pwResetCode = genVerificationCode(8);
     user.pwResetCodeExpiry = Date.now() + (3 * 60 * 1000) // 3 mins from now 
     let savedUser = await user.save();
@@ -162,8 +162,8 @@ try {
         code: savedUser.pwResetCode,
         host: req.get('host')
     })
-    return res.status(200).send({ message: "Password reset link set!" })
-} catch (err) { return res.status(500).send(err.message); }
+    return res.status(200).send({ message: "Password reset link sent!" })
+} catch (err) { return res.status(500).send({ email: "Error finding user." }); }
 }); 
 
 /**
