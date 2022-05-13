@@ -58,6 +58,9 @@ function Welcome(props) {
             </div>
             <div id="welcome-4" className="welcome-div grad-end">
                 <RiversEnd />
+                <div id="footer" className="absolute bottom-0 h-5/6 bg-black bg-opacity-20 w-full">
+
+                </div>
             </div>
         </div>
     )

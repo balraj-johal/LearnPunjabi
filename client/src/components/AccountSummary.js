@@ -21,18 +21,18 @@ function AccountSummary(props) {
                 text="Logout" 
                 className="absolute"
             />
-            <div id="acct-name" className="w-full flex items-center justify-evenly my-8 px-4 font-normal">
-                <h2 className="text-4xl my-2">
+            <div id="acct-name" className="w-full flex items-center justify-evenly md:my-8 my-2 px-4 font-normal">
+                <h2 className="md:text-4xl my-2">
                     Hi&nbsp;
                     <span className="font-bold">
                         {props.user.firstName}!
                     </span>
                 </h2>
             </div>
-            <div id="total-xp" className="w-full flex items-center justify-evenly no-highlight my-8 px-4">
+            <div id="total-xp" className="w-full flex items-center justify-evenly no-highlight md:my-8 my-2 px-4">
                 <div className="w-4/12 flex flex-col items-center justify-center">
-                    <div className="text-3xl my-1 w-full text-left font-normal">You have</div>
-                    <div className="text-5xl mb-1 w-full flex justify-end">
+                    <div className="md:text-3xl my-1 w-full text-left font-normal">You have</div>
+                    <div className="md:text-5xl mb-1 w-full flex justify-end">
                         <animated.div className="mr-4">
                             {spring.xp.to(xp => Math.floor(xp))}
                         </animated.div> XP!
@@ -43,8 +43,8 @@ function AccountSummary(props) {
                     { xpAnimFinished ? <Smiley /> : <Frowney /> }
                 </div>
             </div>
-            <div id="no-lessons" className="w-full flex items-center justify-left my-12 px-4">
-                <p className="my-2 text-2xl font-normal">
+            <div id="no-lessons" className="w-full flex items-center justify-left md:my-12 my-2 px-4">
+                <p className="my-2 md:text-2xl font-normal">
                     You have completed&nbsp;
                     <span className="font-bold">
                         {props.user?.progress?.length}

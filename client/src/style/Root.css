@@ -718,7 +718,9 @@ button:disabled {
 .welcome-div #middle-bit #prompt-text {
   margin-top: 30px;
   line-height: 1.25em;
-  font-size: 18px;
+  font-size: 16px;
+  padding-right: 15px;
+  font-weight: normal;
 }
 
 .welcome-div #middle-bit .action-button {
