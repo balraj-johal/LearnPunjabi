@@ -38,7 +38,7 @@ function Topbar(props) {
                 </Link>
                 <div className="flex flex-row items-center mr-6">
                 { props.auth.isAuthenticated && !props.mobile ? (
-                    <div className="mr-5 mt-1">Hello {props.auth.user.username}!</div>
+                    <div className="mr-5 mt-2">Hello {props.auth.user.username}!</div>
                 ) : null }
                     <EditButton role={props.auth.user.role} />
                     <AccountButton 
@@ -57,7 +57,7 @@ function EditButton(props) {
     return(
         <Link to="/edit/overview">
             { props.role === "Admin" ? (
-                <div className="account-button mr-2">
+                <div className="account-button mr-2 hover:bg-primary2 transition-all">
                     <img 
                         style={{margin: "-2px -2px 0 0"}} // minor adjustment to center icon
                         src={EditIcon} 
@@ -71,7 +71,7 @@ function EditButton(props) {
 function AccountButton(props) {
     return(
         <Link to="/account">
-            <div className="account-button">
+            <div className="account-button hover:bg-primary2 transition-all">
                 <img src={AccountIcon} alt="account-open-button-icon" />
             </div>
         </Link>

@@ -15,7 +15,7 @@ function AccountSummary(props) {
     });
 
     return(
-        <div className="flex flex-col justify-evenly h-full absolute top-0 w-full p-10">
+        <div className="flex flex-col justify-evenly h-full top-0 w-full p-10">
             <GenericButton 
                 handleClick={() => { props.logoutUser() }} 
                 text="Logout" 
@@ -57,8 +57,8 @@ function AccountSummary(props) {
 function Smiley(props) {
     return(
         <svg width="100%" viewBox="0 0 94 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.5 36.5L23.5 56.5H71L91 36.5" stroke="black" stroke-width="8"/>
-            <path d="M28 0V21M66 0V21" stroke="black" stroke-width="8"/>
+            <path d="M3.5 36.5L23.5 56.5H71L91 36.5" stroke="black" strokeWidth="8"/>
+            <path d="M28 0V21M66 0V21" stroke="black" strokeWidth="8"/>
         </svg>
     )
 }
@@ -66,8 +66,8 @@ function Smiley(props) {
 function Frowney(props) {
     return(
     <svg width="100%" viewBox="0 0 94 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 56.5L23 36.5H70.5L90.5 56.5" stroke="black" stroke-width="8"/>
-        <path d="M27.5 0V21M65.5 0V21" stroke="black" stroke-width="8"/>
+        <path d="M3 56.5L23 36.5H70.5L90.5 56.5" stroke="black" strokeWidth="8"/>
+        <path d="M27.5 0V21M65.5 0V21" stroke="black" strokeWidth="8"/>
     </svg>
     )
 }
