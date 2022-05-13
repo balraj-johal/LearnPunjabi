@@ -98,45 +98,47 @@ function SpecifiedOrder(props) {
     }
 
     return(
-        <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-between`} >
-            { props.data.text }
+        <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-center`} >
+            <div className="title absolute top-2 left-3">{ props.data.text }</div>
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
-            <DragDropContext onDragEnd={handleDragEnd} >
-                <Droppable droppableId="characters" direction="horizontal" >
-                    {(provided) => (
-                        <ul 
-                            id="answers"
-                            {...provided.droppableProps} 
-                            ref={provided.innerRef}
-                        >
-                            { order.map((data, index) => 
-                                <DragAnswerFragment 
-                                    animating={animatingFrags.includes(data)}
-                                    removeAnimatingFrag={removeAnimatingFrag}
-                                    possible={data}
-                                    key={index}
-                                    index={index}
-                                    removeFromOrder={removeFromOrder}
-                                />
-                            ) }
-                            {provided.placeholder}
-                        </ul>
-                    )}
-                </Droppable>
-            </DragDropContext>
-            <div id="possible-fragments">
-                <ul className="possiblities-wrap" id="possibilites">
-                    {possibleFrags.map((data, index) => 
-                        <PossAnswerFragment 
-                            animating={animatingFrags.includes(data)}
-                            removeAnimatingFrag={removeAnimatingFrag}
-                            possible={data}
-                            key={index}
-                            index={index}
-                            addToOrder={addToOrder}
-                        />
-                    )}
-                </ul>
+            <div id="lists">
+                <DragDropContext onDragEnd={handleDragEnd} >
+                    <Droppable droppableId="characters" direction="horizontal" >
+                        {(provided) => (
+                            <ul 
+                                id="answers"
+                                {...provided.droppableProps} 
+                                ref={provided.innerRef}
+                            >
+                                { order.map((data, index) => 
+                                    <DragAnswerFragment 
+                                        animating={animatingFrags.includes(data)}
+                                        removeAnimatingFrag={removeAnimatingFrag}
+                                        possible={data}
+                                        key={index}
+                                        index={index}
+                                        removeFromOrder={removeFromOrder}
+                                    />
+                                ) }
+                                {provided.placeholder}
+                            </ul>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+                <div id="possible-fragments">
+                    <ul className="possiblities-wrap" id="possibilites">
+                        {possibleFrags.map((data, index) => 
+                            <PossAnswerFragment 
+                                animating={animatingFrags.includes(data)}
+                                removeAnimatingFrag={removeAnimatingFrag}
+                                possible={data}
+                                key={index}
+                                index={index}
+                                addToOrder={addToOrder}
+                            />
+                        )}
+                    </ul>
+                </div>
             </div>
             <NextButton next={() => {checkAnswer()}} />
         </div>

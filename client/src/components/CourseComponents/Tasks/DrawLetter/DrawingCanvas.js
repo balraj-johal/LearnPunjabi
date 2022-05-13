@@ -122,6 +122,7 @@ function DrawingCanvas(props) {
 
     return(
         <canvas 
+            className="m-0 w-[320px] h-[320px]"
             id="drawing-canvas" 
             width="320" 
             height="320" 

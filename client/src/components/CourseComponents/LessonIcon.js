@@ -7,7 +7,7 @@ function LessonIcon(props) {
     let navigate = useNavigate();
     return(
         <div 
-            className={`lesson z-20 relative overflow-hidden 
+            className={`lesson z-20 relative overflow-hidden no-highlight
                 ${props.status ? "" : "incomplete"} bg-white`}
             onClick={() => { navigate(`/lesson/${props.lesson.id}`) }}
         >

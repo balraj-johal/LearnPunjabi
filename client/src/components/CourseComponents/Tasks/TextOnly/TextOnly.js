@@ -20,8 +20,8 @@ function TextOnly(props) {
             </div>
             <div id="text-only-content" className="w-9/12 flex flex-col justify-center">
                 { props.data.text } 
-                <NextButton next={submitContinue} />
             </div>
+            <NextButton next={submitContinue} />
         </div>
     );
 }

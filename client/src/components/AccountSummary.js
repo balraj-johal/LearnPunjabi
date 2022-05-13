@@ -19,6 +19,7 @@ function AccountSummary(props) {
             <GenericButton 
                 handleClick={() => { props.logoutUser() }} 
                 text="Logout" 
+                className="absolute"
             />
             <div id="acct-name" className="w-full flex items-center justify-evenly my-8 px-4 font-normal">
                 <h2 className="text-4xl my-2">

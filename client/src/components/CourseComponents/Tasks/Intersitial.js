@@ -4,7 +4,7 @@ import NextButton from "./NextButton";
 
 function Intersitial(props) {
     return(
-        <div className="lesson-interstitial flex flex-col items-center h-full justify-center">
+        <div className="lesson-interstitial flex flex-col items-center h-full justify-center pb-20">
             <span>{props.data.text}</span>
             <span className="my-8">
                 Good job! You're doing great!
