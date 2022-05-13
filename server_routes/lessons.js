@@ -64,7 +64,6 @@ router.get("/", (req, res) => {
 router.get("/:lessonID", async (req, res) => {
     try {
         let user = await verifyToken(req);
-        if (user.role !== "Admin") return res.status(401).send("Unauthorised.")
         let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
         if (!lesson) return res.status(404).send("Lesson not found.");
         return res.status(200).send(lesson);
