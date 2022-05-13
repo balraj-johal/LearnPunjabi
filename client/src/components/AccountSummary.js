@@ -46,7 +46,7 @@ function AccountSummary(props) {
                 <p className="my-2 text-2xl font-normal">
                     You have completed&nbsp;
                     <span className="font-bold">
-                        {props.user.progress.length}
+                        {props.user?.progress?.length}
                     </span>&nbsp;lessons.
                 </p>
             </div>
