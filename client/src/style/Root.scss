@@ -29,7 +29,11 @@
 @import "layout/content";
 @import "layout/navigation";
 
-// @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400&display=swap');
+@layer utilities {
+    .no-highlight {
+        @include noHighlighting();
+    }
+}
 
 body {
     overflow: hidden;
