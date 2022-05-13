@@ -5,6 +5,7 @@ import axiosClient from "../../axiosDefaults";
 
 import ReactPullToRefresh from "react-pull-to-refresh";
 import Loader from "../Loader";
+import LessonIcon from "./LessonIcon";
 
 import * as THREE from 'three';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
@@ -87,16 +88,12 @@ function Course(props) {
      * @returns { String } height - string to set height style to
      */
     let getWrapHeight = () => {
-        if (courseData.length > 0) {
-            return `${courseData.length * (190)}px`
-        } else {
-            return `calc(101vh)`
-        }
+        if (courseData.length > 0) return `${courseData.length * (205)}px`
+        return `calc(101vh)`
     }
 
     if (loading) return(
         <div className="lesson-wrap" style={{ height: "110%" }}>
-            {/* <Loader /> */}
         </div>
     )
     return(
@@ -118,9 +115,9 @@ function Course(props) {
                             />
                         )
                     ) : (
-                        <div>
+                        <>
                             Loading failed. Please refresh and try again!
-                        </div>
+                        </>
                     )}
                 </div>
                 <div className="absolute top-0 left-0 w-full h-full z-0">
@@ -205,18 +202,6 @@ function Particles(props) {
     )
 }
 
-function LessonIcon(props) {
-    let navigate = useNavigate();
-    return(
-        <div 
-            className={`lesson ${props.status ? "complete" : "incomplete"} z-20`}
-            onClick={() => { navigate(`/lesson/${props.lesson.id}`) }}
-        >
-            { props.lesson.name }<br/>
-            <p>{ props.timesCompleted }/{ props.lesson.requiredCompletions }</p>
-        </div>
-    )
-}
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
