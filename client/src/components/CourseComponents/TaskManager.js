@@ -97,7 +97,7 @@ function TaskManager(props) {
 
     return(
         <div 
-            className={`task w-11/12 md:w-7/12 h-4/6 px-2 relative 
+            className={`task w-11/12 md:w-7/12 md:h-4/6 h-5/6 md:mt-0 mt-10 px-2 relative 
                 ${animating ? "pointer-events-none" : ""}`} 
             fadein={fadeIn || "0"}
             onAnimationEnd={() => { setFadeIn("2") }}
