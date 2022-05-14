@@ -31,7 +31,7 @@ function Topbar(props) {
     }, [topbarRef, child, path])
     
     return(
-        <div id="topbar-wrap" ref={topbarRef} >
+        <div id="topbar-wrap" ref={topbarRef} className="no-highlight" >
             <div id="topbar">
                 <Link to="/dashboard">
                     { props.mobile ? <LogoIcon /> : <Logo /> }

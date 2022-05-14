@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import MultipleChoice from "./Tasks/MultipleChoice/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly/TextOnly";
@@ -8,29 +9,29 @@ import DrawLetter from "./Tasks/DrawLetter/DrawLetter";
 import Intersitial from "./Tasks/Intersitial";
 import PageNotFound from "../PageNotFound";
 
+import { setAnimClasses } from "../../actions/currTaskActions";
+
 // return task component of specified type
 function TaskManager(props) {
-    let ref = useRef();
     let [animating, setAnimating] = useState(false);
-    let [animClasses, setAnimClasses] = useState("");
     let [fadeIn, setFadeIn] = useState("0");
     let component;
 
     let handleCorrect = () => {
-        setAnimClasses("animate-bounce-y correct");
+        props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
             setAnimating(false);
-            setAnimClasses("");
+            props.setAnimClasses("");
             props.submitAnswer(true);
         }, 750);
     }
     let handleWrong = () => {
-        setAnimClasses("animate-shake-x wrong");
+        props.setAnimClasses("animate-shake-x wrong");
         setAnimating(true);
         setTimeout(() => {
             setAnimating(false);
-            setAnimClasses(""); 
+            props.setAnimClasses("");
             props.submitAnswer(false);
         }, 750);
     }
@@ -51,7 +52,6 @@ function TaskManager(props) {
                     submit={props.submitAnswer}
                     stats={props.stats}
                     setAnimating={setAnimating}
-                    setAnimClasses={setAnimClasses}
                 />
             break;
         case "MultipleChoice":
@@ -97,12 +97,8 @@ function TaskManager(props) {
 
     return(
         <div 
-        // pt-6  pb-2 md:pt-2 
-            className={`task w-11/12 md:w-7/12 h-4/6 px-2
-                relative
-                ${animClasses} ${animating ? "pointer-events-none" : ""}`
-            } 
-            ref={ref}
+            className={`task w-11/12 md:w-7/12 h-4/6 px-2 relative 
+                ${animating ? "pointer-events-none" : ""}`} 
             fadein={fadeIn || "0"}
             onAnimationEnd={() => { setFadeIn("2") }}
         >
@@ -111,4 +107,12 @@ function TaskManager(props) {
     )
 }
 
-export default TaskManager;
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    currTask: state.currTask,
+});
+
+export default connect(
+    mapStateToProps,
+    { setAnimClasses }
+)(TaskManager);

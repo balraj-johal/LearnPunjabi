@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 
 import DrawingCanvas from "./DrawingCanvas";
 import NextButton from "../NextButton";
@@ -18,7 +19,7 @@ function DrawLetter(props) {
     return(
         <div className="draw-letter h-full flex flex-col justify-center">
             <div className="title absolute top-2 left-3">{ props.data.text }</div>
-            <div className="relative mx-auto flex flex-col justify-center items-center" >
+            <div className={`relative mx-auto flex flex-col justify-center items-center ${props.animClasses}`} >
                 <DrawingCanvas clearing={clearing} setClearing={setClearing} />
                 <button className="w-full text-white h-8 bg-primary cursor-pointer mt-[-1px]
                     hover:bg-primary2 capitalize transition-all duration-75 border-b border-x border-black" 
@@ -30,4 +31,12 @@ function DrawLetter(props) {
     );
 }
 
-export default DrawLetter;
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    animClasses: state.currTask.animClasses
+});
+
+export default connect(
+    mapStateToProps,
+    {  }
+)(DrawLetter);

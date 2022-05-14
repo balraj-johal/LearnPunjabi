@@ -4,6 +4,7 @@ import courseReducer from "./courseReducer";
 import csrfReducer from "./csrfReducer";
 import optionsReducer from "./optionsReducer";
 import displayReducer from "./displayReducer";
+import currTaskReducer from "./currTaskReducer";
 
 /*
     reducer defines how to change the state after each
@@ -16,6 +17,7 @@ const appReducer = combineReducers({
     csrf: csrfReducer,
     options: optionsReducer,
     display: displayReducer,
+    currTask: currTaskReducer
 });
 
 const rootReducer = (state, action) => {

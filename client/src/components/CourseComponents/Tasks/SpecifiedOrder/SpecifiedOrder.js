@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { connect } from "react-redux";
+
 import { 
     DragDropContext, 
     Droppable, 
@@ -101,7 +103,7 @@ function SpecifiedOrder(props) {
         <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-center`} >
             <div className="title absolute top-2 left-3">{ props.data.text }</div>
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
-            <div id="lists">
+            <div id="lists" className={`${props.animClasses}`}>
                 <DragDropContext onDragEnd={handleDragEnd} >
                     <Droppable droppableId="characters" direction="horizontal" >
                         {(provided) => (
@@ -145,4 +147,14 @@ function SpecifiedOrder(props) {
     );
 }
 
-export default SpecifiedOrder;
+
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    animClasses: state.currTask.animClasses
+});
+
+export default connect(
+    mapStateToProps,
+    {
+    }
+)(SpecifiedOrder);
