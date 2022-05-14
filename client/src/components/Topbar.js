@@ -18,8 +18,9 @@ function Topbar(props) {
     // NOTE: this gives whole path, not path pattern
     let path = useLocation().pathname;
     let child;
+    console.log(props.mobile, path, props.auth.isAuthenticated)
     if (props.mobile && path === "/dashboard" 
-        && props.auth.user.isAuthenticated) child = <Leaderboard />;
+        && props.auth.isAuthenticated) child = <Leaderboard />;
 
     // attempt to update redux topbar height value on change of ref height
     let setRefHeight = useCallback(() => {
