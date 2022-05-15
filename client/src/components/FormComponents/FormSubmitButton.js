@@ -2,10 +2,10 @@ import React from "react";
 
 function FormSubmitButton(props) {
     return(
-        <div className={`button-wrap-${props.for} my-4`} >
+        <div className={`button-wrap-${props.for} md:my-4 w-full md:w-auto`} >
             <button
                 type="submit"
-                className="capitalize h-10 bg-primary rounded text-white px-4"
+                className="capitalize h-8 md:h-10 bg-primary rounded text-white px-4 w-full"
                 disabled={props.disabled || false}
             >
                 {props.text || props.for}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { useSpring, animated } from 'react-spring';
 
 import { registerUser } from "../actions/authActions";
 
@@ -24,6 +25,11 @@ function Register(props) {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
 
+    const spring = useSpring({ 
+        to: { opacity: 1 }, 
+        from: { opacity: 0 }, 
+        delay: 200,
+    });
 
     let onSubmit = async e => {
         e.preventDefault();
@@ -57,7 +63,7 @@ function Register(props) {
                     text="Registration successful! Check your emails for verification!" 
                 /> : 
             null }
-            <div className="register">
+            <animated.div className="register" style={{opacity: spring.opacity}}>
                 <form className="register-form" noValidate onSubmit={ onSubmit }>
                     <FormInput 
                         for="username"
@@ -90,7 +96,7 @@ function Register(props) {
                     <FormError for="verification" errors={ errors } />
                     <FormSubmitButton for="register" disabled={ submitting } />
                 </form>
-            </div>
+            </animated.div>
         </>
     )
 }

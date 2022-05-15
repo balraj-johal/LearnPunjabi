@@ -79,7 +79,7 @@ function FormInput(props) {
     }
 
     return(
-        <div className={`"input-field my-4 flex flex-${props.row ? "row" : "col"}`}>
+        <div className={`"input-field my-1 md:my-4 flex flex-${props.row ? "row" : "col"}`}>
             <FormLabel for={props.for} />
             {component}
             <FormError for={props.for} errors={props.errors} />
@@ -87,7 +87,8 @@ function FormInput(props) {
     )
 }
 
-const INPUT_STYLES = "rounded border-2 border-black px-1 py-0.5 w-full my-0.5"
+const INPUT_STYLES = `rounded border-2 border-slate-200 px-1 py-0.5 
+    w-full my-0.5 focus:border-blue-400 outline-0 transition-all`
 
 function FormTextArea(props) {
     return(
@@ -138,14 +139,6 @@ function FormCheckbox(props) {
             id={props.for}
             type="checkbox"
         />
-        // <input
-        //     onChange={props.onChange}
-        //     value={props.value}
-        //     placeholder={props.placeholder}
-        //     id={`${props.for}`}
-        //     type="number"
-        //     className={`${INPUT_STYLES} ${props.extraStyles}`}
-        // />
     )
 }
 

@@ -197,7 +197,6 @@ button:disabled {
   min-height: 48vh;
   border: 3px solid black;
   border-radius: 5px;
-  padding: 15px;
   padding-bottom: 30px;
   margin: 50px auto;
 }
@@ -224,6 +223,19 @@ button:disabled {
   font-size: 0.8em;
   color: red;
   font-style: italic;
+}
+
+.account-switcher[fadein="0"] {
+  opacity: 0;
+}
+
+.account-switcher[fadein="1"] {
+  -webkit-animation: fadeIn 250ms ease-in forwards;
+          animation: fadeIn 250ms ease-in forwards;
+}
+
+.account-switcher[fadein="2"] {
+  opacity: 1;
 }
 
 .lesson-wrap {

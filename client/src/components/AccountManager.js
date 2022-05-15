@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 // import redux actions
+import { setDarkMode, setDyslexicOption } from "../actions/optionsActions";
 import { 
     logoutUser, 
     getUserData, 
     clearAuthErrors 
 } from "../actions/authActions";
-import { setDarkMode, setDyslexicOption } from "../actions/optionsActions";
 
 // import components
 import Login from "./Login";
 import Register from "./Register";
+import AccountTab from "./AccountTab";
 import AccountSummary from "./AccountSummary";
 import ForgotPassword from "./ForgotPassword";
-import GenericButton from "./GenericButton";
 
 function AccountManager(props) {
     // initialise state
@@ -35,16 +35,43 @@ function AccountManager(props) {
     return(
         <div className="accounts-wrap animate-fade-in">
             <div id="switcher-buttons" className="flex flex-row">
-                {props.isAuthenticated ? null : (
-                        <>
-                            <GenericButton handleClick={() => { setManagerState("Login") }} text="Login" />
-                            <GenericButton handleClick={() => { setManagerState("Register") }} text="Register" />
-                            <GenericButton handleClick={() => { props.setDyslexicOption(true) }} text="DyslexicFont" />
-                            <GenericButton handleClick={() => { props.setDarkMode(true) }} text="DarkMode" />
-                        </>
-                    )}
+                {props.isAuthenticated ? (
+                    <div className="w-full flex">
+                        <AccountTab 
+                            first={true} 
+                            for="Summary" 
+                            managerState={managerState} 
+                            setManagerState={setManagerState} 
+                        />
+                        <AccountTab 
+                            for="Settings" 
+                            managerState={managerState} 
+                            setManagerState={setManagerState} 
+                        />
+                    </div>
+                ) : (
+                    <div className="w-full flex">
+                        <AccountTab 
+                            first={true} 
+                            for="Login" 
+                            managerState={managerState} 
+                            setManagerState={setManagerState} 
+                        />
+                        <AccountTab 
+                            for="Register" 
+                            managerState={managerState} 
+                            setManagerState={setManagerState} 
+                        />
+                    </div>
+                )}
             </div>
-            <Switcher state={managerState} setManagerState={setManagerState} logoutUser={() => { props.logoutUser(props.auth.user._id) }} />
+            <div className="account-switcher px-4 py-4">
+                <Switcher 
+                    state={managerState} 
+                    setManagerState={setManagerState} 
+                    logoutUser={() => { props.logoutUser(props.auth.user._id) }} 
+                />
+            </div>
         </div>
     )
 }
@@ -52,25 +79,17 @@ function AccountManager(props) {
 function Switcher(props) {
     switch (props.state) {
         case "Login":
-            return(
-                <Login setManagerState={props.setManagerState} />
-            )
+            return <Login setManagerState={props.setManagerState} />
         case "Register":
-            return(
-                <Register setManagerState={props.setManagerState} />
-            )
+            return <Register setManagerState={props.setManagerState} />
         case "ForgotPassword":
-            return(
-                <ForgotPassword setManagerState={props.setManagerState} />
-            )
+            return <ForgotPassword setManagerState={props.setManagerState} />
         case "Summary":
-            return(
-                <AccountSummary logoutUser={props.logoutUser} />
-            )
+            return <AccountSummary logoutUser={props.logoutUser} />
+        case "Settings":
+            return <>SETTINGS HERE</>
         default:
-            return(
-                <></>
-            )
+            return null;
     }
 }
 

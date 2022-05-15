@@ -6,7 +6,13 @@ import GenericButton from "./GenericButton";
 
 function AccountSummary(props) {
     let [xpAnimFinished, setXpAnimFinished] = useState(false);
-    const spring = useSpring({ 
+
+    const fadeSpring = useSpring({ 
+        to: { opacity: 1 }, 
+        from: { opacity: 0 }, 
+        delay: 200,
+    });
+    const XPSpring = useSpring({ 
         to: { xp: props.user.totalXP }, 
         from: { xp: 0 }, 
         delay: 500, 
@@ -15,43 +21,50 @@ function AccountSummary(props) {
     });
 
     return(
-        <div className="flex flex-col justify-evenly h-full top-0 w-full p-10">
-            <GenericButton 
-                handleClick={() => { props.logoutUser() }} 
-                text="Logout" 
-                className="absolute"
-            />
-            <div id="acct-name" className="w-full flex items-center justify-evenly md:my-8 my-2 px-4 font-normal">
-                <h2 className="md:text-4xl my-2">
+        <animated.div 
+            style={{opacity: fadeSpring.opacity}}
+            className="flex flex-col justify-evenly h-full top-0 w-full"
+        >
+            <div 
+                id="acct-name" 
+                className="w-full flex items-center justify-evenly md:my-8 my-2 px-4 font-normal"
+            >
+                <h2 className="md:text-4xl text-xl my-2">
                     Hi&nbsp;
                     <span className="font-bold">
                         {props.user.firstName}!
                     </span>
                 </h2>
             </div>
-            <div id="total-xp" className="w-full flex items-center justify-evenly no-highlight md:my-8 my-2 px-4">
-                <div className="w-4/12 flex flex-col items-center justify-center">
-                    <div className="md:text-3xl my-1 w-full text-left font-normal">You have</div>
-                    <div className="md:text-5xl mb-1 w-full flex justify-end">
+            <div 
+                id="total-xp" 
+                className="w-full flex items-center justify-evenly no-highlight md:my-8 my-2 px-4"
+            >
+                <div className="md:w-4/12 w-6/12 md:mr-0 mr-10 flex flex-col items-center justify-center">
+                    <div className="md:text-3xl text-xl md:my-1 w-full text-left font-normal">You have</div>
+                    <div className="md:text-5xl text-2xl md:mb-1 w-full flex justify-end">
                         <animated.div className="mr-4">
-                            {spring.xp.to(xp => Math.floor(xp))}
+                            {XPSpring.xp.to(xp => Math.floor(xp))}
                         </animated.div> XP!
                     </div>
                 </div>
-                <div className="w-3/12 flex flex-col items-center justify-center p-4">
-                    {/* { props.user.totalXP > 0 ? <Smiley /> : <Frowney /> } */}
+                <div className="md:w-3/12 w-4/12 flex flex-col items-center justify-center md:p-4">
                     { xpAnimFinished ? <Smiley /> : <Frowney /> }
                 </div>
             </div>
             <div id="no-lessons" className="w-full flex items-center justify-left md:my-12 my-2 px-4">
-                <p className="my-2 md:text-2xl font-normal">
+                <p className="my-2 md:text-2xl text-lg font-normal">
                     You have completed&nbsp;
                     <span className="font-bold">
                         {props.user?.progress?.length}
                     </span>&nbsp;lessons.
                 </p>
             </div>
-        </div>
+            <GenericButton 
+                handleClick={() => { props.logoutUser() }} 
+                text="Logout" 
+            />
+        </animated.div>
     )
 }
 

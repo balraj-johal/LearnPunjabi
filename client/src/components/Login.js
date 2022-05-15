@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { useSpring, animated } from 'react-spring';
 
 import axiosClient from "../axiosDefaults";
 import qs from 'qs';
@@ -17,6 +18,12 @@ function Login(props) {
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
 
+    const spring = useSpring({ 
+        to: { opacity: 1 }, 
+        from: { opacity: 0 }, 
+        delay: 200,
+    });
+
     let onSubmit = async e => {
         e.preventDefault();
         setSubmitting(true);
@@ -31,7 +38,7 @@ function Login(props) {
     }
 
     return(
-        <div className="login mt-2">
+        <animated.div className="login mt-2" style={{opacity: spring.opacity}}>
             <form className="login-form" noValidate onSubmit={ onSubmit }>
                 <FormInput 
                     for="username"
@@ -54,12 +61,12 @@ function Login(props) {
                 <FormSubmitButton for="login" disabled={submitting} />
                 <div 
                     onClick={() => { props.setManagerState("ForgotPassword"); }}
-                    className="text-sm text-primary w-full cursor-pointer hover:text-primary2"    
+                    className="text-sm text-primary w-full cursor-pointer hover:text-primary2 mt-4"    
                 >
                     - Forgot Password?
                 </div>
             </form>
-        </div>
+        </animated.div>
     )
 }
 

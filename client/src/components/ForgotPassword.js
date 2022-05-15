@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { useSpring, animated } from 'react-spring';
 
 import axiosClient from "../axiosDefaults";
 import qs from 'qs';
 import { forgotPassword } from "../actions/authActions";
 
 // form components
-import FormError from "./FormComponents/FormError";
 import FormInput from "./FormComponents/FormInput";
 import FormSubmitButton from "./FormComponents/FormSubmitButton";
 import PopInModal from "./Editing/PopInModal";
@@ -16,6 +16,12 @@ function ForgotPassword(props) {
     let [successful, setSuccessful] = useState(false);
     let [showSuccessModal, setShowSuccessModal] = useState(false);
     let [errors, setErrors] = useState(null);
+
+    const spring = useSpring({ 
+        to: { opacity: 1 }, 
+        from: { opacity: 0 }, 
+        delay: 200,
+    });
     
     // on form submit call redux action
     let onSubmit = async e => {
@@ -41,7 +47,7 @@ function ForgotPassword(props) {
                 }}
                 text="Check your emails to reset your password!" 
             /> 
-            <div id="forgot-password" className="mt-4">
+            <animated.div id="forgot-password" className="mt-4" style={{opacity: spring.opacity}}>
                 <h2>Forgot Password</h2>
                 <form 
                     className="forgot-password-form" 
@@ -57,7 +63,7 @@ function ForgotPassword(props) {
                     />
                     <FormSubmitButton for="forgot-password" text="Submit" />
                 </form>
-            </div>
+            </animated.div>
         </>
     )
 }

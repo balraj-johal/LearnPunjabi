@@ -15,10 +15,8 @@ function Topbar(props) {
     let topbarRef = useRef();
 
     // Only render the leaderboard when on the dashboard route
-    // NOTE: this gives whole path, not path pattern
-    let path = useLocation().pathname;
+    let path = useLocation().pathname; // NOTE: this gives whole path, not path pattern
     let child;
-    console.log(props.mobile, path, props.auth.isAuthenticated)
     if (props.mobile && path === "/dashboard" 
         && props.auth.isAuthenticated) child = <Leaderboard />;
 
