@@ -15,7 +15,7 @@ function AccountSummary(props) {
     const XPSpring = useSpring({ 
         to: { xp: props.user.totalXP }, 
         from: { xp: 0 }, 
-        delay: 500, 
+        delay: 500,
         config: config.molasses,
         onRest: () => setXpAnimFinished(true) 
     });

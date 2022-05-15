@@ -40,5 +40,8 @@ button {
     @include disableMobileHighlight();
     &:disabled {
         background: #00a2ff72;
+        &:hover {
+            background: #00a2ff72;
+        }
     }
 }

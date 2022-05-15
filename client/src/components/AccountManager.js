@@ -65,7 +65,7 @@ function AccountManager(props) {
                     </div>
                 )}
             </div>
-            <div className="account-switcher px-4 py-4">
+            <div className="account-switcher px-4 pb-5 pt-8 md:pt-5 h-full md:mt-0 mt-[-10px]">
                 <Switcher 
                     state={managerState} 
                     setManagerState={setManagerState} 

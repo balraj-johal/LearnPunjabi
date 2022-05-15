@@ -1,17 +1,10 @@
 .accounts-wrap {
-    width: 85%;
-    min-height: 48vh;
-    // width: 44%;
-    // height: 70vh;
-    border: $border-thickness solid black;
-    border-radius: 5px;
-    // padding: 15px;
+    width: 100%;
+    height: 100%;
     padding-bottom: 30px;
-    margin: 50px auto;
     .register, .login {
         width: 100%;
     }
-
     .input-field {
         label {
             margin: 0.25em 0 0.25em;
@@ -22,8 +15,12 @@
 
 @media (min-width: 768px) {
     .accounts-wrap {
+        border: $border-thickness solid black;
+        border-radius: 5px;
         width: 50%;
+        margin: 50px auto;
         min-height: 70vh;
+        max-height: 80vh;
     }
 }
 
