@@ -65,6 +65,7 @@ function EditButton(props) {
                         style={{margin: "-2px -2px 0 0"}} // minor adjustment to center icon
                         src={EditIcon} 
                         alt="account-open-button-icon" 
+                        className="no-highlight" 
                     />
                 </div>
             ) : null }
@@ -77,7 +78,11 @@ function AccountButton(props) {
             <div className="account-button hover:bg-primary2 transition-all 
                 no-highlight animate-fade-in"
             >
-                <img src={AccountIcon} alt="account-open-button-icon" />
+                <img 
+                    src={AccountIcon} 
+                    alt="account-open-button-icon" 
+                    className="no-highlight" 
+                />
             </div>
         </Link>
     )
