@@ -196,6 +196,22 @@ button:disabled:hover {
   background: #00a2ff72;
 }
 
+@media (min-width: 768px) {
+  .react-toggle {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+}
+
+.react-toggle--checked .react-toggle-track {
+  background-color: #00A3FF !important;
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
 .accounts-wrap {
   width: 100%;
   height: 100%;
@@ -935,6 +951,21 @@ button:disabled:hover {
   .thing.visible {
     opacity: 1 !important;
   }
+}
+
+.darkMode .container {
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+  background-color: grey !important;
+  color: white !important;
+}
+
+.darkMode .bg-primary {
+  background-color: #0092e7 !important;
+}
+
+.darkMode .accounts-wrap {
+  background-color: lightgrey !important;
 }
 
 #course-custom-container {

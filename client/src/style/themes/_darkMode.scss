@@ -1,0 +1,13 @@
+.darkMode {
+    .container {
+        transition: all 200ms;
+        background-color: grey !important;
+        color: white !important;
+    }
+    .bg-primary {
+        background-color: rgb(0, 146, 231) !important;
+    }
+    .accounts-wrap {
+        background-color: lightgrey !important;
+    }
+}

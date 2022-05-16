@@ -15,6 +15,7 @@ import Register from "./Register";
 import AccountTab from "./AccountTab";
 import AccountSummary from "./AccountSummary";
 import ForgotPassword from "./ForgotPassword";
+import Settings from "./Settings";
 
 function AccountManager(props) {
     // initialise state
@@ -87,7 +88,7 @@ function Switcher(props) {
         case "Summary":
             return <AccountSummary logoutUser={props.logoutUser} />
         case "Settings":
-            return <>SETTINGS HERE</>
+            return <Settings />
         default:
             return null;
     }

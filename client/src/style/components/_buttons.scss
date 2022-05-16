@@ -45,3 +45,15 @@ button {
         }
     }
 }
+
+@media (min-width: 768px) {
+    .react-toggle {
+        transform: scale(1.2);
+    }
+}
+.react-toggle--checked .react-toggle-track {
+    background-color: #00A3FF !important;
+}
+.react-toggle--focus .react-toggle-thumb {
+    box-shadow: none !important;
+}

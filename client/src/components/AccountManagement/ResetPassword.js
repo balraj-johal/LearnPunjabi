@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import {
-    useParams 
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // import redux actions
 import { resetPassword } from "../../actions/authActions";
