@@ -19,17 +19,12 @@ function TaskManager(props) {
     let [out, setOut] = useState(false);
     let component;
 
-    let handleCorrect = () => {
+    let handleCorrect = (toBounce) => {
+        if (!toBounce) return handleExit();
         props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
-            props.setAnimClasses("");
-            setOut(true);
-            setTimeout(() => {
-                setOut(false);
-                setAnimating(false);
-                props.submitAnswer(true);
-            }, 600);
+            handleExit();
         }, 750);
     }
     let handleWrong = () => {
@@ -42,6 +37,16 @@ function TaskManager(props) {
         }, 750);
     }
 
+    let handleExit = () => {
+        props.setAnimClasses("");
+        setOut(true);
+        setTimeout(() => {
+            setOut(false);
+            setAnimating(false);
+            props.submitAnswer(true);
+        }, 600);
+    }
+
     // refresh the fade in animation when task data changes
     useEffect(() => {
         if (!props.taskData.taskID) return;
@@ -52,7 +57,8 @@ function TaskManager(props) {
         case "TextOnly":
             component = <TextOnly 
                     data={props.taskData} 
-                    submit={props.submitAnswer}
+                    // submit={props.submitAnswer}
+                    submit={() => handleCorrect(false)}
                     stats={props.stats}
                     setAnimating={setAnimating}
                 />
@@ -60,14 +66,14 @@ function TaskManager(props) {
         case "MultipleChoice":
             component = <MultipleChoice 
                     data={props.taskData} 
-                    handleCorrect={handleCorrect}
+                    handleCorrect={() => handleCorrect(true)}
                     handleWrong={handleWrong}
                 />
             break;
         case "SpecifiedOrder":
             component = <SpecifiedOrder 
                     data={props.taskData}
-                    handleCorrect={handleCorrect}
+                    handleCorrect={() => handleCorrect(true)}
                     handleWrong={handleWrong} 
                     stats={props.stats}
                 />
@@ -75,7 +81,7 @@ function TaskManager(props) {
         case "DrawLetter":
             component = <DrawLetter 
                     data={props.taskData}
-                    handleCorrect={handleCorrect}
+                    handleCorrect={() => handleCorrect(true)}
                     handleWrong={handleWrong} 
                 />
             break;
