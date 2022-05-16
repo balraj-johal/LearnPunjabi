@@ -9,6 +9,7 @@ import { degreesToRads } from "../../utils/math";
 
 import ScrollPrompt from "./ScrollPrompt";
 import Cubone from "./ThreeJS/Cubone";
+import Punjab2 from "./ThreeJS/Punjab2";
 import WelcomeLogo from "./WelcomeLogo";
 import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
@@ -49,11 +50,14 @@ function Welcome(props) {
             <div id="welcome-3" className="welcome-div grad-mid">
                 <div id="stick">
                     <RiversMid />
+                    <div className="w-[70%] h-full">
                     <Canvas 
-                        dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 22 }}
+                        dpr={[1, 2]} 
+                        camera={{ position: [0, 0, 10], fov: 22 }}
                     >
-                        <ThreeStuff ref={top} />
+                        <ThreeJSPunjab ref={top} />
                     </Canvas>
+                    </div>
                 </div>
             </div>
             <div id="welcome-4" className="welcome-div grad-end">
@@ -66,7 +70,7 @@ function Welcome(props) {
     )
 }
 
-let ThreeStuff = React.forwardRef((props, ref) => {
+let ThreeJSPunjab = React.forwardRef((props, ref) => {
     // set initial camera rotation
     useThree(({camera}) => {
         camera.rotation.set(degreesToRads(0), degreesToRads(0), 0);
@@ -74,10 +78,10 @@ let ThreeStuff = React.forwardRef((props, ref) => {
 
     return(
         <Suspense fallback={null}>
-            <Caption>
+            {/* <Caption>
                 Cubone by Tipatat Chennavasin [CC-BY], via Poly Pizza
-            </Caption>
-            <Cubone ref={ref} position={[0, 0, 0]} />
+            </Caption> */}
+            <Punjab2 ref={ref} rotation={[0.5, 0, 0]} />
             <rectAreaLight
                 width={3}
                 height={3}
