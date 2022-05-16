@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
-import axiosClient from "../axiosDefaults";
+import axiosClient from "../../axiosDefaults";
 import qs from 'qs';
 
-import { loginUser, setUser, setAuthErrors } from "../actions/authActions";
+import { loginUser, setUser, setAuthErrors } from "../../actions/authActions";
 
 // form components
-import FormError from "./FormComponents/FormError";
-import FormInput from "./FormComponents/FormInput";
-import FormSubmitButton from "./FormComponents/FormSubmitButton";
+import FormError from "../FormComponents/FormError";
+import FormInput from "../FormComponents/FormInput";
+import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
 function Login(props) {
     // initialise form states

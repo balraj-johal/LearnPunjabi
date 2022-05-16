@@ -5,12 +5,12 @@ import {
 } from "react-router-dom";
 
 // import redux actions
-import { resetPassword } from "../actions/authActions";
+import { resetPassword } from "../../actions/authActions";
 
 // form components
-import FormError from "./FormComponents/FormError";
-import FormInput from "./FormComponents/FormInput";
-import FormSubmitButton from "./FormComponents/FormSubmitButton";
+import FormError from "../FormComponents/FormError";
+import FormInput from "../FormComponents/FormInput";
+import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
 function ResetPassword(props) {
     let params = useParams();

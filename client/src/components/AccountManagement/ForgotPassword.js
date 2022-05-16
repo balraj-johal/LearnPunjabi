@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
-import axiosClient from "../axiosDefaults";
+import axiosClient from "../../axiosDefaults";
 import qs from 'qs';
-import { forgotPassword } from "../actions/authActions";
+import { forgotPassword } from "../../actions/authActions";
 
 // form components
-import FormInput from "./FormComponents/FormInput";
-import FormSubmitButton from "./FormComponents/FormSubmitButton";
-import PopInModal from "./Editing/PopInModal";
+import FormInput from "../FormComponents/FormInput";
+import FormSubmitButton from "../FormComponents/FormSubmitButton";
+import PopInModal from "../Editing/PopInModal";
 
 function ForgotPassword(props) {
     let [email, setEmail] = useState("")

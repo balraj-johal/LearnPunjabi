@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
-import { registerUser } from "../actions/authActions";
+import { registerUser } from "../../actions/authActions";
 
-import axiosClient from "../axiosDefaults";
+import axiosClient from "../../axiosDefaults";
 import qs from 'qs';
 
 // form components
-import FormError from "./FormComponents/FormError";
-import FormInput from "./FormComponents/FormInput";
-import FormSubmitButton from "./FormComponents/FormSubmitButton";
-import PopInModal from "./Editing/PopInModal";
+import FormError from "../FormComponents/FormError";
+import FormInput from "../FormComponents/FormInput";
+import FormSubmitButton from "../FormComponents/FormSubmitButton";
+import PopInModal from "../Editing/PopInModal";
 
 function Register(props) {
     // initalise form state

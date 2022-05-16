@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated, config } from 'react-spring';
 
-import GenericButton from "./GenericButton";
+import GenericButton from "../GenericButton";
 
 function AccountSummary(props) {
     let [xpAnimFinished, setXpAnimFinished] = useState(false);

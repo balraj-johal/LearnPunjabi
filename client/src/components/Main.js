@@ -18,11 +18,11 @@ import { setCSRFReady } from "../actions/csrfActions";
 // component imports
 import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
-import AccountManager from '../components/AccountManager';
+import AccountManager from '../components/AccountManagement/AccountManager';
 import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import ProtectedComponent from "./ProtectedComponent";
-import ResetPassword from "./ResetPassword";
+import ResetPassword from "./AccountManagement/ResetPassword";
 import VerifyEmail from "./VerifyEmail";
 import Welcome from "./Welcome/Welcome";
 import EditOverview from "./Editing/Overview/EditOverview";

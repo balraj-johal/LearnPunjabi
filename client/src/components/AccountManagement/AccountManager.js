@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 // import redux actions
-import { setDarkMode, setDyslexicOption } from "../actions/optionsActions";
+import { setDarkMode, setDyslexicOption } from "../../actions/optionsActions";
 import { 
     logoutUser, 
     getUserData, 
     clearAuthErrors 
-} from "../actions/authActions";
+} from "../../actions/authActions";
 
 // import components
 import Login from "./Login";
