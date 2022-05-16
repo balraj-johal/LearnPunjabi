@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useSpring, animated, config } from 'react-spring';
 
 import MultipleChoice from "./Tasks/MultipleChoice/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly/TextOnly";
@@ -14,7 +15,7 @@ import { setAnimClasses } from "../../actions/currTaskActions";
 // return task component of specified type
 function TaskManager(props) {
     let [animating, setAnimating] = useState(false);
-    let [fadeIn, setFadeIn] = useState("0");
+    let [currentID, setCurrentID] = useState(null);
     let component;
 
     let handleCorrect = () => {
@@ -39,10 +40,7 @@ function TaskManager(props) {
     // refresh the fade in animation when task data changes
     useEffect(() => {
         if (!props.taskData.taskID) return;
-        setFadeIn("0");
-        setTimeout(() => {
-            setFadeIn("1");
-        }, 50);
+        setCurrentID(props.taskData.taskID);
     }, [props.taskData.taskID])
 
     switch (props.taskData.type) {
@@ -95,15 +93,28 @@ function TaskManager(props) {
             break;
     }
 
+
     return(
-        <div 
+        <AnimatedWrapper animating={animating} component={component} key={currentID} />
+    )
+}
+
+function AnimatedWrapper(props) {
+    const spring = useSpring({ 
+        to: { opacity: 1 }, 
+        from: { opacity: 0 }, 
+        delay: 100,
+        config: config.slow
+    });
+
+    return(
+        <animated.div 
+            style={spring}
             className={`task w-11/12 md:w-7/12 md:h-4/6 h-5/6 md:mt-0 mt-10 px-2 relative 
-                ${animating ? "pointer-events-none" : ""}`} 
-            fadein={fadeIn || "0"}
-            onAnimationEnd={() => { setFadeIn("2") }}
+                ${props.animating ? "pointer-events-none" : ""}`} 
         >
-            { component }
-        </div>
+            { props.component }
+        </animated.div>
     )
 }
 
