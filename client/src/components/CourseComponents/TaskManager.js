@@ -16,24 +16,31 @@ import { setAnimClasses } from "../../actions/currTaskActions";
 function TaskManager(props) {
     let [animating, setAnimating] = useState(false);
     let [currentID, setCurrentID] = useState(null);
+    let [out, setOut] = useState(false);
     let component;
 
     let handleCorrect = () => {
         props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
-            setAnimating(false);
             props.setAnimClasses("");
-            props.submitAnswer(true);
+            setOut(true);
+            setTimeout(() => {
+                setOut(false);
+                setAnimating(false);
+                props.submitAnswer(true);
+            }, 500);
         }, 750);
     }
     let handleWrong = () => {
         props.setAnimClasses("animate-shake-x wrong");
         setAnimating(true);
         setTimeout(() => {
-            setAnimating(false);
             props.setAnimClasses("");
-            props.submitAnswer(false);
+            setTimeout(() => {
+                setAnimating(false);
+                props.submitAnswer(false);
+            }, 500);
         }, 750);
     }
 
@@ -95,15 +102,20 @@ function TaskManager(props) {
 
 
     return(
-        <AnimatedWrapper animating={animating} component={component} key={currentID} />
+        <AnimatedWrapper 
+            animating={animating} 
+            component={component} 
+            key={currentID} 
+            out={out}
+        />
     )
 }
 
 function AnimatedWrapper(props) {
     const spring = useSpring({ 
-        to: { opacity: 1 }, 
-        from: { opacity: 0 }, 
-        delay: 100,
+        to: { opacity: props.out ? 0 : 1, transform: props.out ? "translate(-100px, 0)" : "translate(0px, 0)" }, 
+        from: { opacity: 0, transform: "translate(0px, 0)" }, 
+        delay: 0,
         config: config.slow
     });
 
