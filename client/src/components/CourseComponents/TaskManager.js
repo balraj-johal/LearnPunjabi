@@ -29,7 +29,7 @@ function TaskManager(props) {
                 setOut(false);
                 setAnimating(false);
                 props.submitAnswer(true);
-            }, 500);
+            }, 600);
         }, 750);
     }
     let handleWrong = () => {
@@ -37,10 +37,8 @@ function TaskManager(props) {
         setAnimating(true);
         setTimeout(() => {
             props.setAnimClasses("");
-            setTimeout(() => {
-                setAnimating(false);
-                props.submitAnswer(false);
-            }, 500);
+            setAnimating(false);
+            props.submitAnswer(false);
         }, 750);
     }
 
@@ -113,10 +111,15 @@ function TaskManager(props) {
 
 function AnimatedWrapper(props) {
     const spring = useSpring({ 
-        to: { opacity: props.out ? 0 : 1, transform: props.out ? "translate(-100px, 0)" : "translate(0px, 0)" }, 
-        from: { opacity: 0, transform: "translate(0px, 0)" }, 
-        delay: 0,
-        config: config.slow
+        to: { 
+            // opacity ends at -0.2 to ensure component fades out before reaching transform end
+            opacity: props.out ? -0.2 : 1, 
+            transform: props.out ? "translate(-10vwx, 0)" : "translate(0vw, 0)" 
+        }, 
+        from: { 
+            opacity: 0, 
+            transform: "translate(0vw, 0)" 
+        }
     });
 
     return(
