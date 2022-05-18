@@ -31,7 +31,7 @@ function Main(props) {
     // fetch csrf token and store in redux reducer
     useEffect(() => {
         axiosClient.get("/csrf-token")
-            .then(res => {
+        .then(res => {
                 axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
                 props.setCSRFReady();
             })
