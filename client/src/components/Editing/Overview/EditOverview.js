@@ -13,6 +13,7 @@ const NEW_LESSON = {
     id: "new",
     requiredCompletions: 1,
     shuffle: false,
+    noToSample: 0,
     tasks: []
 }
 

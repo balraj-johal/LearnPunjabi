@@ -28,6 +28,7 @@ const NEW_LESSON = {
     strId: "new",
     requiredCompletions: 1,
     shuffle: false,
+    noToSample: 0,
     tasks: []
 }
 
@@ -110,20 +111,22 @@ function EditLesson(props) {
     let saveLesson = () => {
         let lessonCopy = {...lesson};
         lessonCopy = removeUnnecessaryTaskProperties(lesson);
-        if (!lessonCopy.strId) lessonCopy.strId = `lesson-${lessonCopy.name}`;
+        if (!lessonCopy.strId || lessonCopy.strId === "new") 
+            lessonCopy.strId = `lesson-${lessonCopy.name}`;
         console.log("submitting: ", lessonCopy);
         let validationErrors = _getLessonValidationErrors(lessonCopy);
         setErrors(validationErrors);
         console.log(validationErrors);
         if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
-        axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, qs.stringify(lesson))
-            .then(res => { 
-                setSubmitSuccess(true);
-                setShowSuccessModal(true);
-            })
-            .catch(err => { 
-                setErrors(err.response.data); 
-            })
+        axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
+            qs.stringify(lesson))
+                .then(res => { 
+                    setSubmitSuccess(true);
+                    setShowSuccessModal(true);
+                })
+                .catch(err => { 
+                    setErrors(err.response.data); 
+                })
     }
 
     /** updates form state on change of form field value
@@ -209,7 +212,9 @@ function EditLesson(props) {
     let shiftTaskDown = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem?.taskID === taskID);
-        if (oldIndex < tasksCopy.length) _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
+        if (oldIndex < tasksCopy.length) {
+            _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
+        }
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
     }
@@ -217,14 +222,23 @@ function EditLesson(props) {
     if (!ready) return <Loader />;
     return(
         <>
-            <PopInModal show={showSuccessModal} length={5000} unrender={() => { setShowSuccessModal(false); }} text="Lesson saved successfully!" />
+            <PopInModal 
+                show={showSuccessModal} 
+                length={5000} 
+                unrender={() => { setShowSuccessModal(false); }}
+                text="Lesson saved successfully!" 
+            />
             <ConfirmationPrompt 
                 showSubmitConfirm={showSubmitConfirm}
                 setShowSubmitConfirm={setShowSubmitConfirm}
                 submitSuccess={submitSuccess}
                 saveLesson={saveLesson}
             />
-            <Link className="absolute p-2 text-sm text-primary" to="/edit/overview" replace>
+            <Link 
+                className="absolute p-2 text-sm text-primary" 
+                to="/edit/overview" 
+                replace
+            >
                 &lt; back to overview
             </Link>
             <div className="w-screen mx-auto
@@ -259,20 +273,27 @@ function EditLesson(props) {
                         row={true}
                         errors={errors}
                     /> 
+                    { lesson.shuffle ? <FormInput
+                        for="noToSample" 
+                        onChange={onChange}
+                        value={lesson.noToSample}
+                        type="number" 
+                        errors={errors}
+                    /> : null }
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (
                             <EditTask 
-                                task = {task}
-                                key = {task.taskID}
-                                shuffle = {lesson.shuffle}
-                                index = {index}
-                                listEndsState = {_getListEndsState(index, lesson.tasks)}
-                                onTasksChange = {onTasksChange} 
-                                shiftTaskDown = {shiftTaskDown}
-                                shiftTaskUp = {shiftTaskUp}
-                                errors = {errors}
-                                deleteTask = {deleteTask}
+                                task={task}
+                                key={task.taskID}
+                                shuffle={lesson.shuffle}
+                                index={index}
+                                listEndsState={_getListEndsState(index, lesson.tasks)}
+                                onTasksChange={onTasksChange} 
+                                shiftTaskDown={shiftTaskDown}
+                                shiftTaskUp={shiftTaskUp}
+                                errors={errors}
+                                deleteTask={deleteTask}
                             />
                         ))}
                     </div>
@@ -283,7 +304,11 @@ function EditLesson(props) {
                         extraStyles="mx-auto"
                     />
                     <FormError for="tasks" errors={errors} />
-                    <FormSubmitButton disabled={submitSuccess} for="edit-lesson" text="Submit Lesson" />
+                    <FormSubmitButton 
+                        disabled={submitSuccess} 
+                        for="edit-lesson" 
+                        text="Submit Lesson" 
+                    />
                 </form>
             </div>
         </>

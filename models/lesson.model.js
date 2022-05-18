@@ -17,7 +17,12 @@ const lessonSchema = new mongoose.Schema({
     },
     shuffle: {
         type: Boolean,
-        default: false
+        default: false,
+        required: false,
+    },
+    noToSample: {
+        type: Number,
+        required: false,
     },
     tasks: {
         type: Array,

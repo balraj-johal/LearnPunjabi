@@ -24,26 +24,25 @@ function Lesson(props) {
     let [lesson, setLesson] = useState();
     let [ready, setReady] = useState(false);
     let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
-    let [answerTracking, setAnswerTracking] = useState({
-        noCorrect: 0,
-        noWrong: 0,
-    });
+    let [answerTracking, setAnswerTracking] = useState({ noCorrect: 0, noWrong: 0, });
     let [mistakeTracker, setMistakeTracker] = useState([]);
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
         let reqTimeout = setTimeout(async () => {
             try {
-                let endpoint = `/api/v1/lessons/${String(id)}`;
-                let res = await axiosClient.get(endpoint);
+                let res = await axiosClient.get(`/api/v1/lessons/${String(id)}`);
                 let data = res.data;
                 if (data.shuffle) data.tasks = _shuffle(data.tasks);
-                // add data for the lesson end screen
+                if (data.shuffle && data.noToSample > 0) 
+                    data.tasks = data.tasks.slice(0, data.noToSample);
+                // add lesson end screen
                 data.tasks.push({
                     taskID: "end",
-                    text: "Congrats! You've finished the lesson!", // TODO: is this needed?
+                    text: "Congrats! You've finished the lesson!",
                     type: "End",
                 });
+                // add interstitials
                 const GAP = 3;
                 let noOfInterstitials = Math.floor(data.tasks.length / GAP) - 1;
                 for (let i = 0; i < noOfInterstitials; i++) {
@@ -141,13 +140,17 @@ function Lesson(props) {
     }
     
     if (!ready) return(
-        <div className="w-full h-full relative flex items-center justify-center animate-fade-in">
+        <div className="w-full h-full relative flex items-center 
+            justify-center animate-fade-in"
+        >
             <ProgressBar percent={0} />
         </div>
     );
     return(
         lesson ? (
-            <div className="w-full h-full relative flex items-center justify-center">
+            <div className="w-full h-full relative flex 
+                items-center justify-center"
+            >
                 <ProgressBar percent={currentTaskIndex / lesson.tasks.length * 100} />
                 <TaskManager
                     taskData={ lesson.tasks[currentTaskIndex] }

@@ -91,6 +91,7 @@ router.post("/:lessonID", async (req, res) => {
         lesson.strId = req.body.strId;
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
+        lesson.noToSample = req.body.noToSample;
         lesson.tasks = req.body.tasks;
         lesson.save()
             .then(saved => { return res.status(200).send({
