@@ -12,21 +12,23 @@ function LessonIcon(props) {
     let [startFrame, setStartFrame] = useState(randNo(0, 30));
     let [waterFillAmount, setWaterFillAmount] = useState(0);
     let [showWave, setShowWave] = useState();
+    let [finished, setFinished] = useState(false);
 
     useEffect(() => {
-        setWaterFillAmount(props.timesCompleted * 100 / props.lesson.requiredCompletions)
+        setWaterFillAmount(props.timesCompleted * 150 / props.lesson.requiredCompletions)
         waterFillAmount >= 150 ? setShowWave(false) : setShowWave(true);
+        setFinished(props.timesCompleted >= props.lesson.requiredCompletions);
     }, [])
 
     return(
         <div 
-            className={`lesson z-20 relative overflow-hidden no-highlight
-                ${props.status ? "" : "incomplete"} bg-white`}
+            className={`${finished ? "bg-[#FFD700]" : ""} 
+                lesson z-20 relative overflow-hidden no-highlight bg-white`}
             onClick={() => { navigate(`/lesson/${props.lesson.strId}`) }}
         >
             <span className="z-10">{ props.lesson.name }<br/></span>
             <div 
-                className="bg-primary z-0 w-full absolute bottom-0" 
+                className={`z-0 w-full absolute bottom-0 ${finished ? "" : "bg-primary"}`} 
                 style={{height: `${ waterFillAmount > 150 ? "100" : waterFillAmount }%`}} 
             />
             { showWave ? <Lottie 

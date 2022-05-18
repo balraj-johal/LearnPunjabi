@@ -311,10 +311,6 @@ button:disabled:hover {
   background-color: #00A2FF;
 }
 
-.lesson-wrap .lesson.incomplete {
-  background-color: white;
-}
-
 @media (max-width: 768px) {
   .lesson-wrap {
     width: 100%;
