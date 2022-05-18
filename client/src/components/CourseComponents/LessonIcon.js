@@ -5,7 +5,7 @@ import Lottie from "react-lottie-player";
 import { randNo } from "../../utils/math";
 import wave from "../../res/animations/wave.json";
 
-const ANIMATION_OFFSET = "117px";
+const ANIMATION_OFFSET_CLASS = "mt-[117px]";
 
 function LessonIcon(props) {
     let navigate = useNavigate();
@@ -31,7 +31,7 @@ function LessonIcon(props) {
             />
             { showWave ? <Lottie 
                 rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }} 
-                className={`w-full h-full absolute mt-[${ANIMATION_OFFSET}]`}
+                className={`w-full h-full absolute ${ANIMATION_OFFSET_CLASS}`}
                 style={{ transform: `translate(0, -${waterFillAmount}px)` }}
                 animationData={wave} 
                 goTo={startFrame} 
