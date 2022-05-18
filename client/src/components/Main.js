@@ -1,8 +1,4 @@
-import React, { 
-    useCallback, 
-    useEffect, 
-    useState 
-} from "react";
+import React, { useCallback, useEffect, } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as 
     Router,
@@ -14,6 +10,7 @@ import axiosClient from "../axiosDefaults";
 // import redux actions
 import { getUserData, useRefreshToken } from "../actions/authActions";
 import { setCSRFReady } from "../actions/csrfActions";
+import { setMobile } from "../actions/displayActions";
 
 // component imports
 import InternalPage from "../components/InternalPage";
@@ -30,11 +27,7 @@ import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
 
-import { setMobile } from "../actions/displayActions";
-
 function Main(props) {
-    // let [styles, setStyles] = useState()
-
     // fetch csrf token and store in redux reducer
     useEffect(() => {
         axiosClient.get("/csrf-token")
