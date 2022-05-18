@@ -21,13 +21,10 @@ function PodiumPlace(props) {
     switch (props.index) {
         case 0:
             return <img src={firstPlace} className="h-full w-auto mr-2" />
-            break;
         case 1:
             return <img src={secondPlace} className="h-full w-auto mr-2" />
-            break;
         case 2:
             return <img src={thirdPlace} className="h-full w-auto mr-2" />
-            break;
         default:
             break;
     }

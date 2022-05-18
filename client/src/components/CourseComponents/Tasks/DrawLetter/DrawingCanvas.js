@@ -3,6 +3,9 @@ import React, { useEffect, useRef } from "react";
 function DrawingCanvas(props) {
     let isDrawing = useRef();
     isDrawing.current = false;
+    let ctx;
+    let mousePos = { x: 0, y: 0 };
+    let lastPos = mousePos;
     
     let getMousePos = (canvas, event) => {
         let rect = canvas.getBoundingClientRect();
@@ -18,21 +21,20 @@ function DrawingCanvas(props) {
             y: event.touches[0].clientY - rect.top
         };
     }
-
-    let ctx;
-    let mousePos = { x: 0, y: 0 };
-    let lastPos = mousePos;
     
+    /** draw lines on canvas when required
+     * @name renderCanvas
+     */
     let renderCanvas = () => {
         if (isDrawing.current === true) {
             ctx.moveTo(lastPos.x, lastPos.y);
             ctx.lineTo(mousePos.x, mousePos.y);
             ctx.stroke();
             lastPos = mousePos;
-            // setLastPos(mousePos);
         }
     }
 
+    // clear canvas when necessary
     useEffect(() => {
         if (props.clearing) {
             let canvas = document.getElementById("drawing-canvas");
@@ -50,24 +52,22 @@ function DrawingCanvas(props) {
         ctx.strokeStyle = "#222222";
         ctx.lineWidth = 6;
 
+        // mouse drawing events
         canvas.addEventListener("mousedown", e => {
             isDrawing.current = true;
             lastPos = getMousePos(canvas, e);
-            // setLastPos(getMousePos(canvas, e));
         });
         canvas.addEventListener("mouseup", e => {
             isDrawing.current = false;
         });
         canvas.addEventListener("mousemove", e => {
             mousePos = getMousePos(canvas, e);
-            // setMousePos(getMousePos(canvas, e));
         });
         
-        // Set up touch events for mobile, etc
+        // mobile drawing events
         canvas.addEventListener("touchstart", e => {
             if (e.target === canvas) e.preventDefault();
             mousePos = getTouchPos(canvas, e);
-            // setMousePos(getTouchPos(canvas, e));
             let touch = e.touches[0];
             let mouseEvent = new MouseEvent("mousedown", {
                 clientX: touch.clientX,
@@ -90,14 +90,9 @@ function DrawingCanvas(props) {
             canvas.dispatchEvent(mouseEvent);
         });
 
-        canvas.addEventListener("clear", e => {
-            console.log("attempting to clear...")
-            let canvas = document.getElementById("drawing-canvas");
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-        })
-
-        /**
+        /** polyfill for request animation frame
+         * @name getCorrectAnimFrameFunction
+         * @returns animation frame function
          */
         let getCorrectAnimFrameFunction = () => {
             return window.requestAnimationFrame || 
@@ -107,15 +102,17 @@ function DrawingCanvas(props) {
                 window.msRequestAnimaitonFrame 
         }
         
+        /**
+         * @name draw
+         */
         let draw = () => {
             getCorrectAnimFrameFunction()(draw);
             renderCanvas();
         }
-
         draw();
 
+        // clear all canvas event listeners
         return () => {
-            // clear all canvas event listeners
             canvas.replaceWith(canvas.cloneNode(true));
         }
     }, [])
