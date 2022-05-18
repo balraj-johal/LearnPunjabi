@@ -19,8 +19,7 @@ function TaskManager(props) {
     let [out, setOut] = useState(false);
     let component;
 
-    let handleCorrect = (toBounce) => {
-        if (!toBounce) return handleExit();
+    let handleCorrect = () => {
         props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
@@ -58,7 +57,7 @@ function TaskManager(props) {
             component = <TextOnly 
                     data={props.taskData} 
                     // submit={props.submitAnswer}
-                    submit={() => handleCorrect(false)}
+                    submit={() => handleExit()}
                     stats={props.stats}
                     setAnimating={setAnimating}
                 />
@@ -66,14 +65,14 @@ function TaskManager(props) {
         case "MultipleChoice":
             component = <MultipleChoice 
                     data={props.taskData} 
-                    handleCorrect={() => handleCorrect(true)}
+                    handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong}
                 />
             break;
         case "SpecifiedOrder":
             component = <SpecifiedOrder 
                     data={props.taskData}
-                    handleCorrect={() => handleCorrect(true)}
+                    handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong} 
                     stats={props.stats}
                 />
@@ -81,21 +80,21 @@ function TaskManager(props) {
         case "DrawLetter":
             component = <DrawLetter 
                     data={props.taskData}
-                    handleCorrect={() => handleCorrect(true)}
+                    handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong} 
                 />
             break;
         case "End":
             component = <End 
                     data={props.taskData} 
-                    submit={props.submitAnswer}
+                    submit={() => handleExit()}
                     stats={props.stats}
                 />
             break;
         case "Interstitial":
             component = <Intersitial 
                     data={props.taskData} 
-                    submit={props.submitAnswer}
+                    submit={() => handleExit()}
                     stats={props.stats}
                 />
             break;
