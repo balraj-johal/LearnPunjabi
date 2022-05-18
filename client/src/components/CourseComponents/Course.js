@@ -1,16 +1,12 @@
 import React, { Suspense, useEffect, useState, useMemo, useRef } from "react";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axiosDefaults";
 
-import ReactPullToRefresh from "react-pull-to-refresh";
-import Loader from "../Loader";
+// import ReactPullToRefresh from "react-pull-to-refresh";
 import LessonIcon from "./LessonIcon";
 
 import * as THREE from 'three';
-import { Canvas, useThree, useFrame } from '@react-three/fiber';
-
-import Caption from "../Welcome/ThreeJS/Caption";
+import { Canvas, useFrame } from '@react-three/fiber';
 
 // import redux actions
 import { setProgress } from "../../actions/courseActions";
@@ -108,9 +104,9 @@ function Course(props) {
                     { courseData.length > 0 ? (
                         courseData.map((lesson, index) => 
                             <LessonIcon 
-                                status={getLessonStatus(lesson.id)} 
+                                status={getLessonStatus(lesson.strId)} 
                                 lesson={lesson}
-                                timesCompleted={getTimesCompleted(lesson.id)}
+                                timesCompleted={getTimesCompleted(lesson.strId)}
                                 key={index} 
                             />
                         )

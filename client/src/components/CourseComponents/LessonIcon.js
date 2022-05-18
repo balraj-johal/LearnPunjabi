@@ -9,7 +9,7 @@ function LessonIcon(props) {
         <div 
             className={`lesson z-20 relative overflow-hidden no-highlight
                 ${props.status ? "" : "incomplete"} bg-white`}
-            onClick={() => { navigate(`/lesson/${props.lesson.id}`) }}
+            onClick={() => { navigate(`/lesson/${props.lesson.strId}`) }}
         >
             <span className="z-10">{ props.lesson.name }<br/></span>
             {/* <p>{ props.timesCompleted }/{ props.lesson.requiredCompletions }</p> */}

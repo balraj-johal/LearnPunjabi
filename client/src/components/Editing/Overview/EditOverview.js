@@ -10,9 +10,11 @@ import SaveButton from "../SaveButton";
 // TODO: decide where best to store this
 const NEW_LESSON = {
     name: "",
-    id: "new",
+    strId: "new",
     requiredCompletions: 1,
     shuffle: false,
+    showInterstitials: true,
+    showPercentCorrect: true,
     noToSample: 0,
     tasks: []
 }

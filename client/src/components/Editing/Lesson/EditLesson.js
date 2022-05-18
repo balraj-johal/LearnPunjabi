@@ -28,6 +28,8 @@ const NEW_LESSON = {
     strId: "new",
     requiredCompletions: 1,
     shuffle: false,
+    showInterstitials: true,
+    showPercentCorrect: true,
     noToSample: 0,
     tasks: []
 }
@@ -116,7 +118,6 @@ function EditLesson(props) {
         console.log("submitting: ", lessonCopy);
         let validationErrors = _getLessonValidationErrors(lessonCopy);
         setErrors(validationErrors);
-        console.log(validationErrors);
         if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
         axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
             qs.stringify(lesson))
@@ -280,6 +281,22 @@ function EditLesson(props) {
                         type="number" 
                         errors={errors}
                     /> : null }
+                    <FormInput
+                        for="showInterstitials" 
+                        onChange={onChange}
+                        value={lesson.showInterstitials}
+                        type="checkbox"
+                        row={true}
+                        errors={errors}
+                    /> 
+                    <FormInput
+                        for="showPercentCorrect" 
+                        onChange={onChange}
+                        value={lesson.showPercentCorrect}
+                        type="checkbox"
+                        row={true}
+                        errors={errors}
+                    /> 
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (

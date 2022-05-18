@@ -41,16 +41,18 @@ function Lesson(props) {
                     taskID: "end",
                     text: "Congrats! You've finished the lesson!",
                     type: "End",
+                    showPercentCorrect: data.showPercentCorrect
                 });
-                // add interstitials
-                const GAP = 3;
-                let noOfInterstitials = Math.floor(data.tasks.length / GAP) - 1;
-                for (let i = 0; i < noOfInterstitials; i++) {
-                    data.tasks.splice((i + 1) * GAP, 0, {
-                        taskID: `interstitial-${i}`,
-                        text: "",
-                        type: "Interstitial",
-                    })
+                if (data.showInterstitials) {
+                    const GAP = 3;
+                    let noOfInterstitials = Math.floor(data.tasks.length / GAP) - 1;
+                    for (let i = 0; i < noOfInterstitials; i++) {
+                        data.tasks.splice((i + 1) * GAP, 0, {
+                            taskID: `interstitial-${i}`,
+                            text: "",
+                            type: "Interstitial",
+                        })
+                    }
                 }
                 // save modified lesson data to component state
                 setLesson(data);

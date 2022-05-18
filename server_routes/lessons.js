@@ -27,7 +27,7 @@ let buildOverviewObject = async () => {
     for await (const lesson of Lesson.find()) {
         overview.push({
             name: lesson.name,
-            id: lesson.strId,
+            strId: lesson.strId,
             requiredCompletions: lesson.requiredCompletions,
             tasksLength: lesson.tasks.length
         })
@@ -92,6 +92,8 @@ router.post("/:lessonID", async (req, res) => {
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
         lesson.noToSample = req.body.noToSample;
+        lesson.showInterstitials = req.body.showInterstitials;
+        lesson.showPercentCorrect = req.body.showPercentCorrect;
         lesson.tasks = req.body.tasks;
         lesson.save()
             .then(saved => { return res.status(200).send({
