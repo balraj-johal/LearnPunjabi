@@ -1,10 +1,6 @@
-import React, { useCallback, useEffect, } from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as 
-    Router,
-    Route,
-    Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
 
 // import redux actions
@@ -39,11 +35,11 @@ function Main(props) {
     }, [])
 
     // verify user credentials and refresh their refresh token
-    const verifyUser = () => {
+    const verifyUser = useCallback(() => {
         if (!props.csrf.ready) return;
         props.useRefreshToken();
         setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
-    };
+    });
     useEffect(() => {
         verifyUser();
     }, [props.csrf.ready, props.auth.isAuthenticated]);
@@ -72,9 +68,7 @@ function Main(props) {
 
     return(
         <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${props.options.darkMode ? "darkMode" : ""}
-            max-h-full`} 
-        >
+            ${props.options.darkMode ? "darkMode" : ""} max-h-full`} >
             <Router>
                 <Routes>
                     <Route path="/" element={ 

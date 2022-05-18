@@ -295,7 +295,6 @@ button:disabled:hover {
   height: 150px;
   border-radius: 10px;
   margin: 45px;
-  padding: 15px;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
   transition: -webkit-transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out;
