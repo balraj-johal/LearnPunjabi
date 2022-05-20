@@ -14,7 +14,8 @@ import Particles from "./Particles";
 function Course(props) {
     let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
-    let [showParticles, setShowParticles] = useState(true);
+    // let [showParticles, setShowParticles] = useState(true);
+    let showParticles = true;
 
     let getLessons = async () => {
         try {
@@ -26,18 +27,19 @@ function Course(props) {
         }
     }
 
-    let onRefresh = async (resolve, reject) => {
-        setLoading(true);
-        try {
-            let res = await axiosClient.get("/api/v1/lessons/");
-            setCourseData(res.data.overview); 
-            setLoading(false);
-            resolve();
-        } catch (err) {
-            setLoading(false);
-            reject();
-        }
-    }
+    // // refresh data on pull to refresh
+    // let onRefresh = async (resolve, reject) => {
+    //     setLoading(true);
+    //     try {
+    //         let res = await axiosClient.get("/api/v1/lessons/");
+    //         setCourseData(res.data.overview); 
+    //         setLoading(false);
+    //         resolve();
+    //     } catch (err) {
+    //         setLoading(false);
+    //         reject();
+    //     }
+    // }
     
     useEffect(() => {
         let reqTimeout = setTimeout(getLessons, 200);

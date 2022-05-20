@@ -119,17 +119,14 @@ export const logoutUser = userID => dispatch => {
             dispatch(setCurrentUser({})); 
             window.localStorage.setItem("logout", Date.now());
         })
-        .catch(err => {
-            console.log("post /users/logout error: ", err);
-        })
+        .catch(err => { console.log("logout error: ", err); })
 }
 
 export const useRefreshToken = () => async (dispatch) => {
     try {
-        let success = await axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}));
+        await axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}));
         let userData = await getUserDataPromise();
         if (!userData) return console.log("problem getting userdata");
-        console.log("token refresh successful!");
         dispatch(setCurrentUser(userData));
         dispatch({ type: SET_HAS_CHECKED });
     } catch (err) {
@@ -137,24 +134,6 @@ export const useRefreshToken = () => async (dispatch) => {
         dispatch({ type: SET_LOADED });
         dispatch({ type: SET_HAS_CHECKED });
     }
-    // axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}))
-    //     .then(res => {
-    //         console.log("token refresh successful!");
-    //         getUserDataPromise()
-    //             .then(userData => {
-    //                 dispatch(setCurrentUser(userData));
-    //             })
-    //             .catch(err => {
-    //                 console.log("post /users/refreshToken error: ", err);
-    //             })
-    //     })
-    //     .catch(err => {
-    //         console.log("Token refresh error: ", err);
-    //         dispatch({
-    //             type: SET_LOADED
-    //         })
-    //     })
-    // dispatch({ type: SET_HAS_CHECKED });
 }
 
 export const setCurrentUser = decodedToken => {
