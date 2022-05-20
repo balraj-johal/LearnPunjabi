@@ -94,6 +94,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/users/progress", progress);
 app.use("/api/v1/groups", groups);
 app.use("/api/v1/lessons", lessons);
+app.use("/api/v1/s3", s3);
 
 const PORT = process.env.PORT || 3001;
 

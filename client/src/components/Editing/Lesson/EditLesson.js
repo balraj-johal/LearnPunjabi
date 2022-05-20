@@ -46,7 +46,6 @@ function EditLesson(props) {
 
     const handleUnload = useCallback((e) => {
         e.preventDefault();
-        e.returnValue = "test";
     }, [submitSuccess]);
 
     // alert prompt if user tries to leave without saving
@@ -107,27 +106,57 @@ function EditLesson(props) {
         setShowSubmitConfirm(true);
     }
 
+    const handleUpload = async (file) => {
+    }
+
     /** If user has confirmed intention to save, post current form state to server
      * @name saveLesson
      */
-    let saveLesson = () => {
-        let lessonCopy = {...lesson};
-        lessonCopy = removeUnnecessaryTaskProperties(lesson);
-        if (!lessonCopy.strId || lessonCopy.strId === "new") 
-            lessonCopy.strId = `lesson-${lessonCopy.name}`;
-        console.log("submitting: ", lessonCopy);
-        let validationErrors = _getLessonValidationErrors(lessonCopy);
-        setErrors(validationErrors);
-        if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
-        axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
-            qs.stringify(lesson))
-                .then(res => { 
-                    setSubmitSuccess(true);
-                    setShowSuccessModal(true);
-                })
-                .catch(err => { 
-                    setErrors(err.response.data); 
-                })
+    let saveLesson = async () => {
+        try {
+            // copy object
+            let lessonCopy = {...lesson};
+            lessonCopy = removeUnnecessaryTaskProperties(lesson);
+
+            // assign id if necessary
+            if (!lessonCopy.strId || lessonCopy.strId === "new") 
+                lessonCopy.strId = `lesson-${lessonCopy.name}`;
+
+            // validate
+            let validationErrors = _getLessonValidationErrors(lessonCopy);
+            setErrors(validationErrors);
+            if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
+            
+            // build audio file upload promises
+            const fileUploads = [];
+            lessonCopy.tasks.forEach(task => {
+                if (!task.audio) return;
+                task.audioSrc = task.audio.name;
+                const fileData = new FormData();
+                fileData.append('file', task.audio);
+                fileUploads.push(
+                    axiosClient.post(
+                        `/api/v1/s3/upload`, 
+                        fileData,
+                        { headers: { 'Content-Type': 'multipart/form-data' } }
+                    )
+                );
+            })
+
+            // send api request to save lesson data
+            await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
+                qs.stringify(lessonCopy));
+
+            // send upload requests for files
+            await Promise.all(fileUploads);
+
+            // handle success
+            setSubmitSuccess(true);
+            setShowSuccessModal(true);
+        } catch (error) {
+            setErrors(error.response.data);
+        }
+            
     }
 
     /** updates form state on change of form field value
@@ -169,6 +198,8 @@ function EditLesson(props) {
             taskID: String(tasksCopy.length + 1),
             text: "",
             type: "TextOnly",
+            audioSrc: "",
+            audio: {name: ""},
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
@@ -213,9 +244,7 @@ function EditLesson(props) {
     let shiftTaskDown = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem?.taskID === taskID);
-        if (oldIndex < tasksCopy.length) {
-            _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
-        }
+        if (oldIndex < tasksCopy.length) _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
     }

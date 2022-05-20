@@ -11,7 +11,6 @@ import { getUserData } from "../../actions/authActions";
 
 // import components
 import TaskManager from "./TaskManager";
-import Loader from "../Loader";
 
 import { _shuffle } from "../../utils/arrays";
 import ProgressBar from "./ProgressBar";

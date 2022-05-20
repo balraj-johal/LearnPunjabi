@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React, { useEffect } from "react";
 import FormError from "./FormError";
 import FormLabel from "./FormLabel";
 
@@ -15,6 +15,15 @@ function FormInput(props) {
             break;
         case "text":
             component = <FormText 
+                for={props.for} 
+                onChange={props.onChange} 
+                value={props.value}
+                placeholder={props.placeholder}
+                extraStyles={props.extraStyles}
+            />
+            break;
+        case "file":
+            component = <FormFile
                 for={props.for} 
                 onChange={props.onChange} 
                 value={props.value}
@@ -111,6 +120,19 @@ function FormText(props) {
             placeholder={props.placeholder}
             id={`${props.for}`}
             type={props.typeOverride || "text"}
+            className={`${INPUT_STYLES} ${props.extraStyles}`}
+        />
+    )
+}
+
+function FormFile(props) {
+    useEffect(() => { console.log(props.value.name) }, [props.value])
+    return(
+        <input
+            onChange={props.onChange}
+            // value={props.value?.name}
+            id={`${props.for}`}
+            type="file"
             className={`${INPUT_STYLES} ${props.extraStyles}`}
         />
     )
