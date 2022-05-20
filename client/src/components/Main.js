@@ -66,9 +66,18 @@ function Main(props) {
         return () => { window.removeEventListener("resize", onResize) }
     }, []);
 
+    /** Assigns correct css class for site colour scheme
+     *  @name colourScheme
+     *  @returns {String} class to assign to site root
+     */
+    let colourScheme = () => {
+        if (props.options.darkMode) return "darkMode";
+        return "lightMode";
+    }
+
     return(
         <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${props.options.darkMode ? "darkMode" : ""} max-h-full`} >
+            ${colourScheme()} max-h-full`} >
             <Router>
                 <Routes>
                     <Route path="/" element={ 
