@@ -949,16 +949,22 @@ button:disabled:hover {
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  background-color: grey !important;
-  color: white !important;
-}
-
-.darkMode .bg-primary {
-  background-color: #0092e7 !important;
+  background-color: #121212;
 }
 
 .darkMode .accounts-wrap {
-  background-color: lightgrey !important;
+  background-color: #121212;
+  color: white;
+}
+
+.darkMode #topbar {
+  background-color: #121212;
+  color: white;
+}
+
+.darkMode #leaderboard, .darkMode #leaderboard .header {
+  background-color: #121212;
+  color: white;
 }
 
 #course-custom-container {
