@@ -39,6 +39,7 @@ function EditLesson(props) {
     
     let [lesson, setLesson] = useState();
     let [ready, setReady] = useState(false);
+    let [saving, setSaving] = useState(false);
     let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
     let [submitSuccess, setSubmitSuccess] = useState(false);
     let [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -114,6 +115,7 @@ function EditLesson(props) {
      */
     let saveLesson = async () => {
         try {
+            setSaving(true);
             // copy object
             let lessonCopy = {...lesson};
             lessonCopy = removeUnnecessaryTaskProperties(lesson);
@@ -138,7 +140,10 @@ function EditLesson(props) {
                     axiosClient.post(
                         `/api/v1/s3/upload`, 
                         fileData,
-                        { headers: { 'Content-Type': 'multipart/form-data' } }
+                        { 
+                            headers: { 'Content-Type': 'multipart/form-data' },
+                            timeout: 30 * 1000,
+                        }
                     )
                 );
             })
@@ -151,9 +156,14 @@ function EditLesson(props) {
             await Promise.all(fileUploads);
 
             // handle success
+            setSaving(false);
             setSubmitSuccess(true);
             setShowSuccessModal(true);
         } catch (error) {
+            setSaving(false);
+            setShowSubmitConfirm(false);
+            console.log("error.response")
+            console.log(error.response)
             setErrors(error.response.data);
         }
             
@@ -263,6 +273,7 @@ function EditLesson(props) {
                 setShowSubmitConfirm={setShowSubmitConfirm}
                 submitSuccess={submitSuccess}
                 saveLesson={saveLesson}
+                saving={saving}
             />
             <Link 
                 className="absolute p-2 text-sm text-primary" 

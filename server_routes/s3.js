@@ -70,7 +70,7 @@ router.post("/upload", (req, res, next) => {
             });
         
             parallelUploads3.on("httpUploadProgress", (progress) => {
-                console.log(progress);
+                console.log("uploading: ", progress);
             });
         
             await parallelUploads3.done();
