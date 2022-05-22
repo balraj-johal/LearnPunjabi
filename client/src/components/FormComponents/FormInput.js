@@ -126,7 +126,6 @@ function FormText(props) {
 }
 
 function FormFile(props) {
-    useEffect(() => { console.log(props.value.name) }, [props.value])
     return(
         <input
             onChange={props.onChange}

@@ -33,7 +33,6 @@ function EditTask(props) {
      let onFileChange = e => {
         let taskCopy = {...task};
         taskCopy.audio = e.target.files[0];
-        console.log(taskCopy.audio);
         setTask(taskCopy);
         props.onTasksChange(taskCopy);
     }
