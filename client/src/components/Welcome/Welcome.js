@@ -10,6 +10,7 @@ import { degreesToRads } from "../../utils/math";
 import ScrollPrompt from "./ScrollPrompt";
 import Cubone from "./ThreeJS/Cubone";
 import Punjab2 from "./ThreeJS/Punjab2";
+import Punjab3 from "./ThreeJS/Punjab3";
 import WelcomeLogo from "./WelcomeLogo";
 import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
@@ -81,7 +82,8 @@ let ThreeJSPunjab = React.forwardRef((props, ref) => {
             {/* <Caption>
                 Cubone by Tipatat Chennavasin [CC-BY], via Poly Pizza
             </Caption> */}
-            <Punjab2 ref={ref} rotation={[0.5, 0, 0]} />
+            {/* <Punjab2 ref={ref} rotation={[0.5, 0, 0]} /> */}
+            <Punjab3 ref={ref} rotation={[0.5, 0, 0]} />
             <rectAreaLight
                 width={3}
                 height={3}
