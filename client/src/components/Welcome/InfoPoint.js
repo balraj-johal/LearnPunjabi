@@ -12,14 +12,16 @@ function InfoPoint(props) {
     return(
         <div 
             id={`info-point-${props.index}`} 
-            className={`info-point flex w-11/12 md:w-7/12
-                ${inViewport ? "fadeIn" : "opacity-0"} animDelay500`} 
+            className={`info-point flex w-11/12 md:w-7/12 z-10 animDelay500
+                ${inViewport ? "fadeIn" : "opacity-0"}`} 
             ref={ref} 
         >
             <div className="hero-icon w-4/12 mr-4 relative 
                 flex items-center justify-center">
                 <Lottie 
-                    rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }} 
+                    rendererSettings={{ 
+                        preserveAspectRatio: 'xMidYMid slice' 
+                    }} 
                     className={`w-full h-[100px] absolute`}
                     animationData={girlLooking} 
                     loop 
@@ -30,7 +32,8 @@ function InfoPoint(props) {
                 <div className="title text-xl md:text-2xl">
                     {props.title}
                 </div>
-                <div className="text font-normal mt-4 text-md md:text-xl md:pr-0 pr-10">
+                <div className="text font-normal mt-4 text-md
+                    md:text-xl md:pr-0 pr-10">
                     {props.mobile ? props.textShort : props.text}
                 </div>
             </div>
