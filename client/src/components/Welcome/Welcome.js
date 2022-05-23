@@ -14,7 +14,7 @@ import WelcomeLogo from "./WelcomeLogo";
 import SignInPrompt from "./SignInPrompt";
 import Caption from "./ThreeJS/Caption";
 
-import ThreeThings from "./ThreeThings";
+import InfoPoints from "./InfoPoints";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
@@ -44,7 +44,7 @@ function Welcome(props) {
             </div>
 
             <div id="welcome-2" className="welcome-div grad-mid">
-                <ThreeThings />
+                <InfoPoints />
                 <RiversMid />
             </div>
             <div id="welcome-3" className="welcome-div grad-mid">

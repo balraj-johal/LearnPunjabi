@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useInViewport } from 'react-in-viewport';
 
-function Thing(props) {
+function InfoPoint(props) {
     const ref = useRef();
     const { inViewport } = useInViewport( ref );
 
@@ -17,4 +17,4 @@ function Thing(props) {
     )
 }
 
-export default Thing;
+export default InfoPoint;
