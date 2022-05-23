@@ -28,6 +28,9 @@ const NEW_LESSON = {
     strId: "new",
     requiredCompletions: 1,
     shuffle: false,
+    showInterstitials: true,
+    showPercentCorrect: true,
+    noToSample: 0,
     tasks: []
 }
 
@@ -43,7 +46,6 @@ function EditLesson(props) {
 
     const handleUnload = useCallback((e) => {
         e.preventDefault();
-        e.returnValue = "test";
     }, [submitSuccess]);
 
     // alert prompt if user tries to leave without saving
@@ -104,26 +106,57 @@ function EditLesson(props) {
         setShowSubmitConfirm(true);
     }
 
+    const handleUpload = async (file) => {
+    }
+
     /** If user has confirmed intention to save, post current form state to server
      * @name saveLesson
      */
-    let saveLesson = () => {
-        let lessonCopy = {...lesson};
-        lessonCopy = removeUnnecessaryTaskProperties(lesson);
-        if (!lessonCopy.strId) lessonCopy.strId = `lesson-${lessonCopy.name}`;
-        console.log("submitting: ", lessonCopy);
-        let validationErrors = _getLessonValidationErrors(lessonCopy);
-        setErrors(validationErrors);
-        console.log(validationErrors);
-        if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
-        axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, qs.stringify(lesson))
-            .then(res => { 
-                setSubmitSuccess(true);
-                setShowSuccessModal(true);
+    let saveLesson = async () => {
+        try {
+            // copy object
+            let lessonCopy = {...lesson};
+            lessonCopy = removeUnnecessaryTaskProperties(lesson);
+
+            // assign id if necessary
+            if (!lessonCopy.strId || lessonCopy.strId === "new") 
+                lessonCopy.strId = `lesson-${lessonCopy.name}`;
+
+            // validate
+            let validationErrors = _getLessonValidationErrors(lessonCopy);
+            setErrors(validationErrors);
+            if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
+            
+            // build audio file upload promises
+            const fileUploads = [];
+            lessonCopy.tasks.forEach(task => {
+                if (!task.audio) return;
+                task.audioSrc = task.audio.name;
+                const fileData = new FormData();
+                fileData.append('file', task.audio);
+                fileUploads.push(
+                    axiosClient.post(
+                        `/api/v1/s3/upload`, 
+                        fileData,
+                        { headers: { 'Content-Type': 'multipart/form-data' } }
+                    )
+                );
             })
-            .catch(err => { 
-                setErrors(err.response.data); 
-            })
+
+            // send api request to save lesson data
+            await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
+                qs.stringify(lessonCopy));
+
+            // send upload requests for files
+            await Promise.all(fileUploads);
+
+            // handle success
+            setSubmitSuccess(true);
+            setShowSuccessModal(true);
+        } catch (error) {
+            setErrors(error.response.data);
+        }
+            
     }
 
     /** updates form state on change of form field value
@@ -165,6 +198,8 @@ function EditLesson(props) {
             taskID: String(tasksCopy.length + 1),
             text: "",
             type: "TextOnly",
+            audioSrc: "",
+            audio: {name: ""},
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
@@ -217,14 +252,23 @@ function EditLesson(props) {
     if (!ready) return <Loader />;
     return(
         <>
-            <PopInModal show={showSuccessModal} length={5000} unrender={() => { setShowSuccessModal(false); }} text="Lesson saved successfully!" />
+            <PopInModal 
+                show={showSuccessModal} 
+                length={5000} 
+                unrender={() => { setShowSuccessModal(false); }}
+                text="Lesson saved successfully!" 
+            />
             <ConfirmationPrompt 
                 showSubmitConfirm={showSubmitConfirm}
                 setShowSubmitConfirm={setShowSubmitConfirm}
                 submitSuccess={submitSuccess}
                 saveLesson={saveLesson}
             />
-            <Link className="absolute p-2 text-sm text-primary" to="/edit/overview" replace>
+            <Link 
+                className="absolute p-2 text-sm text-primary" 
+                to="/edit/overview" 
+                replace
+            >
                 &lt; back to overview
             </Link>
             <div className="w-screen mx-auto
@@ -259,20 +303,43 @@ function EditLesson(props) {
                         row={true}
                         errors={errors}
                     /> 
+                    { lesson.shuffle ? <FormInput
+                        for="noToSample" 
+                        onChange={onChange}
+                        value={lesson.noToSample}
+                        type="number" 
+                        errors={errors}
+                    /> : null }
+                    <FormInput
+                        for="showInterstitials" 
+                        onChange={onChange}
+                        value={lesson.showInterstitials}
+                        type="checkbox"
+                        row={true}
+                        errors={errors}
+                    /> 
+                    <FormInput
+                        for="showPercentCorrect" 
+                        onChange={onChange}
+                        value={lesson.showPercentCorrect}
+                        type="checkbox"
+                        row={true}
+                        errors={errors}
+                    /> 
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (
                             <EditTask 
-                                task = {task}
-                                key = {task.taskID}
-                                shuffle = {lesson.shuffle}
-                                index = {index}
-                                listEndsState = {_getListEndsState(index, lesson.tasks)}
-                                onTasksChange = {onTasksChange} 
-                                shiftTaskDown = {shiftTaskDown}
-                                shiftTaskUp = {shiftTaskUp}
-                                errors = {errors}
-                                deleteTask = {deleteTask}
+                                task={task}
+                                key={task.taskID}
+                                shuffle={lesson.shuffle}
+                                index={index}
+                                listEndsState={_getListEndsState(index, lesson.tasks)}
+                                onTasksChange={onTasksChange} 
+                                shiftTaskDown={shiftTaskDown}
+                                shiftTaskUp={shiftTaskUp}
+                                errors={errors}
+                                deleteTask={deleteTask}
                             />
                         ))}
                     </div>
@@ -283,7 +350,11 @@ function EditLesson(props) {
                         extraStyles="mx-auto"
                     />
                     <FormError for="tasks" errors={errors} />
-                    <FormSubmitButton disabled={submitSuccess} for="edit-lesson" text="Submit Lesson" />
+                    <FormSubmitButton 
+                        disabled={submitSuccess} 
+                        for="edit-lesson" 
+                        text="Submit Lesson" 
+                    />
                 </form>
             </div>
         </>

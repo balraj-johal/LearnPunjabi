@@ -1,19 +1,12 @@
-import React, { 
-    useCallback, 
-    useEffect, 
-    useState 
-} from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as 
-    Router,
-    Route,
-    Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
 
 // import redux actions
 import { getUserData, useRefreshToken } from "../actions/authActions";
 import { setCSRFReady } from "../actions/csrfActions";
+import { setMobile } from "../actions/displayActions";
 
 // component imports
 import InternalPage from "../components/InternalPage";
@@ -30,30 +23,31 @@ import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
 
-import { setMobile } from "../actions/displayActions";
-
 function Main(props) {
-    // let [styles, setStyles] = useState()
-
     // fetch csrf token and store in redux reducer
+    const { setCSRFReady } = props;
     useEffect(() => {
         axiosClient.get("/csrf-token")
-            .then(res => {
+        .then(res => {
                 axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
-                props.setCSRFReady();
+                setCSRFReady();
             })
             .catch(err => { console.log(err); })
-    }, [])
+    }, [setCSRFReady])
 
     // verify user credentials and refresh their refresh token
-    const verifyUser = () => {
-        if (!props.csrf.ready) return;
-        props.useRefreshToken();
-        setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
-    };
+    let { csrf, auth } = props;
     useEffect(() => {
+        let timeout;
+        const verifyUser = () => {
+            if (!csrf.ready) return;
+            props.useRefreshToken();
+            timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
+        }
         verifyUser();
-    }, [props.csrf.ready, props.auth.isAuthenticated]);
+
+        return () => { clearTimeout(timeout) };
+    }, [csrf.ready, auth.isAuthenticated, props.useRefreshToken]);
     
     // synchronise logout across open tabs
     const synchLogout = useCallback(event => {
@@ -67,21 +61,29 @@ function Main(props) {
     }, [synchLogout]);
     
     // set up resize handlers
+    const { setMobile } = props;
     useEffect(() => {
         let onResize = () => {
-            if (window.innerWidth < 768) return props.setMobile(true);
-            return props.setMobile(false);
+            if (window.innerWidth < 768) return setMobile(true);
+            return setMobile(false);
         }
         onResize();
         window.addEventListener("resize", onResize);
         return () => { window.removeEventListener("resize", onResize) }
-    }, []);
+    }, [setMobile]);
+
+    /** Assigns correct css class for site colour scheme
+     *  @name colourScheme
+     *  @returns {String} class to assign to site root
+     */
+    let colourScheme = () => {
+        if (props.options.darkMode) return "darkMode";
+        return "lightMode";
+    }
 
     return(
         <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${props.options.darkMode ? "darkMode" : ""}
-            max-h-full`} 
-        >
+            ${colourScheme()} max-h-full`} >
             <Router>
                 <Routes>
                     <Route path="/" element={ 

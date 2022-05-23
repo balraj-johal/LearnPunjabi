@@ -6,11 +6,17 @@ import AddButton from "../../FormComponents/AddButton";
 function EditOverviewEntry(props) {
     let navigate = useNavigate();
 
-    if (props.new) return <AddButton extraStyles="mx-auto" addNew={() => { navigate(`/edit/${props.lesson.id}`); }} />
+    if (props.new) return (
+        <AddButton 
+            extraStyles="mx-auto" 
+            addNew={() => { navigate(`/edit/${props.lesson.strId}`); }} 
+        />
+    )
     return(
         <div 
-            className="flex justify-between items-center relative rounded border-2 border-black my-4 h-24"
-            id={`entry-${props.lesson.id}`}
+            className="flex justify-between items-center relative 
+                rounded border-2 border-black my-4 h-24"
+            id={`entry-${props.lesson.strId}`}
         >
             <div className="flex flex-row items-center">
                 <div className={`
@@ -20,14 +26,14 @@ function EditOverviewEntry(props) {
                 `}>
                     <div
                         className={`${props.listEndsState === "first" ? "invisible" : ""}`} 
-                        onClick={() => { props.shiftLesson(props.lesson.id, "up"); }}
+                        onClick={() => { props.shiftLesson(props.lesson.strId, "up"); }}
                     >
                         ▲
                     </div>
                     {props.index}
                     <div
                         className={`${props.listEndsState === "last" ? "invisible" : ""}`} 
-                        onClick={() => { props.shiftLesson(props.lesson.id, "down"); }}
+                        onClick={() => { props.shiftLesson(props.lesson.strId, "down"); }}
                     >
                         ▼
                     </div>
@@ -39,10 +45,11 @@ function EditOverviewEntry(props) {
             </div>
             <div 
                 role={"button"}
-                className="w-24 h-10 mx-5 flex items-center justify-center cursor-pointer transition-all
+                className="w-24 h-10 mx-5 flex items-center 
+                    justify-center cursor-pointer transition-all
                     text-primary rounded border-2 border-black
                     hover:bg-primary hover:text-white hover:border-primary" 
-                onClick={() => { navigate(`/edit/${props.lesson.id}`); }}
+                onClick={() => { navigate(`/edit/${props.lesson.strId}`); }}
             >
                 Edit
             </div>

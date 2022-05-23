@@ -8,6 +8,13 @@ import UpDownShifter from "../UpDownShifter";
 function EditTask(props) {
     let [task, setTask] = useState(props.task);
 
+    useEffect(() => {
+        if (task.audioSrc) return;
+        let copy = {...task};
+        copy.audioSrc = "";
+        setTask(copy);
+    }, [])
+
     /** updates form state on change of form field value
      * @name onChange
      * @param {Object} e - change event
@@ -19,6 +26,18 @@ function EditTask(props) {
         props.onTasksChange(taskCopy);
     }
     
+    /** updates form state for audio field on change of file
+     * @name onFileChange
+     * @param {Object} e - change event
+    */
+     let onFileChange = e => {
+        let taskCopy = {...task};
+        taskCopy.audio = e.target.files[0];
+        setTask(taskCopy);
+        props.onTasksChange(taskCopy);
+    }
+
+
     /** updates task with new answers data fully, 
      * ensuring each property is matched
      * @name onChange
@@ -66,8 +85,15 @@ function EditTask(props) {
                 <FormInput 
                     type="text" 
                     for="audioSrc" 
-                    value={task.audioSrc || ""} 
+                    value={task.audioSrc} 
                     onChange={onChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+                <FormInput 
+                    type="file"
+                    for="audio"
+                    value={task.audio}
+                    onChange={onFileChange} 
                     errors={props.errors[task.taskID]} 
                 />
             </div>

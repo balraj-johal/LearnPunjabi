@@ -20,7 +20,7 @@ function DragAnswerFragment(props) {
                 <li
                     className={`specified-order-answer answer`}
                     ref={provided.innerRef}
-                    {...provided.draggableProps} 
+                    {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     onClick={() => {
                         props.removeFromOrder(props.possible);

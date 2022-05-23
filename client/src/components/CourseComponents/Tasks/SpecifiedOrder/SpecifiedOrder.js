@@ -105,7 +105,21 @@ function SpecifiedOrder(props) {
             { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
             <div id="lists" className={`${props.animClasses}`}>
                 <DragDropContext onDragEnd={handleDragEnd} >
-                    <Droppable droppableId="characters" direction="horizontal" >
+                    <Droppable 
+                        droppableId="characters" 
+                        direction="horizontal"
+                        renderClone={(provided, snapshot, rubric) => (
+                            <div
+                                className={`w-2 rounded border-[1px] border-bg-primary 
+                                    flex justify-center items-center`}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                            >
+                                {order[rubric.source.index].text}
+                            </div>
+                        )}
+                    >
                         {(provided) => (
                             <ul 
                                 id="answers"

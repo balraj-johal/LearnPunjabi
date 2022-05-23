@@ -256,7 +256,6 @@ router.post("/refreshToken", (req, res, next) => {
             });
             // if the refresh token is not present in the user's db entry
             if (tokenIndex == -1) {
-                console.log("refresh token not present in user db");
                 return res.status(401).send("Unauthorized");
             }
             // generate new jwt token

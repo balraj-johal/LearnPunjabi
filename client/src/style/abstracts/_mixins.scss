@@ -14,11 +14,34 @@
 }
 
 @mixin hoverScaleUp($scale) {
-    transition: transform 0.5s ease;
+    transition: transform 0.2s ease-in-out;
 
     &:hover {
         cursor: pointer;
         transform: scale($scale);
+    }
+}
+
+$bg-primary-dark: #121212;
+@mixin darkMode {
+    .container {
+        transition: all 200ms;
+        background-color: $bg-primary-dark;
+    }
+    .bg-primary {
+        // background-color: rgb(0, 146, 231) !important;
+    }
+    .accounts-wrap {
+        background-color: $bg-primary-dark;
+        color: white;
+    }
+    #topbar {
+        background-color: $bg-primary-dark;
+        color: white;
+    }
+    #leaderboard, #leaderboard .header {
+        background-color: $bg-primary-dark;
+        color: white;
     }
 }
 

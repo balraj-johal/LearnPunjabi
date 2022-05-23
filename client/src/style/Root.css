@@ -295,13 +295,10 @@ button:disabled:hover {
   height: 150px;
   border-radius: 10px;
   margin: 45px;
-  padding: 15px;
-  -webkit-transition: 0.5s ease;
-  transition: 0.5s ease;
-  -webkit-transition: -webkit-transform 0.5s ease;
-  transition: -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  transition: -webkit-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
 }
 
 .lesson-wrap .lesson:hover {
@@ -312,10 +309,6 @@ button:disabled:hover {
 
 .lesson-wrap .lesson.complete {
   background-color: #00A2FF;
-}
-
-.lesson-wrap .lesson.incomplete {
-  background-color: white;
 }
 
 @media (max-width: 768px) {
@@ -956,16 +949,22 @@ button:disabled:hover {
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  background-color: grey !important;
-  color: white !important;
-}
-
-.darkMode .bg-primary {
-  background-color: #0092e7 !important;
+  background-color: #121212;
 }
 
 .darkMode .accounts-wrap {
-  background-color: lightgrey !important;
+  background-color: #121212;
+  color: white;
+}
+
+.darkMode #topbar {
+  background-color: #121212;
+  color: white;
+}
+
+.darkMode #leaderboard, .darkMode #leaderboard .header {
+  background-color: #121212;
+  color: white;
 }
 
 #course-custom-container {

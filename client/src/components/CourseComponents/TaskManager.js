@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useSpring, animated, config } from 'react-spring';
 
 import MultipleChoice from "./Tasks/MultipleChoice/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly/TextOnly";
@@ -14,42 +15,49 @@ import { setAnimClasses } from "../../actions/currTaskActions";
 // return task component of specified type
 function TaskManager(props) {
     let [animating, setAnimating] = useState(false);
-    let [fadeIn, setFadeIn] = useState("0");
+    let [currentID, setCurrentID] = useState(null);
+    let [out, setOut] = useState(false);
     let component;
 
     let handleCorrect = () => {
         props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
-            setAnimating(false);
-            props.setAnimClasses("");
-            props.submitAnswer(true);
+            handleExit();
         }, 750);
     }
     let handleWrong = () => {
         props.setAnimClasses("animate-shake-x wrong");
         setAnimating(true);
         setTimeout(() => {
-            setAnimating(false);
             props.setAnimClasses("");
+            setAnimating(false);
             props.submitAnswer(false);
         }, 750);
+    }
+
+    let handleExit = () => {
+        props.setAnimClasses("");
+        setOut(true);
+        setTimeout(() => {
+            setOut(false);
+            setAnimating(false);
+            props.submitAnswer(true);
+        }, 600);
     }
 
     // refresh the fade in animation when task data changes
     useEffect(() => {
         if (!props.taskData.taskID) return;
-        setFadeIn("0");
-        setTimeout(() => {
-            setFadeIn("1");
-        }, 50);
+        setCurrentID(props.taskData.taskID);
     }, [props.taskData.taskID])
 
     switch (props.taskData.type) {
         case "TextOnly":
             component = <TextOnly 
                     data={props.taskData} 
-                    submit={props.submitAnswer}
+                    // submit={props.submitAnswer}
+                    submit={() => handleExit()}
                     stats={props.stats}
                     setAnimating={setAnimating}
                 />
@@ -57,14 +65,14 @@ function TaskManager(props) {
         case "MultipleChoice":
             component = <MultipleChoice 
                     data={props.taskData} 
-                    handleCorrect={handleCorrect}
+                    handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong}
                 />
             break;
         case "SpecifiedOrder":
             component = <SpecifiedOrder 
                     data={props.taskData}
-                    handleCorrect={handleCorrect}
+                    handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong} 
                     stats={props.stats}
                 />
@@ -72,21 +80,21 @@ function TaskManager(props) {
         case "DrawLetter":
             component = <DrawLetter 
                     data={props.taskData}
-                    handleCorrect={handleCorrect}
+                    handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong} 
                 />
             break;
         case "End":
             component = <End 
                     data={props.taskData} 
-                    submit={props.submitAnswer}
+                    submit={() => handleExit()}
                     stats={props.stats}
                 />
             break;
         case "Interstitial":
             component = <Intersitial 
                     data={props.taskData} 
-                    submit={props.submitAnswer}
+                    submit={() => handleExit()}
                     stats={props.stats}
                 />
             break;
@@ -95,15 +103,39 @@ function TaskManager(props) {
             break;
     }
 
+
     return(
-        <div 
-            className={`task w-11/12 md:w-7/12 md:h-4/6 h-5/6 md:mt-0 mt-10 px-2 relative 
-                ${animating ? "pointer-events-none" : ""}`} 
-            fadein={fadeIn || "0"}
-            onAnimationEnd={() => { setFadeIn("2") }}
+        <AnimatedWrapper 
+            animating={animating} 
+            component={component} 
+            key={currentID} 
+            out={out}
+        />
+    )
+}
+
+function AnimatedWrapper(props) {
+    const spring = useSpring({ 
+        to: { 
+            // opacity ends at -0.2 to ensure component fades out before reaching transform end
+            opacity: props.out ? -0.2 : 1, 
+            transform: props.out ? "translate(-10vwx, 0)" : "translate(0vw, 0)" 
+        }, 
+        from: { 
+            opacity: 0, 
+            transform: "translate(0vw, 0)" 
+        }
+    });
+
+    return(
+        <animated.div 
+            style={spring}
+            className={`task w-11/12 md:w-7/12 md:h-4/6 h-5/6 
+                md:mt-0 mt-10 px-2 relative 
+                ${props.animating ? "pointer-events-none" : ""}`} 
         >
-            { component }
-        </div>
+            { props.component }
+        </animated.div>
     )
 }
 

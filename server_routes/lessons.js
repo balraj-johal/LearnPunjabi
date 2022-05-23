@@ -27,7 +27,7 @@ let buildOverviewObject = async () => {
     for await (const lesson of Lesson.find()) {
         overview.push({
             name: lesson.name,
-            id: lesson.strId,
+            strId: lesson.strId,
             requiredCompletions: lesson.requiredCompletions,
             tasksLength: lesson.tasks.length
         })
@@ -63,7 +63,7 @@ router.get("/", (req, res) => {
  */
 router.get("/:lessonID", async (req, res) => {
     try {
-        let user = await verifyToken(req);
+        await verifyToken(req);
         let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
         if (!lesson) return res.status(404).send("Lesson not found.");
         return res.status(200).send(lesson);
@@ -83,7 +83,7 @@ router.get("/:lessonID", async (req, res) => {
  */
 router.post("/:lessonID", async (req, res) => {
     try {
-        let user = await verifyToken(req);
+        const user = await verifyToken(req);
         if (user.role !== "Admin") return res.status(401).send("Unauthorised.")
         let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
         if (!lesson) lesson = new Lesson()
@@ -91,6 +91,9 @@ router.post("/:lessonID", async (req, res) => {
         lesson.strId = req.body.strId;
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
+        lesson.noToSample = req.body.noToSample;
+        lesson.showInterstitials = req.body.showInterstitials;
+        lesson.showPercentCorrect = req.body.showPercentCorrect;
         lesson.tasks = req.body.tasks;
         lesson.save()
             .then(saved => { return res.status(200).send({
