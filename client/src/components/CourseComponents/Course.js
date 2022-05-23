@@ -54,7 +54,6 @@ function Course(props) {
      * @returns { Number } timesCompleted - number of times lesson has been completed
      */
     let getTimesCompleted = (id) => {
-        console.log(id);
         let number = 0;
         if (props.userProgress) {
             props.userProgress.forEach(lesson => {
@@ -63,7 +62,6 @@ function Course(props) {
                 }
             });
         }
-        console.log(`lesson ${id} completed ${number} times`)
         return number;
     }
 
