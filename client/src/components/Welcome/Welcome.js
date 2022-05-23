@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect } from "react";
+import React, { Suspense, useRef, useEffect, useState } from "react";
 // import { connect } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ import InfoPoints from "./InfoPoints";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
+import PunjabText from "./PunjabText";
 
 function Welcome(props) {
     // initialise listeners for scroll tracking
@@ -33,7 +34,8 @@ function Welcome(props) {
     // useEffect(() => {
     //     if (props.auth.isAuthenticated)  navigate("/dashboard");
     // }, [props.auth.isAuthenticated]);
-    
+
+    let [pageIndex, setPageIndex] = useState(0);
 
     return(
         <div id="welcome" ref={scrollArea} onScroll={onScroll} >
@@ -52,19 +54,22 @@ function Welcome(props) {
                 <div id="stick">
                     <RiversMid />
                     <div className="w-[70%] h-full">
-                    <Canvas 
-                        dpr={[1, 2]} 
-                        camera={{ position: [0, 0, 10], fov: 22 }}
-                    >
-                        <ThreeJSPunjab ref={top} />
-                    </Canvas>
+                        <PunjabText ref={top} />
+                        <Canvas 
+                            dpr={[1, 2]} 
+                            camera={{ position: [0, 0, 10], fov: 22 }}
+                        >
+                            <ThreeJSPunjab ref={top} setPageIndex={setPageIndex} />
+                        </Canvas>
                     </div>
                 </div>
             </div>
             <div id="welcome-4" className="welcome-div grad-end">
                 <RiversEnd />
-                <div id="footer" className="absolute bottom-0 h-5/6 bg-black bg-opacity-20 w-full">
-
+                <div 
+                    id="footer" 
+                    className="absolute bottom-0 h-5/6 bg-black bg-opacity-20 w-full"
+                >
                 </div>
             </div>
         </div>
@@ -79,11 +84,11 @@ let ThreeJSPunjab = React.forwardRef((props, ref) => {
 
     return(
         <Suspense fallback={null}>
-            {/* <Caption>
-                Cubone by Tipatat Chennavasin [CC-BY], via Poly Pizza
-            </Caption> */}
-            {/* <Punjab2 ref={ref} rotation={[0.5, 0, 0]} /> */}
-            <Punjab3 ref={ref} rotation={[0.5, 0, 0]} />
+            <Punjab3 
+                ref={ref} 
+                rotation={[0.5, 0, 0]} 
+                setPageIndex={props.setPageIndex} 
+            />
             <rectAreaLight
                 width={3}
                 height={3}
