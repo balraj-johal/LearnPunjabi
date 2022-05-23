@@ -6,6 +6,7 @@ import React, { useRef, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { lerp } from "../../../utils/math";
+import Caption from './Caption';
 
 const RIVER_END_Y = 0.01;
 
@@ -17,17 +18,17 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
     
     let [hovering, setHovering] = useState(false);
     let [stuck, setStuck] = useState(false);
+    let [r1label, showR1Label] = useState(false);
 
-    let alpha;
+    let [alpha, setAlpha] = useState(0);
+    let lerpedPos;
 
     useFrame(({ clock }) => {
         // rotate based on scroll
         group.current.rotation.y = -ref.current / 500 - (clock.getElapsedTime() * 0.1);
         // river1.current.position.y = -ref.current / 1500;
-        alpha = Math.min(1, (ref.current - 1000) / 1000);
-        console.log(alpha);
-        let lerpedPos = lerp(RIVER_END_Y + 1.0, RIVER_END_Y, alpha);
-        // console.log(lerpedPos);
+        setAlpha(Math.min(1, (ref.current - 1000) / 1000));
+        lerpedPos = lerp(RIVER_END_Y + 1.0, RIVER_END_Y, alpha);
         river1.current.position.y = lerpedPos;
         // if (hovering) group.current.rotation.x += 10;
     });
@@ -63,11 +64,22 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
             <mesh 
                 ref={river1} 
                 geometry={nodes.River1.geometry} 
-                material={nodes.River1.material} 
                 position={[0, -0.01, 0]} 
                 rotation={[0, 0.66, 0]} 
+                look
                 scale={0.57} 
-            />
+                onPointerEnter={() => {
+                    console.log("showing")
+                    showR1Label(true)
+                }}
+                onPointerLeave={() => {
+                    console.log("hiding")
+                    showR1Label(false)
+                }}
+            >
+                <meshBasicMaterial color="blue" opacity={Math.min(1, alpha * 2 - 1)} transparent />
+            </mesh>
+            { r1label && <Caption lookAt={props.cameraRef}>Test</Caption>}
             <mesh 
                 ref={river2} 
                 geometry={nodes.River2.geometry} 
