@@ -25,7 +25,7 @@ function LessonIcon(props) {
         <div 
             className={`${finished ? "bg-[#FFD700]" : "bg-white"} 
                 lesson z-20 relative overflow-hidden no-highlight`}
-            onClick={() => { navigate(`/lesson/${props.lesson.strId}`) }}
+            onClick={() => { navigate(`/lesson/${props.lesson.id}`) }}
         >
             <span className="z-10">{ props.lesson.name }<br/></span>
             <div 
