@@ -3,11 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 // const multer = require("multer");
-// const DOCUMENT = require("../models/document.model");
-// let AWS = require("aws-sdk");
-// let awsCloudFront  = require('aws-cloudfront-sign');
+const AWS = require('aws-sdk');
+let awsCloudFront  = require('aws-cloudfront-sign');
+const { CloudFrontClient } = require('@aws-sdk/client-cloudfront');
+const { getSignedUrl } = require('@aws-sdk/cloudfront-signer');
 const formidable = require("formidable");
-// const path = require("path");
 const fs = require("fs");
 const { Upload } = require("@aws-sdk/lib-storage");
 const { S3Client } = require("@aws-sdk/client-s3");
@@ -15,40 +15,21 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const REGION = "eu-west-2";
 const s3Client = new S3Client({ region: REGION });
 
-// let storage = multer.memoryStorage();
-// let upload = multer({ storage: storage });
-
-// function asyncHandler(handler) {
-//     return function (req, res, next) {
-//         console.log("handler executed")
-//         if (!handler) {
-//             next(new Error(`Invalid handler ${handler}, it must be a function.`));
-//         } else {
-//             handler(req, res, next).catch(next);
-//         }
-//     };
-// }
-// function getFileLink(filename) {
-//     return new Promise(function (resolve, reject) {
-//         // let options = { keypairId: process.env.CLOUDFRONT_ACCESS_KEY_ID, privateKeyPath: process.env.CLOUDFRONT_PRIVATE_KEY_PATH };
-//         try {
-//             let signedUrl = awsCloudFront.getSignedUrl(process.env.CLOUDFRONT_URL + "/" + filename, options);
-//             resolve(signedUrl);
-//         } catch {
-//             console.log("error when signing")
-//             console.log("testing acesskey id, ", process.env.CLOUDFRONT_ACCESS_KEY_ID)
-//             console.log("testing paf, ", process.env.CLOUDFRONT_URL + "/" + filename)
-//             reject();
-//         }
-//     });
-// }
-// async function download(req, res) {
-//     console.log("filename:", req.query.filename);
-//     let response = await getFileLink(req.query.filename);
-//     res.send(response);
-//     res.end();
-// }
-
+function getFileLink(filename) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let url = `https://d2hks59q0iv04y.cloudfront.net/${filename}`;
+            getSignedUrl(
+                url,
+                process.env.CLOUDFRONT_ACCESS_KEY_ID_2,
+                "2022-05-30",
+                process.env.CLOUDFRONT_PK
+            )
+        } catch(error) {
+            console.log("Signing error:", error);
+        }
+    });
+}
 
 router.post("/upload", (req, res, next) => {
     const form = formidable({});
@@ -81,6 +62,5 @@ router.post("/upload", (req, res, next) => {
     })
 });
 
-// router.route("/get-image").get(asyncHandler(download));
 
-module.exports = router;
+module.exports = {router, getFileLink};

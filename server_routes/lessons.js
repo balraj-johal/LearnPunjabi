@@ -10,9 +10,8 @@ const express = require("express");
  */
 const router = express.Router();
 
-const { 
-    verifyToken,
-} = require("../utilities/authentication");
+const { verifyToken } = require("../utilities/authentication");
+const { getFileLink } = require("./s3");
 
 const Lesson = require("../models/lesson.model");
 
@@ -65,6 +64,11 @@ router.get("/:lessonID", async (req, res) => {
     try {
         await verifyToken(req);
         let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
+        lesson.tasks.forEach(async (task) => {
+            if (!task.audioSrc) return;
+            let audioLink = await getFileLink(task.audioSrc);
+            console.log(audioLink);
+        })
         if (!lesson) return res.status(404).send("Lesson not found.");
         return res.status(200).send(lesson);
     } catch (err) {
