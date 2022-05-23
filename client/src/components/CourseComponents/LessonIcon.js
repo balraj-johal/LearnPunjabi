@@ -19,7 +19,7 @@ function LessonIcon(props) {
         setWaterFillAmount(props.timesCompleted * 150 / props.lesson.requiredCompletions);
         waterFillAmount >= 150 ? setShowWave(false) : setShowWave(true);
         setFinished(props.timesCompleted >= props.lesson.requiredCompletions);
-    }, [])
+    }, [props.timesCompleted])
 
     return(
         <div 

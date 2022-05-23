@@ -54,6 +54,7 @@ function Course(props) {
      * @returns { Number } timesCompleted - number of times lesson has been completed
      */
     let getTimesCompleted = (id) => {
+        console.log(id);
         let number = 0;
         if (props.userProgress) {
             props.userProgress.forEach(lesson => {
@@ -62,6 +63,7 @@ function Course(props) {
                 }
             });
         }
+        console.log(`lesson ${id} completed ${number} times`)
         return number;
     }
 
@@ -75,10 +77,7 @@ function Course(props) {
         return `calc(101vh)`
     }
 
-    if (loading) return(
-        <div className="lesson-wrap" style={{ height: "110%" }}>
-        </div>
-    )
+    if (loading) return <div className="lesson-wrap" style={{ height: "110%" }} />
     return(
         // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
         //     // icon={<Loader />} 
@@ -92,8 +91,8 @@ function Course(props) {
                         courseData.map((lesson, index) => 
                             <LessonIcon 
                                 lesson={lesson}
-                                timesCompleted={getTimesCompleted(lesson.strId)}
-                                key={index} 
+                                timesCompleted={getTimesCompleted(lesson.id)}
+                                key={lesson.id} 
                             />
                         )
                     ) : "Loading failed. Please refresh and try again!" }
