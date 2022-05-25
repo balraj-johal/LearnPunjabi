@@ -50,6 +50,7 @@
     "path": "^0.12.7",
     "postcss": "^8.4.12",
     "qs": "^6.10.3",
+    "sanitize-filename": "^1.6.3",
     "validator": "^13.7.0"
   },
   "devDependencies": {
