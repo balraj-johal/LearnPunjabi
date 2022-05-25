@@ -4,11 +4,11 @@ import { useSpring, animated } from 'react-spring';
 
 import MultipleChoice from "./Tasks/MultipleChoice/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly/TextOnly";
-import End from "./Tasks/End";
 import SpecifiedOrder from "./Tasks/SpecifiedOrder/SpecifiedOrder";
 import DrawLetter from "./Tasks/DrawLetter/DrawLetter";
 import Intersitial from "./Tasks/Intersitial";
 import PageNotFound from "../PageNotFound";
+import End from "./Tasks/End";
 
 import { setAnimClasses } from "../../actions/currTaskActions";
 
@@ -101,7 +101,6 @@ function TaskManager(props) {
             component = <PageNotFound />
             break;
     }
-
 
     return(
         <AnimatedWrapper 

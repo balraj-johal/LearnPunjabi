@@ -26,19 +26,27 @@ function MultipleChoice(props) {
     }
 
     return(
-        <div className="multiple-choice flex flex-col justify-center h-full">
-        <div className="title absolute top-2 left-3">{ props.data.text }</div>
-            <AudioClip src={props.data.audioLink} />
-            <div className={`answers-wrap ${props.animClasses}`}>
-                { props.data.possibleAnswers.map((possible, index) => 
-                    <PossibleAnswer 
-                        chosen={ (choice === index) ? true : false }
-                        setChoice={setChoice}
-                        possible={possible} 
-                        key={index}
-                        index={index}
-                    />
-                ) }
+        <div className="multiple-choice flex flex-col
+            justify-center h-full"
+        >
+            <div className="h-3/5 flex flex-col justify-evenly">
+                <div className="title relative top-2 left-3 w-full
+                    flex flex-col px-4 items-start"
+                >
+                    <span className="mb-4">{ props.data.text }</span>
+                    <AudioClip src={props.data.audioLink} />
+                </div>
+                <div className={`answers-wrap ${props.animClasses}`}>
+                    { props.data.possibleAnswers.map((possible, index) => 
+                        <PossibleAnswer 
+                            chosen={(choice === index) ? true : false}
+                            setChoice={setChoice}
+                            possible={possible} 
+                            key={index}
+                            index={index}
+                        />
+                    ) }
+                </div>
             </div>
             <NextButton next={() => {checkAnswer()}} />
         </div>
@@ -52,6 +60,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-    }
+    {}
 )(MultipleChoice);
