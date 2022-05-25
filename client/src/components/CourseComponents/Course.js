@@ -73,7 +73,7 @@ function Course(props) {
     let getWrapHeight = () => {
         const lessonBased = courseData.length * (205);
         if (courseData.length > 0 && lessonBased > window.innerHeight) {
-            `${lessonBased}px`;
+            return `${lessonBased}px`;
         }
         return `calc(101vh)`;
     }
