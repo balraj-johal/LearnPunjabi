@@ -75,7 +75,8 @@ router.get("/:lessonID", async (req, res, next) => {
         }
         return res.status(200).send(modifiedLesson);
     } catch (err) {
-        next(err);
+        // next(err);
+        return res.status(500).send({error: err});
     }
 })
 
