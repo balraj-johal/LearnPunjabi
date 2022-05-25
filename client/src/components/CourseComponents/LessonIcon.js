@@ -28,7 +28,8 @@ function LessonIcon(props) {
         >
             <span className="z-10">{ props.lesson.name }<br/></span>
             <div 
-                className={`z-0 w-full absolute bottom-0 ${finished ? "" : "bg-primary"}`} 
+                className={`${finished ? "" : "bg-primary"} 
+                    z-0 w-full absolute bottom-0`} 
                 style={{height: `${ waterFillAmount > 150 ? "100" : waterFillAmount }%`}} 
             />
             { showWave ? <Lottie 
