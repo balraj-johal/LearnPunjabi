@@ -83,13 +83,6 @@ function EditTask(props) {
                     errors={props.errors[task.taskID]} 
                 />
                 <FormInput 
-                    type="text" 
-                    for="audioSrc" 
-                    value={task.audioSrc} 
-                    onChange={onChange} 
-                    errors={props.errors[task.taskID]} 
-                />
-                <FormInput 
                     type="file"
                     for="audio"
                     value={task.audio}
