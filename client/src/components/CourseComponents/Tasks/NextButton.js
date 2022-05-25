@@ -6,7 +6,7 @@ function NextButton(props) {
             className="md:w-44 w-3/6 text-white h-8 bg-primary 
                 cursor-pointer rounded absolute bottom-0 right-0
                 hover:bg-primary2 mb-6 md:mb-4 mt-6 hover:drop-shadow-md 
-                mr-4 capitalize transition-all duration-75" 
+                mr-4 capitalize transition-all duration-75 z-20" 
             onClick={()=>{ props.next() }}
         >
             {props.text || "Next"} &gt;
