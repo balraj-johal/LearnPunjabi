@@ -1,8 +1,9 @@
 import React, {  } from "react";
 import { connect } from "react-redux";
 
-import testImg from "../../../../res/icons/fella.png"
+import testImg from "../../../../res/icons/fella.png";
 import NextButton from "../NextButton";
+import AudioClip from "../../AudioClip";
 
 function TextOnly(props) {
     let submitContinue = () => {
@@ -14,10 +15,10 @@ function TextOnly(props) {
     return(
         <div className="text-only flex flex-row h-full">
             <div className="w-3/12 flex items-center justify-center">
+                <AudioClip src={props.data.audioLink} />
                 <img src={testImg} className="mb-14" />
             </div>
-            <div className="w-1/12">
-            </div>
+            <div className="w-1/12" />
             <div id="text-only-content" className="w-9/12 flex flex-col justify-center">
                 { props.data.text } 
             </div>
