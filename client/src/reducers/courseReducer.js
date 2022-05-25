@@ -9,10 +9,9 @@ const initialState = {
 export default function(state = initialState, action) {
     switch (action.type) {
         case SET_PROGRESS:
-            console.log("SETTING")
             return {
                 ...state,
-                progress: [...action.payload] // array copied to ensure redux rerender
+                progress: [...action.payload]
             };
         default:
             return state;
