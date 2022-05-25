@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useSpring, animated, config } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 
 import MultipleChoice from "./Tasks/MultipleChoice/MultipleChoice";
 import TextOnly from "./Tasks/TextOnly/TextOnly";
@@ -56,7 +56,6 @@ function TaskManager(props) {
         case "TextOnly":
             component = <TextOnly 
                     data={props.taskData} 
-                    // submit={props.submitAnswer}
                     submit={() => handleExit()}
                     stats={props.stats}
                     setAnimating={setAnimating}
@@ -117,7 +116,8 @@ function TaskManager(props) {
 function AnimatedWrapper(props) {
     const spring = useSpring({ 
         to: { 
-            // opacity ends at -0.2 to ensure component fades out before reaching transform end
+            // opacity ends at -0.2 to ensure component fades out 
+            // before reaching transform end
             opacity: props.out ? -0.2 : 1, 
             transform: props.out ? "translate(-10vwx, 0)" : "translate(0vw, 0)" 
         }, 
@@ -130,8 +130,8 @@ function AnimatedWrapper(props) {
     return(
         <animated.div 
             style={spring}
-            className={`task w-11/12 md:w-7/12 md:h-4/6 h-5/6 
-                md:mt-0 mt-10 px-2 relative 
+            className={`task w-11/12 h-5/6 relative pb-16 px-2
+                md:w-7/12 md:h-4/6 md:mt-0 mt-10 
                 ${props.animating ? "pointer-events-none" : ""}`} 
         >
             { props.component }
