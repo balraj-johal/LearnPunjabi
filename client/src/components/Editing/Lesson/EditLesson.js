@@ -127,7 +127,11 @@ function EditLesson(props) {
             // validate
             let validationErrors = _getLessonValidationErrors(lessonCopy);
             setErrors(validationErrors);
-            if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
+            if (!_isObjectEmpty(validationErrors)) {
+                setSaving(false);
+                setShowSubmitConfirm(false);
+                return;
+            }
             
             // build audio file upload promises
             const fileUploads = [];
