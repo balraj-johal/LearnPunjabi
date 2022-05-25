@@ -25,7 +25,7 @@ import PopInModal from "../PopInModal";
 // TODO: where best to store new lesson template?
 const NEW_LESSON = {
     name: "",
-    strId: "new",
+    id: "new",
     requiredCompletions: 1,
     shuffle: false,
     showInterstitials: true,
@@ -118,8 +118,8 @@ function EditLesson(props) {
             lessonCopy = removeUnnecessaryTaskProperties(lesson);
 
             // assign id if necessary
-            if (!lessonCopy.strId || lessonCopy.strId === "new") 
-                lessonCopy.strId = `lesson-${lessonCopy.name}`;
+            if (!lessonCopy.id || lessonCopy.id === "new") 
+                lessonCopy.id = `lesson-${lessonCopy.name}`;
 
             // validate
             let validationErrors = _getLessonValidationErrors(lessonCopy);
@@ -147,7 +147,7 @@ function EditLesson(props) {
             })
 
             // send api request to save lesson data
-            await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
+            await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.id)}`, 
                 qs.stringify(lessonCopy));
 
             // send upload requests for files

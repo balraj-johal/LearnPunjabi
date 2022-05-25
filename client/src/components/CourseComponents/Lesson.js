@@ -115,7 +115,7 @@ function Lesson(props) {
     let nextTask = () => {
         let nextIndex = currentTaskIndex + 1;
         if (nextIndex >= lesson.tasks.length) {
-            endLesson(lesson.strId);
+            endLesson(lesson.id);
             props.getUserData();
             navigate("/dashboard");
         } else {

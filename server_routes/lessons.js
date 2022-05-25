@@ -26,7 +26,7 @@ let buildOverviewObject = async () => {
     for await (const lesson of Lesson.find()) {
         overview.push({
             name: lesson.name,
-            strId: lesson.strId,
+            id: lesson.id,
             requiredCompletions: lesson.requiredCompletions,
             tasksLength: lesson.tasks.length
         })
@@ -62,7 +62,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:lessonID", async (req, res, next) => {
     try {
         await verifyToken(req);
-        const LESSON_PARAMS = { strId: { $eq: req.params.lessonID } };
+        const LESSON_PARAMS = { id: { $eq: req.params.lessonID } };
         let lesson = await Lesson.findOne(LESSON_PARAMS);
         if (!lesson) return res.status(404).send("Lesson not found.");
         let modifiedLesson = {...lesson._doc};
@@ -91,10 +91,10 @@ router.post("/:lessonID", async (req, res) => {
     try {
         const user = await verifyToken(req);
         if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
-        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } });
+        let lesson = await Lesson.findOne({ id: { $eq: req.params.lessonID } });
         if (!lesson) lesson = new Lesson();
         lesson.name = req.body.name;
-        lesson.strId = req.body.strId;
+        lesson.id = req.body.id;
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
         lesson.noToSample = req.body.noToSample;

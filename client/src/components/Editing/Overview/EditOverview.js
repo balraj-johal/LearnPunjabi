@@ -10,7 +10,7 @@ import SaveButton from "../SaveButton";
 // TODO: decide where best to store this
 const NEW_LESSON = {
     name: "",
-    strId: "new",
+    id: "new",
     requiredCompletions: 1,
     shuffle: false,
     showInterstitials: true,
@@ -20,6 +20,7 @@ const NEW_LESSON = {
 }
 
 function EditOverview(props) {
+    let [ready, setReady] = useState(false);
     let [courseData, setCourseData] = useState([]);
     let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
@@ -27,8 +28,14 @@ function EditOverview(props) {
     // on mount retrieve all lessons
     useEffect(() => {
         axiosClient.get("/api/v1/lessons/")
-            .then(res => { setCourseData(res.data.overview); })
-            .catch(err => { console.log(err); })
+            .then(res => {
+                setCourseData(res.data.overview); 
+                setReady(true);
+            })
+            .catch(error => {
+                console.log(error); 
+                setReady(true);
+            })
     }, []);
     
     /** Moves specified lesson back or forwards in course order
@@ -41,14 +48,12 @@ function EditOverview(props) {
         let valid = false;
         switch (direction) {
             case "up":
-                console.log("UP")
                 if (oldIndex > 0) {
                     _moveArrayIndex(courseData, oldIndex, oldIndex - 1);
                     valid = true;
                 }
                 break;
             case "down":
-                console.log("DONW")
                 if (oldIndex < courseData.length) {
                     _moveArrayIndex(courseData, oldIndex, oldIndex + 1);
                     valid = true;
@@ -63,11 +68,11 @@ function EditOverview(props) {
         }
     }
 
-    let saveUpdatedCourseData = () => {
-        console.log("saving: ", courseData);
-    }
+    // let saveUpdatedCourseData = () => {
+    //     console.log("saving: ", courseData);
+    // }
 
-    if (courseData.length === 0) return <Loader />;
+    if (!ready) return <Loader />;
     return(
         <div className="edit-wrap">
             {courseData.map((lesson, index) => 
@@ -81,7 +86,7 @@ function EditOverview(props) {
                 />
             )}
             <EditOverviewEntry lesson={NEW_LESSON} new={true} />
-            <SaveButton save={saveUpdatedCourseData} show={lessonOrderChanged} />
+            {/* <SaveButton save={saveUpdatedCourseData} show={lessonOrderChanged} /> */}
         </div>
     )
 }
