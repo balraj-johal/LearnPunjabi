@@ -132,19 +132,16 @@ function EditLesson(props) {
             // build audio file upload promises
             const fileUploads = [];
             lessonCopy.tasks.forEach(task => {
-                if (!task.audio) return;
-                task.audioSrc = task.audio.name;
+                if (!task.audio || task.audio?.name === "") return;
+                task.audioFilename = task.audio.name;
                 const fileData = new FormData();
                 fileData.append('file', task.audio);
+                const options = { 
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    timeout: 30 * 1000,
+                }
                 fileUploads.push(
-                    axiosClient.post(
-                        `/api/v1/s3/upload`, 
-                        fileData,
-                        { 
-                            headers: { 'Content-Type': 'multipart/form-data' },
-                            timeout: 30 * 1000,
-                        }
-                    )
+                    axiosClient.post(`/api/v1/s3/upload`, fileData, options)
                 );
             })
 
@@ -208,7 +205,7 @@ function EditLesson(props) {
             taskID: String(tasksCopy.length + 1),
             text: "",
             type: "TextOnly",
-            audioSrc: "",
+            audioFilename: "",
             audio: {name: ""},
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}

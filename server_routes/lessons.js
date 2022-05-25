@@ -60,20 +60,23 @@ router.get("/", (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/:lessonID", async (req, res) => {
+router.get("/:lessonID", async (req, res, next) => {
     try {
         await verifyToken(req);
-        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
-        lesson.tasks.forEach(async (task) => {
-            if (!task.audioSrc) return;
-            let audioLink = await getFileLink(task.audioSrc);
-            console.log(audioLink);
-        })
+        const LESSON_PARAMS = { strId: { $eq: req.params.lessonID } };
+        let lesson = await Lesson.findOne(LESSON_PARAMS);
         if (!lesson) return res.status(404).send("Lesson not found.");
-        return res.status(200).send(lesson);
+        let modifiedLesson = {...lesson._doc};
+        for (let i = 0; i < modifiedLesson.tasks.length; i++) {
+            const task = modifiedLesson.tasks[i]
+            if (task.audioFilename) {
+                let audioLink = await getFileLink(task.audioFilename);
+                task.audioLink = audioLink;
+            }
+        }
+        return res.status(200).send(modifiedLesson);
     } catch (err) {
-        // TODO: correct response codes
-        return res.status(500).send({ error: err })
+        next(err);
     }
 })
 

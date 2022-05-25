@@ -28,7 +28,7 @@ function MultipleChoice(props) {
     return(
         <div className="multiple-choice flex flex-col justify-center h-full">
         <div className="title absolute top-2 left-3">{ props.data.text }</div>
-            { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
+            <AudioClip src={props.data.audioLink} />
             <div className={`answers-wrap ${props.animClasses}`}>
                 { props.data.possibleAnswers.map((possible, index) => 
                     <PossibleAnswer 

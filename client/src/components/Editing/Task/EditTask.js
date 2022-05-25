@@ -9,9 +9,9 @@ function EditTask(props) {
     let [task, setTask] = useState(props.task);
 
     useEffect(() => {
-        if (task.audioSrc) return;
+        if (task.audioFilename) return;
         let copy = {...task};
-        copy.audioSrc = "";
+        copy.audioFilename = "";
         setTask(copy);
     }, [])
 

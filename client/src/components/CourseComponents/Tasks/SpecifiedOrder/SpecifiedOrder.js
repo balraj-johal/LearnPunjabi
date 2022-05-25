@@ -102,7 +102,7 @@ function SpecifiedOrder(props) {
     return(
         <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-center`} >
             <div className="title absolute top-2 left-3">{ props.data.text }</div>
-            { props.data.audioSrc ? <AudioClip src={props.data.audioSrc} /> : null }
+            <AudioClip src={props.data.audioLink} />
             <div id="lists" className={`${props.animClasses}`}>
                 <DragDropContext onDragEnd={handleDragEnd} >
                     <Droppable 

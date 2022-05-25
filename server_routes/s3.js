@@ -2,31 +2,34 @@ require("dotenv").config();
 
 const express = require("express");
 const router = express.Router();
-// const multer = require("multer");
-const AWS = require('aws-sdk');
-let awsCloudFront  = require('aws-cloudfront-sign');
-const { CloudFrontClient } = require('@aws-sdk/client-cloudfront');
-const { getSignedUrl } = require('@aws-sdk/cloudfront-signer');
 const formidable = require("formidable");
 const fs = require("fs");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { Upload } = require("@aws-sdk/lib-storage");
-const { S3Client } = require("@aws-sdk/client-s3");
 
 const REGION = "eu-west-2";
 const s3Client = new S3Client({ region: REGION });
 
+/** Gets presigned link to S3 file
+ * @name getFileLink
+ * @param {String} filename - relative path of object to fetch from bucket
+ * @returns {Promise}
+ */
 function getFileLink(filename) {
     return new Promise(async (resolve, reject) => {
         try {
-            let url = `https://d2hks59q0iv04y.cloudfront.net/${filename}`;
-            getSignedUrl(
-                url,
-                process.env.CLOUDFRONT_ACCESS_KEY_ID_2,
-                "2022-05-30",
-                process.env.CLOUDFRONT_PK
-            )
+            const BUCKET_PARAMS = {
+                Bucket: "balraj-portfolio-bucket",
+                Key: `${filename}`,
+                Body: "BODY"
+            }
+            const getCommand = new GetObjectCommand(BUCKET_PARAMS);
+            const signedURL = await getSignedUrl(s3Client, getCommand, 
+                { expiresIn: 10 * 60 * 1000 } );
+            resolve(signedURL);
         } catch(error) {
-            console.log("Signing error:", error);
+            reject(error);
         }
     });
 }
@@ -49,11 +52,9 @@ router.post("/upload", (req, res, next) => {
                 leavePartsOnError: false, // optional manually handle dropped parts
                 params: target,
             });
-        
-            parallelUploads3.on("httpUploadProgress", (progress) => {
-                console.log("uploading: ", progress);
-            });
-        
+            // parallelUploads3.on("httpUploadProgress", (progress) => {
+            //     console.log("uploading: ", progress);
+            // });
             await parallelUploads3.done();
             res.json({ files });
         } catch (error) {
