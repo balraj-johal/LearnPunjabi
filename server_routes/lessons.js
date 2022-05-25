@@ -41,16 +41,15 @@ let buildOverviewObject = async () => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/", (req, res) => {
-    verifyToken(req)
-        .then(user => {
-            buildOverviewObject()
-                .then(overview => {
-                    if (overview) return res.status(200).send({ overview: overview });
-                    return res.status(404).send({ message: "overview data not found..." });
-                })
-            })
-            .catch(err => { return res.status(500).send( {error: err}); })
+router.get("/", async (req, res, next) => {
+    try {
+        await verifyToken(req);
+        const overview = await buildOverviewObject();
+        if (overview) return res.status(200).send({ overview: overview });
+        return res.status(404).send({ message: "overview data not found..." });
+    } catch (error) {
+        next(err);
+    }
 })
 
 /**
@@ -91,9 +90,9 @@ router.get("/:lessonID", async (req, res, next) => {
 router.post("/:lessonID", async (req, res) => {
     try {
         const user = await verifyToken(req);
-        if (user.role !== "Admin") return res.status(401).send("Unauthorised.")
-        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
-        if (!lesson) lesson = new Lesson()
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
+        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } });
+        if (!lesson) lesson = new Lesson();
         lesson.name = req.body.name;
         lesson.strId = req.body.strId;
         lesson.requiredCompletions = req.body.requiredCompletions;
@@ -103,13 +102,14 @@ router.post("/:lessonID", async (req, res) => {
         lesson.showPercentCorrect = req.body.showPercentCorrect;
         lesson.tasks = req.body.tasks;
         lesson.save()
-            .then(saved => { return res.status(200).send({
-                savedLesson : saved,
-                message: "Save successful."
-            }); })
-            .catch(err => { return res.status(500).send("Error saving lesson: " + err); })
+            .then(saved => { 
+                return res.status(200).send({
+                    savedLesson: saved,
+                    message: "Save successful."
+                });
+            })
+            .catch(err => { return res.status(500).send(err); })
     } catch (err) {
-        // TODO: correct response codes
         return res.status(500).send({ error: err })
     }
 })

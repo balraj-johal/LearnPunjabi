@@ -107,9 +107,6 @@ function EditLesson(props) {
         setShowSubmitConfirm(true);
     }
 
-    const handleUpload = async (file) => {
-    }
-
     /** If user has confirmed intention to save, post current form state to server
      * @name saveLesson
      */
@@ -163,11 +160,8 @@ function EditLesson(props) {
         } catch (error) {
             setSaving(false);
             setShowSubmitConfirm(false);
-            console.log("error.response")
-            console.log(error.response)
             setErrors(error.response.data);
         }
-            
     }
 
     /** updates form state on change of form field value
@@ -191,9 +185,7 @@ function EditLesson(props) {
         let tasksCopy = lesson.tasks;
         let targetIndex;
         tasksCopy.forEach((task, i) => {
-            if (task.taskID === updatedTask.taskID) {
-                targetIndex = i;
-            }
+            if (task.taskID === updatedTask.taskID) targetIndex = i;
         });
         tasksCopy[targetIndex] = updatedTask;
         let updatedLesson = {...lesson, tasks: tasksCopy}
@@ -204,7 +196,7 @@ function EditLesson(props) {
      * @name addNewTask
      */
     let addNewTask = () => {
-        let tasksCopy = lesson.tasks;
+        const tasksCopy = lesson.tasks;
         tasksCopy.push({
             taskID: String(tasksCopy.length + 1),
             text: "",
