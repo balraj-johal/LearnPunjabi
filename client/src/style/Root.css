@@ -389,7 +389,6 @@ button:disabled:hover {
 
 .audio {
   height: 90px;
-  margin: 10px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -411,15 +410,30 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 80px;
-  width: 80px;
+  height: 50px;
+  width: 50px;
   background-color: #00a2ff;
   border-radius: 5px;
 }
 
 .audio .replay-audio-button img {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 768px) {
+  .audio {
+    height: 90px;
+    margin: 10px 0;
+  }
+  .audio .replay-audio-button {
+    height: 80px;
+    width: 80px;
+  }
+  .audio .replay-audio-button img {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .correct .answer {
@@ -949,21 +963,21 @@ button:disabled:hover {
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  background-color: #121212;
+  background-color: #10161f;
 }
 
 .darkMode .accounts-wrap {
-  background-color: #121212;
+  background-color: #10161f;
   color: white;
 }
 
 .darkMode #topbar {
-  background-color: #121212;
+  background-color: #10161f;
   color: white;
 }
 
 .darkMode #leaderboard, .darkMode #leaderboard .header {
-  background-color: #121212;
+  background-color: #10161f;
   color: white;
 }
 

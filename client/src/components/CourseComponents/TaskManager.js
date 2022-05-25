@@ -118,7 +118,8 @@ function AnimatedWrapper(props) {
             // opacity ends at -0.2 to ensure component fades out 
             // before reaching transform end
             opacity: props.out ? -0.2 : 1, 
-            transform: props.out ? "translate(-10vwx, 0)" : "translate(0vw, 0)" 
+            transform: props.out ? 
+                "translate(-10vwx, 0)" : "translate(0vw, 0)" 
         }, 
         from: { 
             opacity: 0, 

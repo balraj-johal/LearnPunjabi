@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-
-import { 
-    DragDropContext, 
-    Droppable, 
-} from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import DragAnswerFragment from "./DragAnswerFragment";
 import PossAnswerFragment from "./PossAnswerFragment";
@@ -101,8 +97,15 @@ function SpecifiedOrder(props) {
 
     return(
         <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-center`} >
-            <div className="title absolute top-2 left-3">{ props.data.text }</div>
-            <AudioClip src={props.data.audioLink} />
+            <div className="h-4/5 flex flex-col justify-evenly">
+                <div className="title relative top-2 left-3 w-full
+                    flex flex-col px-4 items-start"
+                >
+                    <span className="mb-4">
+                        { props.data.text }
+                    </span>
+                    <AudioClip src={props.data.audioLink} />
+                </div>
             <div id="lists" className={`${props.animClasses}`}>
                 <DragDropContext onDragEnd={handleDragEnd} >
                     <Droppable 
@@ -155,6 +158,7 @@ function SpecifiedOrder(props) {
                         )}
                     </ul>
                 </div>
+            </div>
             </div>
             <NextButton next={() => {checkAnswer()}} />
         </div>

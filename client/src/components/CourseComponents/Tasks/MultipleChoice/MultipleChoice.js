@@ -14,26 +14,29 @@ function MultipleChoice(props) {
     }, [props.data])
 
     /** checks if answer is correct and handles outcome 
-     * @name checkAnswer
+     *  @name checkAnswer
      */
     let checkAnswer = () => {
         if (choice === Number(props.data.correctAnswerIndex)) {
             props.handleCorrect();
-        } else {
-            props.handleWrong();
-            setChoice(null);
+            return;
         }
+        props.handleWrong();
+        setChoice(null);
     }
 
     return(
         <div className="multiple-choice flex flex-col
             justify-center h-full"
         >
-            <div className="h-3/5 flex flex-col justify-evenly">
-                <div className="title relative top-2 left-3 w-full
-                    flex flex-col px-4 items-start"
+            <div className="md:h-4/5 md:mt-[-50px] flex flex-col justify-evenly">
+                <div className="title relative top-2 left-3 md:w-full w-11/12
+                    flex flex-row justify-between md:flex-col md:justify-start
+                    md:px-4 px-0 md:items-start items-center"
                 >
-                    <span className="mb-4">{ props.data.text }</span>
+                    <span className="mb-4">
+                        { props.data.text }
+                    </span>
                     <AudioClip src={props.data.audioLink} />
                 </div>
                 <div className={`answers-wrap ${props.animClasses}`}>
