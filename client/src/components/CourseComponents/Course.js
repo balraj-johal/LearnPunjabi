@@ -71,8 +71,11 @@ function Course(props) {
      * @returns { String } height - string to set height style to
      */
     let getWrapHeight = () => {
-        if (courseData.length > 0) return `${courseData.length * (205)}px`
-        return `calc(101vh)`
+        const lessonBased = courseData.length * (205);
+        if (courseData.length > 0 && lessonBased > window.innerHeight) {
+            `${lessonBased}px`;
+        }
+        return `calc(101vh)`;
     }
 
     if (loading) return <div className="lesson-wrap" style={{ height: "110%" }} />
@@ -86,7 +89,7 @@ function Course(props) {
             >
                 <div className="animate-fade-in z-10">
                     { courseData.length > 0 ? (
-                        courseData.map((lesson, index) => 
+                        courseData.map((lesson) => 
                             <LessonIcon 
                                 lesson={lesson}
                                 timesCompleted={getTimesCompleted(lesson.id)}
@@ -100,7 +103,7 @@ function Course(props) {
                         dpr={[1, 2]} 
                         camera={{ position: [0, 0, 30], fov: 100 }}
                     >
-                        { showParticles ? <Particles /> : null }
+                        { showParticles && <Particles /> }
                     </Canvas>
                     <div className={`h-full w-full bg-black absolute top-0
                         ${props.darkMode ? "opacity-30" : "opacity-0"}`} />
