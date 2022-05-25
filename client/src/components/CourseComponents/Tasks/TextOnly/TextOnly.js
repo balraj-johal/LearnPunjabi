@@ -13,7 +13,7 @@ function TextOnly(props) {
     }
 
     return(
-        <div className="text-only flex flex-row h-full">
+        <div className="text-only flex flex-col items-center md:flex-row h-full">
             <div className="w-3/12 flex items-center justify-center">
                 <AudioClip src={props.data.audioLink} />
                 <img src={testImg} className="mb-14" />
