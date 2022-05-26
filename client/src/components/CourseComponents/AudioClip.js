@@ -38,7 +38,7 @@ function AudioClip(props) {
                     ref.current.play();
                 }}
             >
-                <img src={AudioIcon} alt="play-audio-button-icon" />
+                <img src={AudioIcon} alt="Play audio" />
             </div>
         </div>
     )

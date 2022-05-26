@@ -20,11 +20,23 @@ function UserEntry(props) {
 function PodiumPlace(props) {
     switch (props.index) {
         case 0:
-            return <img src={firstPlace} className="h-full w-auto mr-2" />
+            return <img 
+                src={firstPlace} 
+                className="h-full w-auto mr-2" 
+                alt="First Place is"
+            />
         case 1:
-            return <img src={secondPlace} className="h-full w-auto mr-2" />
+            return <img 
+                src={secondPlace} 
+                className="h-full w-auto mr-2" 
+                alt="Second Place is"
+            />
         case 2:
-            return <img src={thirdPlace} className="h-full w-auto mr-2" />
+            return <img 
+                src={thirdPlace} 
+                className="h-full w-auto mr-2"
+                alt="Third Place is"
+             />
         default:
             break;
     }
