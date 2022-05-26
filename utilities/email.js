@@ -9,12 +9,11 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 // I need to delete the user document after verify email timeout
 
 let buildVerifCodeEmail = (params) => {
-    let link = `https://${params.host}/verify-email/${params.code}`
+    let link = `https://learn-punjabi-alphabet.herokuapp.com/verify-email/${params.code}`
     return msg = {
         to: params.recipient, // Change to your recipient
         from: 'balrajsjohal@gmail.com', // Change to your verified sender
         subject: 'Verify your account!',
-        // text: `link: ${link}`,
         html: `
             <table style="width:600px;">
                 <tr style="background-color:blue;color:white;height:80px;">
@@ -42,6 +41,13 @@ let buildVerifCodeEmail = (params) => {
                     
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="3" style="">
+                        <p>
+                            Your verification code is: ${params.code}
+                        </p>
+                    </td>
+                </tr>
             </table>
         `,
     }
@@ -57,6 +63,7 @@ exports.sendVerifCodeEmail = (params) => {
             console.error("sendgrid err: ", error.response.body)
         })
 }
+
 let buildPWResetEmail = (params) => {
     let link = `${params.host}/reset-password/${params.code}`
     return msg = {
