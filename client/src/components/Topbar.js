@@ -22,7 +22,7 @@ function Topbar(props) {
 
     // attempt to update redux topbar height value on change of ref height
     let setRefHeight = useCallback(() => {
-        if (topbarRef.current.clientHeight === 227) return props.setTopbarHeight(147); // TODO: remove hardcoded case
+        if (topbarRef.current.clientHeight === 227) return props.setTopbarHeight(147);
         props.setTopbarHeight(topbarRef.current.clientHeight);
     }, [topbarRef, child, path])
     useEffect(() => {
@@ -32,15 +32,13 @@ function Topbar(props) {
     return(
         <div id="topbar-wrap" ref={topbarRef} className="no-highlight" >
             <div id="topbar">
-                <Link to="/dashboard">
-                    { props.mobile ? <LogoIcon /> : <Logo /> }
-                </Link>
+                <CorrectLogo mobile={props.mobile} ready={props.mobileReady} />
                 <div className="flex flex-row items-center mr-6">
-                { props.auth.isAuthenticated && !props.mobile ? (
-                    <div className="mr-5 mt-2 animate-fade-in">
-                        Hello {props.auth.user.username}!
-                    </div>
-                ) : null }
+                    { props.auth.isAuthenticated && !props.mobile ? (
+                        <div className="mr-5 mt-2 animate-fade-in">
+                            Hello {props.auth.user.username}!
+                        </div>
+                    ) : null }
                     <EditButton role={props.auth.user.role} />
                     <AccountButton 
                         username={props.auth.user.username} 
@@ -54,9 +52,18 @@ function Topbar(props) {
     )
 }
 
+function CorrectLogo(props) {
+    if (!props.ready) return <div />;
+    return(
+        <Link to="/dashboard">
+            { props.mobile ? <LogoIcon /> : <Logo /> }
+        </Link>
+    )
+}
+
 function EditButton(props) {
     return(
-        <Link to="/edit/overview">
+        <Link to="/edit">
             { props.role === "Admin" ? (
                 <div className="account-button mr-2 hover:bg-primary2 
                     no-highlight transition-all animate-fade-in"
@@ -91,7 +98,8 @@ function AccountButton(props) {
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     auth: state.auth,
-    mobile: state.display.mobile
+    mobile: state.display.mobile,
+    mobileReady: state.display.mobileReady
 });
 
 export default connect(

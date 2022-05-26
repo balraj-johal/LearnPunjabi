@@ -270,7 +270,7 @@ function EditLesson(props) {
             />
             <Link 
                 className="absolute p-2 text-sm text-primary" 
-                to="/edit/overview" 
+                to="/edit" 
                 replace
             >
                 &lt; back to overview
