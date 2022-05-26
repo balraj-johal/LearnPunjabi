@@ -10,9 +10,8 @@ const express = require("express");
  */
 const router = express.Router();
 
-const { 
-    verifyToken,
-} = require("../utilities/authentication");
+const { verifyToken } = require("../utilities/authentication");
+const { getFileLink } = require("./s3");
 
 const Lesson = require("../models/lesson.model");
 
@@ -27,7 +26,7 @@ let buildOverviewObject = async () => {
     for await (const lesson of Lesson.find()) {
         overview.push({
             name: lesson.name,
-            strId: lesson.strId,
+            id: lesson.id,
             requiredCompletions: lesson.requiredCompletions,
             tasksLength: lesson.tasks.length
         })
@@ -42,16 +41,15 @@ let buildOverviewObject = async () => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/", (req, res) => {
-    verifyToken(req)
-        .then(user => {
-            buildOverviewObject()
-                .then(overview => {
-                    if (overview) return res.status(200).send({ overview: overview });
-                    return res.status(404).send({ message: "overview data not found..." });
-                })
-            })
-            .catch(err => { return res.status(500).send( {error: err}); })
+router.get("/", async (req, res, next) => {
+    try {
+        await verifyToken(req);
+        const overview = await buildOverviewObject();
+        if (overview) return res.status(200).send({ overview: overview });
+        return res.status(404).send({ message: "overview data not found..." });
+    } catch (error) {
+        next(err);
+    }
 })
 
 /**
@@ -61,15 +59,24 @@ router.get("/", (req, res) => {
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/:lessonID", async (req, res) => {
+router.get("/:lessonID", async (req, res, next) => {
     try {
         await verifyToken(req);
-        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
+        const LESSON_PARAMS = { id: { $eq: req.params.lessonID } };
+        let lesson = await Lesson.findOne(LESSON_PARAMS);
         if (!lesson) return res.status(404).send("Lesson not found.");
-        return res.status(200).send(lesson);
+        let modifiedLesson = {...lesson._doc};
+        for (let i = 0; i < modifiedLesson.tasks.length; i++) {
+            const task = modifiedLesson.tasks[i]
+            if (task.audioFilename) {
+                let audioLink = await getFileLink(task.audioFilename);
+                task.audioLink = audioLink;
+            }
+        }
+        return res.status(200).send(modifiedLesson);
     } catch (err) {
-        // TODO: correct response codes
-        return res.status(500).send({ error: err })
+        // next(err);
+        return res.status(500).send({error: err});
     }
 })
 
@@ -84,11 +91,11 @@ router.get("/:lessonID", async (req, res) => {
 router.post("/:lessonID", async (req, res) => {
     try {
         const user = await verifyToken(req);
-        if (user.role !== "Admin") return res.status(401).send("Unauthorised.")
-        let lesson = await Lesson.findOne({ strId: { $eq: req.params.lessonID } })
-        if (!lesson) lesson = new Lesson()
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
+        let lesson = await Lesson.findOne({ id: { $eq: req.params.lessonID } });
+        if (!lesson) lesson = new Lesson();
         lesson.name = req.body.name;
-        lesson.strId = req.body.strId;
+        lesson.id = req.body.id;
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
         lesson.noToSample = req.body.noToSample;
@@ -96,13 +103,14 @@ router.post("/:lessonID", async (req, res) => {
         lesson.showPercentCorrect = req.body.showPercentCorrect;
         lesson.tasks = req.body.tasks;
         lesson.save()
-            .then(saved => { return res.status(200).send({
-                savedLesson : saved,
-                message: "Save successful."
-            }); })
-            .catch(err => { return res.status(500).send("Error saving lesson: " + err); })
+            .then(saved => { 
+                return res.status(200).send({
+                    savedLesson: saved,
+                    message: "Save successful."
+                });
+            })
+            .catch(err => { return res.status(500).send(err); })
     } catch (err) {
-        // TODO: correct response codes
         return res.status(500).send({ error: err })
     }
 })

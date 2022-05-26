@@ -1,6 +1,17 @@
 import React, {  } from "react";
+import Loader from "../Loader";
 
 function ConfirmationPrompt(props) {
+    if (props.saving) return(
+        <div className={`w-screen h-screen flex justify-center items-center
+            z-10 absolute top-0 left-0
+            ${props.showSubmitConfirm && !props.submitSuccess ? "" : "hidden"}    
+        `}>
+            <div className="opacity-50 w-screen h-screen bg-green-500 absolute">
+            </div>
+            <Loader />
+        </div>
+    ) 
     return(
         <div className={`w-screen h-screen flex justify-center items-center
             z-10 absolute top-0 left-0

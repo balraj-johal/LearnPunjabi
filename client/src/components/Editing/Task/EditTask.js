@@ -9,9 +9,9 @@ function EditTask(props) {
     let [task, setTask] = useState(props.task);
 
     useEffect(() => {
-        if (task.audioSrc) return;
+        if (task.audioFilename) return;
         let copy = {...task};
-        copy.audioSrc = "";
+        copy.audioFilename = "";
         setTask(copy);
     }, [])
 
@@ -79,13 +79,6 @@ function EditTask(props) {
                     type="textarea" 
                     for="text" 
                     value={task.text} 
-                    onChange={onChange} 
-                    errors={props.errors[task.taskID]} 
-                />
-                <FormInput 
-                    type="text" 
-                    for="audioSrc" 
-                    value={task.audioSrc} 
                     onChange={onChange} 
                     errors={props.errors[task.taskID]} 
                 />

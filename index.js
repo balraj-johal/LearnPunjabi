@@ -28,7 +28,6 @@ const connectDB = async () => {
                 useUnifiedTopology: true
             }
         );
-  
         console.log('MongoDB is Connected...');
     } catch (err) {
         console.error(err.message);
@@ -94,7 +93,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/users/progress", progress);
 app.use("/api/v1/groups", groups);
 app.use("/api/v1/lessons", lessons);
-app.use("/api/v1/s3", s3);
+app.use("/api/v1/s3", s3.router);
 
 const PORT = process.env.PORT || 3001;
 

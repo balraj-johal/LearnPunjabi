@@ -1,24 +1,32 @@
-import React, {  } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
 
-import testImg from "../../../../res/icons/fella.png"
+import testImg from "../../../../res/icons/fella.png";
 import NextButton from "../NextButton";
+import AudioClip from "../../AudioClip";
 
 function TextOnly(props) {
+    let [showSide, setShowSide] = useState(false);
+
+    /** moves to next task
+     *  @name submitContinue
+     */
     let submitContinue = () => {
         setTimeout(() => {
             props.submit(true);
         }, 200);
     }
 
+    useEffect(() => {
+        if (props.data.audioLink || props.data.image) setShowSide(true);
+    }, [props.data])
+
     return(
-        <div className="text-only flex flex-row h-full">
-            <div className="w-3/12 flex items-center justify-center">
-                <img src={testImg} className="mb-14" />
-            </div>
-            <div className="w-1/12">
-            </div>
-            <div id="text-only-content" className="w-9/12 flex flex-col justify-center">
+        <div className="text-only flex flex-row md:flex-row h-full justify-between">
+            { showSide && <TextOnlySide data={props.data} /> }
+            <div 
+                id="text-only-content" 
+                className="w-8/12 flex flex-col justify-center m-auto"
+            >
                 { props.data.text } 
             </div>
             <NextButton next={submitContinue} />
@@ -26,12 +34,20 @@ function TextOnly(props) {
     );
 }
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-});
+const SIDE_STYLES = "w-3/12 flex items-center justify-center";
 
-export default connect(
-    mapStateToProps,
-    {
-    }
-)(TextOnly);
+function TextOnlySide(props) {
+    // audio takes priority
+    if (props.data.audioLink) return(
+        <div className={SIDE_STYLES}>
+            <AudioClip src={props.data.audioLink} />
+        </div>
+    )
+    if (props.data.image) return(
+        <div className={SIDE_STYLES}>
+            <img src={testImg} className="mb-14" />
+        </div>
+    )
+}
+
+export default TextOnly;

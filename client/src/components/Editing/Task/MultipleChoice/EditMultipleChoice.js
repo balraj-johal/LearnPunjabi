@@ -80,8 +80,10 @@ function EditMultipleChoice(props) {
     return(
         <div style={{display: props.show ? "initial" : "none"}}>
             Possible Answers:
-            <div className="possible-answers flex flex-wrap w-100 
-                justify-center flex-row">
+            <div 
+                className="possible-answers flex flex-wrap w-100 
+                    justify-center flex-row"
+            >
                 {data.possibleAnswers?.map((possible, index) => (
                     <TaskAnswer 
                         key={index} 

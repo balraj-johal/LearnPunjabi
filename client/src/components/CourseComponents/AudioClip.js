@@ -1,39 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import AudioIcon from "../../res/icons/audio.png";
 
 function AudioClip(props) {
-    // attempt to play on load for mobile
-    useEffect(() => {
-        let audio = document.getElementById(`audio-${props.src}`)
-        let handler = () => {
-            if (audio.readState >= 2) {
-                audio.play();
-            }
-        }
-        audio.addEventListener("loadeddata", handler);
+    let ref = useRef();
 
-        return () => {
-            audio.removeEventListener("loadeddata", handler);
+    // attempt to manually autoplay
+    useEffect(() => {
+        if (!props.src) return;
+        // Ref was not used here as was returning null when mounted
+        let audioElem = document.getElementById(`audio-${props.src}`);
+        let handler = () => {
+            if (audioElem.readState >= 2) audioElem.play();
+        }
+        audioElem.addEventListener("loadeddata", handler);
+
+        return () => { 
+            if (audioElem) audioElem.removeEventListener("loadeddata", handler);
         }
     }, [props.src])
 
+    if (!props.src) return null;
     return(
         <div className="audio no-highlight">
             <audio 
                 id={`audio-${props.src}`} 
-                src={ `https://d2hks59q0iv04y.cloudfront.net/${props.src}` }
+                src={props.src}
                 preload="auto"
                 autoPlay={true}
+                ref={ref}
             />
-            <div className="replay-audio-button button active:bg-primary2 transition-all" 
+            <div 
+                className="replay-audio-button button 
+                    active:bg-primary2 transition-all" 
                 onClick={() => {
-                    let audElem = document.getElementById(`audio-${props.src}`);
-                    audElem.currentTime = 0;
-                    audElem.play();
+                    ref.current.currentTime = 0;
+                    ref.current.play();
                 }}
             >
-                <img src={AudioIcon} alt="play-audio-button-icon"></img>
+                <img src={AudioIcon} alt="play-audio-button-icon" />
             </div>
         </div>
     )

@@ -25,7 +25,7 @@ import PopInModal from "../PopInModal";
 // TODO: where best to store new lesson template?
 const NEW_LESSON = {
     name: "",
-    strId: "new",
+    id: "new",
     requiredCompletions: 1,
     shuffle: false,
     showInterstitials: true,
@@ -39,6 +39,7 @@ function EditLesson(props) {
     
     let [lesson, setLesson] = useState();
     let [ready, setReady] = useState(false);
+    let [saving, setSaving] = useState(false);
     let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
     let [submitSuccess, setSubmitSuccess] = useState(false);
     let [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -106,57 +107,61 @@ function EditLesson(props) {
         setShowSubmitConfirm(true);
     }
 
-    const handleUpload = async (file) => {
-    }
-
     /** If user has confirmed intention to save, post current form state to server
      * @name saveLesson
      */
     let saveLesson = async () => {
         try {
+            setSaving(true);
             // copy object
             let lessonCopy = {...lesson};
             lessonCopy = removeUnnecessaryTaskProperties(lesson);
 
             // assign id if necessary
-            if (!lessonCopy.strId || lessonCopy.strId === "new") 
-                lessonCopy.strId = `lesson-${lessonCopy.name}`;
+            if (!lessonCopy.id || lessonCopy.id === "new") 
+                lessonCopy.id = `lesson-${lessonCopy.name}`;
 
             // validate
             let validationErrors = _getLessonValidationErrors(lessonCopy);
             setErrors(validationErrors);
-            if (!_isObjectEmpty(validationErrors)) return setShowSubmitConfirm(false);
+            if (!_isObjectEmpty(validationErrors)) {
+                setSaving(false);
+                setShowSubmitConfirm(false);
+                return;
+            }
             
             // build audio file upload promises
             const fileUploads = [];
             lessonCopy.tasks.forEach(task => {
-                if (!task.audio) return;
-                task.audioSrc = task.audio.name;
+                if (!task.audio || task.audio?.name === "") return;
+                task.audioFilename = task.audio.name;
                 const fileData = new FormData();
                 fileData.append('file', task.audio);
+                const options = { 
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    timeout: 30 * 1000,
+                }
                 fileUploads.push(
-                    axiosClient.post(
-                        `/api/v1/s3/upload`, 
-                        fileData,
-                        { headers: { 'Content-Type': 'multipart/form-data' } }
-                    )
+                    axiosClient.post(`/api/v1/s3/upload`, fileData, options)
                 );
             })
 
             // send api request to save lesson data
-            await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.strId)}`, 
+            await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.id)}`, 
                 qs.stringify(lessonCopy));
 
             // send upload requests for files
             await Promise.all(fileUploads);
 
             // handle success
+            setSaving(false);
             setSubmitSuccess(true);
             setShowSuccessModal(true);
         } catch (error) {
+            setSaving(false);
+            setShowSubmitConfirm(false);
             setErrors(error.response.data);
         }
-            
     }
 
     /** updates form state on change of form field value
@@ -180,9 +185,7 @@ function EditLesson(props) {
         let tasksCopy = lesson.tasks;
         let targetIndex;
         tasksCopy.forEach((task, i) => {
-            if (task.taskID === updatedTask.taskID) {
-                targetIndex = i;
-            }
+            if (task.taskID === updatedTask.taskID) targetIndex = i;
         });
         tasksCopy[targetIndex] = updatedTask;
         let updatedLesson = {...lesson, tasks: tasksCopy}
@@ -193,12 +196,12 @@ function EditLesson(props) {
      * @name addNewTask
      */
     let addNewTask = () => {
-        let tasksCopy = lesson.tasks;
+        const tasksCopy = lesson.tasks;
         tasksCopy.push({
             taskID: String(tasksCopy.length + 1),
             text: "",
             type: "TextOnly",
-            audioSrc: "",
+            audioFilename: "",
             audio: {name: ""},
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
@@ -263,6 +266,7 @@ function EditLesson(props) {
                 setShowSubmitConfirm={setShowSubmitConfirm}
                 submitSuccess={submitSuccess}
                 saveLesson={saveLesson}
+                saving={saving}
             />
             <Link 
                 className="absolute p-2 text-sm text-primary" 

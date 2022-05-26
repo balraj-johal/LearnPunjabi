@@ -6,7 +6,7 @@ const lessonSchema = new mongoose.Schema({
         required: true,
         default: "Lesson-"
     },
-    strId: {
+    id: {
         type: String,
         unique: true,
         required: false,

@@ -2,53 +2,38 @@ require("dotenv").config();
 
 const express = require("express");
 const router = express.Router();
-// const multer = require("multer");
-// const DOCUMENT = require("../models/document.model");
-// let AWS = require("aws-sdk");
-// let awsCloudFront  = require('aws-cloudfront-sign');
 const formidable = require("formidable");
-// const path = require("path");
 const fs = require("fs");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { Upload } = require("@aws-sdk/lib-storage");
-const { S3Client } = require("@aws-sdk/client-s3");
+const sanitize = require("sanitize-filename");
 
 const REGION = "eu-west-2";
 const s3Client = new S3Client({ region: REGION });
 
-// let storage = multer.memoryStorage();
-// let upload = multer({ storage: storage });
-
-// function asyncHandler(handler) {
-//     return function (req, res, next) {
-//         console.log("handler executed")
-//         if (!handler) {
-//             next(new Error(`Invalid handler ${handler}, it must be a function.`));
-//         } else {
-//             handler(req, res, next).catch(next);
-//         }
-//     };
-// }
-// function getFileLink(filename) {
-//     return new Promise(function (resolve, reject) {
-//         // let options = { keypairId: process.env.CLOUDFRONT_ACCESS_KEY_ID, privateKeyPath: process.env.CLOUDFRONT_PRIVATE_KEY_PATH };
-//         try {
-//             let signedUrl = awsCloudFront.getSignedUrl(process.env.CLOUDFRONT_URL + "/" + filename, options);
-//             resolve(signedUrl);
-//         } catch {
-//             console.log("error when signing")
-//             console.log("testing acesskey id, ", process.env.CLOUDFRONT_ACCESS_KEY_ID)
-//             console.log("testing paf, ", process.env.CLOUDFRONT_URL + "/" + filename)
-//             reject();
-//         }
-//     });
-// }
-// async function download(req, res) {
-//     console.log("filename:", req.query.filename);
-//     let response = await getFileLink(req.query.filename);
-//     res.send(response);
-//     res.end();
-// }
-
+/** Gets presigned link to S3 file
+ * @name getFileLink
+ * @param {String} filename - relative path of object to fetch from bucket
+ * @returns {Promise}
+ */
+function getFileLink(filename) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const BUCKET_PARAMS = {
+                Bucket: "balraj-portfolio-bucket",
+                Key: `${filename}`,
+                Body: "BODY"
+            }
+            const getCommand = new GetObjectCommand(BUCKET_PARAMS);
+            const signedURL = await getSignedUrl(s3Client, getCommand, 
+                { expiresIn: 10 * 60 * 1000 } );
+            resolve(signedURL);
+        } catch(error) {
+            reject(error);
+        }
+    });
+}
 
 router.post("/upload", (req, res, next) => {
     const form = formidable({});
@@ -58,7 +43,7 @@ router.post("/upload", (req, res, next) => {
         const target = { 
             Bucket: 'balraj-portfolio-bucket', 
             Key: file.originalFilename, 
-            Body: fs.createReadStream(file.filepath) 
+            Body: fs.createReadStream(sanitize(file.filepath)) 
         };
         try {
             const parallelUploads3 = new Upload({
@@ -68,11 +53,9 @@ router.post("/upload", (req, res, next) => {
                 leavePartsOnError: false, // optional manually handle dropped parts
                 params: target,
             });
-        
-            parallelUploads3.on("httpUploadProgress", (progress) => {
-                console.log(progress);
-            });
-        
+            // parallelUploads3.on("httpUploadProgress", (progress) => {
+            //     console.log("uploading: ", progress);
+            // });
             await parallelUploads3.done();
             res.json({ files });
         } catch (error) {
@@ -81,6 +64,5 @@ router.post("/upload", (req, res, next) => {
     })
 });
 
-// router.route("/get-image").get(asyncHandler(download));
 
-module.exports = router;
+module.exports = {router, getFileLink};
