@@ -12,7 +12,6 @@
 }
 
 .welcome-div {
-    height: 100vh;
     position: relative;
     color: white;
     overflow: hidden;
@@ -48,7 +47,7 @@
         #prompt-text {
             margin-top: 30px;
             line-height: 1.25em;
-            font-size: 16px;
+            // font-size: 16px;
             padding-right: 15px;
             font-weight: normal;
         }
@@ -88,14 +87,9 @@
             .title {
                 font-weight: bold;
             }
-            opacity: 0;
             transition: 1s ease-in-out;
-            background-color: #ffffff83;
             color: black;
             border-radius: 5px;
-            &.visible {
-                opacity: 1 !important;
-            }
         }
     }
 }
@@ -173,7 +167,7 @@
             }
         }
         #prompt-text {
-            font-size: 24px !important;
+            // font-size: 24px !important;
             margin-top: 30px;
         }
         .action-button {

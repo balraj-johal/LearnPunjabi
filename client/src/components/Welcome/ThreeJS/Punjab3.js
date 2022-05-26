@@ -56,6 +56,7 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
             onClick={ e => stickHoverOnClick() }
             onPointerEnter={ e => setHovering(true) }
             onPointerLeave={ e => handlePointerLeave(e) }
+            position={[0, -0.5, 0]}
         >
             <mesh 
                 geometry={nodes.Map_rivers001.geometry} 
@@ -77,7 +78,11 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
                     showR1Label(false)
                 }}
             >
-                <meshBasicMaterial color="blue" opacity={Math.min(1, alpha * 2 - 1)} transparent />
+                <meshBasicMaterial 
+                    color={0x00a3ff}
+                    opacity={Math.min(1, alpha * 2 - 1)} 
+                    transparent 
+                />
             </mesh>
             { r1label && <Caption lookAt={props.cameraRef}>Test</Caption>}
             <mesh 

@@ -705,7 +705,6 @@ button:disabled:hover {
 }
 
 .welcome-div {
-  height: 100vh;
   position: relative;
   color: white;
   overflow: hidden;
@@ -758,7 +757,6 @@ button:disabled:hover {
 .welcome-div #middle-bit #prompt-text {
   margin-top: 30px;
   line-height: 1.25em;
-  font-size: 16px;
   padding-right: 15px;
   font-weight: normal;
 }
@@ -808,20 +806,14 @@ button:disabled:hover {
 
 #welcome-2 #info-points .info-point {
   font-size: 14px;
-  opacity: 0;
   -webkit-transition: 1s ease-in-out;
   transition: 1s ease-in-out;
-  background-color: #ffffff83;
   color: black;
   border-radius: 5px;
 }
 
 #welcome-2 #info-points .info-point .title {
   font-weight: bold;
-}
-
-#welcome-2 #info-points .info-point.visible {
-  opacity: 1 !important;
 }
 
 #welcome-3 {
@@ -914,7 +906,6 @@ button:disabled:hover {
     font-size: 24px !important;
   }
   #middle-bit #prompt-text {
-    font-size: 24px !important;
     margin-top: 30px;
   }
   #middle-bit .action-button {
