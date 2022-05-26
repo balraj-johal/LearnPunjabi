@@ -1,10 +1,21 @@
-import React, {  } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Outlet } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Topbar from "./Topbar";
 import CookieConsent from "react-cookie-consent";
 
-function InternalPage({ children, ...props }) {
+function InternalPage(props) {
+    let navigate = useNavigate();
+    // NOTE: this gives whole path, not path pattern
+    let path = useLocation().pathname; 
+    
+    // redirect to dashboard if user is at site root
+    useEffect(() => {
+        if (path === "/") navigate("/dashboard");
+    }, [path])
+
     return(
         <>
             <Topbar />
@@ -13,7 +24,7 @@ function InternalPage({ children, ...props }) {
                 id="internal-main" 
                 style={{height: `calc(100vh - ${props.topbarHeight}px)`}} 
             >
-                { children }
+                {!props.loading && <Outlet />}
             </div>
             <CookieConsent
                 acceptOnScroll={true}
@@ -29,6 +40,9 @@ function InternalPage({ children, ...props }) {
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     topbarHeight: state.display.topbarHeight,
+    isAuthenticated: state.auth.isAuthenticated,
+    loading: state.auth.loading
+
 });
 
 export default connect(

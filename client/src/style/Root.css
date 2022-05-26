@@ -460,6 +460,8 @@ button:disabled:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .multiple-choice-answer {
@@ -527,14 +529,16 @@ button:disabled:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   list-style-type: none;
   min-height: 51px;
   padding: 8px 2px;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.226);
 }
 
 .specified-order #answers {
-  margin-bottom: 0.25em !important;
+  margin-bottom: 1.5em !important;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.226);
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;

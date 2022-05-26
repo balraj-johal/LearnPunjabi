@@ -2,15 +2,16 @@
     .answers-wrap, #answers, #possibilites {
         margin: 1em 0;
         display: flex;
+        flex-wrap: wrap;
         list-style-type: none;
 
         min-height: 51px;
 
         padding: 8px 2px;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.226);
     }
     #answers {
-        margin-bottom: 0.25em !important;
+        margin-bottom: 1.5em !important;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.226);
         justify-content: center;
     }
 
