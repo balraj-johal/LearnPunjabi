@@ -45,7 +45,7 @@ function TextOnlySide(props) {
     )
     if (props.data.image) return(
         <div className={SIDE_STYLES}>
-            <img src={testImg} className="mb-14" />
+            <img src={testImg} className="mb-14" alt={props.data.imgAlt} />
         </div>
     )
 }

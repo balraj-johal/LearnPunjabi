@@ -312,6 +312,8 @@ function EditLesson(props) {
                         onChange={onChange}
                         value={lesson.noToSample}
                         type="number" 
+                        min={0}
+                        max={lesson.tasks.length}
                         errors={errors}
                     /> : null }
                     <FormInput

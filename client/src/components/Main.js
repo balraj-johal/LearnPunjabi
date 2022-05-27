@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
 
 // import redux actions
@@ -40,7 +40,7 @@ function Main(props) {
     useEffect(() => {
         let timeout;
         const verifyUser = () => {
-            if (!csrf.ready) return;
+            if (!csrf.ready) return timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);;
             props.useRefreshToken();
             timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
         }

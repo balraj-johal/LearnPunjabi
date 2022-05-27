@@ -71,7 +71,7 @@ function EditButton(props) {
                     <img 
                         style={{margin: "-2px -2px 0 0"}} // minor adjustment to center icon
                         src={EditIcon} 
-                        alt="account-open-button-icon" 
+                        alt="Open lesson edit menu" 
                         className="no-highlight" 
                     />
                 </div>
@@ -87,7 +87,7 @@ function AccountButton(props) {
             >
                 <img 
                     src={AccountIcon} 
-                    alt="account-open-button-icon" 
+                    alt="Open account page" 
                     className="no-highlight" 
                 />
             </div>

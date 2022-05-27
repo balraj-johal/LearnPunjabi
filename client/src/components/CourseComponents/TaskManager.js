@@ -32,7 +32,7 @@ function TaskManager(props) {
         setTimeout(() => {
             props.setAnimClasses("");
             setAnimating(false);
-            props.submitAnswer(false);
+            props.submit(false, props.taskData.type);
         }, 750);
     }
 
@@ -42,7 +42,7 @@ function TaskManager(props) {
         setTimeout(() => {
             setOut(false);
             setAnimating(false);
-            props.submitAnswer(true);
+            props.submit(true, props.taskData.type);
         }, 600);
     }
 
@@ -94,7 +94,6 @@ function TaskManager(props) {
             component = <Intersitial 
                     data={props.taskData} 
                     submit={() => handleExit()}
-                    stats={props.stats}
                 />
             break;
         default:

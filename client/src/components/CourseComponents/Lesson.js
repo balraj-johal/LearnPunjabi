@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import qs from "qs";
 
 import axiosClient from "../../axiosDefaults";
-import qs from "qs";
+import { _shuffle } from "../../utils/arrays";
 
 //import redux actions
 import { setProgress } from "../../actions/courseActions";
@@ -11,8 +12,6 @@ import { getUserData } from "../../actions/authActions";
 
 // import components
 import TaskManager from "./TaskManager";
-
-import { _shuffle } from "../../utils/arrays";
 import ProgressBar from "./ProgressBar";
 
 function Lesson(props) {
@@ -25,6 +24,7 @@ function Lesson(props) {
     let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     let [answerTracking, setAnswerTracking] = useState({ noCorrect: 0, noWrong: 0, });
     let [mistakeTracker, setMistakeTracker] = useState([]);
+    let [noOfTasks, setNoOfTasks] = useState(0);
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
@@ -35,6 +35,8 @@ function Lesson(props) {
                 if (data.shuffle) data.tasks = _shuffle(data.tasks);
                 if (data.shuffle && data.noToSample > 0) 
                     data.tasks = data.tasks.slice(0, data.noToSample);
+                setNoOfTasks(data.tasks.length);
+                console.log("number of tasks,", data.tasks.length);
                 // add lesson end screen
                 data.tasks.push({
                     taskID: "end",
@@ -87,10 +89,14 @@ function Lesson(props) {
 
     /** 
      * handle and track a valid or invalid answer
-     * @name submitAnswer
+     * @name submit
      * @param  {Boolean} correct - was user's answer correct
+     * @param  {String} taskType
      */
-    let submitAnswer = (correct) => {
+    const typesToIgnore = ["End", "Interstitial"]
+    let submit = (correct, taskType) => {
+        // check task type here
+        if (typesToIgnore.includes(taskType)) return nextTask();
         if (correct) {
             setAnswerTracking({
                 noCorrect: answerTracking.noCorrect += 1,
@@ -139,24 +145,33 @@ function Lesson(props) {
             })
             .catch(err => { console.log(err); })
     }
+
+    /** Caculates progress through lesson
+     * @name getProgressPercent
+     * @returns {Number} progress as percentage
+     */
+    let getProgressPercent = () => {
+        return answerTracking.noCorrect / noOfTasks * 100;
+    }
     
-    if (!ready) return(
-        <div className="w-full h-full relative flex items-center 
-            justify-center animate-fade-in"
-        >
-            <ProgressBar percent={0} />
-        </div>
-    );
+    // if (!ready) return(
+    //     <div className="w-full h-full relative flex items-center 
+    //         justify-center animate-fade-in"
+    //     >
+    //         <ProgressBar percent={0} />
+    //     </div>
+    // );
+    if (!ready) return null;
     return(
         lesson ? (
             <div className="w-full h-full relative flex 
                 items-center justify-center"
             >
-                <ProgressBar percent={currentTaskIndex / lesson.tasks.length * 100} />
+                <ProgressBar percent={getProgressPercent()} />
                 <TaskManager
-                    taskData={ lesson.tasks[currentTaskIndex] }
-                    submitAnswer={ submitAnswer }
-                    stats={ `${getPercentCorrect()}%` }
+                    taskData={lesson.tasks[currentTaskIndex]}
+                    submit={submit}
+                    stats={`${getPercentCorrect()}%`}
                 />
             </div>
         ) : 

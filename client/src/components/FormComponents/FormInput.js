@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {  } from "react";
 import FormError from "./FormError";
 import FormLabel from "./FormLabel";
 
@@ -74,6 +74,8 @@ function FormInput(props) {
                 task={props.task} 
                 onChange={props.onChange} 
                 extraStyles={props.extraStyles}
+                min={props.min}
+                max={props.max}
             />
             break;
         default:
@@ -129,7 +131,7 @@ function FormFile(props) {
     return(
         <input
             onChange={props.onChange}
-            // value={props.value?.name}
+            accept="audio/*"
             id={`${props.for}`}
             type="file"
             className={`${INPUT_STYLES} ${props.extraStyles}`}
@@ -146,6 +148,8 @@ function FormNumber(props) {
             id={`${props.for}`}
             type="number"
             className={`${INPUT_STYLES} ${props.extraStyles}`}
+            min={props.min}
+            max={props.max}
         />
     )
 }
