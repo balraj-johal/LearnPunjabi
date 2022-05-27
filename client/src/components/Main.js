@@ -22,6 +22,10 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
+import FooterPage from "./FooterPage";
+import About from "./FooterPages/About";
+import Privacy from "./FooterPages/Privacy";
+import Attributions from "./FooterPages/Attributions";
 
 function Main(props) {
     // fetch csrf token and store in redux reducer
@@ -119,7 +123,14 @@ function Main(props) {
                             } />
                         </Route>
                     </Route>
-                    <Route path="/welcome" element={<Welcome loginQueried={props.csrf} />} />
+                    <Route path="welcome" >
+                        <Route path="" element={<Welcome loginQueried={props.csrf} />} />
+                        <Route path="page" element={<FooterPage />}>
+                            <Route path="about" element={<About />} />
+                            <Route path="privacy" element={<Privacy />} />
+                            <Route path="attributions" element={<Attributions />} />
+                        </Route>
+                    </Route>
                     <Route path="account" element={<InternalPage />}>
                         <Route path="" element={<AccountManager />} />
                         <Route path="reset-password/:code" element={<ResetPassword />} />

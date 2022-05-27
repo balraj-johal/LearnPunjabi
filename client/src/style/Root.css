@@ -964,6 +964,10 @@ button:disabled:hover {
   }
 }
 
+.footer-page {
+  overflow: hidden;
+}
+
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;
