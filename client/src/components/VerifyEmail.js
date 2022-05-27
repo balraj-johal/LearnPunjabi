@@ -19,7 +19,7 @@ function VerifyEmail(props) {
                     setSuccessful(true);
                     redirectTimeout = setTimeout(() => {
                         navigate("/account");
-                    }, 1500);
+                    }, 5000);
                 })
                 .catch(err => { console.log(err); })
         }
@@ -30,7 +30,7 @@ function VerifyEmail(props) {
     return (
         <div className="accounts-wrap" id="verify-email">
             {successful ? (
-                <div className="flex justify-center items-center text-center">
+                <div className="flex justify-center items-center text-center h-full p-4">
                     Email verification successful! Please log in with your details!
                 </div>
             ) : (
