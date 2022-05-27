@@ -129,7 +129,7 @@ function FormFile(props) {
     return(
         <input
             onChange={props.onChange}
-            // value={props.value?.name}
+            accept="audio/*"
             id={`${props.for}`}
             type="file"
             className={`${INPUT_STYLES} ${props.extraStyles}`}
