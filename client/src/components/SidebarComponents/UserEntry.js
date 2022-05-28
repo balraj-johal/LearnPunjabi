@@ -1,7 +1,7 @@
 import React from "react";
-import firstPlace from "../../res/icons/leaderboards/podium1.png";
-import secondPlace from "../../res/icons/leaderboards/podium2.png";
-import thirdPlace from "../../res/icons/leaderboards/podium3.png";
+import firstPlace from "../../res/icons/leaderboards/gold-medal.png";
+import secondPlace from "../../res/icons/leaderboards/silver-medal.png";
+import thirdPlace from "../../res/icons/leaderboards/bronze-medal.png";
 
 /** Leaderboard entry for user
  */
