@@ -8,7 +8,6 @@ import wave from "../../res/animations/wave.json";
 const ANIMATION_OFFSET_CLASS = "mt-[117px]";
 
 function LessonIcon(props) {
-    let navigate = useNavigate();
     let [startFrame, setStartFrame] = useState(randNo(0, 30));
     let [waterFillAmount, setWaterFillAmount] = useState(0);
     let [showWave, setShowWave] = useState();

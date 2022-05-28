@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useSpring, animated, config } from 'react-spring';
 
 import GenericButton from "../GenericButton";
+import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
 function AccountSummary(props) {
     let [xpAnimFinished, setXpAnimFinished] = useState(false);
@@ -23,47 +24,68 @@ function AccountSummary(props) {
     return(
         <animated.div 
             style={{opacity: fadeSpring.opacity}}
-            className="flex flex-col justify-evenly h-full top-0 w-full"
+            className="h-full w-full"
         >
-            <div 
-                id="acct-name" 
-                className="w-full flex items-center justify-evenly md:my-8 my-2 px-4 font-normal"
+            <form 
+                noValidate 
+                onSubmit={() => { props.logoutUser() }} 
+                className="flex flex-col h-full top-0 w-full"
             >
-                <h2 className="md:text-4xl text-xl my-2">
-                    Hi&nbsp;
-                    <span className="font-bold">
-                        {props.user.firstName}!
-                    </span>
-                </h2>
-            </div>
-            <div 
-                id="total-xp" 
-                className="w-full flex items-center justify-evenly no-highlight md:my-8 my-2 px-4"
-            >
-                <div className="md:w-4/12 w-6/12 md:mr-0 mr-10 flex flex-col items-center justify-center">
-                    <div className="md:text-3xl text-xl md:my-1 w-full text-left font-normal">You have</div>
-                    <div className="md:text-5xl text-2xl md:mb-1 w-full flex justify-end">
-                        <animated.div className="mr-4">
-                            {XPSpring.xp.to(xp => Math.floor(xp))}
-                        </animated.div> XP!
+                <div 
+                    id="acct-name" 
+                    className="w-full flex items-center justify-evenly 
+                        px-4 font-normal h-1/6"
+                >
+                    <h2 className="md:text-4xl text-xl my-2">
+                        Hi&nbsp;
+                        <span className="font-bold">
+                            {props.user.firstName}!
+                        </span>
+                    </h2>
+                </div>
+                <div 
+                    id="total-xp" 
+                    className="w-full flex items-center justify-evenly 
+                        no-highlight px-4 h-2/6"
+                >
+                    <div className="md:w-4/12 w-6/12 md:mr-0 mr-10 
+                        flex flex-col items-center justify-center"
+                    >
+                        <div className="lg:text-3xl md:text-2xl text-xl md:my-1 
+                            w-full text-left font-normal"
+                        >
+                            You have
+                        </div>
+                        <div className="lg:text-5xl md:text-4xl text-2xl md:mb-1 
+                            w-full flex justify-end"
+                        >
+                            <animated.div className="mr-4">
+                                {XPSpring.xp.to(xp => Math.floor(xp))}
+                            </animated.div> XP!
+                        </div>
+                    </div>
+                    <div className="md:w-3/12 max-w-[100px] md:max-w-sm md:min-w-[140px] w-4/12 md:p-4 
+                        flex flex-col items-center justify-center"
+                    >
+                        { xpAnimFinished ? <Smiley /> : <Frowney /> }
                     </div>
                 </div>
-                <div className="md:w-3/12 w-4/12 flex flex-col items-center justify-center md:p-4">
-                    { xpAnimFinished ? <Smiley /> : <Frowney /> }
+                <div 
+                    id="no-lessons" 
+                    className="w-full flex items-center justify-left px-4 h-1/6"
+                >
+                    <p className="my-2 md:text-2xl text-lg font-normal">
+                        You have completed&nbsp;
+                        <span className="font-bold">
+                            {props.user?.progress?.length}
+                        </span>&nbsp;lessons.
+                    </p>
                 </div>
-            </div>
-            <div id="no-lessons" className="w-full flex items-center justify-left md:my-12 my-2 px-4">
-                <p className="my-2 md:text-2xl text-lg font-normal">
-                    You have completed&nbsp;
-                    <span className="font-bold">
-                        {props.user?.progress?.length}
-                    </span>&nbsp;lessons.
-                </p>
-            </div>
-            <GenericButton 
-                handleClick={() => { props.logoutUser() }} 
-                text="Logout" 
-            />
+                <div className="h-1/6" />
+                <div className="h-1/6">
+                    <FormSubmitButton for="Logout" />
+                </div>
+            </form>
         </animated.div>
     )
 }

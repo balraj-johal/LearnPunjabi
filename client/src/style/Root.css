@@ -232,6 +232,7 @@ button:disabled:hover {
     border: 3px solid black;
     border-radius: 5px;
     width: 50%;
+    max-width: 900px;
     margin: 50px auto;
     min-height: 70vh;
     max-height: 80vh;
