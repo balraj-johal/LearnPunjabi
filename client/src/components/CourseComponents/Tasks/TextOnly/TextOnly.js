@@ -21,7 +21,7 @@ function TextOnly(props) {
     }, [props.data])
 
     return(
-        <div className="text-only flex flex-row h-full justify-between">
+        <div className="text-only flex flex-row md:flex-row h-full justify-between">
             { showSide && <TextOnlySide data={props.data} /> }
             <div 
                 id="text-only-content" 
@@ -45,7 +45,7 @@ function TextOnlySide(props) {
     )
     if (props.data.image) return(
         <div className={SIDE_STYLES}>
-            <img src={testImg} className="mb-14" />
+            <img src={testImg} className="mb-14" alt={props.data.imgAlt} />
         </div>
     )
 }

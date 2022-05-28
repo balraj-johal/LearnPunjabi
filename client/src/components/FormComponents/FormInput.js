@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {  } from "react";
 import FormError from "./FormError";
 import FormLabel from "./FormLabel";
 
@@ -74,6 +74,8 @@ function FormInput(props) {
                 task={props.task} 
                 onChange={props.onChange} 
                 extraStyles={props.extraStyles}
+                min={props.min}
+                max={props.max}
             />
             break;
         default:
@@ -88,7 +90,10 @@ function FormInput(props) {
     }
 
     return(
-        <div className={`"input-field my-1 md:my-4 flex flex-${props.row ? "row" : "col"}`}>
+        <div className={`input-field my-1 md:my-4 flex 
+            flex-${props.row ? "row" : "col"}
+            ${props.errors[props.for] ? "error" : ""}`}
+        >
             <FormLabel for={props.for} />
             {component}
             <FormError for={props.for} errors={props.errors} />
@@ -129,7 +134,7 @@ function FormFile(props) {
     return(
         <input
             onChange={props.onChange}
-            // value={props.value?.name}
+            accept="audio/*"
             id={`${props.for}`}
             type="file"
             className={`${INPUT_STYLES} ${props.extraStyles}`}
@@ -146,6 +151,8 @@ function FormNumber(props) {
             id={`${props.for}`}
             type="number"
             className={`${INPUT_STYLES} ${props.extraStyles}`}
+            min={props.min}
+            max={props.max}
         />
     )
 }

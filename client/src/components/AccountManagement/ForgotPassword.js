@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
 import axiosClient from "../../axiosDefaults";
 import qs from 'qs';
-import { forgotPassword } from "../../actions/authActions";
 
 // form components
 import FormInput from "../FormComponents/FormInput";
@@ -23,17 +21,15 @@ function ForgotPassword(props) {
         delay: 200,
     });
     
-    // on form submit call redux action
     let onSubmit = async e => {
         e.preventDefault();
         try {
             await axiosClient.post("/api/v1/users/forgot-password", 
                 qs.stringify({ email: email }));
-                setSuccessful(true);
-                setShowSuccessModal(true);
+            setSuccessful(true);
+            setShowSuccessModal(true);
         } catch (error) {
             setErrors(error.response.data);
-            console.log(error.response.data)
         }
     }
 
@@ -47,7 +43,11 @@ function ForgotPassword(props) {
                 }}
                 text="Check your emails to reset your password!" 
             /> 
-            <animated.div id="forgot-password" className="mt-4" style={{opacity: spring.opacity}}>
+            <animated.div 
+                id="forgot-password" 
+                className="mt-4" 
+                style={{opacity: spring.opacity}}
+            >
                 <h2>Forgot Password</h2>
                 <form 
                     className="forgot-password-form" 
@@ -68,12 +68,4 @@ function ForgotPassword(props) {
     )
 }
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-    errors: state.auth.errors
-});
-
-export default connect(
-    mapStateToProps,
-    { forgotPassword }
-)(ForgotPassword);
+export default ForgotPassword;

@@ -22,7 +22,8 @@
     }
 }
 
-$bg-primary-dark: #121212;
+// $bg-primary-dark: #121212;
+$bg-primary-dark: #10161f;
 @mixin darkMode {
     .container {
         transition: all 200ms;

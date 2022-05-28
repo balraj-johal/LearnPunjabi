@@ -1,7 +1,7 @@
 import React from "react";
-import firstPlace from "../../res/icons/leaderboards/podium1.png";
-import secondPlace from "../../res/icons/leaderboards/podium2.png";
-import thirdPlace from "../../res/icons/leaderboards/podium3.png";
+import firstPlace from "../../res/icons/leaderboards/gold-medal.png";
+import secondPlace from "../../res/icons/leaderboards/silver-medal.png";
+import thirdPlace from "../../res/icons/leaderboards/bronze-medal.png";
 
 /** Leaderboard entry for user
  */
@@ -20,11 +20,23 @@ function UserEntry(props) {
 function PodiumPlace(props) {
     switch (props.index) {
         case 0:
-            return <img src={firstPlace} className="h-full w-auto mr-2" />
+            return <img 
+                src={firstPlace} 
+                className="h-full w-auto mr-2" 
+                alt="First Place is"
+            />
         case 1:
-            return <img src={secondPlace} className="h-full w-auto mr-2" />
+            return <img 
+                src={secondPlace} 
+                className="h-full w-auto mr-2" 
+                alt="Second Place is"
+            />
         case 2:
-            return <img src={thirdPlace} className="h-full w-auto mr-2" />
+            return <img 
+                src={thirdPlace} 
+                className="h-full w-auto mr-2"
+                alt="Third Place is"
+             />
         default:
             break;
     }

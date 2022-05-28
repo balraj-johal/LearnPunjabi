@@ -1,5 +1,4 @@
 import React, {  } from "react";
-import { connect } from "react-redux";
 import NextButton from "./NextButton";
 
 function Intersitial(props) {
@@ -14,11 +13,4 @@ function Intersitial(props) {
     );
 }
 
-//pull relevant props from redux state
-const mapStateToProps = state => ({
-});
-
-export default connect(
-    mapStateToProps,
-    {}
-)(Intersitial);
+export default Intersitial;

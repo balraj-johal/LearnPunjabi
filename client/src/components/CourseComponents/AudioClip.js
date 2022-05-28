@@ -1,24 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import AudioIcon from "../../res/icons/audio.png";
+import audioIcon from "../../res/icons/audio.png";
+import audioAnim from "../../res/animations/play.json";
+import Lottie from "react-lottie-player";
 
 function AudioClip(props) {
     let ref = useRef();
-
-    // attempt to manually autoplay
-    useEffect(() => {
-        if (!props.src) return;
-        // Ref was not used here as was returning null when mounted
-        let audioElem = document.getElementById(`audio-${props.src}`);
-        let handler = () => {
-            if (audioElem.readState >= 2) audioElem.play();
-        }
-        audioElem.addEventListener("loadeddata", handler);
-
-        return () => { 
-            if (audioElem) audioElem.removeEventListener("loadeddata", handler);
-        }
-    }, [props.src])
+    let [playing, setPlaying] = useState(false);
 
     if (!props.src) return null;
     return(
@@ -27,18 +15,27 @@ function AudioClip(props) {
                 id={`audio-${props.src}`} 
                 src={props.src}
                 preload="auto"
-                autoPlay={true}
                 ref={ref}
+                onEnded={() => { setPlaying(false) }}
             />
             <div 
-                className="replay-audio-button button 
-                    active:bg-primary2 transition-all" 
+                className={`replay-audio-button button transition-all
+                    ${playing ? "bg-primary2" : "bg-primary"}`}
                 onClick={() => {
                     ref.current.currentTime = 0;
                     ref.current.play();
+                    setPlaying(true);
                 }}
             >
-                <img src={AudioIcon} alt="play-audio-button-icon" />
+                <Lottie 
+                    className="w-full h-full p-3"
+                    animationData={audioAnim}
+                    rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }} 
+                    loop
+                    play={playing}
+                    goTo={0}
+                />
+                {/* <img src={audioIcon} alt="Play audio" /> */}
             </div>
         </div>
     )

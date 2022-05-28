@@ -26,6 +26,12 @@ let _getLessonValidationErrors = (lesson) => {
         }
     })
 
+    if (lesson.noToSample & lesson.shuffle) {
+        if (lesson.noToSample > lesson.tasks.length) {
+            errors.noToSample = "Sample number higher than task amount"
+        }
+    } 
+
     return errors;
 };
 

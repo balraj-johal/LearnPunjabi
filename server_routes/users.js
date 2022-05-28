@@ -181,7 +181,9 @@ router.post("/reset-password/:resetCode", async (req, res) => {
             email: {$eq: req.body.email},
             pwResetCodeExpiry: {$gt: Date.now()}
         });
-        if (!user) return res.status(404).json({ error: "Token is invalid or has expired." });
+        if (!user) return res.status(404).json({ 
+            resetError: "Token is invalid or has expired." 
+        });
         
         // validate new password
         const newPassword = req.body.newPW;
@@ -197,7 +199,7 @@ router.post("/reset-password/:resetCode", async (req, res) => {
 
         let savedUser = await user.save();
         if (savedUser) return res.status(201).json({});
-        return res.status(500).json({ error: "Error saving password." });
+        return res.status(500).json({ resetError: "Error saving password." });
     } catch (err) {
         res.status(500).json(err);
     }

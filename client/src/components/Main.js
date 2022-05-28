@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
 
 // import redux actions
@@ -22,6 +22,10 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
+import FooterPage from "./FooterPage";
+import About from "./FooterPages/About";
+import Privacy from "./FooterPages/Privacy";
+import Attributions from "./FooterPages/Attributions";
 
 function Main(props) {
     // fetch csrf token and store in redux reducer
@@ -40,7 +44,7 @@ function Main(props) {
     useEffect(() => {
         let timeout;
         const verifyUser = () => {
-            if (!csrf.ready) return;
+            if (!csrf.ready) return timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);;
             props.useRefreshToken();
             timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
         }
@@ -81,76 +85,57 @@ function Main(props) {
         return "lightMode";
     }
 
+    /** used to handle authenitcation redirects
+     * @name authRedirects
+     * @returns {Component} component used to either render internal page or redirect
+     */
+    let authRedirects = () => {
+        if (props.auth.loading) return null;
+        if (props.auth.isAuthenticated) return <InternalPage />;
+        return <Navigate to="/welcome" />;
+    }
+
     return(
         <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${colourScheme()} max-h-full`} >
+            ${colourScheme()} max-h-full`} 
+        >
             <Router>
                 <Routes>
-                    <Route path="/" element={ 
-                        <Welcome loginQueried={props.csrf} /> 
-                    } />
-                    <Route path="/dashboard" element={
-                        <InternalPage>
-                            <ProtectedComponent component={<Dashboard />} />
-                        </InternalPage>
-                    } />
-                    <Route path="/lesson" element={
-                        <InternalPage>
-                            <Lessons />
-                        </InternalPage>
-                    } >
-                        <Route path=":id" element={
-                            <ProtectedComponent component={<Lesson />} />
-                        } />
-                    </Route>                    
-                    <Route path="/edit" >
-                        <Route path="/edit/overview" element={
-                            <InternalPage>
+                    <Route path="/" element={authRedirects()}>
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="lesson" element={<Lessons />} >
+                            <Route path=":id" element={<Lesson />} />
+                        </Route>
+                        <Route path="restricted" element={<NotAuthorised />} />
+                        <Route path="*" element={<PageNotFound />} />
+                        <Route path="edit">
+                            <Route path="" element={
                                 <ProtectedComponent 
                                     component={<EditOverview />} 
                                     role={"Admin"} 
                                 />
-                            </InternalPage>
-                        } />
-                        <Route path=":id" element={
-                            <InternalPage>
+                            } />
+                            <Route path=":id" element={
                                 <ProtectedComponent 
                                     component={<EditLesson />} 
                                     role={"Admin"} 
                                 />
-                            </InternalPage>
-                        } />
+                            } />
+                        </Route>
                     </Route>
-                    <Route path="/restricted" element={
-                        <InternalPage>
-                            <NotAuthorised />
-                        </InternalPage>
-                    } />
-                    <Route path="/account" element={
-                        <InternalPage>
-                            <AccountManager />
-                        </InternalPage>
-                    } />
-                    <Route path="/reset-password/:code" element={
-                        <InternalPage>
-                            <ResetPassword /> 
-                        </InternalPage>
-                    } />
-                    <Route path="/verify-email/:code" element={
-                        <InternalPage>
-                            <VerifyEmail /> 
-                        </InternalPage>
-                    } />
-                    <Route path="/welcome" element={
-                        <InternalPage>
-                            <Welcome /> 
-                        </InternalPage>
-                    } />
-                    <Route path="*" element={
-                        <InternalPage>
-                            <PageNotFound /> 
-                        </InternalPage>
-                    } />
+                    <Route path="welcome" >
+                        <Route path="" element={<Welcome loginQueried={props.csrf} />} />
+                        <Route path="page" element={<FooterPage />}>
+                            <Route path="about" element={<About />} />
+                            <Route path="privacy" element={<Privacy />} />
+                            <Route path="attributions" element={<Attributions />} />
+                        </Route>
+                    </Route>
+                    <Route path="account" element={<InternalPage />}>
+                        <Route path="" element={<AccountManager />} />
+                        <Route path="reset-password/:code" element={<ResetPassword />} />
+                        <Route path="verify-email/:code" element={<VerifyEmail />} />
+                    </Route>
                 </Routes>
             </Router>
         </div>

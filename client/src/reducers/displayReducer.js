@@ -5,6 +5,7 @@ import {
 
 const initialState = {
     mobile: false,
+    mobileReady: false,
     topbarHeight: 0
 };
 
@@ -13,7 +14,8 @@ export default function(state = initialState, action) {
         case SET_MOBILE:
             return {
                 ...state,
-                mobile: action.payload
+                mobile: action.payload,
+                mobileReady: true
             };
         case SET_TOPBAR_HEIGHT:
             return {

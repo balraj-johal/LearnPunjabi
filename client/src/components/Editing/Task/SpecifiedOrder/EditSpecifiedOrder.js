@@ -36,7 +36,9 @@ function EditSpecifiedOrder(props) {
         let answers = data.possibleAnswers;
         let found = new Array(answers.length);
         found.fill(0);
-        answers.forEach(answer => { found[Number(answer.id?.replace("a-", ""))] = 1; });
+        answers.forEach(answer => { 
+            found[Number(answer.id?.replace("a-", ""))] = 1; 
+        });
         for (let i = 0; i < found.length; i++) {
             if (found[i] === 0) return i;
         }
@@ -91,7 +93,7 @@ function EditSpecifiedOrder(props) {
             <FormInput
                 for="correctAnswer" 
                 onChange={onChange}
-                placeholder={"Lesson Name"}
+                placeholder="Correct Answer"
                 value={data.correctAnswer}
                 extraStyles="w-5/12" // TODO: width not being overwritten
                 type="text" 

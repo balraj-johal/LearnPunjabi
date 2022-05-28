@@ -227,11 +227,16 @@ button:disabled:hover {
   display: block;
 }
 
+.accounts-wrap .input-field.error input {
+  border-color: red !important;
+}
+
 @media (min-width: 768px) {
   .accounts-wrap {
     border: 3px solid black;
     border-radius: 5px;
     width: 50%;
+    max-width: 900px;
     margin: 50px auto;
     min-height: 70vh;
     max-height: 80vh;
@@ -239,7 +244,7 @@ button:disabled:hover {
 }
 
 .auth-error {
-  height: 1em;
+  height: 1.3em;
   margin: 0.25em 0;
   font-size: 0.8em;
   color: red;
@@ -389,7 +394,6 @@ button:disabled:hover {
 
 .audio {
   height: 90px;
-  margin: 10px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -411,15 +415,29 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 80px;
-  width: 80px;
-  background-color: #00a2ff;
+  height: 50px;
+  width: 50px;
   border-radius: 5px;
 }
 
 .audio .replay-audio-button img {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 768px) {
+  .audio {
+    height: 90px;
+    margin: 10px 0;
+  }
+  .audio .replay-audio-button {
+    height: 80px;
+    width: 80px;
+  }
+  .audio .replay-audio-button img {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .correct .answer {
@@ -446,6 +464,8 @@ button:disabled:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .multiple-choice-answer {
@@ -513,14 +533,16 @@ button:disabled:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   list-style-type: none;
   min-height: 51px;
   padding: 8px 2px;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.226);
 }
 
 .specified-order #answers {
-  margin-bottom: 0.25em !important;
+  margin-bottom: 1.5em !important;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.226);
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -946,24 +968,28 @@ button:disabled:hover {
   }
 }
 
+.footer-page {
+  overflow: hidden;
+}
+
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  background-color: #121212;
+  background-color: #10161f;
 }
 
 .darkMode .accounts-wrap {
-  background-color: #121212;
+  background-color: #10161f;
   color: white;
 }
 
 .darkMode #topbar {
-  background-color: #121212;
+  background-color: #10161f;
   color: white;
 }
 
 .darkMode #leaderboard, .darkMode #leaderboard .header {
-  background-color: #121212;
+  background-color: #10161f;
   color: white;
 }
 

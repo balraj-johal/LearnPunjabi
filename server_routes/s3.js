@@ -7,6 +7,7 @@ const fs = require("fs");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { Upload } = require("@aws-sdk/lib-storage");
+const sanitize = require("sanitize-filename");
 
 const REGION = "eu-west-2";
 const s3Client = new S3Client({ region: REGION });
@@ -42,7 +43,7 @@ router.post("/upload", (req, res, next) => {
         const target = { 
             Bucket: 'balraj-portfolio-bucket', 
             Key: file.originalFilename, 
-            Body: fs.createReadStream(file.filepath) 
+            Body: fs.createReadStream(sanitize(file.filepath)) 
         };
         try {
             const parallelUploads3 = new Upload({
