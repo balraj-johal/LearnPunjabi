@@ -6,25 +6,7 @@ import Lottie from "react-lottie-player";
 
 function AudioClip(props) {
     let ref = useRef();
-    let [startFrame, setStartFrame] = useState(0);
     let [playing, setPlaying] = useState(false);
-
-    // attempt to manually autoplay
-    useEffect(() => {
-        if (!props.src) return;
-        // Ref was not used here as was returning null when mounted
-        let audioElem = document.getElementById(`audio-${props.src}`);
-        let handler = () => {
-            if (!audioElem.readState >= 2) return;
-            audioElem.play();
-            // setPlaying(true);
-        }
-        audioElem.addEventListener("loadeddata", handler);
-
-        return () => { 
-            if (audioElem) audioElem.removeEventListener("loadeddata", handler);
-        }
-    }, [props.src])
 
     if (!props.src) return null;
     return(
@@ -33,7 +15,6 @@ function AudioClip(props) {
                 id={`audio-${props.src}`} 
                 src={props.src}
                 preload="auto"
-                autoPlay={true}
                 ref={ref}
                 onEnded={() => { setPlaying(false) }}
             />
