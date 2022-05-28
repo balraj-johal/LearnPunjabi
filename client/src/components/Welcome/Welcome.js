@@ -1,9 +1,6 @@
 import React, { Suspense, useRef, useEffect } from "react";
-// import { connect } from "react-redux";
 
-import { useNavigate } from "react-router-dom";
 import { Canvas, useThree } from '@react-three/fiber';
-// import { LayerMaterial, Depth, Noise } from 'lamina';
 
 import { degreesToRads } from "../../utils/math";
 
@@ -17,6 +14,7 @@ import ThreeThings from "./ThreeThings";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
+import Footer from "./Footer";
 
 function Welcome(props) {
     // initialise listeners for scroll tracking
@@ -25,13 +23,6 @@ function Welcome(props) {
     const onScroll = e => { top.current = e.target.scrollTop; };
 
     useEffect(() => { onScroll({ target: scrollArea.current }) }, []);
-
-    let navigate = useNavigate();
-    // // redirect to the dashboard if signed in
-    // useEffect(() => {
-    //     if (props.auth.isAuthenticated)  navigate("/dashboard");
-    // }, [props.auth.isAuthenticated]);
-    
 
     return(
         <div id="welcome" ref={scrollArea} onScroll={onScroll} >
@@ -58,9 +49,7 @@ function Welcome(props) {
             </div>
             <div id="welcome-4" className="welcome-div grad-end">
                 <RiversEnd />
-                <div id="footer" className="absolute bottom-0 h-5/6 bg-black bg-opacity-20 w-full">
-
-                </div>
+                <Footer />
             </div>
         </div>
     )
