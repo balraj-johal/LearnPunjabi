@@ -730,7 +730,6 @@ button:disabled:hover {
 }
 
 .welcome-div {
-  height: 100vh;
   position: relative;
   color: white;
   overflow: hidden;
@@ -783,7 +782,6 @@ button:disabled:hover {
 .welcome-div #middle-bit #prompt-text {
   margin-top: 30px;
   line-height: 1.25em;
-  font-size: 16px;
   padding-right: 15px;
   font-weight: normal;
 }
@@ -831,42 +829,20 @@ button:disabled:hover {
           align-items: center;
 }
 
-#welcome-2 #three-things {
-  height: 60%;
-  width: 60%;
-  padding-left: 10%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
-}
-
-#welcome-2 #three-things .thing {
+#welcome-2 #info-points .info-point {
   font-size: 14px;
-  opacity: 0;
   -webkit-transition: 1s ease-in-out;
   transition: 1s ease-in-out;
-  background-color: #ffffff83;
   color: black;
   border-radius: 5px;
 }
 
-#welcome-2 #three-things .thing .title {
+#welcome-2 #info-points .info-point .title {
   font-weight: bold;
 }
 
-#welcome-2 #three-things .thing.visible {
-  opacity: 1 !important;
-}
-
 #welcome-3 {
-  height: 300vh !important;
+  height: 600vh !important;
   overflow: initial !important;
 }
 
@@ -955,7 +931,6 @@ button:disabled:hover {
     font-size: 24px !important;
   }
   #middle-bit #prompt-text {
-    font-size: 24px !important;
     margin-top: 30px;
   }
   #middle-bit .action-button {
