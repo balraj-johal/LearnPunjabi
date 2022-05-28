@@ -1,9 +1,16 @@
 .multiple-choice {
+    flex-flow: column;
     .answers-wrap {
-        margin: 2.5em 0;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
     }
+}
 
+@media (min-width: 768px) {
+    .multiple-choice {
+        .answers-wrap {
+            flex: 1 1 auto;
+        }
+    }
 }

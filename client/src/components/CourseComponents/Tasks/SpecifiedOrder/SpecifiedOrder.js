@@ -96,72 +96,76 @@ function SpecifiedOrder(props) {
     }
 
     return(
-        <div className={`specified-order min-h-[40vh] h-full flex flex-col justify-center`} >
-            <div className="h-4/5 flex flex-col justify-evenly">
-                <div className="title relative top-2 left-3 w-full
-                    flex flex-col px-4 items-start"
+        <>
+            <div className={`specified-order min-h-[40vh] h-5/6 
+                flex flex-col justify-center`} 
+            >
+                <div className="title w-full h-1/6 md:h-2/6 px-0
+                    flex flex-row justify-start items-center"
                 >
-                    <span className="mb-4">
+                    <AudioClip src={props.data.audioLink} />
+                    <span className={`pr-[30%] lg:text-xl
+                        ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
+                    >
                         { props.data.text }
                     </span>
-                    <AudioClip src={props.data.audioLink} />
                 </div>
-            <div id="lists" className={`${props.animClasses}`}>
-                <DragDropContext onDragEnd={handleDragEnd} >
-                    <Droppable 
-                        droppableId="characters" 
-                        direction="horizontal"
-                        renderClone={(provided, snapshot, rubric) => (
-                            <div
-                                className={`w-2 rounded border-[1px] border-bg-primary 
-                                    flex justify-center items-center`}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                ref={provided.innerRef}
-                            >
-                                {order[rubric.source.index].text}
-                            </div>
-                        )}
-                    >
-                        {(provided) => (
-                            <ul 
-                                id="answers"
-                                {...provided.droppableProps} 
-                                ref={provided.innerRef}
-                            >
-                                { order.map((data, index) => 
-                                    <DragAnswerFragment 
-                                        animating={animatingFrags.includes(data)}
-                                        removeAnimatingFrag={removeAnimatingFrag}
-                                        possible={data}
-                                        key={index}
-                                        index={index}
-                                        removeFromOrder={removeFromOrder}
-                                    />
-                                ) }
-                                {provided.placeholder}
-                            </ul>
-                        )}
-                    </Droppable>
-                </DragDropContext>
-                <div id="possible-fragments">
-                    <ul className="possiblities-wrap" id="possibilites">
-                        {possibleFrags.map((data, index) => 
-                            <PossAnswerFragment 
-                                animating={animatingFrags.includes(data)}
-                                removeAnimatingFrag={removeAnimatingFrag}
-                                possible={data}
-                                key={index}
-                                index={index}
-                                addToOrder={addToOrder}
-                            />
-                        )}
-                    </ul>
+                <div id="lists" className={`${props.animClasses}`}>
+                    <DragDropContext onDragEnd={handleDragEnd} >
+                        <Droppable 
+                            droppableId="characters" 
+                            direction="horizontal"
+                            renderClone={(provided, snapshot, rubric) => (
+                                <div
+                                    className={`w-2 rounded border-[1px] border-bg-primary 
+                                        flex justify-center items-center`}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {order[rubric.source.index].text}
+                                </div>
+                            )}
+                        >
+                            {(provided) => (
+                                <ul 
+                                    id="answers"
+                                    {...provided.droppableProps} 
+                                    ref={provided.innerRef}
+                                >
+                                    { order.map((data, index) => 
+                                        <DragAnswerFragment 
+                                            animating={animatingFrags.includes(data)}
+                                            removeAnimatingFrag={removeAnimatingFrag}
+                                            possible={data}
+                                            key={index}
+                                            index={index}
+                                            removeFromOrder={removeFromOrder}
+                                        />
+                                    ) }
+                                    {provided.placeholder}
+                                </ul>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    <div id="possible-fragments">
+                        <ul className="possiblities-wrap" id="possibilites">
+                            {possibleFrags.map((data, index) => 
+                                <PossAnswerFragment 
+                                    animating={animatingFrags.includes(data)}
+                                    removeAnimatingFrag={removeAnimatingFrag}
+                                    possible={data}
+                                    key={index}
+                                    index={index}
+                                    addToOrder={addToOrder}
+                                />
+                            )}
+                        </ul>
+                    </div>
                 </div>
-            </div>
             </div>
             <NextButton next={() => {checkAnswer()}} />
-        </div>
+        </>
     );
 }
 

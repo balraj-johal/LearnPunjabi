@@ -21,16 +21,18 @@ function TextOnly(props) {
     }, [props.data])
 
     return(
-        <div className="text-only flex flex-row md:flex-row h-full justify-between">
-            { showSide && <TextOnlySide data={props.data} /> }
-            <div 
-                id="text-only-content" 
-                className="w-8/12 flex flex-col justify-center m-auto"
-            >
-                { props.data.text } 
+        <>
+            <div className="text-only flex flex-row md:flex-row h-5/6 justify-between">
+                { showSide && <TextOnlySide data={props.data} /> }
+                <div 
+                    id="text-only-content" 
+                    className="w-8/12 flex flex-col justify-center m-auto"
+                >
+                    { props.data.text } 
+                </div>
             </div>
             <NextButton next={submitContinue} />
-        </div>
+        </>
     );
 }
 

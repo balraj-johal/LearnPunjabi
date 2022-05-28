@@ -415,28 +415,28 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 50px;
-  width: 50px;
+  height: 65px;
+  width: 65px;
   border-radius: 5px;
 }
 
-.audio .replay-audio-button img {
-  width: 30px;
-  height: 30px;
+@media (min-width: 768px) and (max-width: 1024px) {
+  .audio {
+    margin: 10px 0;
+  }
+  .audio .replay-audio-button {
+    height: 65px;
+    width: 65px;
+  }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .audio {
-    height: 90px;
     margin: 10px 0;
   }
   .audio .replay-audio-button {
     height: 80px;
     width: 80px;
-  }
-  .audio .replay-audio-button img {
-    width: 50px;
-    height: 50px;
   }
 }
 
@@ -456,8 +456,14 @@ button:disabled:hover {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.multiple-choice {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+}
+
 .multiple-choice .answers-wrap {
-  margin: 2.5em 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -466,6 +472,14 @@ button:disabled:hover {
           justify-content: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .multiple-choice .answers-wrap {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+  }
 }
 
 .multiple-choice-answer {
@@ -496,7 +510,7 @@ button:disabled:hover {
   max-width: 125px;
   border: 1px solid grey;
   border-radius: 5px;
-  margin: 0 3%;
+  margin: 1.5% 3%;
   width: 23vw;
   height: 23vw;
   -webkit-transition: background-color 75ms ease-in-out;
@@ -510,8 +524,10 @@ button:disabled:hover {
 
 @media (min-width: 768px) {
   .multiple-choice-answer {
-    width: 12vw !important;
-    height: 12vw !important;
+    width: 45% !important;
+    height: 45% !important;
+    max-height: 14vh !important;
+    min-height: 75px !important;
   }
   .middle-text {
     font-size: 1.5em !important;
@@ -541,7 +557,7 @@ button:disabled:hover {
 }
 
 .specified-order #answers {
-  margin-bottom: 1.5em !important;
+  margin-bottom: 2.25em !important;
   border-bottom: 1px solid rgba(128, 128, 128, 0.226);
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -602,6 +618,7 @@ button:disabled:hover {
   min-width: 60px;
   border: 1px solid grey;
   border-radius: 5px;
+  margin-top: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

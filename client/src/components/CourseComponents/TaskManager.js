@@ -129,8 +129,9 @@ function AnimatedWrapper(props) {
     return(
         <animated.div 
             style={spring}
-            className={`task w-11/12 h-5/6 relative pb-16 px-2
-                md:w-7/12 md:h-4/6 md:mt-0 mt-10 
+            className={`task w-11/12 
+                h-4/6 min-h-[450px] md:min-h-[400px]
+                md:w-7/12 relative px-2
                 ${props.animating ? "pointer-events-none" : ""}`} 
         >
             { props.component }

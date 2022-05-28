@@ -26,20 +26,21 @@ function MultipleChoice(props) {
     }
 
     return(
-        <div className="multiple-choice flex flex-col
-            justify-center h-full"
-        >
-            <div className="md:h-4/5 md:mt-[-50px] flex flex-col justify-evenly">
-                <div className="title relative top-2 left-3 md:w-full w-11/12
-                    flex flex-row justify-between md:flex-col md:justify-start
-                    md:px-4 px-0 md:items-start items-center"
+        <>
+            <div className="multiple-choice flex flex-col h-5/6">
+                <div className="title w-full h-1/6 md:h-2/6 px-0
+                    flex flex-row justify-start items-center"
                 >
-                    <span className="mb-4">
+                    <AudioClip src={props.data.audioLink} />
+                    <span className={`pr-[30%] lg:text-xl
+                        ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
+                    >
                         { props.data.text }
                     </span>
-                    <AudioClip src={props.data.audioLink} />
                 </div>
-                <div className={`answers-wrap ${props.animClasses}`}>
+                <div className={`answers-wrap h-5/6 md:h-4/6 py-2 items-center 
+                    ${props.animClasses}`}
+                >
                     { props.data.possibleAnswers.map((possible, index) => 
                         <PossibleAnswer 
                             chosen={(choice === index) ? true : false}
@@ -51,8 +52,8 @@ function MultipleChoice(props) {
                     ) }
                 </div>
             </div>
-            <NextButton next={() => {checkAnswer()}} />
-        </div>
+            <NextButton next={() => { checkAnswer() }} />
+        </>
     );
 };
 
