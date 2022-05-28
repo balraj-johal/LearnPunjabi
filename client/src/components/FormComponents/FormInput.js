@@ -90,7 +90,10 @@ function FormInput(props) {
     }
 
     return(
-        <div className={`"input-field my-1 md:my-4 flex flex-${props.row ? "row" : "col"}`}>
+        <div className={`input-field my-1 md:my-4 flex 
+            flex-${props.row ? "row" : "col"}
+            ${props.errors[props.for] ? "error" : ""}`}
+        >
             <FormLabel for={props.for} />
             {component}
             <FormError for={props.for} errors={props.errors} />

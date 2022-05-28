@@ -227,6 +227,10 @@ button:disabled:hover {
   display: block;
 }
 
+.accounts-wrap .input-field.error input {
+  border-color: red !important;
+}
+
 @media (min-width: 768px) {
   .accounts-wrap {
     border: 3px solid black;

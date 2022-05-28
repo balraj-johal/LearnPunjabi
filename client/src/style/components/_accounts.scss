@@ -10,6 +10,11 @@
             margin: 0.25em 0 0.25em;
             display: block;
         }
+        &.error {
+            input {
+                border-color: red !important;
+            }
+        }
     }
 }
 
