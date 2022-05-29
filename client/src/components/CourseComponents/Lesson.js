@@ -164,8 +164,8 @@ function Lesson(props) {
     if (!ready) return null;
     return(
         lesson ? (
-            <div className="w-full h-full relative flex 
-                items-center justify-center"
+            <div className="w-full h-full relative flex
+                items-center justify-center min-h-[550px] md:min-h-[500px]"
             >
                 <ProgressBar percent={getProgressPercent()} />
                 <TaskManager

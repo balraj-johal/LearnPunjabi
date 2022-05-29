@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { useSpring, animated } from 'react-spring';
+
+// component imports
 import SignInButton from "./SignInButton";
 import TranslationsScroller from "./TranslationsScroller";
 
 function SignInPrompt(props) {
     let navigate = useNavigate();
-    let [buttonState, setButtonState] = useState("not ready")
+    let [buttonState, setButtonState] = useState("not ready");
 
     useEffect(() => {
         if (!props.auth.hasChecked) return;
@@ -14,12 +17,27 @@ function SignInPrompt(props) {
         return setButtonState("unauthorised");
     }, [props.auth])
 
+    const spring = useSpring({
+        from: { opacity: 0 },
+        to: { opacity: buttonState === "not ready" ? 0 : 1 },
+    });
+
     return(
-        <div id="middle-bit" className="animate-fade-in">
+        <animated.div 
+            id="middle-bit" 
+            className="animate-fade-in"
+            style={spring}
+        >
             <TranslationsScroller timeout={2000} />
-            <div id="prompt-text" className={`${buttonState !== "not ready" ? "animate-fade-in" : "opacity-0"}`}>
-                Learn Punjabi quickly and effectively using our intuitive learning system.
-            </div>
+            <animated.div 
+                id="prompt-text" 
+                className={`text-base md:text-lg lg:text-xl`}
+                style={spring}
+                // ${buttonState !== "not ready" ? "" : "opacity-0"}
+            >
+                Want to learn a new language? Or want to be able to talk to your grandparents?
+                Learn Punjabi quickly and effectively here!
+            </animated.div>
             <SignInButton 
                 buttonState={buttonState}
                 onClick={() => { 
@@ -27,7 +45,7 @@ function SignInPrompt(props) {
                     navigate("/account");
                 }}
             />
-        </div>
+        </animated.div>
     )
 }
 

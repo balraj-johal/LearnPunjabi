@@ -9,21 +9,21 @@ function End(props) {
         <>
             <Lottie 
                 rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }} 
-                className={`w-full h-full absolute z-10 pointer-events-none`}
+                className={`w-full h-5/6 absolute z-10 pointer-events-none`}
                 animationData={confetti} 
                 play 
                 loop={false}
             />
             <div className="lesson-end flex flex-col items-center 
-                h-full justify-center pb-20">
+                h-5/6 justify-center pb-20">
                 <span>{props.data.text}</span>
                 {props.data.showPercentCorrect ? (
                     <span className="my-8">
                         You got {props.stats} of your answers correct!
                     </span>
                 ) : null }
-                <NextButton next={()=>{ props.submit(true) }} />
             </div>
+            <NextButton next={()=>{ props.submit(true) }} />
         </>
     );
 }

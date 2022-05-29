@@ -24,7 +24,12 @@ function RiversEnd(props) {
     return(
         <>
             { mapArray.map((elem, index) => (
-                <RiversStraight index={index+1} height={svgHeight} key={index} end="end" />
+                <RiversStraight 
+                    index={index+1} 
+                    height={svgHeight} 
+                    key={index}
+                    end="end" 
+                />
             )) }
             <svg 
                 id="rivers-end" 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated, config } from 'react-spring';
 
-import GenericButton from "../GenericButton";
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
 function AccountSummary(props) {
@@ -64,8 +63,8 @@ function AccountSummary(props) {
                             </animated.div> XP!
                         </div>
                     </div>
-                    <div className="md:w-3/12 max-w-[100px] md:max-w-sm md:min-w-[140px] w-4/12 md:p-4 
-                        flex flex-col items-center justify-center"
+                    <div className="md:w-3/12 max-w-[100px] md:max-w-sm md:min-w-[140px] w-4/12 
+                        md:p-4 flex flex-col items-center justify-center"
                     >
                         { xpAnimFinished ? <Smiley /> : <Frowney /> }
                     </div>

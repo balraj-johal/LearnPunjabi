@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, {  } from "react";
 
 function SignInButton(props) {
 
     return(
         <div 
-            className={`${ props.buttonState === "not ready" ? 
-                "opacity-0 invisible" : "opacity-100" }
-                action-button transition-all duration-500
-            `} 
+            className={`hover:bg-primary2
+                ${ props.buttonState === "not ready" ? 
+                    "opacity-0 invisible" : "opacity-100" }
+                action-button transition-all`} 
             onClick={props.onClick}
         >
             {props.buttonState === "authorised" ? "Enter" : "Sign In"}

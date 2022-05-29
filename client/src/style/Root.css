@@ -415,28 +415,28 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 50px;
-  width: 50px;
+  height: 65px;
+  width: 65px;
   border-radius: 5px;
 }
 
-.audio .replay-audio-button img {
-  width: 30px;
-  height: 30px;
+@media (min-width: 768px) and (max-width: 1024px) {
+  .audio {
+    margin: 10px 0;
+  }
+  .audio .replay-audio-button {
+    height: 65px;
+    width: 65px;
+  }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .audio {
-    height: 90px;
     margin: 10px 0;
   }
   .audio .replay-audio-button {
     height: 80px;
     width: 80px;
-  }
-  .audio .replay-audio-button img {
-    width: 50px;
-    height: 50px;
   }
 }
 
@@ -456,8 +456,14 @@ button:disabled:hover {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.multiple-choice {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+}
+
 .multiple-choice .answers-wrap {
-  margin: 2.5em 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -468,7 +474,21 @@ button:disabled:hover {
       flex-wrap: wrap;
 }
 
+@media (min-width: 768px) {
+  .multiple-choice .answers-wrap {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+  }
+}
+
 .multiple-choice-answer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   user-select: none;
   /* supported by Chrome and Opera */
@@ -479,39 +499,40 @@ button:disabled:hover {
   -ms-user-select: none;
   /* Internet Explorer/Edge */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  max-height: 125px;
-  max-width: 125px;
+  width: 100%;
   border: 1px solid grey;
   border-radius: 5px;
-  margin: 0 3%;
-  width: 23vw;
-  height: 23vw;
-  -webkit-transition: background-color 75ms ease-in-out;
-  transition: background-color 75ms ease-in-out;
-  padding: 10px;
-}
-
-.multiple-choice-answer.chosen {
-  background-color: #d7d7d7;
+  margin: 1.5% 0;
+  height: 2.25rem;
 }
 
 @media (min-width: 768px) {
   .multiple-choice-answer {
-    width: 12vw !important;
-    height: 12vw !important;
+    margin: 1.5% 2%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    max-height: 125px;
+    max-width: 125px;
+    width: 23vw;
+    height: 23vw;
+    -webkit-transition: background-color 75ms ease-in-out;
+    transition: background-color 75ms ease-in-out;
+    padding: 10px;
+    width: 45% !important;
+    height: 45% !important;
+    max-height: 14vh !important;
+    min-height: 75px !important;
+  }
+  .multiple-choice-answer.chosen {
+    background-color: #d7d7d7;
   }
   .middle-text {
     font-size: 1.5em !important;
@@ -541,7 +562,7 @@ button:disabled:hover {
 }
 
 .specified-order #answers {
-  margin-bottom: 1.5em !important;
+  margin-bottom: 2.25em !important;
   border-bottom: 1px solid rgba(128, 128, 128, 0.226);
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -602,6 +623,7 @@ button:disabled:hover {
   min-width: 60px;
   border: 1px solid grey;
   border-radius: 5px;
+  margin-top: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -713,7 +735,6 @@ button:disabled:hover {
 }
 
 .welcome-div {
-  height: 100vh;
   position: relative;
   color: white;
   overflow: hidden;
@@ -766,7 +787,6 @@ button:disabled:hover {
 .welcome-div #middle-bit #prompt-text {
   margin-top: 30px;
   line-height: 1.25em;
-  font-size: 16px;
   padding-right: 15px;
   font-weight: normal;
 }
@@ -814,42 +834,20 @@ button:disabled:hover {
           align-items: center;
 }
 
-#welcome-2 #three-things {
-  height: 60%;
-  width: 60%;
-  padding-left: 10%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
-}
-
-#welcome-2 #three-things .thing {
+#welcome-2 #info-points .info-point {
   font-size: 14px;
-  opacity: 0;
   -webkit-transition: 1s ease-in-out;
   transition: 1s ease-in-out;
-  background-color: #ffffff83;
   color: black;
   border-radius: 5px;
 }
 
-#welcome-2 #three-things .thing .title {
+#welcome-2 #info-points .info-point .title {
   font-weight: bold;
 }
 
-#welcome-2 #three-things .thing.visible {
-  opacity: 1 !important;
-}
-
 #welcome-3 {
-  height: 300vh !important;
+  height: 600vh !important;
   overflow: initial !important;
 }
 
@@ -938,7 +936,6 @@ button:disabled:hover {
     font-size: 24px !important;
   }
   #middle-bit #prompt-text {
-    font-size: 24px !important;
     margin-top: 30px;
   }
   #middle-bit .action-button {

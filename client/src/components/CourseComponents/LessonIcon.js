@@ -8,26 +8,30 @@ import wave from "../../res/animations/wave.json";
 const ANIMATION_OFFSET_CLASS = "mt-[117px]";
 
 function LessonIcon(props) {
-    let [startFrame, setStartFrame] = useState(randNo(0, 30));
+    let [startFrame, setStartFrame] = useState();
     let [waterFillAmount, setWaterFillAmount] = useState(0);
     let [showWave, setShowWave] = useState();
     let [finished, setFinished] = useState(false);
 
     useEffect(() => {
-        setWaterFillAmount(props.timesCompleted * 150 / props.lesson.requiredCompletions)
+        setStartFrame(randNo(0, 30));
+        setWaterFillAmount(props.timesCompleted * 150 / props.lesson.requiredCompletions);
         waterFillAmount >= 150 ? setShowWave(false) : setShowWave(true);
         setFinished(props.timesCompleted >= props.lesson.requiredCompletions);
     }, [props.timesCompleted])
 
     return(
         <Link to={`/lesson/${props.lesson.id}`}>
-            <div className={`${finished ? "bg-[#FFD700]" : "bg-white"} 
+            <div 
+                id="icon-main"
+                className={`${finished ? "bg-[#FFD700]" : "bg-white"} 
                     lesson z-20 relative overflow-hidden no-highlight`}
             >
                 <span className="z-10">
                     { props.lesson.name }<br/>
                 </span>
                 <div 
+                    id="blue-bg-fill"
                     className={`${finished ? "" : "bg-primary"} 
                         z-0 w-full absolute bottom-0`} 
                     style={{

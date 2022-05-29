@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-import audioIcon from "../../res/icons/audio.png";
 import audioAnim from "../../res/animations/play.json";
 import Lottie from "react-lottie-player";
 
@@ -35,7 +34,6 @@ function AudioClip(props) {
                     play={playing}
                     goTo={0}
                 />
-                {/* <img src={audioIcon} alt="Play audio" /> */}
             </div>
         </div>
     )
