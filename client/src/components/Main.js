@@ -22,7 +22,7 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
-import FooterPage from "./FooterPage";
+import FooterPage from "./FooterPages/FooterPage";
 import About from "./FooterPages/About";
 import Privacy from "./FooterPages/Privacy";
 import Attributions from "./FooterPages/Attributions";

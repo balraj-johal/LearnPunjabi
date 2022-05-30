@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import RiversTop from "./Welcome/RiversSVGs/RiversTop";
-import WelcomeLogo from "./Welcome/WelcomeLogo";
+import RiversTop from "../Welcome/RiversSVGs/RiversTop";
+import WelcomeLogo from "../Welcome/WelcomeLogo";
 
 function FooterPage(props) {
     return(
