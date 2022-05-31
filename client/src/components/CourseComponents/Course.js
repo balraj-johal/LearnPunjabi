@@ -2,20 +2,17 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import axiosClient from "../../axiosDefaults";
 
-import { Canvas } from '@react-three/fiber';
-
 // import redux actions
 import { setProgress } from "../../actions/courseActions";
 
 // import ReactPullToRefresh from "react-pull-to-refresh";
+import { Canvas } from '@react-three/fiber';
 import LessonIcon from "./LessonIcon";
 import Particles from "./Particles";
 
 function Course(props) {
     let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
-    // let [showParticles, setShowParticles] = useState(true);
-    let showParticles = true;
 
     let getLessons = async () => {
         try {
@@ -103,7 +100,7 @@ function Course(props) {
                         dpr={[1, 2]} 
                         camera={{ position: [0, 0, 30], fov: 100 }}
                     >
-                        { showParticles && <Particles /> }
+                        <Particles />
                     </Canvas>
                     <div className={`h-full w-full bg-black absolute top-0
                         ${props.darkMode ? "opacity-30" : "opacity-0"}`} />

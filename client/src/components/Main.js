@@ -12,7 +12,6 @@ import { setMobile } from "../actions/displayActions";
 import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManagement/AccountManager';
-import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./AccountManagement/ResetPassword";
@@ -103,7 +102,7 @@ function Main(props) {
                 <Routes>
                     <Route path="/" element={authRedirects()}>
                         <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="lesson" element={<Lessons />} >
+                        <Route path="lesson">
                             <Route path=":id" element={<Lesson />} />
                         </Route>
                         <Route path="restricted" element={<NotAuthorised />} />

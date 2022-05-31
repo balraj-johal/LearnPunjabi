@@ -11,7 +11,7 @@ import { setProgress } from "../../actions/courseActions";
 import { getUserData } from "../../actions/authActions";
 
 // import components
-import TaskManager from "./TaskManager";
+import TaskManager from "./Tasks/TaskManager";
 import ProgressBar from "./ProgressBar";
 
 function Lesson(props) {
@@ -32,11 +32,11 @@ function Lesson(props) {
             try {
                 let res = await axiosClient.get(`/api/v1/lessons/${String(id)}`);
                 let data = res.data;
+                // prepare tasks
                 if (data.shuffle) data.tasks = _shuffle(data.tasks);
                 if (data.shuffle && data.noToSample > 0) 
                     data.tasks = data.tasks.slice(0, data.noToSample);
                 setNoOfTasks(data.tasks.length);
-                console.log("number of tasks,", data.tasks.length);
                 // add lesson end screen
                 data.tasks.push({
                     taskID: "end",
@@ -44,6 +44,7 @@ function Lesson(props) {
                     type: "End",
                     showPercentCorrect: data.showPercentCorrect
                 });
+                // add interstitials
                 if (data.showInterstitials) {
                     const GAP = 3;
                     let noOfInterstitials = Math.floor(data.tasks.length / GAP) - 1;
@@ -154,13 +155,6 @@ function Lesson(props) {
         return answerTracking.noCorrect / noOfTasks * 100;
     }
     
-    // if (!ready) return(
-    //     <div className="w-full h-full relative flex items-center 
-    //         justify-center animate-fade-in"
-    //     >
-    //         <ProgressBar percent={0} />
-    //     </div>
-    // );
     if (!ready) return null;
     return(
         lesson ? (
@@ -180,8 +174,6 @@ function Lesson(props) {
         </div>
     )
 }
-
-
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
