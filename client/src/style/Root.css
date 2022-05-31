@@ -838,7 +838,6 @@ button:disabled:hover {
   font-size: 14px;
   -webkit-transition: 1s ease-in-out;
   transition: 1s ease-in-out;
-  color: black;
   border-radius: 5px;
 }
 

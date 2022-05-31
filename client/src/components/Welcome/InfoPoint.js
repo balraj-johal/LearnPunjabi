@@ -8,7 +8,7 @@ function InfoPoint(props) {
     return(
         <div 
             id={`info-point-${props.index}`} 
-            className={`info-point flex w-11/12 md:w-7/12 z-10`} 
+            className={`info-point flex w-11/12 md:w-7/12 z-10 text-white`} 
         >
             <div className="hero-icon w-4/12 mr-4 relative 
                 flex items-center justify-center">
