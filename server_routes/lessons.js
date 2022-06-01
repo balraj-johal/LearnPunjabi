@@ -48,7 +48,7 @@ router.get("/", async (req, res, next) => {
         if (overview) return res.status(200).send({ overview: overview });
         return res.status(404).send({ message: "overview data not found..." });
     } catch (error) {
-        next(err);
+        next(error);
     }
 })
 
