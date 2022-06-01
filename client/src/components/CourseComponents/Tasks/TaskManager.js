@@ -2,22 +2,22 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
-import MultipleChoice from "./Tasks/MultipleChoice/MultipleChoice";
-import TextOnly from "./Tasks/TextOnly/TextOnly";
-import SpecifiedOrder from "./Tasks/SpecifiedOrder/SpecifiedOrder";
-import DrawLetter from "./Tasks/DrawLetter/DrawLetter";
-import Intersitial from "./Tasks/Intersitial";
-import PageNotFound from "../PageNotFound";
-import End from "./Tasks/End";
+import MultipleChoice from "./MultipleChoice/MultipleChoice";
+import TextOnly from "./TextOnly/TextOnly";
+import SpecifiedOrder from "./SpecifiedOrder/SpecifiedOrder";
+import DrawLetter from "./DrawLetter/DrawLetter";
+import Intersitial from "./Intersitial";
+import PageNotFound from "../../PageNotFound";
+import End from "./End";
 
-import { setAnimClasses } from "../../actions/currTaskActions";
+import { setAnimClasses } from "../../../actions/currTaskActions";
 
 // return task component of specified type
 function TaskManager(props) {
     let [animating, setAnimating] = useState(false);
     let [currentID, setCurrentID] = useState(null);
     let [out, setOut] = useState(false);
-    let component;
+    let task;
 
     let handleCorrect = () => {
         props.setAnimClasses("animate-bounce-y correct");
@@ -35,7 +35,6 @@ function TaskManager(props) {
             props.submit(false, props.taskData.type);
         }, 750);
     }
-
     let handleExit = () => {
         props.setAnimClasses("");
         setOut(true);
@@ -54,7 +53,7 @@ function TaskManager(props) {
 
     switch (props.taskData.type) {
         case "TextOnly":
-            component = <TextOnly 
+            task = <TextOnly 
                     data={props.taskData} 
                     submit={() => handleExit()}
                     stats={props.stats}
@@ -62,14 +61,14 @@ function TaskManager(props) {
                 />
             break;
         case "MultipleChoice":
-            component = <MultipleChoice 
+            task = <MultipleChoice 
                     data={props.taskData} 
                     handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong}
                 />
             break;
         case "SpecifiedOrder":
-            component = <SpecifiedOrder 
+            task = <SpecifiedOrder 
                     data={props.taskData}
                     handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong} 
@@ -77,37 +76,43 @@ function TaskManager(props) {
                 />
             break;
         case "DrawLetter":
-            component = <DrawLetter 
+            task = <DrawLetter 
                     data={props.taskData}
                     handleCorrect={() => handleCorrect()}
                     handleWrong={handleWrong} 
                 />
             break;
         case "End":
-            component = <End 
+            task = <End 
                     data={props.taskData} 
                     submit={() => handleExit()}
                     stats={props.stats}
                 />
             break;
         case "Interstitial":
-            component = <Intersitial 
+            task = <Intersitial 
                     data={props.taskData} 
                     submit={() => handleExit()}
                 />
             break;
         default:
-            component = <PageNotFound />
+            task = <PageNotFound />
             break;
     }
 
     return(
-        <AnimatedWrapper 
-            animating={animating} 
-            component={component} 
-            key={currentID} 
-            out={out}
-        />
+        <div className="w-full md:w-8/12 lg:w-6/12 h-full md:h-4/6 
+            relative flex items-center justify-center 
+            bg-white rounded border-black shadow-xl
+            animate-fade-in"
+        >
+            <AnimatedWrapper 
+                animating={animating} 
+                task={task} 
+                key={currentID} 
+                out={out}
+            />
+        </div>
     )
 }
 
@@ -129,12 +134,13 @@ function AnimatedWrapper(props) {
     return(
         <animated.div 
             style={spring}
-            className={`task w-11/12 
-                h-4/6 min-h-[450px] md:min-h-[400px]
-                md:w-7/12 relative px-2
+            // md:w-7/12 
+            className={`task w-full
+                h-full min-h-[450px] md:min-h-[400px]
+                relative px-10 py-10
                 ${props.animating ? "pointer-events-none" : ""}`} 
         >
-            { props.component }
+            { props.task }
         </animated.div>
     )
 }

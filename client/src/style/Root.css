@@ -122,7 +122,7 @@
       -ms-flex-align: center;
           align-items: center;
   padding-bottom: 6px;
-  border-bottom: 3px solid black;
+  border-bottom: 2px solid black;
 }
 
 .account-button {
@@ -233,7 +233,6 @@ button:disabled:hover {
 
 @media (min-width: 768px) {
   .accounts-wrap {
-    border: 3px solid black;
     border-radius: 5px;
     width: 50%;
     max-width: 900px;
@@ -325,7 +324,7 @@ button:disabled:hover {
 @media (min-width: 768px) {
   .lesson-wrap {
     width: 60%;
-    border-right: 3px solid black;
+    border-right: 2px solid black;
   }
 }
 
@@ -500,7 +499,6 @@ button:disabled:hover {
   /* Internet Explorer/Edge */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   width: 100%;
-  border: 1px solid grey;
   border-radius: 5px;
   margin: 1.5% 0;
   height: 2.25rem;
@@ -683,9 +681,9 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border: 3px solid black;
-  border-top: 1.5px solid black;
-  border-bottom: 1.5px solid black;
+  border: 2px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   height: 50px;
   padding: 15px 1em;
 }
@@ -838,7 +836,6 @@ button:disabled:hover {
   font-size: 14px;
   -webkit-transition: 1s ease-in-out;
   transition: 1s ease-in-out;
-  color: black;
   border-radius: 5px;
 }
 
@@ -994,7 +991,7 @@ button:disabled:hover {
   width: 60%;
   padding: 0 10%;
   margin: 0;
-  border-right: 3px solid black;
+  border-right: 2px solid black;
 }
 
 #custom-container {
@@ -1019,6 +1016,11 @@ button:disabled:hover {
 
 .scroll-lock {
   overflow: hidden !important;
+}
+
+#internal-main {
+  background: -webkit-gradient(linear, left bottom, left top, from(#E786FF), to(#86E2FF));
+  background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
 }
 
 @layer utilities {

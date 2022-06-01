@@ -12,7 +12,6 @@ import { setMobile } from "../actions/displayActions";
 import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManagement/AccountManager';
-import Lessons from '../components/CourseComponents/Lessons';
 import Lesson from '../components/CourseComponents/Lesson';
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./AccountManagement/ResetPassword";
@@ -22,7 +21,7 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
-import FooterPage from "./FooterPage";
+import FooterPage from "./FooterPages/FooterPage";
 import About from "./FooterPages/About";
 import Privacy from "./FooterPages/Privacy";
 import Attributions from "./FooterPages/Attributions";
@@ -103,7 +102,7 @@ function Main(props) {
                 <Routes>
                     <Route path="/" element={authRedirects()}>
                         <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="lesson" element={<Lessons />} >
+                        <Route path="lesson">
                             <Route path=":id" element={<Lesson />} />
                         </Route>
                         <Route path="restricted" element={<NotAuthorised />} />

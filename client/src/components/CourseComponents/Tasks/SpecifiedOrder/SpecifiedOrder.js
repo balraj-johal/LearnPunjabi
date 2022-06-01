@@ -164,7 +164,7 @@ function SpecifiedOrder(props) {
                     </div>
                 </div>
             </div>
-            <NextButton next={() => {checkAnswer()}} />
+            <NextButton next={() => {checkAnswer()}} text="Check Answer" />
         </>
     );
 }
@@ -177,6 +177,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {
-    }
+    {}
 )(SpecifiedOrder);

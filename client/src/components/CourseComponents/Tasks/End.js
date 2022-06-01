@@ -23,7 +23,7 @@ function End(props) {
                     </span>
                 ) : null }
             </div>
-            <NextButton next={()=>{ props.submit(true) }} />
+            <NextButton next={()=>{ props.submit(true) }} text="Finish" />
         </>
     );
 }

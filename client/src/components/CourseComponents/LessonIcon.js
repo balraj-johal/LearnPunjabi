@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Lottie from "react-lottie-player";
 
 import { randNo } from "../../utils/math";
@@ -24,7 +24,7 @@ function LessonIcon(props) {
         <Link to={`/lesson/${props.lesson.id}`}>
             <div 
                 id="icon-main"
-                className={`${finished ? "bg-[#FFD700]" : "bg-white"} 
+                className={`${finished ? "bg-gold" : "bg-white"} shadow-xl
                     lesson z-20 relative overflow-hidden no-highlight`}
             >
                 <span className="z-10">

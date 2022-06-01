@@ -1,14 +1,10 @@
 import React, { Suspense, useMemo, useRef } from "react";
-
-import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { randNo } from "../../utils/math";
 
 function Particles(props) {
     const mesh = useRef();
-
-    let randNo = (min, max) => {
-        return Math.random() * (max - min) + min;
-    }
   
     let count = 10000;
     const particles = useMemo(() => {
@@ -30,9 +26,6 @@ function Particles(props) {
     const dummy = useMemo(() => new THREE.Object3D(), []);
   
     useFrame(({ camera }) => {
-        // camera.position.set(camera.position.x, 0 - scrollElem.scrollTop/50, camera.position.z);
-        // camera.position.y = 0 - scrollElem/1000
-
         particles.forEach((particle, index) => {
             let { factor, speed, x, y, z } = particle;
     

@@ -38,8 +38,8 @@ function MultipleChoice(props) {
                         { props.data.text }
                     </span>
                 </div>
-                <div className={`answers-wrap h-5/6 md:h-4/6 py-2 items-center md:flex-row flex-col
-                    ${props.animClasses}`}
+                <div className={`answers-wrap h-5/6 md:h-4/6 py-2 items-center md:flex-row 
+                    flex-col ${props.animClasses}`}
                 >
                     { props.data.possibleAnswers.map((possible, index) => 
                         <PossibleAnswer 
@@ -52,7 +52,7 @@ function MultipleChoice(props) {
                     ) }
                 </div>
             </div>
-            <NextButton next={() => { checkAnswer() }} />
+            <NextButton next={() => { checkAnswer() }} text="Check Answer" />
         </>
     );
 };

@@ -1,12 +1,25 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import Leaderboard from "./SidebarComponents/Leaderboard";
 
 function Sidebar(props) {
     return(
-        <div className="sidebar">
+        <div 
+            className="sidebar bg-white relative" 
+            style={{height: props.lessonWrapHeight}}
+        >
             <Leaderboard />
         </div>
     )
 }
 
-export default Sidebar;
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    lessonWrapHeight: state.display.lessonWrapHeight
+});
+
+export default connect(
+    mapStateToProps,
+    {}
+)(Sidebar);
