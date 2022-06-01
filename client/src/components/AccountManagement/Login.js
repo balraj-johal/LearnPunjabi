@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
+import { useNavigate } from "react-router-dom";
 
 import axiosClient from "../../axiosDefaults";
 import qs from 'qs';
@@ -13,6 +14,7 @@ import FormInput from "../FormComponents/FormInput";
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
 function Login(props) {
+    let navigate = useNavigate();
     // initialise form states
     let [submitting, setSubmitting] = useState(false);
     let [username, setUsername] = useState("");
@@ -30,7 +32,8 @@ function Login(props) {
         try {
             await axiosClient.post("/api/v1/users/login", 
                 qs.stringify({ username: username, password: password }));
-            props.setUser();
+            await props.setUser();
+            navigate("/dashboard");
         } catch (error) {
             props.setAuthErrors(error.response.data);
             setSubmitting(false);
