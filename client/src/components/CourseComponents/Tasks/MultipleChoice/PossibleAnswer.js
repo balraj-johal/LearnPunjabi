@@ -4,6 +4,7 @@ function PossibleAnswer(props) {
     return(
         <div
             className={`multiple-choice-answer cursor-pointer answer transition-all
+                shadow-sm border-[1.5px] border-slate
                 ${props.chosen ? "hover:bg-slate-300 bg-slate-300" : "hover:bg-slate-100"}`}
             onClick={() => {
                 props.setChoice(props.index)

@@ -4,6 +4,7 @@ import axiosClient from "../../axiosDefaults";
 
 // import redux actions
 import { setProgress } from "../../actions/courseActions";
+import { setLessonWrapHeight } from "../../actions/displayActions";
 
 // import ReactPullToRefresh from "react-pull-to-refresh";
 import { Canvas } from '@react-three/fiber';
@@ -74,15 +75,21 @@ function Course(props) {
         }
         return `calc(101vh)`;
     }
+    useEffect(() => {
+        props.setLessonWrapHeight(getWrapHeight());
+    }, [courseData])
 
-    if (loading) return <div className="lesson-wrap" style={{ height: "110%" }} />
+    if (loading) {
+        props.setLessonWrapHeight("100%");
+        return <div className="lesson-wrap" style={{ height: "100%" }} />
+    }
     return(
         // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
         //     // icon={<Loader />} 
         // >
             <div 
                 className="lesson-wrap relative" 
-                style={{ height: getWrapHeight() }} 
+                style={{ height: props.lessonWrapHeight }} 
             >
                 <div className="animate-fade-in z-10">
                     { courseData.length > 0 ? (
@@ -113,10 +120,11 @@ function Course(props) {
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     userProgress: state.auth.user.progress,
-    darkMode: state.options.darkMode
+    darkMode: state.options.darkMode,
+    lessonWrapHeight: state.display.lessonWrapHeight
 });
 
 export default connect(
     mapStateToProps,
-    { setProgress }
+    { setProgress, setLessonWrapHeight }
 )(Course);
