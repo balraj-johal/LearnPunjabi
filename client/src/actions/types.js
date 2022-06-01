@@ -20,6 +20,6 @@ export const SET_DYSLEXIC_OPTION = "SET_DYSLEXIC_OPTION"
 // display actions
 export const SET_MOBILE = "SET_MOBILE"
 export const SET_TOPBAR_HEIGHT = "SET_TOPBAR_HEIGHT"
-
+export const SET_LESSON_WRAP_HEIGHT = "SET_LESSON_WRAP_HEIGHT"
 
 export const SET_ANIM_CLASSES = "SET_ANIM_CLASSES"

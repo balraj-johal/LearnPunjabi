@@ -34,7 +34,7 @@ function AccountManager(props) {
     }, [managerState])
 
     return(
-        <div className="accounts-wrap animate-fade-in">
+        <div className="accounts-wrap animate-fade-in bg-white shadow-xl">
             <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? (
                     <div className="w-full flex">

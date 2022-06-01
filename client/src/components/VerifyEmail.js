@@ -28,7 +28,7 @@ function VerifyEmail(props) {
     }, [props.csrf.ready, params.code]);
 
     return (
-        <div className="accounts-wrap" id="verify-email">
+        <div className="accounts-wrap bg-white shadow-xl" id="verify-email">
             {successful ? (
                 <div className="flex justify-center items-center text-center h-full p-4">
                     Email verification successful! Please log in with your details!
