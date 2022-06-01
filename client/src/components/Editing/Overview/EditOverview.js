@@ -86,7 +86,6 @@ function EditOverview(props) {
                 />
             )}
             <EditOverviewEntry lesson={NEW_LESSON} new={true} />
-            {/* <SaveButton save={saveUpdatedCourseData} show={lessonOrderChanged} /> */}
         </div>
     )
 }

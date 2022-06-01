@@ -11,10 +11,14 @@ function ProgressBar(props) {
         <animated.div 
             style={spring}
             className="w-full flex justify-center absolute top-4 md:top-10"
+            role="progressbar"
         >
             <div className="h-2 md:w-10/12 w-11/12 bg-gray-400 rounded-xl left-1/12 overflow-hidden">
-                <div className={`rounded-xl h-full bg-primary transition-all duration-300`} 
-                    style={{width: `${props.percent}%`}}>
+                <div 
+                    className={`rounded-xl h-full bg-primary transition-all duration-300`} 
+                    data-testid="progressbar-fill"
+                    style={{width: `${props.percent}%`}}
+                >
                 </div>
             </div>
         </animated.div>
