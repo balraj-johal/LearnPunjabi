@@ -60,7 +60,7 @@ function Register(props) {
                         setShowSuccessModal(false); 
                         props.setManagerState("Login"); 
                     }}
-                    text="Registration successful! Check your emails for verification!" 
+                    text="Registration successful! Please check your emails for verification!" 
                 /> : 
             null }
             <animated.div className="register" style={{opacity: spring.opacity}}>
