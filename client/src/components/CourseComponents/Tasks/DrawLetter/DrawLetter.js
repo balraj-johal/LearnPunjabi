@@ -26,7 +26,7 @@ function DrawLetter(props) {
                     onClick={()=>{ setClearing(true) }}
                 >Clear</button>
             </div>
-            <NextButton next={() => {checkAnswer()}} />
+            <NextButton next={() => {checkAnswer()}} text="Check Answer" />
         </div>
     );
 }

@@ -52,7 +52,7 @@ function MultipleChoice(props) {
                     ) }
                 </div>
             </div>
-            <NextButton next={() => { checkAnswer() }} />
+            <NextButton next={() => { checkAnswer() }} text="Check Answer" />
         </>
     );
 };

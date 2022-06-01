@@ -164,7 +164,7 @@ function SpecifiedOrder(props) {
                     </div>
                 </div>
             </div>
-            <NextButton next={() => {checkAnswer()}} />
+            <NextButton next={() => {checkAnswer()}} text="Check Answer" />
         </>
     );
 }
