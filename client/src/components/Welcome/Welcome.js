@@ -16,8 +16,11 @@ import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
 import Footer from "./Footer";
 import PunjabText from "./PunjabText";
+import AccountManager from "../AccountManagement/AccountManager";
+import Lesson from "../CourseComponents/Lesson";
 
 function Welcome(props) {
+    let [showAccounts, setShowAccounts] = useState(false);
     // initialise listeners for scroll tracking
     const top = useRef();
     const scrollArea = useRef();
@@ -27,18 +30,25 @@ function Welcome(props) {
         onScroll({ target: scrollArea.current }) ;
     }, []);
 
+    let handleClick = () => {
+        setShowAccounts(!showAccounts);
+    }
+
     return(
         <div id="welcome" ref={scrollArea} onScroll={onScroll} >
             <div id="welcome-1" className="welcome-div grad-top h-screen">
                 <WelcomeLogo />
                 <RiversTop />
-                <SignInPrompt />
-                <ScrollPrompt />
+                { showAccounts && <AccountManager /> }
+                <SignInPrompt handleClick={handleClick} />
+                <ScrollPrompt text="want to try first?" />
             </div>
 
             <div id="welcome-2" className="welcome-div grad-mid h-screen">
-                <InfoPoints />
+                {/* <InfoPoints /> */}
+                <Lesson />
                 <RiversMid />
+                <ScrollPrompt text="want to learn about Punjab?" />
             </div>
             <div id="welcome-3" className="welcome-div grad-mid h-screen">
                 <PunjabInfo ref={top} />

@@ -28,6 +28,8 @@ function Lesson(props) {
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
+        if (props.lessonOverride) return setLesson(props.lessonOverride);
+
         let reqTimeout = setTimeout(async () => {
             try {
                 let res = await axiosClient.get(`/api/v1/lessons/${String(id)}`);

@@ -24,27 +24,31 @@ function SignInPrompt(props) {
 
     return(
         <animated.div 
-            id="middle-bit" 
-            className="animate-fade-in"
+            id="" 
+            className="animate-fade-in z-10 w-4/5 pr-14 absolute top-[45%] pl-4"
             style={spring}
         >
-            <TranslationsScroller timeout={2000} />
+            {/* <TranslationsScroller timeout={2000} /> */}
             <animated.div 
-                id="prompt-text" 
-                className={`text-base md:text-lg lg:text-xl`}
+                id="" 
+                className={`text-2xl md:text-3xl tracking-wider font-normal`}
                 style={spring}
-                // ${buttonState !== "not ready" ? "" : "opacity-0"}
             >
-                Want to learn a new language? Or want to be able to talk to your grandparents?
-                Learn Punjabi quickly and effectively here!
+                <span className="font-bold">Want to</span> learn a new language?
             </animated.div>
-            <SignInButton 
+            <animated.div 
+                id="" 
+                className="text-3xl md:text-4xl tracking-wider mt-6 pb-2 border-b-2 border-white w-48 md:w-56
+                    cursor-pointer transition-all hover:text-primary hover:border-primary"
+                style={spring}
+                onClick={props.handleClick}
+            >
+                Let's Go &gt;
+            </animated.div>
+            {/* <SignInButton 
                 buttonState={buttonState}
-                onClick={() => { 
-                    if (props.loggedIn) return navigate("/dashboard"); 
-                    navigate("/account");
-                }}
-            />
+                onClick={props.handleClick}
+            /> */}
         </animated.div>
     )
 }
