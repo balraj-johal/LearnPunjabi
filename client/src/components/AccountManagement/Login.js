@@ -49,6 +49,7 @@ function Login(props) {
                     value={ username }
                     errors={ props.errors }
                     type="username"
+                    labelOverride="Username/Email"
                 />
                 <FormInput 
                     for="password"
