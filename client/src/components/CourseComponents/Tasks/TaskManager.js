@@ -101,13 +101,13 @@ function TaskManager(props) {
     }
 
     return(
-        <div className="w-full h-full
+        <div className={`${props.override ? "w-5/6 h-5/6" : "w-full h-full"}
             md:h-4/6 md:w-8/12
             lg:w-8/12 lg:mt-[-1rem]
             xl:w-6/12
             relative flex items-center justify-center 
-            bg-white rounded border-black shadow-xl
-            animate-fade-in overflow-hidden"
+            bg-white rounded shadow-xl
+            animate-fade-in overflow-hidden`}
         >
             <AnimatedWrapper 
                 animating={animating} 
