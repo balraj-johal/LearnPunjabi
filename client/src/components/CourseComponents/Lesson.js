@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import qs from "qs";
 
+import qs from "qs";
 import axiosClient from "../../axiosDefaults";
 import { _shuffle } from "../../utils/arrays";
 
@@ -22,50 +22,60 @@ function Lesson(props) {
     let [lesson, setLesson] = useState();
     let [ready, setReady] = useState(false);
     let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
-    let [answerTracking, setAnswerTracking] = useState({ noCorrect: 0, noWrong: 0, });
+    let [answerTracking, setAnswerTracking] = useState({ 
+        noCorrect: 0, 
+        noWrong: 0, 
+    });
     let [mistakeTracker, setMistakeTracker] = useState([]);
     let [noOfTasks, setNoOfTasks] = useState(0);
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
-        if (props.lessonOverride) return setLesson(props.lessonOverride);
-
-        let reqTimeout = setTimeout(async () => {
-            try {
-                let res = await axiosClient.get(`/api/v1/lessons/${String(id)}`);
-                let data = res.data;
-                // prepare tasks
-                if (data.shuffle) data.tasks = _shuffle(data.tasks);
-                if (data.shuffle && data.noToSample > 0) 
-                    data.tasks = data.tasks.slice(0, data.noToSample);
-                setNoOfTasks(data.tasks.length);
-                // add lesson end screen
-                data.tasks.push({
-                    taskID: "end",
-                    text: "Congrats! You've finished the lesson!",
-                    type: "End",
-                    showPercentCorrect: data.showPercentCorrect
-                });
-                // add interstitials
-                if (data.showInterstitials) {
-                    const GAP = 3;
-                    let noOfInterstitials = Math.floor(data.tasks.length / GAP) - 1;
-                    for (let i = 0; i < noOfInterstitials; i++) {
-                        data.tasks.splice((i + 1) * GAP, 0, {
-                            taskID: `interstitial-${i}`,
-                            text: "",
-                            type: "Interstitial",
-                        })
+        let reqTimeout;
+        if (props.lessonOverride) {
+            setLesson(props.lessonOverride);
+            setReady(true);
+        } else {
+            reqTimeout = setTimeout(async () => {
+                try {
+                    let res = 
+                        await axiosClient.get(`/api/v1/lessons/${String(id)}`);
+                    let data = res.data;
+                    // prepare tasks
+                    if (data.shuffle) data.tasks = _shuffle(data.tasks);
+                    if (data.shuffle && data.noToSample > 0) 
+                        data.tasks = data.tasks.slice(0, data.noToSample);
+                    setNoOfTasks(data.tasks.length);
+                    // add lesson end screen
+                    data.tasks.push({
+                        taskID: "end",
+                        text: "Congrats! You've finished the lesson!",
+                        type: "End",
+                        showPercentCorrect: data.showPercentCorrect
+                    });
+                    // add interstitials
+                    if (data.showInterstitials) {
+                        const GAP = 3;
+                        let noOfInterstitials = 
+                            Math.floor(data.tasks.length / GAP) - 1;
+                        for (let i = 0; i < noOfInterstitials; i++) {
+                            data.tasks.splice((i + 1) * GAP, 0, {
+                                taskID: `interstitial-${i}`,
+                                text: "",
+                                type: "Interstitial",
+                            })
+                        }
                     }
+                    // save modified lesson data to component state
+                    setLesson(data);
+                    setReady(true);
+                } catch (err) {
+                    setReady(true);
+                    console.log("Get lesson error: ", err);
                 }
-                // save modified lesson data to component state
-                setLesson(data);
-                setReady(true);
-            } catch (err) {
-                setReady(true);
-                console.log("Get lesson error: ", err);
-            }
-        }, 200);
+            }, 200);
+        }
+
 
         return () => { clearTimeout(reqTimeout) }
     }, [id]);
@@ -124,6 +134,7 @@ function Lesson(props) {
     let nextTask = () => {
         let nextIndex = currentTaskIndex + 1;
         if (nextIndex >= lesson.tasks.length) {
+            if (props.lessonOverride) return;
             endLesson(lesson.id);
             props.getUserData();
             navigate("/dashboard");
@@ -138,6 +149,7 @@ function Lesson(props) {
      * @param  {String} lessonID
      */
     let endLesson = (lessonID) => {
+        if (props.lessonOverride) return;
         // TODO: submit tracked mistakes here
         let mistakes = answerTracking.wrongTasks;
         let adjustedXP = Math.floor(25 * getPercentCorrect() / 100);
@@ -160,10 +172,12 @@ function Lesson(props) {
     if (!ready) return null;
     return(
         lesson ? (
-            <div className="w-full h-full relative flex bg-white md:bg-transparent
+            <div className="w-full h-full relative flex 
+                bg-white md:bg-transparent z-50 
                 items-center justify-center min-h-[550px] md:min-h-[500px]"
             >
-                <ProgressBar percent={getProgressPercent()} />
+                {!props.lessonOverride && 
+                    <ProgressBar percent={getProgressPercent()} />}
                 <TaskManager
                     taskData={lesson.tasks[currentTaskIndex]}
                     submit={submit}
