@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 import TypeAnimation from 'react-type-animation';
 
-// component imports
-import SignInButton from "./SignInButton";
-import TranslationsScroller from "./TranslationsScroller";
+// // component imports
+// import SignInButton from "./SignInButton";
+// import TranslationsScroller from "./TranslationsScroller";
 
 const TYPING_SEQUENCE_TIME = 3500;
 const DELAY = 1000;
@@ -37,11 +37,12 @@ function SignInPrompt(props) {
     return(
         <animated.div 
             className="animate-fade-in z-0 w-4/5 md:w-3/5 pr-14 
-                absolute top-[45%] pl-4"
+                absolute top-[45%] pl-4 md:pl-12 flex flex-col items-end"
             style={spring}
         >
             <animated.div 
-                className="text-2xl md:text-3xl tracking-wide font-normal h-20"
+                className="text-2xl md:text-4xl tracking-wide font-normal h-20
+                    w-full text-left"
                 style={spring}
             >
                 <span className="font-bold">Want to </span>  
@@ -53,15 +54,16 @@ function SignInPrompt(props) {
                 />
             </animated.div>
             <animated.div 
-                id="" 
-                className="text-3xl md:text-4xl tracking-wide mt-6 pb-2 pl-4 pt-4
-                    border-b-2 border-white w-48 md:w-60
-                    cursor-pointer transition-all z-0
-                    hover:text-white hover:border-primary hover:bg-primary"
+                // mr-14
+                className="text-3xl md:text-2xl tracking-wide mt-10 pb-2 pl-4 pt-4
+                    border-b-2 border-white w-48 md:w-4/5
+                    cursor-pointer transition-all z-0 font-normal
+                    hover:text-white hover:border-primary hover:bg-primary
+                    hover:font-bold"
                 style={spring}
                 onClick={props.handleClick}
             >
-                Let's Go &gt;
+                Start Learning &gt;
             </animated.div>
         </animated.div>
     )
