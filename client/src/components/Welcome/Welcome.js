@@ -10,7 +10,7 @@ import ScrollPrompt from "./ScrollPrompt";
 import Punjab3 from "./ThreeJS/Punjab3";
 import WelcomeLogo from "./WelcomeLogo";
 import SignInPrompt from "./SignInPrompt";
-import InfoPoints from "./InfoPoints";
+// import InfoPoints from "./InfoPoints";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
@@ -178,7 +178,7 @@ const EXAMPLE_LESSON =
         },
         {
             "taskID": "end",
-            "text": "Congrats! You've finished the lesson!",
+            "text": "Congrats! You've finished the lesson! Now sign up for more :)",
             "type": "End",
             "showPercentCorrect": true,
             "hideButton": true
