@@ -41,7 +41,7 @@ function Welcome(props) {
                 <RiversTop />
                 { showAccounts && <AccountManager /> }
                 <SignInPrompt handleClick={handleClick} />
-                <ScrollPrompt text="want to try first?" />
+                <ScrollPrompt text="Try a lesson on us!" />
             </div>
 
             <div id="welcome-2" className="welcome-div grad-mid h-screen">
