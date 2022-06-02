@@ -40,7 +40,7 @@ function SignInPrompt(props) {
         >
             <animated.div 
                 className="text-2xl md:text-4xl tracking-wide font-normal h-20
-                    w-full text-left md:pr-24"
+                    w-full text-left md:pr-24 relative"
                 style={spring}
             >
                 <span className="font-bold">Want to </span>  
@@ -59,7 +59,7 @@ function SignInPrompt(props) {
                     border-b-2 border-white 
                     cursor-pointer transition-all z-0 font-normal
                     hover:text-white hover:border-primary hover:bg-primary
-                    hover:font-bold"
+                    hover:font-bold relative"
                 style={spring}
                 onClick={props.handleClick}
             >
