@@ -517,23 +517,24 @@ button:disabled:hover {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    max-height: 125px;
-    max-width: 125px;
-    width: 23vw;
-    height: 23vw;
     -webkit-transition: background-color 75ms ease-in-out;
     transition: background-color 75ms ease-in-out;
     padding: 10px;
-    width: 45% !important;
-    height: 45% !important;
-    max-height: 14vh !important;
-    min-height: 75px !important;
+    width: 100px;
+    height: 100px;
   }
   .multiple-choice-answer.chosen {
     background-color: #d7d7d7;
   }
   .middle-text {
     font-size: 1.5em !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .multiple-choice-answer {
+    width: 125px;
+    height: 125px;
   }
 }
 

@@ -103,7 +103,7 @@ function TaskManager(props) {
     return(
         <div className={`${props.override ? "w-5/6 h-4/6" : "w-full h-full"}
             md:h-4/6 md:w-8/12
-            lg:w-8/12 lg:mt-[-1rem]
+            lg:w-8/12 lg:mt-[-1rem] lg:min-w-[900px]
             xl:w-6/12
             relative flex items-center justify-center 
             bg-white rounded shadow-xl
@@ -139,7 +139,7 @@ function AnimatedWrapper(props) {
             style={spring}
             // md:w-7/12 
             className={`task w-full h-full min-h-[450px] md:min-h-[400px]
-                relative p-6 sm:p-10 lg:px-14 text-black md:text-lg
+                relative px-6 pt-16 sm:p-10 lg:px-14 text-black md:text-lg
                 ${props.animating ? "pointer-events-none" : ""}
             `} 
         >
