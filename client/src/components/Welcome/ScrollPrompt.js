@@ -5,10 +5,11 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
         // <a href="#welcome-2">
             <div 
                 id="scroll-prompt" 
-                className="flex mx-4 my-2 md:m-4 cursor-pointer bg-white text-black" 
+                className="flex mx-4 my-2 md:m-4 cursor-pointer bg-white text-black
+                    px-2 py-1 items-center" 
                 onClick={() => {
                     props.setScrollTo(ref.current.offsetHeight)
-                    console.log("scrolling to", ref.current.offsetHeight)
+                    // console.log("scrolling to", ref.current.offsetHeight)
                 }}
             >
                 <svg 
@@ -16,6 +17,7 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
                     fill="none" 
                     xmlns="http://www.w3.org/2000/svg"
                     id="scroll-arrow"
+                    className="lg:w-2 lg:mb-1"
                 >
                     <path d="M2 2L31 28L60 2" stroke="black" strokeWidth="4"/>
                 </svg>

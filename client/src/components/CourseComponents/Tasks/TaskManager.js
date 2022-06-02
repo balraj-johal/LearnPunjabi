@@ -101,7 +101,10 @@ function TaskManager(props) {
     }
 
     return(
-        <div className="w-full md:w-8/12 lg:w-6/12 h-full md:h-4/6 
+        <div className="w-full h-full
+            md:h-4/6 md:w-8/12
+            lg:w-8/12 lg:mt-[-1rem]
+            xl:w-6/12
             relative flex items-center justify-center 
             bg-white rounded border-black shadow-xl
             animate-fade-in overflow-hidden"
@@ -136,7 +139,7 @@ function AnimatedWrapper(props) {
             style={spring}
             // md:w-7/12 
             className={`task w-full h-full min-h-[450px] md:min-h-[400px]
-                relative px-10 py-10 text-black
+                relative px-10 lg:px-14 py-10 text-black md:text-lg
                 ${props.animating ? "pointer-events-none" : ""}
             `} 
         >

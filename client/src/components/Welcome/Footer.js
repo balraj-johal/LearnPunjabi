@@ -23,7 +23,7 @@ function Footer(props) {
 
 function FooterLink(props) {
     return(
-        <div id={`footer-link-${props.to}`} className="">
+        <div id={`footer-link-${props.to}`} className="text-lg md:text-xl">
             <a href={`welcome/page/${props.to}`}>
                 {props.text}
             </a>

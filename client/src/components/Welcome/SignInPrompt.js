@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 import TypeAnimation from 'react-type-animation';
 
 // // component imports
-// import SignInButton from "./SignInButton";
-// import TranslationsScroller from "./TranslationsScroller";
 
 const TYPING_SEQUENCE_TIME = 3500;
-const DELAY = 1000;
 const TYPING_SEQUENCE = [
     'learn a new language?',
     TYPING_SEQUENCE_TIME,
-    DELAY,
-    'recconect with your heritage?',
+    'reconnect with your heritage?',
     TYPING_SEQUENCE_TIME,
-    DELAY,
+    'take on a new challenge?',
+    TYPING_SEQUENCE_TIME,
 ]
 
 function SignInPrompt(props) {
-    let navigate = useNavigate();
     let [buttonState, setButtonState] = useState("not ready");
 
     useEffect(() => {
         if (!props.auth.hasChecked) return;
-        if (props.auth.isAuthenticated) return setButtonState("authorised");
-        return setButtonState("unauthorised");
+        return setButtonState("ready");
     }, [props.auth])
 
     const spring = useSpring({
@@ -36,13 +30,17 @@ function SignInPrompt(props) {
 
     return(
         <animated.div 
-            className="animate-fade-in z-0 w-4/5 md:w-3/5 pr-14 
-                absolute top-[45%] pl-4 md:pl-12 flex flex-col items-end"
+            className="animate-fade-in z-0 w-4/6 
+                pl-4 pr-4
+                md:w-3/5 md:pr-14 md:pl-12 
+                lg:pl-24
+                xl:w-2/5
+                absolute top-[45%] flex flex-col items-end"
             style={spring}
         >
             <animated.div 
                 className="text-2xl md:text-4xl tracking-wide font-normal h-20
-                    w-full text-left"
+                    w-full text-left md:pr-24"
                 style={spring}
             >
                 <span className="font-bold">Want to </span>  
@@ -54,9 +52,11 @@ function SignInPrompt(props) {
                 />
             </animated.div>
             <animated.div 
-                // mr-14
-                className="text-3xl md:text-2xl tracking-wide mt-10 pb-2 pl-4 pt-4
-                    border-b-2 border-white w-48 md:w-4/5
+                className="text-xl tracking-wide pb-2 pt-4 pl-4
+                    mt-4
+                    md:text-2xl md:w-4/5 md:mt-10 
+                    sm:w-full
+                    border-b-2 border-white 
                     cursor-pointer transition-all z-0 font-normal
                     hover:text-white hover:border-primary hover:bg-primary
                     hover:font-bold"
