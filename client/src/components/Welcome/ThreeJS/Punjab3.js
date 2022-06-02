@@ -25,7 +25,8 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
 
     useFrame(({ clock }) => {
         // rotate based on scroll
-        group.current.rotation.y = -ref.current / 500 - (clock.getElapsedTime() * 0.1);
+        group.current.rotation.y = 
+            -ref.current / 500 - (clock.getElapsedTime() * 0.1);
         // river1.current.position.y = -ref.current / 1500;
         setAlpha(Math.min(1, (ref.current - 1000) / 1000));
         lerpedPos = lerp(RIVER_END_Y + 1.0, RIVER_END_Y, alpha);
@@ -56,7 +57,7 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
             onClick={ e => stickHoverOnClick() }
             onPointerEnter={ e => setHovering(true) }
             onPointerLeave={ e => handlePointerLeave(e) }
-            position={[0, -0.5, 0]}
+            position={[0, 0.5, 0]}
         >
             <mesh 
                 geometry={nodes.Map_rivers001.geometry} 
