@@ -8,12 +8,16 @@ function FooterPage(props) {
         <div className="footer-page h-screen grad-top overflow-hidden">
             <WelcomeLogo />
             <RiversTop />
-            <Link to="/welcome">
-                &lt; Back
-            </Link>
-            <div className="w-7/12 bg-black bg-opacity-25 h-5/6 text-white p-6 
-                mx-10 my-8 overflow-y-auto"
+            <div className="w-7/12 h-4/5 p-6 mx-10 my-8 
+                bg-white text-black rounded shadow-xl
+                overflow-y-auto"
             >
+                <Link 
+                    to="/welcome" 
+                    className="text-primary cursor-pointer mb-4 block w-14"
+                >
+                    &lt; Back
+                </Link>
                 <Outlet />
             </div>
         </div>
