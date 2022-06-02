@@ -31,12 +31,14 @@ const PunjabText = React.forwardRef((props, ref) => {
     return(
         <animated.div 
             style={spring}
-            className="absolute w-full bottom-0 h-1/3
-                text-xl md:text-2xl lg:text-2xl text-black
+            className="absolute w-full bottom-0 h-1/3 font-normal
+                text-xl md:text-4xl lg:text-4xl 
                 pt-10 pl-4 pr-6 md:px-12 md:pt-10 lg:px-16 lg:pt-20"
             id="punjab-text"
         >
-            { text }
+            <span className="bg-white text-black">
+                { text }
+            </span>
         </animated.div>
     )
 })
