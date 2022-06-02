@@ -35,7 +35,7 @@ function AccountManager(props) {
 
     return(
         <div className="accounts-wrap animate-fade-in bg-white 
-            shadow-xl z-50 text-black relative"
+            shadow-xl z-50 text-black relative rounded-md"
         >
             <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? (

@@ -209,7 +209,7 @@ function Welcome(props) {
         onScroll({ target: scrollArea.current }) ;
     }, []);
 
-    let handleClick = () => {
+    let toggleShowAccounts = () => {
         setShowAccounts(!showAccounts);
     }
 
@@ -220,58 +220,74 @@ function Welcome(props) {
     })
 
     return(
-        <animated.div 
-            id="welcome" 
-            ref={scrollArea} 
-            onScroll={onScroll} 
-            scrollTop={scroll}
+        <>
+        { showAccounts && <div 
+            className="w-screen h-screen absolute 
+                flex justify-center items-center"
         >
             <div 
-                id="welcome-1" 
-                className="welcome-div grad-top h-screen"
-                ref={welcome1}
+                onClick={() => { toggleShowAccounts() }}
+                className="w-screen h-screen absolute z-40 
+                    bg-black bg-opacity-30"
+            />
+            <div className="w-11/12 h-5/6 rounded 
+                flex justify-center items-center"
             >
-                <WelcomeLogo />
-                <RiversTop />
-                { showAccounts && <AccountManager /> }
-                <SignInPrompt handleClick={handleClick} />
-                <ScrollPrompt 
-                    text="Try a lesson on us!" 
-                    ref={welcome2}
-                    setScrollTo={setScrollTo}
-                />
+                <AccountManager />
             </div>
+        </div> }
+            <animated.div 
+                id="welcome" 
+                ref={scrollArea} 
+                onScroll={onScroll} 
+                scrollTop={scroll}
+            >
+                <div 
+                    id="welcome-1" 
+                    className="welcome-div grad-top h-screen"
+                    ref={welcome1}
+                >
+                    <WelcomeLogo />
+                    <RiversTop />
+                    <SignInPrompt handleClick={toggleShowAccounts} />
+                    <ScrollPrompt 
+                        text="Try a lesson on us!" 
+                        ref={welcome2}
+                        setScrollTo={setScrollTo}
+                    />
+                </div>
 
-            <div 
-                id="welcome-2" 
-                className="welcome-div grad-mid h-screen"
-                ref={welcome2}
-            >
-                {/* <InfoPoints /> */}
-                <Lesson lessonOverride={EXAMPLE_LESSON} />
-                <RiversMid />
-                <ScrollPrompt 
-                    text="want to learn about Punjab?" 
+                <div 
+                    id="welcome-2" 
+                    className="welcome-div grad-mid h-screen"
+                    ref={welcome2}
+                >
+                    {/* <InfoPoints /> */}
+                    <Lesson lessonOverride={EXAMPLE_LESSON} />
+                    <RiversMid />
+                    <ScrollPrompt 
+                        text="want to learn about Punjab?" 
+                        ref={welcome3}
+                        setScrollTo={setScrollTo}
+                    />
+                </div>
+                <div 
+                    id="welcome-3" 
+                    className="welcome-div grad-mid h-screen"
                     ref={welcome3}
-                    setScrollTo={setScrollTo}
-                />
-            </div>
-            <div 
-                id="welcome-3" 
-                className="welcome-div grad-mid h-screen"
-                ref={welcome3}
-            >
-                <PunjabInfo ref={top} />
-            </div>
-            <div 
-                id="welcome-4" 
-                className="welcome-div grad-end h-screen"
-                ref={welcome4}
-            >
-                <RiversEnd />
-                <Footer />
-            </div>
-        </animated.div>
+                >
+                    <PunjabInfo ref={top} />
+                </div>
+                <div 
+                    id="welcome-4" 
+                    className="welcome-div grad-end h-screen"
+                    ref={welcome4}
+                >
+                    <RiversEnd />
+                    <Footer />
+                </div>
+            </animated.div>
+        </>
     )
 }
 
