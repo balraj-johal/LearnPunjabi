@@ -11,11 +11,11 @@ function AccountTab(props) {
     return(
         <div 
             className={`text-lg w-6/12 h-10 md:h-12 transition-all no-highlight pt-[3px]
-                ${ props.first ? "border-r-2" : "" }  border-black 
-                flex justify-center items-center cursor-pointer border-b-2
-                ${ isSelected ? 
-                    "bg-primary text-white" : 
-                    "hover:bg-slate-200" }`}
+                ${ props.first ? "" : "" }   
+                flex justify-center items-center cursor-pointer 
+                ${ !isSelected ? 
+                    "bg-primary text-white hover:bg-blue-400" : 
+                    "" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}
         >
