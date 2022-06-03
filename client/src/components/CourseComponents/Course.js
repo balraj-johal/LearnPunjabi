@@ -80,8 +80,8 @@ function Course(props) {
     }, [courseData])
 
     if (loading) {
-        props.setLessonWrapHeight("100%");
-        return <div className="lesson-wrap" style={{ height: "100%" }} />
+        props.setLessonWrapHeight("102%");
+        return <div className="lesson-wrap" style={{ height: "102%" }} />
     }
     return(
         // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
