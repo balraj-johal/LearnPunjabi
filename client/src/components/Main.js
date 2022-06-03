@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
@@ -27,6 +27,8 @@ import Privacy from "./FooterPages/Privacy";
 import Attributions from "./FooterPages/Attributions";
 
 function Main(props) {
+    let [vh, setVh] = useState(0)
+
     // fetch csrf token and store in redux reducer
     const { setCSRFReady } = props;
     useEffect(() => {
@@ -75,6 +77,7 @@ function Main(props) {
     useEffect(() => {
         let onResize = () => {
             let vh = window.innerHeight * 0.01;
+            setVh(vh)
             document.documentElement.style.setProperty('--vh', `${vh}px`);
             props.setSingleVH(vh);
             alert(`inner h, ${window.innerHeight}`);
@@ -116,7 +119,7 @@ function Main(props) {
     }
 
     return(
-        <div className={`${colourScheme()} max-h-full h-full
+        <div className={`${colourScheme()} max-h-full h-full ${vh*100}
             ${props.options.dyslexiaFont ? "dyslexiaFont" : ""}`} 
         >
             <Router>

@@ -244,7 +244,7 @@ function Welcome(props) {
             >
                 <div 
                     id="welcome-1" 
-                    className="welcome-div grad-top h-screen"
+                    className="welcome-div grad-top h-full"
                     ref={welcome1}
                 >
                     <WelcomeLogo />
@@ -259,7 +259,7 @@ function Welcome(props) {
 
                 <div 
                     id="welcome-2" 
-                    className="welcome-div grad-mid h-screen"
+                    className="welcome-div grad-mid h-full"
                     ref={welcome2}
                 >
                     {/* <InfoPoints /> */}
@@ -273,14 +273,14 @@ function Welcome(props) {
                 </div>
                 <div 
                     id="welcome-3" 
-                    className="welcome-div grad-mid h-screen"
+                    className="welcome-div grad-mid h-full"
                     ref={welcome3}
                 >
                     <PunjabInfo ref={top} />
                 </div>
                 <div 
                     id="welcome-4" 
-                    className="welcome-div grad-end h-screen"
+                    className="welcome-div grad-end h-full"
                     ref={welcome4}
                 >
                     <RiversEnd />
