@@ -65,10 +65,10 @@ function Main(props) {
         return () => { window.removeEventListener("storage", synchLogout) };
     }, [synchLogout]);
 
-    var getHeightOfIOSToolbars = function() {
-        var tH = (window.orientation === 0 ? screen.height : screen.width) -  getIOSWindowHeight();
-        return tH > 1 ? tH : 0;
-    };
+    // var getHeightOfIOSToolbars = function() {
+    //     var tH = (window.orientation === 0 ? screen.height : screen.width) -  getIOSWindowHeight();
+    //     return tH > 1 ? tH : 0;
+    // };
     
     // set up resize handlers
     const { setMobile } = props;
@@ -84,7 +84,7 @@ function Main(props) {
             // window.innerHeight returns height of the visible area. 
             // We multiply it by zoom and get out real height.
             alert(window.innerHeight * zoomLevel);
-            alert(getHeightOfIOSToolbars());
+            // alert(getHeightOfIOSToolbars());
 
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
