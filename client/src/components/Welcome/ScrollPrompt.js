@@ -8,6 +8,7 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
                 className="flex mx-4 my-2 cursor-pointer 
                     bg-white text-black
                     md:m-4 lg:my-6 lg:mx-8
+                    absolute
                     px-2 py-1 items-center" 
                 onClick={() => {
                     props.setScrollTo(ref.current.offsetHeight)

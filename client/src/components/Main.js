@@ -72,12 +72,16 @@ function Main(props) {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
             props.setSingleVH(vh);
+            alert(`inner h, ${window.innerHeight}`);
+            alert(`vh * 100, ${vh * 100}`);
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
         }
         onResize();
         window.addEventListener("resize", onResize);
-        return () => { window.removeEventListener("resize", onResize) }
+        return () => { 
+            window.removeEventListener("resize", onResize) 
+        }
     }, [setMobile]);
 
     /** Assigns correct css class for site colour scheme
