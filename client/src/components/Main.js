@@ -77,17 +77,17 @@ function Main(props) {
     useEffect(() => {
         let onResize = () => {
             let vh = window.innerHeight * 0.01;
-            setVh(vh)
+            // setVh(vh)
             document.documentElement.style.setProperty('--vh', `${vh}px`);
             props.setSingleVH(vh);
-            alert(`inner h, ${window.innerHeight}`);
-            alert(`vh * 100, ${vh * 100}`);
+            // alert(`inner h, ${window.innerHeight}`);
+            // alert(`vh * 100, ${vh * 100}`);
             
-            var zoomLevel = document.documentElement.clientWidth / window.innerWidth;
-            // window.innerHeight returns height of the visible area. 
-            // We multiply it by zoom and get out real height.
-            alert(window.innerHeight * zoomLevel);
-            // alert(getHeightOfIOSToolbars());
+            // var zoomLevel = document.documentElement.clientWidth / window.innerWidth;
+            // // window.innerHeight returns height of the visible area. 
+            // // We multiply it by zoom and get out real height.
+            // alert(window.innerHeight * zoomLevel);
+            // // alert(getHeightOfIOSToolbars());
 
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
@@ -119,7 +119,7 @@ function Main(props) {
     }
 
     return(
-        <div className={`${colourScheme()} max-h-full h-full ${vh*100}
+        <div className={`${colourScheme()} max-h-full h-full
             ${props.options.dyslexiaFont ? "dyslexiaFont" : ""}`} 
         >
             <Router>
