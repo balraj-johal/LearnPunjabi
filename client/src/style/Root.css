@@ -710,6 +710,7 @@ button:disabled:hover {
 }
 
 .welcome-div {
+  padding-bottom: env(safe-area-inset-bottom);
   position: relative;
   color: white;
   overflow: hidden;
@@ -1003,6 +1004,7 @@ html, body, #root {
 }
 
 body {
+  padding-bottom: env(safe-area-inset-bottom);
   scroll-behavior: smooth;
 }
 

@@ -43,6 +43,7 @@ html, body, #root {
 }
 
 body {
+    padding-bottom: env(safe-area-inset-bottom);
     // overflow: hidden;
     scroll-behavior: smooth;
     // z-index: 0;
