@@ -5,7 +5,7 @@
     border-right: $border-thickness solid black;
 }
 #custom-container {
-    height: calc(100vh - 84px);
+    height: calc((var(--vh, 1vh) * 100) - 84px);
     @include vScroll;
 
     display: flex;

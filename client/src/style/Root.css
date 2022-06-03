@@ -64,6 +64,10 @@
   }
 }
 
+:root {
+  --vh: 0;
+}
+
 @font-face {
   font-family: "Lekton";
   src: url("fonts/Lekton-Regular.ttf");
@@ -238,7 +242,9 @@ button:disabled:hover {
     max-width: 900px;
     margin: 50px auto;
     min-height: 70vh;
+    min-height: calc(var(--vh, 1vh) * 70);
     max-height: 80vh;
+    max-height: calc(var(--vh, 1vh) * 80);
   }
 }
 
@@ -685,6 +691,7 @@ button:disabled:hover {
   background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), color-stop(10%, #f0a6ff), color-stop(90%, #c3ffff), to(#c3ffff));
   background: linear-gradient(0deg, #f0a6ff 0%, #f0a6ff 10%, #c3ffff 90%, #c3ffff 100%);
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   overflow-y: scroll;
   overflow-x: hidden;
   user-select: none;
@@ -800,6 +807,7 @@ button:disabled:hover {
 
 #welcome-3 {
   height: 600vh !important;
+  height: calc(var(--vh, 1vh) * 600) !important;
   overflow: initial !important;
 }
 
@@ -808,6 +816,7 @@ button:disabled:hover {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 #lp-logo {
@@ -948,7 +957,7 @@ button:disabled:hover {
 }
 
 #custom-container {
-  height: calc(100vh - 84px);
+  height: calc((var(--vh, 1vh) * 100) - 84px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;
@@ -1015,6 +1024,7 @@ code {
   overflow-x: hidden;
   overflow-y: hidden;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .button {

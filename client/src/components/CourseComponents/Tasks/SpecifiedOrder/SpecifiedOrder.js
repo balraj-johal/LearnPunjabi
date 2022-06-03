@@ -97,7 +97,8 @@ function SpecifiedOrder(props) {
 
     return(
         <>
-            <div className={`specified-order min-h-[40vh] h-5/6 
+            <div className={`specified-order 
+                min-h-[${40 * props.vh}px] h-5/6 
                 flex flex-col justify-center`} 
             >
                 <div className="title w-full h-1/6 md:h-2/6 px-0
@@ -172,7 +173,8 @@ function SpecifiedOrder(props) {
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
-    animClasses: state.currTask.animClasses
+    animClasses: state.currTask.animClasses,
+    vh: state.display.singleVH,
 });
 
 export default connect(

@@ -25,7 +25,9 @@
         max-width: 900px;
         margin: 50px auto;
         min-height: 70vh;
+        min-height: calc(var(--vh, 1vh) * 70);
         max-height: 80vh;
+        max-height: calc(var(--vh, 1vh) * 80);
     }
 }
 

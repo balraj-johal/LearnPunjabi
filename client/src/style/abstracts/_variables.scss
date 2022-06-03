@@ -2,3 +2,8 @@ $border-thickness: 2px !global;
 @media (min-width: 768px) {
     // $border-thickness: 3px !global;
 }
+
+:root {
+    --vh: 0;
+}
+$vh: var(--vh);

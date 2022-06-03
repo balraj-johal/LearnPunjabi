@@ -30,12 +30,12 @@ function SignInPrompt(props) {
 
     return(
         <animated.div 
-            className="animate-fade-in z-0 w-4/6 
+            className="animate-fade-in z-0 w-4/6 top-[40%]
                 pl-4 pr-4
-                md:w-3/5 md:pr-14 md:pl-12 
+                md:w-3/5 md:pr-14 md:pl-12 md:top-[45%] 
                 lg:pl-24
                 xl:w-2/5
-                absolute top-[45%] flex flex-col items-end"
+                absolute flex flex-col items-end"
             style={spring}
         >
             <animated.div 
@@ -52,10 +52,10 @@ function SignInPrompt(props) {
                 />
             </animated.div>
             <animated.div 
-                className="text-xl tracking-wide pb-2 pt-4 pl-4
-                    mt-4
-                    md:text-2xl md:w-4/5 md:mt-10 
-                    sm:w-full
+                className="text-lg tracking-wide py-1 pl-4
+                    mt-8
+                    md:text-2xl md:w-4/5 md:mt-10 md:pt-4 
+                    w-full
                     border-b-2 border-white 
                     bg-white text-black
                     cursor-pointer transition-all z-0 font-normal

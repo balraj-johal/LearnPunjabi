@@ -6,7 +6,7 @@ import axiosClient from "../axiosDefaults";
 // import redux actions
 import { getUserData, useRefreshToken } from "../actions/authActions";
 import { setCSRFReady } from "../actions/csrfActions";
-import { setMobile } from "../actions/displayActions";
+import { setMobile, setSingleVH } from "../actions/displayActions";
 
 // component imports
 import InternalPage from "../components/InternalPage";
@@ -43,7 +43,9 @@ function Main(props) {
     useEffect(() => {
         let timeout;
         const verifyUser = () => {
-            if (!csrf.ready) return timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);;
+            if (!csrf.ready) return timeout = setTimeout(() => {
+                verifyUser() 
+            }, 5 * 60 * 1000);
             props.useRefreshToken();
             timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
         }
@@ -67,6 +69,9 @@ function Main(props) {
     const { setMobile } = props;
     useEffect(() => {
         let onResize = () => {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            props.setSingleVH(vh);
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
         }
@@ -154,6 +159,7 @@ export default connect(
         getUserData,
         useRefreshToken,
         setCSRFReady,
-        setMobile
+        setMobile,
+        setSingleVH
     }
 )(Main);
