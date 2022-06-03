@@ -52,9 +52,9 @@ function SignInPrompt(props) {
                 />
             </animated.div>
             <animated.div 
-                className="text-lg tracking-wide py-1 pl-4
+                className="text-lg tracking-wide pb-1 pt-2 pl-4
                     mt-8
-                    md:text-2xl md:w-4/5 md:mt-10 md:pt-4 
+                    md:text-2xl md:w-4/5 md:mt-10 md:pb-2 md:pt-3
                     w-full
                     border-b-2 border-white 
                     bg-white text-black
