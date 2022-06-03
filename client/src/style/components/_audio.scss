@@ -1,5 +1,5 @@
 .audio {
-    height: 90px;
+    // height: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +15,7 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
     .audio {
-        margin: 10px 0;
+        // margin: 10px 0;
         .replay-audio-button {
             height: 65px;
             width: 65px;
@@ -25,7 +25,7 @@
 
 @media (min-width: 1024px) {
     .audio {
-        margin: 10px 0;
+        // margin: 10px 0;
         .replay-audio-button {
             height: 80px;
             width: 80px;
