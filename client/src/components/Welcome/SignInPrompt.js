@@ -57,6 +57,7 @@ function SignInPrompt(props) {
                     md:text-2xl md:w-4/5 md:mt-10 
                     sm:w-full
                     border-b-2 border-white 
+                    bg-white text-black
                     cursor-pointer transition-all z-0 font-normal
                     hover:text-white hover:border-primary hover:bg-primary
                     hover:font-bold relative"
