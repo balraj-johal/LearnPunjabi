@@ -21,7 +21,7 @@ function LessonIcon(props) {
     }, [props.timesCompleted])
 
     return(
-        <Link to={`/lesson/${props.lesson.id}`}>
+        <Link to={`/lesson/${props.lesson.id}`} className="no-highlight">
             <div 
                 id="icon-main"
                 className={`${finished ? "bg-gold" : "bg-white"} shadow-xl
