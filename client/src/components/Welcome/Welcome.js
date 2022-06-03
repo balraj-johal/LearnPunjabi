@@ -230,8 +230,10 @@ function Welcome(props) {
                 className="w-screen h-screen absolute z-40 
                     bg-black bg-opacity-30"
             />
-            <div className="w-11/12 h-5/6 rounded 
-                flex justify-center items-center"
+            <div 
+                className="w-11/12 h-5/6 rounded 
+                    flex justify-center items-center"
+                style={{marginBottom: "env(safe-area-inset-bottom)"}}
             >
                 <AccountManager />
             </div>

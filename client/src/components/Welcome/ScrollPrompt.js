@@ -10,6 +10,7 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
                     md:m-4 lg:my-6 lg:mx-8
                     absolute
                     px-2 py-1 items-center" 
+                style={{marginBottom: "env(safe-area-inset-bottom)"}}
                 onClick={() => {
                     props.setScrollTo(ref.current.offsetHeight)
                     // console.log("scrolling to", ref.current.offsetHeight)

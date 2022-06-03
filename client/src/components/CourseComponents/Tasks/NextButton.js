@@ -2,7 +2,7 @@ import React, {  } from "react";
 
 function NextButton(props) {
     return(
-        <div className="w-full flex justify-end h-1/6">
+        <div className="w-full flex justify-end h-1/6 pb-4 md:pb-0">
             <button 
                 className="md:w-56 w-4/6 h-8 md:h-10
                     cursor-pointer rounded no-highlight
