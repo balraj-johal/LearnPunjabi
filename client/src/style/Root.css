@@ -690,8 +690,7 @@ button:disabled:hover {
   background-color: #E786FF;
   background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), color-stop(10%, #f0a6ff), color-stop(90%, #c3ffff), to(#c3ffff));
   background: linear-gradient(0deg, #f0a6ff 0%, #f0a6ff 10%, #c3ffff 90%, #c3ffff 100%);
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
   user-select: none;
@@ -999,8 +998,11 @@ button:disabled:hover {
   }
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 body {
-  overflow: hidden;
   scroll-behavior: smooth;
 }
 
@@ -1023,8 +1025,7 @@ code {
 #root {
   overflow-x: hidden;
   overflow-y: hidden;
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
 }
 
 .button {

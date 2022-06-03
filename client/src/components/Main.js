@@ -116,8 +116,8 @@ function Main(props) {
     }
 
     return(
-        <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${colourScheme()} max-h-full`} 
+        <div className={`${colourScheme()} max-h-full h-full
+            ${props.options.dyslexiaFont ? "dyslexiaFont" : ""}`} 
         >
             <Router>
                 <Routes>
