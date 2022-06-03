@@ -5,15 +5,16 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
         // <a href="#welcome-2">
             <div 
                 id="scroll-prompt" 
-                className="flex mx-4 my-2 cursor-pointer 
+                className="flex mx-4 mt-2 cursor-pointer 
                     bg-white text-black
                     md:m-4 lg:my-6 lg:mx-8
                     absolute
                     px-2 py-1 items-center" 
-                style={{marginBottom: "env(safe-area-inset-bottom)"}}
+                style={{
+                    marginBottom: "calc(env(safe-area-inset-bottom) + 0.5rem)"
+                }}
                 onClick={() => {
-                    props.setScrollTo(ref.current.offsetHeight)
-                    // console.log("scrolling to", ref.current.offsetHeight)
+                    // props.setScrollTo(ref.current.offsetHeight)
                 }}
             >
                 <svg 
