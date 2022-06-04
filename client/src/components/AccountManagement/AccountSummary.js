@@ -4,6 +4,9 @@ import { useSpring, animated, config } from 'react-spring';
 
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
+import Lottie from "react-lottie-player";
+import fireAnim from "../../res/animations/fire.json";
+
 function AccountSummary(props) {
     let [xpAnimFinished, setXpAnimFinished] = useState(false);
 
@@ -51,10 +54,20 @@ function AccountSummary(props) {
                 <div 
                     id="total-xp" 
                     className="w-full flex items-center p-4
-                        no-highlight h-1/6 md:h-2/6 rounded bg-primary shadow-xl
-                        text-white"
+                        no-highlight h-1/6 md:h-2/6 rounded 
+                        bg-primary shadow-xl text-white"
                 >
-                    <div className="h-full w-3/12 flex items-center justify-center">🔥</div>
+                    <div className="h-full w-3/12 flex items-center justify-center">
+                        <Lottie 
+                            rendererSettings={{ 
+                                preserveAspectRatio: 'xMidYMid slice' 
+                            }}
+                            className={`h-5/6`}
+                            animationData={fireAnim} 
+                            loop 
+                            play={xpAnimFinished}
+                        />
+                    </div>
                     <div className="flex flex-col justify-evenly">
                         <h2 className="text-xl font-normal">You're on a</h2>
                         <h2 className="text-2xl">X day streak!</h2>
@@ -62,7 +75,13 @@ function AccountSummary(props) {
                 </div>
                 <div className="flex justify-between h-1/6 py-1">
                     <SmallBubble>
-                        Test1!
+                        <div className="font-normal"
+                        >
+                            You have
+                        </div>
+                        <animated.div className="mr-4">
+                            {XPSpring.xp.to(xp => Math.floor(xp))}
+                        </animated.div> XP!
                     </SmallBubble>
                     <SmallBubble>
                         <div>
@@ -73,45 +92,6 @@ function AccountSummary(props) {
                         </div>
                     </SmallBubble>
                 </div>
-                {/* <div 
-                    id="total-xp" 
-                    className="w-full flex items-center justify-evenly 
-                        no-highlight h-2/6"
-                >
-                    <div className="md:w-4/12 w-6/12 md:mr-0 mr-10 
-                        flex flex-col items-center justify-center"
-                    >
-                        <div className="lg:text-3xl md:text-2xl text-xl md:my-1 
-                            w-full text-left font-normal"
-                        >
-                            You have
-                        </div>
-                        <div className="lg:text-5xl md:text-4xl text-2xl md:mb-1 
-                            w-full flex justify-end"
-                        >
-                            <animated.div className="mr-4">
-                                {XPSpring.xp.to(xp => Math.floor(xp))}
-                            </animated.div> XP!
-                        </div>
-                    </div>
-                    <div className="md:w-3/12 max-w-[100px] 
-                        md:max-w-sm md:min-w-[140px] w-4/12 
-                        md:p-4 flex flex-col items-center justify-center"
-                    >
-                        { xpAnimFinished ? <Smiley /> : <Frowney /> }
-                    </div>
-                </div> */}
-                {/* <div 
-                    id="no-lessons" 
-                    className="w-full flex items-center justify-left px-4 h-1/6"
-                >
-                    <p className="my-2 md:text-2xl text-lg font-normal">
-                        You have completed&nbsp;
-                        <span className="font-bold">
-                            {props.user?.progress?.length}
-                        </span>&nbsp;lessons.
-                    </p>
-                </div> */}
                 <div className="h-1/6" />
                 <div className="h-1/6">
                     <FormSubmitButton for="Logout" />
