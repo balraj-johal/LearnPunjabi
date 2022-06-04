@@ -12,6 +12,7 @@ import { setMobile, setSingleVH } from "../actions/displayActions";
 import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManagement/AccountManager';
+import AccountSummary from '../components/AccountManagement/AccountSummary';
 import Lesson from '../components/CourseComponents/Lesson';
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./AccountManagement/ResetPassword";
@@ -27,11 +28,11 @@ import Privacy from "./FooterPages/Privacy";
 import Attributions from "./FooterPages/Attributions";
 
 function Main(props) {
-    let [vh, setVh] = useState(0)
 
     // fetch csrf token and store in redux reducer
     const { setCSRFReady } = props;
     useEffect(() => {
+        setCSRFReady();
         axiosClient.get("/csrf-token")
         .then(res => {
                 axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
@@ -148,6 +149,12 @@ function Main(props) {
                     </Route>
                     <Route path="welcome" >
                         <Route path="" element={<Welcome loginQueried={props.csrf} />} />
+                        <Route path="test" element={
+                        <div className="account-switcher px-4 md:px-28 pb-5 pt-8 md:pt-8 
+                            h-full md:mt-0 mt-[-10px]"
+                        >
+                            <AccountSummary user={{totalXP: 100, progress: [1, 2, 3]}} />
+                        </div>} />
                         <Route path="page" element={<FooterPage />}>
                             <Route path="about" element={<About />} />
                             <Route path="privacy" element={<Privacy />} />
