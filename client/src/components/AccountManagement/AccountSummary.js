@@ -28,24 +28,55 @@ function AccountSummary(props) {
             <form 
                 noValidate 
                 onSubmit={() => { props.logoutUser() }} 
-                className="flex flex-col h-full top-0 w-full"
+                className="flex flex-col h-full top-0 w-full justify-evenly"
             >
                 <div 
                     id="acct-name" 
-                    className="w-full flex items-center justify-evenly 
-                        px-4 font-normal h-1/6"
+                    className="w-full flex flex-col
+                        font-normal h-2/6 justify-center"
                 >
-                    <h2 className="md:text-4xl text-xl my-2">
+                    <h2 className="md:text-3xl text-xl my-2">
                         Hi&nbsp;
                         <span className="font-bold">
                             {props.user.firstName}!
                         </span>
                     </h2>
+                    <h3 className="md:text-lg">
+                        Some other statistic
+                    </h3>
+                    <h3 className="md:text-lg">
+                        Placeholder placehold
+                    </h3>
                 </div>
                 <div 
                     id="total-xp" 
+                    className="w-full flex items-center p-4
+                        no-highlight h-1/6 md:h-2/6 rounded bg-primary shadow-xl
+                        text-white"
+                >
+                    <div className="h-full w-3/12 flex items-center justify-center">🔥</div>
+                    <div className="flex flex-col justify-evenly">
+                        <h2 className="text-xl font-normal">You're on a</h2>
+                        <h2 className="text-2xl">X day streak!</h2>
+                    </div>
+                </div>
+                <div className="flex justify-between h-1/6 py-1">
+                    <SmallBubble>
+                        Test1!
+                    </SmallBubble>
+                    <SmallBubble>
+                        <div>
+                            <span>You've finished </span>
+                            <span className="font-bold">
+                                {props.user?.progress?.length}
+                            </span>&nbsp;lessons!
+                        </div>
+                    </SmallBubble>
+                </div>
+                {/* <div 
+                    id="total-xp" 
                     className="w-full flex items-center justify-evenly 
-                        no-highlight px-4 h-2/6"
+                        no-highlight h-2/6"
                 >
                     <div className="md:w-4/12 w-6/12 md:mr-0 mr-10 
                         flex flex-col items-center justify-center"
@@ -63,13 +94,14 @@ function AccountSummary(props) {
                             </animated.div> XP!
                         </div>
                     </div>
-                    <div className="md:w-3/12 max-w-[100px] md:max-w-sm md:min-w-[140px] w-4/12 
+                    <div className="md:w-3/12 max-w-[100px] 
+                        md:max-w-sm md:min-w-[140px] w-4/12 
                         md:p-4 flex flex-col items-center justify-center"
                     >
                         { xpAnimFinished ? <Smiley /> : <Frowney /> }
                     </div>
-                </div>
-                <div 
+                </div> */}
+                {/* <div 
                     id="no-lessons" 
                     className="w-full flex items-center justify-left px-4 h-1/6"
                 >
@@ -79,13 +111,25 @@ function AccountSummary(props) {
                             {props.user?.progress?.length}
                         </span>&nbsp;lessons.
                     </p>
-                </div>
+                </div> */}
                 <div className="h-1/6" />
                 <div className="h-1/6">
                     <FormSubmitButton for="Logout" />
                 </div>
             </form>
         </animated.div>
+    )
+}
+
+function SmallBubble({ children }) {
+    return(
+        <div 
+            style={{width: "calc(50% - 5px)"}}
+        className="rounded shadow-xl border-[1px] border-slate-300
+            mt-[10px] h-full flex justify-center items-center p-2 md:p-4"
+        >
+            { children }
+        </div>
     )
 }
 
