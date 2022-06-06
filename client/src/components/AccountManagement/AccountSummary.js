@@ -73,22 +73,25 @@ function AccountSummary(props) {
                         <h2 className="text-2xl">X day streak!</h2>
                     </div>
                 </div>
-                <div className="flex justify-between h-1/6 py-1">
+                <div className="flex flex-col md:flex-row justify-between 
+                    h-1/6 py-1">
                     <SmallBubble>
-                        <div className="font-normal"
-                        >
+                        <div className="font-normal mr-4 md:text-xl">
                             You have
                         </div>
-                        <animated.div className="mr-4">
+                        <animated.div className="mr-4 md:text-2xl">
                             {XPSpring.xp.to(xp => Math.floor(xp))}
-                        </animated.div> XP!
+                        </animated.div>
+                        <span className="md:text-2xl"> XP!</span>
                     </SmallBubble>
                     <SmallBubble>
                         <div>
-                            <span>You've finished </span>
-                            <span className="font-bold">
-                                {props.user?.progress?.length}
-                            </span>&nbsp;lessons!
+                            <span className="md:text-xl font-normal">
+                                You've finished 
+                            </span>
+                            <span className="font-bold md:text-2xl font-normal">
+                                {props.user?.progress?.length}&nbsp;lessons!
+                            </span>
                         </div>
                     </SmallBubble>
                 </div>
