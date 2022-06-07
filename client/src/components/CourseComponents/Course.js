@@ -73,15 +73,15 @@ function Course(props) {
         if (courseData.length > 0 && lessonBased > window.innerHeight) {
             return `${lessonBased}px`;
         }
-        return `calc(101vh)`;
+        return `${101 * props.vh}px`;
     }
     useEffect(() => {
         props.setLessonWrapHeight(getWrapHeight());
     }, [courseData])
 
     if (loading) {
-        props.setLessonWrapHeight("100%");
-        return <div className="lesson-wrap" style={{ height: "100%" }} />
+        props.setLessonWrapHeight("102%");
+        return <div className="lesson-wrap" style={{ height: "102%" }} />
     }
     return(
         // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
@@ -121,7 +121,8 @@ function Course(props) {
 const mapStateToProps = state => ({
     userProgress: state.auth.user.progress,
     darkMode: state.options.darkMode,
-    lessonWrapHeight: state.display.lessonWrapHeight
+    lessonWrapHeight: state.display.lessonWrapHeight,
+    vh: state.display.singleVH,
 });
 
 export default connect(

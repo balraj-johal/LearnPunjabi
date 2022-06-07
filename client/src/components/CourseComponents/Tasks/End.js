@@ -5,6 +5,8 @@ import NextButton from "./NextButton";
 import confetti from "../../../res/animations/confetti.json";
 
 function End(props) {
+    const hideButton = props.data.hideButton;
+
     return(
         <>
             <Lottie 
@@ -15,15 +17,16 @@ function End(props) {
                 loop={false}
             />
             <div className="lesson-end flex flex-col items-center 
-                h-5/6 justify-center pb-20">
+                h-5/6 justify-center">
                 <span>{props.data.text}</span>
                 {props.data.showPercentCorrect ? (
-                    <span className="my-8">
+                    <span className="mt-8">
                         You got {props.stats} of your answers correct!
                     </span>
                 ) : null }
             </div>
-            <NextButton next={()=>{ props.submit(true) }} text="Finish" />
+            {!hideButton && 
+                <NextButton next={()=>{ props.submit(true) }} text="Finish" />}
         </>
     );
 }

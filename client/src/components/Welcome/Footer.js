@@ -5,7 +5,7 @@ function Footer(props) {
         <div 
             id="footer" 
             role="footer"
-            className="absolute bottom-0 h-1/6 bg-black bg-opacity-20 w-full
+            className="absolute bottom-0 h-1/4 bg-black bg-opacity-20 w-full
                 flex flex-col justify-center px-8"
         >
             <div 
@@ -23,7 +23,7 @@ function Footer(props) {
 
 function FooterLink(props) {
     return(
-        <div id={`footer-link-${props.to}`} className="">
+        <div id={`footer-link-${props.to}`} className="text-lg md:text-xl">
             <a href={`welcome/page/${props.to}`}>
                 {props.text}
             </a>

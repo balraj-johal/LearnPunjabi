@@ -38,8 +38,13 @@
     }
 }
 
+html, body, #root {
+    height: 100%;
+}
+
 body {
-    overflow: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
+    // overflow: hidden;
     scroll-behavior: smooth;
     // z-index: 0;
 }
@@ -65,8 +70,10 @@ code {
 
 #root {
     overflow-x: hidden;
-    // overflow-y: auto;
-    height: 100vh;
+    overflow-y: hidden;
+    height: 100%;
+    // height: calc(var(--vh, 1vh) * 100);
+    // min-height: -webkit-fill-available;
 }
 
 .button {

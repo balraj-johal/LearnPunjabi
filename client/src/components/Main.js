@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
@@ -6,12 +6,13 @@ import axiosClient from "../axiosDefaults";
 // import redux actions
 import { getUserData, useRefreshToken } from "../actions/authActions";
 import { setCSRFReady } from "../actions/csrfActions";
-import { setMobile } from "../actions/displayActions";
+import { setMobile, setSingleVH } from "../actions/displayActions";
 
 // component imports
 import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManagement/AccountManager';
+import AccountSummary from '../components/AccountManagement/AccountSummary';
 import Lesson from '../components/CourseComponents/Lesson';
 import ProtectedComponent from "./ProtectedComponent";
 import ResetPassword from "./AccountManagement/ResetPassword";
@@ -43,7 +44,9 @@ function Main(props) {
     useEffect(() => {
         let timeout;
         const verifyUser = () => {
-            if (!csrf.ready) return timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);;
+            if (!csrf.ready) return timeout = setTimeout(() => {
+                verifyUser() 
+            }, 5 * 60 * 1000);
             props.useRefreshToken();
             timeout = setTimeout(() => { verifyUser() }, 5 * 60 * 1000);
         }
@@ -62,17 +65,37 @@ function Main(props) {
         window.addEventListener("storage", synchLogout);
         return () => { window.removeEventListener("storage", synchLogout) };
     }, [synchLogout]);
+
+    // var getHeightOfIOSToolbars = function() {
+    //     var tH = (window.orientation === 0 ? screen.height : screen.width) -  getIOSWindowHeight();
+    //     return tH > 1 ? tH : 0;
+    // };
     
     // set up resize handlers
     const { setMobile } = props;
     useEffect(() => {
         let onResize = () => {
+            let vh = window.innerHeight * 0.01;
+            // setVh(vh)
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            props.setSingleVH(vh);
+            // alert(`inner h, ${window.innerHeight}`);
+            // alert(`vh * 100, ${vh * 100}`);
+            
+            // var zoomLevel = document.documentElement.clientWidth / window.innerWidth;
+            // // window.innerHeight returns height of the visible area. 
+            // // We multiply it by zoom and get out real height.
+            // alert(window.innerHeight * zoomLevel);
+            // // alert(getHeightOfIOSToolbars());
+
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
         }
         onResize();
         window.addEventListener("resize", onResize);
-        return () => { window.removeEventListener("resize", onResize) }
+        return () => { 
+            window.removeEventListener("resize", onResize) 
+        }
     }, [setMobile]);
 
     /** Assigns correct css class for site colour scheme
@@ -95,8 +118,8 @@ function Main(props) {
     }
 
     return(
-        <div className={`${props.options.dyslexiaFont ? "dyslexiaFont" : ""}
-            ${colourScheme()} max-h-full`} 
+        <div className={`${colourScheme()} max-h-full h-full
+            ${props.options.dyslexiaFont ? "dyslexiaFont" : ""}`} 
         >
             <Router>
                 <Routes>
@@ -124,6 +147,12 @@ function Main(props) {
                     </Route>
                     <Route path="welcome" >
                         <Route path="" element={<Welcome loginQueried={props.csrf} />} />
+                        <Route path="test" element={
+                        <div className="account-switcher px-4 md:px-28 pb-5 pt-8 md:pt-8 
+                            h-full md:mt-0 mt-[-10px]"
+                        >
+                            <AccountSummary user={{totalXP: 100, progress: [1, 2, 3]}} />
+                        </div>} />
                         <Route path="page" element={<FooterPage />}>
                             <Route path="about" element={<About />} />
                             <Route path="privacy" element={<Privacy />} />
@@ -154,6 +183,7 @@ export default connect(
         getUserData,
         useRefreshToken,
         setCSRFReady,
-        setMobile
+        setMobile,
+        setSingleVH
     }
 )(Main);

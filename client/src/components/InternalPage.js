@@ -22,7 +22,10 @@ function InternalPage(props) {
             <div 
                 className="container flex" 
                 id="internal-main" 
-                style={{height: `calc(100vh - ${props.topbarHeight}px)`}} 
+                style={{
+                    height: `calc(${100 * props.vh}px - ${props.topbarHeight}px)`
+                    // height: `calc(${100 * props.vh}px - ${props.topbarHeight}px)`
+                }} 
             >
                 {!props.loading && <Outlet />}
             </div>
@@ -40,8 +43,9 @@ function InternalPage(props) {
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     topbarHeight: state.display.topbarHeight,
+    vh: state.display.singleVH,
     isAuthenticated: state.auth.isAuthenticated,
-    loading: state.auth.loading
+    loading: state.auth.loading,
 
 });
 
