@@ -28,11 +28,9 @@ import Privacy from "./FooterPages/Privacy";
 import Attributions from "./FooterPages/Attributions";
 
 function Main(props) {
-
     // fetch csrf token and store in redux reducer
     const { setCSRFReady } = props;
     useEffect(() => {
-        setCSRFReady();
         axiosClient.get("/csrf-token")
         .then(res => {
                 axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
