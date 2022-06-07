@@ -24,6 +24,7 @@ function Register(props) {
     let [firstName, setFirstName] = useState("");
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
+    let [confirmPassword, setConfirmPassword] = useState("");
 
     const spring = useSpring({ 
         to: { opacity: 1 }, 
@@ -37,6 +38,7 @@ function Register(props) {
         let formData = {
             username: username,
             password: password,
+            confirmPassword: confirmPassword,
             email: email,
             firstName: firstName
         }
@@ -90,6 +92,13 @@ function Register(props) {
                         for="password"
                         onChange={ e => setPassword(e.target.value) }
                         value={ password }
+                        errors={ errors }
+                        type="password"
+                    />
+                    <FormInput 
+                        for="confirmPassword"
+                        onChange={ e => setConfirmPassword(e.target.value) }
+                        value={ confirmPassword }
                         errors={ errors }
                         type="password"
                     />
