@@ -1,12 +1,16 @@
 import {
     SET_MOBILE,
-    SET_TOPBAR_HEIGHT
+    SET_TOPBAR_HEIGHT,
+    SET_LESSON_WRAP_HEIGHT,
+    SET_SINGLE_VH
 } from "../actions/types";
 
 const initialState = {
     mobile: false,
     mobileReady: false,
-    topbarHeight: 0
+    topbarHeight: 0,
+    lessonWrapHeight: "0px",
+    singleVH: 0,
 };
 
 export default function(state = initialState, action) {
@@ -21,6 +25,16 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 topbarHeight: action.payload
+            };
+        case SET_LESSON_WRAP_HEIGHT:
+            return {
+                ...state,
+                lessonWrapHeight: action.payload
+            };
+        case SET_SINGLE_VH:
+            return {
+                ...state,
+                singleVH: action.payload
             };
         default:
             return state;

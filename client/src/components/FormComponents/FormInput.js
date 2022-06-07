@@ -95,7 +95,7 @@ function FormInput(props) {
             flex-${props.row ? "row" : "col"}
             `}
         >
-            <FormLabel for={props.for} />
+            <FormLabel for={props.for} labelOverride={props.labelOverride} />
             {component}
             <FormError for={props.for} errors={props.errors} />
         </div>

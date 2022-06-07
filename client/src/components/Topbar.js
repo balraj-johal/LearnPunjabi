@@ -30,7 +30,7 @@ function Topbar(props) {
     }, [topbarRef, child, path])
     
     return(
-        <div id="topbar-wrap" ref={topbarRef} className="no-highlight" >
+        <div id="topbar-wrap" ref={topbarRef} className="no-highlight shadow-2xl" >
             <div id="topbar">
                 <CorrectLogo mobile={props.mobile} ready={props.mobileReady} />
                 <div className="flex flex-row items-center mr-6">

@@ -8,7 +8,7 @@ function FormLabel(props) {
             htmlFor={`${props.for}`}
             style={{textTransform: "capitalize"}}
         >
-            {text}:
+            {props.labelOverride || text}:
         </label>
     )
 }

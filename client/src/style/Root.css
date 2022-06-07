@@ -64,6 +64,10 @@
   }
 }
 
+:root {
+  --vh: 0;
+}
+
 @font-face {
   font-family: "Lekton";
   src: url("fonts/Lekton-Regular.ttf");
@@ -122,7 +126,7 @@
       -ms-flex-align: center;
           align-items: center;
   padding-bottom: 6px;
-  border-bottom: 3px solid black;
+  border-bottom: 2px solid black;
 }
 
 .account-button {
@@ -233,13 +237,14 @@ button:disabled:hover {
 
 @media (min-width: 768px) {
   .accounts-wrap {
-    border: 3px solid black;
     border-radius: 5px;
-    width: 50%;
+    width: 70%;
     max-width: 900px;
     margin: 50px auto;
     min-height: 70vh;
+    min-height: calc(var(--vh, 1vh) * 70);
     max-height: 80vh;
+    max-height: calc(var(--vh, 1vh) * 80);
   }
 }
 
@@ -325,7 +330,7 @@ button:disabled:hover {
 @media (min-width: 768px) {
   .lesson-wrap {
     width: 60%;
-    border-right: 3px solid black;
+    border-right: 2px solid black;
   }
 }
 
@@ -415,8 +420,8 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 65px;
-  width: 65px;
+  height: 60px;
+  width: 60px;
   border-radius: 5px;
 }
 
@@ -500,10 +505,9 @@ button:disabled:hover {
   /* Internet Explorer/Edge */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   width: 100%;
-  border: 1px solid grey;
   border-radius: 5px;
   margin: 1.5% 0;
-  height: 2.25rem;
+  height: 2.7rem;
 }
 
 @media (min-width: 768px) {
@@ -519,23 +523,24 @@ button:disabled:hover {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    max-height: 125px;
-    max-width: 125px;
-    width: 23vw;
-    height: 23vw;
     -webkit-transition: background-color 75ms ease-in-out;
     transition: background-color 75ms ease-in-out;
     padding: 10px;
-    width: 45% !important;
-    height: 45% !important;
-    max-height: 14vh !important;
-    min-height: 75px !important;
+    width: 100px;
+    height: 100px;
   }
   .multiple-choice-answer.chosen {
     background-color: #d7d7d7;
   }
   .middle-text {
     font-size: 1.5em !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .multiple-choice-answer {
+    width: 125px;
+    height: 125px;
   }
 }
 
@@ -567,36 +572,6 @@ button:disabled:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-
-.specified-order .audio {
-  height: 90px;
-  margin: 10px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.specified-order .audio .replay-audio-button {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 80px;
-  width: 80px;
-  background-color: #00a2ff;
-  border-radius: 5px;
 }
 
 .specified-order .correct .answer {
@@ -683,9 +658,9 @@ button:disabled:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border: 3px solid black;
-  border-top: 1.5px solid black;
-  border-bottom: 1.5px solid black;
+  border: 2px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   height: 50px;
   padding: 15px 1em;
 }
@@ -715,7 +690,7 @@ button:disabled:hover {
   background-color: #E786FF;
   background: -webkit-gradient(linear, left bottom, left top, from(#f0a6ff), color-stop(10%, #f0a6ff), color-stop(90%, #c3ffff), to(#c3ffff));
   background: linear-gradient(0deg, #f0a6ff 0%, #f0a6ff 10%, #c3ffff 90%, #c3ffff 100%);
-  height: 100vh;
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
   user-select: none;
@@ -735,6 +710,7 @@ button:disabled:hover {
 }
 
 .welcome-div {
+  padding-bottom: env(safe-area-inset-bottom);
   position: relative;
   color: white;
   overflow: hidden;
@@ -800,23 +776,7 @@ button:disabled:hover {
   position: absolute;
   bottom: 10px;
   left: 0;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   font-family: "Lekton";
-  font-size: 14px;
-  font-weight: 1000;
 }
 
 .welcome-div #scroll-prompt svg {
@@ -847,6 +807,7 @@ button:disabled:hover {
 
 #welcome-3 {
   height: 600vh !important;
+  height: calc(var(--vh, 1vh) * 600) !important;
   overflow: initial !important;
 }
 
@@ -855,6 +816,7 @@ button:disabled:hover {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 #lp-logo {
@@ -873,7 +835,6 @@ button:disabled:hover {
   height: auto;
   position: absolute;
   right: 0;
-  z-index: 1;
 }
 
 #rivers-top {
@@ -945,9 +906,8 @@ button:disabled:hover {
     font-size: 24px !important;
   }
   #scroll-prompt svg {
-    margin-top: 15px !important;
-    width: 62px !important;
-    height: 31px !important;
+    width: 40px !important;
+    height: 20.5px !important;
   }
   .thing {
     font-size: 24px !important;
@@ -993,11 +953,11 @@ button:disabled:hover {
   width: 60%;
   padding: 0 10%;
   margin: 0;
-  border-right: 3px solid black;
+  border-right: 2px solid black;
 }
 
 #custom-container {
-  height: calc(100vh - 84px);
+  height: calc((var(--vh, 1vh) * 100) - 84px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: -webkit-box;
@@ -1020,6 +980,11 @@ button:disabled:hover {
   overflow: hidden !important;
 }
 
+#internal-main {
+  background: -webkit-gradient(linear, left bottom, left top, from(#E786FF), to(#86E2FF));
+  background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
+}
+
 @layer utilities {
   .no-highlight {
     user-select: none;
@@ -1034,8 +999,12 @@ button:disabled:hover {
   }
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 body {
-  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
   scroll-behavior: smooth;
 }
 
@@ -1057,7 +1026,8 @@ code {
 
 #root {
   overflow-x: hidden;
-  height: 100vh;
+  overflow-y: hidden;
+  height: 100%;
 }
 
 .button {

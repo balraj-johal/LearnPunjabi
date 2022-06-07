@@ -1,7 +1,9 @@
 #welcome {
     background-color: #E786FF;
     background: linear-gradient(0deg, rgba(240,166,255,1) 0%,rgba(240,166,255,1) 10%, rgb(195, 255, 255) 90%, rgb(195, 255, 255) 100%);
-    height: 100vh;
+    height: 100%;
+    // height: calc(var(--vh, 1vh) * 100);
+    // min-height: -webkit-fill-available;
     overflow-y: scroll;
     overflow-x: hidden;
     @include noHighlighting();
@@ -12,6 +14,7 @@
 }
 
 .welcome-div {
+    padding-bottom: env(safe-area-inset-bottom);
     position: relative;
     color: white;
     overflow: hidden;
@@ -61,15 +64,12 @@
         position: absolute;
         bottom: 10px;
         left: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
 
         font-family: "Lekton";
-        font-size: 14px;
-        font-weight: 1000;
         svg {
             margin-top: 5px;
             width: 32px;
@@ -95,12 +95,14 @@
 
 #welcome-3 {
     height: 600vh !important;
+    height: calc(var(--vh, 1vh) * 600) !important;
     overflow: initial !important;
     #stick {
         position: sticky;
         top: 0;
         height: 100vh;
-        // background-color: rgba(0, 0, 0, 0.071);
+        height: calc(var(--vh, 1vh) * 100);
+        // min-height: -webkit-fill-available;
     }
 }
 
@@ -118,7 +120,7 @@
     position: absolute;
     right: 0;
     // top: 0;
-    z-index: 1;
+    // z-index: 1;
 }
 #rivers-top {
     top: 0;
@@ -177,9 +179,9 @@
         bottom: 30px !important;
         font-size: 24px !important;
         svg {
-            margin-top: 15px !important;
-            width: 62px !important;
-            height: 31px !important;
+            // margin-top: 15px !important;
+            width: 40px !important;
+            height: 20.5px !important;
         }
     }
     .thing {

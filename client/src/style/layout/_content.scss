@@ -5,7 +5,7 @@
     border-right: $border-thickness solid black;
 }
 #custom-container {
-    height: calc(100vh - 84px);
+    height: calc((var(--vh, 1vh) * 100) - 84px);
     @include vScroll;
 
     display: flex;
@@ -22,4 +22,8 @@
 
 .scroll-lock {
     overflow: hidden !important;
+}
+
+#internal-main {
+    background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
 }

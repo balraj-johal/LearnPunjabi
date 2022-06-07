@@ -112,7 +112,10 @@ router.post("/login", async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
         // attempt to find user
-        let user = await User.findOne({ username: {$eq: username} });
+        let user = await User.findOne({$or: [
+            { username: {$eq: username} },
+            { email: {$eq: username} },
+        ]});
         if (!user) return res.status(404).json({ username: "no user found." });
         if (user.status !== "Active") return res.status(401).json({
             verification: "Please verify your email first!" 

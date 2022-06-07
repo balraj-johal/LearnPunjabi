@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
+import TypeAnimation from 'react-type-animation';
 
-// component imports
-import SignInButton from "./SignInButton";
-import TranslationsScroller from "./TranslationsScroller";
+// // component imports
+
+const TYPING_SEQUENCE_TIME = 3500;
+const TYPING_SEQUENCE = [
+    'learn a new language?',
+    TYPING_SEQUENCE_TIME,
+    'reconnect with your heritage?',
+    TYPING_SEQUENCE_TIME,
+    'take on a new challenge?',
+    TYPING_SEQUENCE_TIME,
+]
 
 function SignInPrompt(props) {
-    let navigate = useNavigate();
     let [buttonState, setButtonState] = useState("not ready");
 
     useEffect(() => {
         if (!props.auth.hasChecked) return;
-        if (props.auth.isAuthenticated) return setButtonState("authorised");
-        return setButtonState("unauthorised");
+        return setButtonState("ready");
     }, [props.auth])
 
     const spring = useSpring({
@@ -24,27 +30,42 @@ function SignInPrompt(props) {
 
     return(
         <animated.div 
-            id="middle-bit" 
-            className="animate-fade-in"
+            className="animate-fade-in z-0 w-4/6 top-[40%]
+                pl-4 pr-4
+                md:w-3/5 md:pr-14 md:pl-12 md:top-[45%] 
+                lg:pl-24
+                xl:w-2/5
+                absolute flex flex-col items-end"
             style={spring}
         >
-            <TranslationsScroller timeout={2000} />
             <animated.div 
-                id="prompt-text" 
-                className={`text-base md:text-lg lg:text-xl`}
+                className="text-2xl md:text-4xl tracking-wide font-normal h-20
+                    w-full text-left md:pr-24 relative"
                 style={spring}
-                // ${buttonState !== "not ready" ? "" : "opacity-0"}
             >
-                Want to learn a new language? Or want to be able to talk to your grandparents?
-                Learn Punjabi quickly and effectively here!
+                <span className="font-bold">Want to </span>  
+                <TypeAnimation
+                    wrapper="span"
+                    sequence={TYPING_SEQUENCE}
+                    cursor={true}
+                    repeat={Infinity}
+                />
             </animated.div>
-            <SignInButton 
-                buttonState={buttonState}
-                onClick={() => { 
-                    if (props.loggedIn) return navigate("/dashboard"); 
-                    navigate("/account");
-                }}
-            />
+            <animated.div 
+                className="text-lg tracking-wide pb-1 pt-2 pl-4
+                    mt-8
+                    md:text-2xl md:w-4/5 md:mt-10 md:pb-2 md:pt-3
+                    w-full
+                    border-b-2 border-white 
+                    bg-white text-black
+                    cursor-pointer transition-all z-0 font-normal
+                    hover:text-white hover:border-primary hover:bg-primary
+                    hover:font-bold relative"
+                style={spring}
+                onClick={props.handleClick}
+            >
+                Start Learning &gt;
+            </animated.div>
         </animated.div>
     )
 }

@@ -19,10 +19,8 @@ const PunjabText = React.forwardRef((props, ref) => {
 
     // fade text in and out when it changes
     useEffect(() => {
-        console.log("log")
         props.setTextVisible(false);
         setTimeout(() => {
-            console.log("log2")
             setText(textOptions[props.pageIndex]);
             props.setTextVisible(true);
         }, 500)
@@ -31,12 +29,18 @@ const PunjabText = React.forwardRef((props, ref) => {
     return(
         <animated.div 
             style={spring}
-            className="absolute w-full
-                text-xl md:text-2xl lg:text-2xl text-black
-                pt-10 pl-4 pr-6 md:px-12 md:pt-10 lg:px-16 lg:pt-20"
+            className="absolute w-full bottom-0 h-1/3 font-normal
+                text-2xl line 
+                md:px-12 md:pt-10 md:text-3xl 
+                lg:text-4xl lg:px-16 lg:pt-20 lg:pr-80
+                pt-10 pl-4 pr-6 "
             id="punjab-text"
         >
-            { text }
+            <span className="bg-white text-black pl-3 pr-3
+                md:leading-[3rem] lg:leading-[3.5rem] box-decoration-clone"
+            >
+                { text }
+            </span>
         </animated.div>
     )
 })

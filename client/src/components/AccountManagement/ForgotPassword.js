@@ -41,7 +41,7 @@ function ForgotPassword(props) {
                 unrender={() => { 
                     setShowSuccessModal(false); 
                 }}
-                text="Check your emails to reset your password!" 
+                text="Please check your emails to reset your password!" 
             /> 
             <animated.div 
                 id="forgot-password" 

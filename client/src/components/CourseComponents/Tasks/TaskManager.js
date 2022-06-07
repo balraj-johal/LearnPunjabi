@@ -101,12 +101,21 @@ function TaskManager(props) {
     }
 
     return(
-        <AnimatedWrapper 
-            animating={animating} 
-            task={task} 
-            key={currentID} 
-            out={out}
-        />
+        <div className={`${props.override ? "w-5/6 h-4/6" : "w-full h-full"}
+            md:h-4/6 md:w-8/12
+            lg:w-8/12 lg:mt-[-1rem] lg:min-w-[900px]
+            xl:w-6/12
+            relative flex items-center justify-center 
+            bg-white rounded shadow-xl
+            animate-fade-in overflow-hidden`}
+        >
+            <AnimatedWrapper 
+                animating={animating} 
+                task={task} 
+                key={currentID} 
+                out={out}
+            />
+        </div>
     )
 }
 
@@ -128,10 +137,12 @@ function AnimatedWrapper(props) {
     return(
         <animated.div 
             style={spring}
-            className={`task w-11/12 
-                h-4/6 min-h-[450px] md:min-h-[400px]
-                md:w-7/12 relative px-2
-                ${props.animating ? "pointer-events-none" : ""}`} 
+            // md:w-7/12 
+            className={`task w-full h-full min-h-[450px] md:min-h-[400px]
+                relative px-6 pt-16 pb-10 sm:p-10 lg:px-14 text-black 
+                md:text-lg text-sm
+                ${props.animating ? "pointer-events-none" : ""}
+            `} 
         >
             { props.task }
         </animated.div>
