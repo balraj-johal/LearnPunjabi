@@ -55,7 +55,7 @@ function AccountSummary(props) {
                     id="total-xp" 
                     className="w-full flex items-center p-4
                         no-highlight h-1/6 md:h-2/6 rounded 
-                        bg-primary shadow-xl text-white"
+                        bg-primary shadow-lg text-white"
                 >
                     <div className="h-full w-3/12 flex items-center justify-center">
                         <Lottie 
@@ -73,26 +73,29 @@ function AccountSummary(props) {
                         <h2 className="text-2xl">X day streak!</h2>
                     </div>
                 </div>
-                <div className="flex flex-col md:flex-row justify-between 
+                <div className="flex flex-row justify-between 
                     h-1/6 py-1">
                     <SmallBubble>
-                        <div className="font-normal mr-4 md:text-xl">
+                        <div className="font-normal md:text-xl">
                             You have
                         </div>
-                        <animated.div className="mr-4 md:text-2xl">
-                            {XPSpring.xp.to(xp => Math.floor(xp))}
-                        </animated.div>
-                        <span className="md:text-2xl"> XP!</span>
+                        <div className="font-bold">
+                            <animated.span className="md:text-2xl">
+                                {XPSpring.xp.to(xp => Math.floor(xp))}
+                            </animated.span>
+                            <span className="md:text-2xl"> XP!</span>
+                        </div>
                     </SmallBubble>
                     <SmallBubble>
-                        <div>
-                            <span className="md:text-xl font-normal">
-                                You've finished 
+                            <span className="md:text-xl">
+                                You've finished
                             </span>
-                            <span className="font-bold md:text-2xl font-normal">
-                                {props.user?.progress?.length}&nbsp;lessons!
-                            </span>
-                        </div>
+                            <div>
+                                <span className="md:text-2xl font-bold">
+                                    {props.user?.progress?.length}
+                                </span> 
+                                {props.user?.progress?.length === 1 ? " lesson!" : " lessons!"}
+                            </div>
                     </SmallBubble>
                 </div>
                 <div className="h-1/6" />
@@ -108,31 +111,32 @@ function SmallBubble({ children }) {
     return(
         <div 
             style={{width: "calc(50% - 5px)"}}
-        className="rounded shadow-xl border-[1px] border-slate-300
-            mt-[10px] h-full flex justify-center items-center p-2 md:p-4"
+        className="rounded shadow-md border-[1px] border-slate-200 md:text-xl
+            mt-[10px] h-full flex flex-col justify-center items-start p-2 px-4 md:p-4
+            font-normal z-10"
         >
             { children }
         </div>
     )
 }
 
-function Smiley(props) {
-    return(
-        <svg width="100%" viewBox="0 0 94 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.5 36.5L23.5 56.5H71L91 36.5" stroke="black" strokeWidth="8"/>
-            <path d="M28 0V21M66 0V21" stroke="black" strokeWidth="8"/>
-        </svg>
-    )
-}
+// function Smiley(props) {
+//     return(
+//         <svg width="100%" viewBox="0 0 94 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+//             <path d="M3.5 36.5L23.5 56.5H71L91 36.5" stroke="black" strokeWidth="8"/>
+//             <path d="M28 0V21M66 0V21" stroke="black" strokeWidth="8"/>
+//         </svg>
+//     )
+// }
 
-function Frowney(props) {
-    return(
-    <svg width="100%" viewBox="0 0 94 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 56.5L23 36.5H70.5L90.5 56.5" stroke="black" strokeWidth="8"/>
-        <path d="M27.5 0V21M65.5 0V21" stroke="black" strokeWidth="8"/>
-    </svg>
-    )
-}
+// function Frowney(props) {
+//     return(
+//     <svg width="100%" viewBox="0 0 94 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+//         <path d="M3 56.5L23 36.5H70.5L90.5 56.5" stroke="black" strokeWidth="8"/>
+//         <path d="M27.5 0V21M65.5 0V21" stroke="black" strokeWidth="8"/>
+//     </svg>
+//     )
+// }
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
