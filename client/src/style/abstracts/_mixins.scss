@@ -23,25 +23,40 @@
 }
 
 // $bg-primary-dark: #121212;
-$bg-primary-dark: #10161f;
+$primary-dark: #10161f;
+$secondary-dark:#3e3e3e;
+$accent-dark: #0096dc;
+
 @mixin darkMode {
+    .dark-accent {
+        background-color: $accent-dark !important;
+    }
+    .dark-elevated {
+        background-color: $secondary-dark !important;
+        color: white !important;
+        border-color: transparent !important;
+    }
+    .dark-primary {
+        background-color: $primary-dark;
+        color: white;
+    }
     .container {
         transition: all 200ms;
-        background-color: $bg-primary-dark;
+        background-color: $primary-dark;
     }
     .bg-primary {
         // background-color: rgb(0, 146, 231) !important;
     }
     .accounts-wrap {
-        background-color: $bg-primary-dark;
+        background-color: $primary-dark;
         color: white;
     }
     #topbar {
-        background-color: $bg-primary-dark;
+        background-color: $primary-dark;
         color: white;
     }
     #leaderboard, #leaderboard .header {
-        background-color: $bg-primary-dark;
+        background-color: $primary-dark;
         color: white;
     }
 }

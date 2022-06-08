@@ -6,7 +6,7 @@ import Leaderboard from "./SidebarComponents/Leaderboard";
 function Sidebar(props) {
     return(
         <div 
-            className="sidebar bg-white relative" 
+            className="sidebar bg-white dark-primary relative" 
             style={{height: props.lessonWrapHeight}}
         >
             <Leaderboard />

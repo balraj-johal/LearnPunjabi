@@ -921,6 +921,21 @@ button:disabled:hover {
   overflow: hidden;
 }
 
+.darkMode .dark-accent {
+  background-color: #0096dc !important;
+}
+
+.darkMode .dark-elevated {
+  background-color: #3e3e3e !important;
+  color: white !important;
+  border-color: transparent !important;
+}
+
+.darkMode .dark-primary {
+  background-color: #10161f;
+  color: white;
+}
+
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;

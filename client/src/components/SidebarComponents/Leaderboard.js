@@ -38,7 +38,7 @@ function Leaderboard(props) {
     // would be simple in plain css.
     // TODO: consider just using plain css here. 
     let _calculateLeaderboardStyles = useCallback((collapsed, mobile) => {
-        if (!mobile) return `border-b-[2px] border-black min-h-[35vh] 
+        if (!mobile) return `border-b-[2px] border-black-600 min-h-[35vh] 
             fixed pr-1`;
         let styles = `cursor-pointer relative transition-all 
             bg-white border-b-[2px] border-black`;

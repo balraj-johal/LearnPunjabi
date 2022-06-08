@@ -55,7 +55,7 @@ function AccountSummary(props) {
                     id="total-xp" 
                     className="w-full flex items-center p-4
                         no-highlight h-1/6 rounded 
-                        bg-primary shadow-lg text-white"
+                        bg-primary dark-accent shadow-lg text-white"
                 >
                     <div className="h-full w-3/12 flex items-center justify-center">
                         <Lottie 
@@ -113,7 +113,7 @@ function SmallBubble({ children }) {
             style={{width: "calc(50% - 5px)"}}
         className="rounded shadow-md border-[1px] border-slate-200 md:text-xl
             mt-[10px] h-full flex flex-col justify-center items-start p-2 px-4 md:p-4
-            font-normal z-10"
+            font-normal z-10 dark-elevated"
         >
             { children }
         </div>
