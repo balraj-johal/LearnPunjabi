@@ -4,7 +4,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-    darkMode: false,
+    darkMode: window.localStorage.getItem("darkMode") || false,
     dyslexiaFont: false,
 };
 
