@@ -398,7 +398,6 @@ button:disabled:hover {
 }
 
 .audio {
-  height: 90px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -426,9 +425,6 @@ button:disabled:hover {
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  .audio {
-    margin: 10px 0;
-  }
   .audio .replay-audio-button {
     height: 65px;
     width: 65px;
@@ -436,9 +432,6 @@ button:disabled:hover {
 }
 
 @media (min-width: 1024px) {
-  .audio {
-    margin: 10px 0;
-  }
   .audio .replay-audio-button {
     height: 80px;
     width: 80px;
