@@ -54,7 +54,7 @@ function AccountSummary(props) {
                 <div 
                     id="total-xp" 
                     className="w-full flex items-center p-4
-                        no-highlight h-1/6 md:h-2/6 rounded 
+                        no-highlight h-1/6 rounded 
                         bg-primary shadow-lg text-white"
                 >
                     <div className="h-full w-3/12 flex items-center justify-center">
