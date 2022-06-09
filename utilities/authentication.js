@@ -101,9 +101,11 @@ exports.verifyRefreshToken = (req) => {
                                 } else {
                                     reject(`Unauthorized: User not found.`);
                                 }
-                            },
-                            err => next(err) // TODO: ?
-                            )
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                reject(error);
+                            })
                     }
                 })
             } catch (err) {
