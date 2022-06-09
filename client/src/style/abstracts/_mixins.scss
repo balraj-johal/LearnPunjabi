@@ -42,10 +42,9 @@ $accent-dark: #0096dc;
     }
     .container {
         transition: all 200ms;
-        background-color: $primary-dark;
     }
-    .bg-primary {
-        // background-color: rgb(0, 146, 231) !important;
+    .bg-gradient {
+        filter: brightness(0.85);
     }
     .accounts-wrap {
         background-color: $primary-dark;

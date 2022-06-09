@@ -36,6 +36,11 @@
     .no-highlight {
         @include noHighlighting();
     }
+    .bg-gradient {
+        div {
+            background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
+        }
+    }
 }
 
 html, body, #root {

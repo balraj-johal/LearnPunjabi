@@ -270,8 +270,6 @@ button:disabled:hover {
 }
 
 .lesson-wrap {
-  background: -webkit-gradient(linear, left bottom, left top, from(#E786FF), to(#86E2FF));
-  background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -939,7 +937,11 @@ button:disabled:hover {
 .darkMode .container {
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  background-color: #10161f;
+}
+
+.darkMode .bg-gradient {
+  -webkit-filter: brightness(0.85);
+          filter: brightness(0.85);
 }
 
 .darkMode .accounts-wrap {
@@ -1004,6 +1006,10 @@ button:disabled:hover {
     -ms-user-select: none;
     /* Internet Explorer/Edge */
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+  .bg-gradient div {
+    background: -webkit-gradient(linear, left bottom, left top, from(#E786FF), to(#86E2FF));
+    background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
   }
 }
 
