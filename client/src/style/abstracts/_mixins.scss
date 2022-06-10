@@ -25,6 +25,8 @@
 // $bg-primary-dark: #121212;
 $primary-dark: #10161f;
 $secondary-dark:#3e3e3e;
+$tertiary-dark:#4f4f4f;
+$highest-dark:#797979;
 $accent-dark: #0096dc;
 
 @mixin darkMode {
@@ -57,6 +59,17 @@ $accent-dark: #0096dc;
     #leaderboard, #leaderboard .header {
         background-color: $primary-dark;
         color: white;
+    }
+    .dark-answer {
+        background-color: #3e3e3e;
+        border: transparent;
+        &:hover {
+            background-color: $tertiary-dark;
+        }
+        // color: black;
+        &.chosen {
+            background-color: $highest-dark;
+        }
     }
 }
 

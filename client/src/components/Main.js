@@ -79,15 +79,7 @@ function Main(props) {
             // setVh(vh)
             document.documentElement.style.setProperty('--vh', `${vh}px`);
             props.setSingleVH(vh);
-            // alert(`inner h, ${window.innerHeight}`);
-            // alert(`vh * 100, ${vh * 100}`);
             
-            // var zoomLevel = document.documentElement.clientWidth / window.innerWidth;
-            // // window.innerHeight returns height of the visible area. 
-            // // We multiply it by zoom and get out real height.
-            // alert(window.innerHeight * zoomLevel);
-            // // alert(getHeightOfIOSToolbars());
-
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
         }

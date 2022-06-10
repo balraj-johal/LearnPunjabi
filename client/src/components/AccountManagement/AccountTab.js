@@ -14,7 +14,7 @@ function AccountTab(props) {
                 ${ props.first ? "" : "" }   
                 flex justify-center items-center cursor-pointer 
                 ${ !isSelected ? 
-                    "bg-primary text-white hover:bg-blue-400" : 
+                    "bg-primary text-white" : 
                     "" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}

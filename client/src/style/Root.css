@@ -959,6 +959,19 @@ button:disabled:hover {
   color: white;
 }
 
+.darkMode .dark-answer {
+  background-color: #3e3e3e;
+  border: transparent;
+}
+
+.darkMode .dark-answer:hover {
+  background-color: #4f4f4f;
+}
+
+.darkMode .dark-answer.chosen {
+  background-color: #797979;
+}
+
 #course-custom-container {
   width: 60%;
   padding: 0 10%;
