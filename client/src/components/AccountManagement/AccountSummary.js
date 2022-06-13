@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated, config } from 'react-spring';
+
+import { useRefreshToken } from "../../actions/authActions";
 
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
 
@@ -31,10 +33,20 @@ function AccountSummary(props) {
         onRest: () => setStreakAnimFinished(true) 
     });
 
+    /**
+     * converts isoDate format to more readable string
+     * @name ISODateToReadableStr
+     * @param {String} isoDate - date in ISO format
+     * @returns {String} date in DD/MM/YYYY format
+     */
     let ISODateToReadableStr = (isoDate) => {
         let date = new Date(isoDate);
         return `${date.toLocaleDateString()}`
     }
+
+    useEffect(() => {
+        props.useRefreshToken();
+    }, [])
 
     return(
         <animated.div 
@@ -137,24 +149,6 @@ function SmallBubble({ children }) {
     )
 }
 
-// function Smiley(props) {
-//     return(
-//         <svg width="100%" viewBox="0 0 94 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-//             <path d="M3.5 36.5L23.5 56.5H71L91 36.5" stroke="black" strokeWidth="8"/>
-//             <path d="M28 0V21M66 0V21" stroke="black" strokeWidth="8"/>
-//         </svg>
-//     )
-// }
-
-// function Frowney(props) {
-//     return(
-//     <svg width="100%" viewBox="0 0 94 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-//         <path d="M3 56.5L23 36.5H70.5L90.5 56.5" stroke="black" strokeWidth="8"/>
-//         <path d="M27.5 0V21M65.5 0V21" stroke="black" strokeWidth="8"/>
-//     </svg>
-//     )
-// }
-
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -162,5 +156,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {}
+    { useRefreshToken }
 )(AccountSummary);
