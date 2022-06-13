@@ -15,6 +15,7 @@ const {
 } = require("../../utilities/authentication");
 
 
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
 /** 
  * Update user proress by changing lesson status by lesson id
  * @param  {String} path "/:lessonID"
@@ -40,6 +41,17 @@ router.put("/:lessonID", async (req, res) => {
         user.markModified("progress");
         // update user XP
         await _updateXP(user, req.body.XP);
+        // update streak if required
+        let today = new Date;
+        today.setUTCHours(0,0,0,0);
+        if (!user.lastLessonFinish) {
+            user.streak += 1;
+            user.lastLessonFinish = today;
+        }
+        if (user.lastLessonFinish + DAY_IN_MS < today.getTime()) {
+            user.streak += 1;
+        }
+        user.lastLessonFinish = today;
         // save user
         let savedUser = await user.save();
         return res.status(200).send({ newProgress: savedUser.progress });
