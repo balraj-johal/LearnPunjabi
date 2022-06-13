@@ -230,6 +230,8 @@ router.get("/", async (req, res) => {
                 weeklyXP: user.weeklyXP,
                 // XP: user.XP,
                 role: user.role,
+                createdAt: user.createdAt,
+                streak: 2
             }
         })
     } catch (err) {
