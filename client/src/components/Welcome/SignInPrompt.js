@@ -43,7 +43,7 @@ function SignInPrompt(props) {
                     w-full text-left md:pr-24 relative"
                 style={spring}
             >
-                <span className="font-bold">Want to </span>  
+                <span className="">Want to </span>  
                 <TypeAnimation
                     wrapper="span"
                     sequence={TYPING_SEQUENCE}
