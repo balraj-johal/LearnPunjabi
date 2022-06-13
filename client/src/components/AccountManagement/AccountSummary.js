@@ -92,8 +92,8 @@ function AccountSummary(props) {
                         />
                     </div>
                     <div className="flex flex-col justify-evenly">
-                        <h2 className="text-xl font-normal">You're on a</h2>
-                        <h2 className="text-2xl">
+                        <h2 className="text-lg md:text-xl font-normal">You're on a</h2>
+                        <h2 className="text-xl md:text-2xl">
                             <animated.span className="md:text-2xl">
                                 {StreakSpring.streak.to(streak => {
                                     return Math.floor(streak)
@@ -117,7 +117,7 @@ function AccountSummary(props) {
                     </SmallBubble>
                     <SmallBubble>
                             <span className="md:text-xl">
-                                You've finished
+                                You've done
                             </span>
                             <div>
                                 <span className="md:text-2xl font-bold">
