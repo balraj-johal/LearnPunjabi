@@ -554,7 +554,7 @@ button:disabled:hover {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   list-style-type: none;
-  min-height: 51px;
+  min-height: 96px;
   padding: 8px 2px;
 }
 
@@ -564,6 +564,9 @@ button:disabled:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
 .specified-order .correct .answer {
