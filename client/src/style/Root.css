@@ -440,13 +440,13 @@ button:disabled:hover {
 .correct .answer {
   color: white;
   border: 1px solid transparent;
-  background-color: #9BC53D;
+  background-color: #9BC53D !important;
 }
 
 .wrong .answer {
   color: white;
   border: 1px solid transparent;
-  background-color: #ff4c55;
+  background-color: #ff4c55 !important;
 }
 
 .answer {
@@ -608,18 +608,6 @@ button:disabled:hover {
 .specified-order .specified-order-answer[animating="1"] {
   -webkit-animation: fadeIn 100ms ease-in;
           animation: fadeIn 100ms ease-in;
-}
-
-.correct .answer {
-  color: white;
-  border: 1px solid transparent;
-  background-color: #9BC53D;
-}
-
-.wrong .answer {
-  color: white;
-  border: 1px solid transparent;
-  background-color: #ff4c55;
 }
 
 .task.draw-letter {

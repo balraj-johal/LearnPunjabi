@@ -68,18 +68,3 @@
         animation: fadeIn 100ms ease-in;
     }
 }
-
-.correct {
-    .answer {
-        color: white;
-        border: 1px solid transparent;
-        background-color: #9BC53D;
-    }
-}
-.wrong {
-    .answer {
-        color: white;
-        border: 1px solid transparent;
-        background-color: #ff4c55;
-    }
-}
