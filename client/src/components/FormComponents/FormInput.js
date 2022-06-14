@@ -90,9 +90,10 @@ function FormInput(props) {
     }
 
     return(
-        <div className={`input-field my-1 md:my-4 flex 
-            flex-${props.row ? "row" : "col"}
-            ${props.errors?.[props.for] ? "error" : ""}`}
+        <div 
+            className={`input-field my-1 md:my-4 flex 
+                flex-${props.row ? "row" : "col"}
+                ${props.errors?.[props.for] ? "error" : ""}`}
         >
             <FormLabel for={props.for} labelOverride={props.labelOverride} />
             {component}
@@ -102,7 +103,7 @@ function FormInput(props) {
 }
 
 const INPUT_STYLES = `rounded border-2 border-slate-200 px-1 py-0.5 
-    w-full my-0.5 focus:border-blue-400 outline-0 transition-all`
+    w-full my-0.5 focus:border-blue-400 outline-0 transition-all text-black`
 
 function FormTextArea(props) {
     return(

@@ -914,8 +914,14 @@ button:disabled:hover {
   background-color: #0096dc !important;
 }
 
+.darkMode .dark-tertiary {
+  background-color: #233146 !important;
+  color: white !important;
+  border-color: transparent !important;
+}
+
 .darkMode .dark-elevated {
-  background-color: #3e3e3e !important;
+  background-color: #1a2534 !important;
   color: white !important;
   border-color: transparent !important;
 }
@@ -931,8 +937,8 @@ button:disabled:hover {
 }
 
 .darkMode .bg-gradient {
-  -webkit-filter: brightness(0.85);
-          filter: brightness(0.85);
+  -webkit-filter: brightness(0.7);
+          filter: brightness(0.7);
 }
 
 .darkMode .accounts-wrap {
@@ -956,11 +962,11 @@ button:disabled:hover {
 }
 
 .darkMode .dark-answer:hover {
-  background-color: #4f4f4f;
+  background-color: #233146;
 }
 
 .darkMode .dark-answer.chosen {
-  background-color: #797979;
+  background-color: #2c3e58;
 }
 
 #course-custom-container {

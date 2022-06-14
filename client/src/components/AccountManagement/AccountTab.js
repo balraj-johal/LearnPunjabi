@@ -18,9 +18,9 @@ function AccountTab(props) {
                 transition-all no-highlight pt-[3px]
                 ${ props.first ? "" : "" }   
                 flex justify-center items-center cursor-pointer 
-                ${ !isSelected ? 
-                    "bg-primary text-white" : 
-                    "" }`}
+                ${ isSelected ? 
+                    "dark-elevated" : 
+                    "bg-primary text-white dark-primary" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}
         >
