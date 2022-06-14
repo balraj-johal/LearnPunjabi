@@ -106,7 +106,7 @@ function TaskManager(props) {
             lg:w-8/12 lg:mt-[-1rem] lg:min-w-[900px]
             xl:w-6/12
             relative flex items-center justify-center 
-            bg-white rounded shadow-xl
+            bg-white dark-primary rounded shadow-xl
             animate-fade-in overflow-hidden`}
         >
             <AnimatedWrapper 
@@ -140,7 +140,7 @@ function AnimatedWrapper(props) {
             // md:w-7/12 
             className={`task w-full h-full min-h-[450px] md:min-h-[400px]
                 relative px-6 pt-16 pb-10 sm:p-10 lg:px-14 text-black 
-                md:text-lg text-sm
+                md:text-lg text-sm dark-primary
                 ${props.animating ? "pointer-events-none" : ""}
             `} 
         >

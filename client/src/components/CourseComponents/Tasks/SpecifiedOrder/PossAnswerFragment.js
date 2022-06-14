@@ -14,7 +14,7 @@ function PossAnswerFragment(props) {
 
     return(
         <li 
-            className={`specified-order-answer answer`} 
+            className={`specified-order-answer answer dark-answer`} 
             onClick={() => { props.addToOrder(props.possible) }}
             animating={animating}
             onAnimationEnd={() => { onAnimEnd() }}

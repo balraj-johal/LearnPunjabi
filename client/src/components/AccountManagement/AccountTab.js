@@ -1,20 +1,25 @@
 import React, {  } from "react";
+import { connect } from "react-redux";
 
 function AccountTab(props) {
     const isSelected = props.managerState === props.for;
 
     let getBorderRadius = () => {
+        if (props.mobile) return "0";
         if (props.first) return "5px 0 0 0";
         return "0 5px 0 0";
     }
 
     return(
         <div 
-            className={`text-lg w-6/12 h-10 md:h-12 transition-all no-highlight pt-[3px]
+            className={`
+                text-md w-6/12 h-9
+                md:h-12 md:text-lg
+                transition-all no-highlight pt-[3px]
                 ${ props.first ? "" : "" }   
                 flex justify-center items-center cursor-pointer 
                 ${ !isSelected ? 
-                    "bg-primary text-white hover:bg-blue-400" : 
+                    "bg-primary text-white" : 
                     "" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}
@@ -24,4 +29,12 @@ function AccountTab(props) {
     )
 }
 
-export default AccountTab;
+//pull relevant props from redux state
+const mapStateToProps = state => ({
+    mobile: state.display.mobile,
+});
+
+export default connect(
+    mapStateToProps,
+    {}
+)(AccountTab);

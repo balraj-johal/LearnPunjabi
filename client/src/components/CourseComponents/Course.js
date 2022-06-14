@@ -109,8 +109,6 @@ function Course(props) {
                     >
                         <Particles />
                     </Canvas>
-                    <div className={`h-full w-full bg-black absolute top-0
-                        ${props.darkMode ? "opacity-30" : "opacity-0"}`} />
                 </div>
             </div>
         // </ReactPullToRefresh>

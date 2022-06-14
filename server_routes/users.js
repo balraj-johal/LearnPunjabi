@@ -96,6 +96,7 @@ router.post("/", async (req, res) => {
         return res.status(500).json({ registration: "Error creating user." }); }
 })
 
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
 /**
  * Login user if credentials are valid.
  * @name post/login
@@ -126,6 +127,8 @@ router.post("/login", async (req, res) => {
         // generate new refresh token and store in user entry
         const newRefreshToken = getNewRefreshToken(user._id);
         user.refreshToken.push({ refreshToken: newRefreshToken });
+        // check if streak should reset
+        if (Date.now() > user.lastLessonFinish + (2 * DAY_IN_MS)) user.streak = 0;
         // save user
         let savedUser = await user.save();
         // set auth tokens in cookies
@@ -228,12 +231,13 @@ router.get("/", async (req, res) => {
                 groupID: user.groupID,
                 totalXP: user.totalXP,
                 weeklyXP: user.weeklyXP,
-                // XP: user.XP,
                 role: user.role,
+                createdAt: user.createdAt,
+                streak: user.streak,
+                lastLessonFinish: user.lastLessonFinish
             }
         })
     } catch (err) {
-        // TODO: correct request codes
         return res.status(500).send({ error: err })
     }
 })
@@ -269,6 +273,8 @@ router.post("/refreshToken", (req, res, next) => {
             const newRefreshToken = getNewRefreshToken(user._id)
             // replace old refresh token with the new token
             user.refreshToken[tokenIndex] = { refreshToken: newRefreshToken }
+            // check if streak should reset
+            if (Date.now() > user.lastLessonFinish + (2 * DAY_IN_MS)) user.streak = 0;
             // save user
             user.save((err, user) => {
                 if (err) return res.status(500).send(err);

@@ -172,7 +172,7 @@ function Lesson(props) {
     if (!ready) return null;
     return(
         lesson ? (
-            <div className={`w-full h-full relative flex 
+            <div className={`w-full h-full relative flex
                 ${props.lessonOverride ? "" : "bg-white"} md:bg-transparent z-50 
                 items-center justify-center min-h-[550px] md:min-h-[500px]`}
             >
