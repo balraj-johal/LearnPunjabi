@@ -96,6 +96,8 @@ router.post("/:lessonID", async (req, res) => {
         if (!lesson) lesson = new Lesson();
         lesson.name = req.body.name;
         lesson.id = req.body.id;
+        lesson.strId = "req.body.id"; // Somewhere the mongoDB is requiring the older property strId to save.
+        // console.log(lesson.strId)
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
         lesson.noToSample = req.body.noToSample;
@@ -109,7 +111,9 @@ router.post("/:lessonID", async (req, res) => {
                     message: "Save successful."
                 });
             })
-            .catch(err => { return res.status(500).send(err); })
+            .catch(err => { return res.status(500).send({
+                error: err, message: "error saving lesson"
+            }); })
     } catch (err) {
         return res.status(500).send({ error: err })
     }

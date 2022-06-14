@@ -7,7 +7,7 @@ function RiversStraight(props) {
             styles = {top: `${props.height * props.index - 4}px`};
             break;
         case "middle":
-            styles = {top: `${props.height * props.index - 2}px`};
+            styles = {top: `${(props.height * props.index)}px`};
             break;
         case "end":
             styles = {bottom: `${props.height * props.index - (0.055 * window.innerHeight)}px`};

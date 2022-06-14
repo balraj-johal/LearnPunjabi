@@ -46,12 +46,12 @@ router.put("/:lessonID", async (req, res) => {
         today.setUTCHours(0,0,0,0);
         if (!user.lastLessonFinish) {
             user.streak += 1;
-            user.lastLessonFinish = today;
+            user.lastLessonFinish = today.getTime();
         }
         if (user.lastLessonFinish + DAY_IN_MS < today.getTime()) {
             user.streak += 1;
         }
-        user.lastLessonFinish = today;
+        user.lastLessonFinish = today.getTime();
         // save user
         let savedUser = await user.save();
         return res.status(200).send({ newProgress: savedUser.progress });

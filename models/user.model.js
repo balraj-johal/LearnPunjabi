@@ -84,7 +84,7 @@ const userSchema = new mongoose.Schema({
         default: 0
     },
     lastLessonFinish: {
-        type: Date,
+        type: Number,
         required: false
     },
 }, { timestamps: true });

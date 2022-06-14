@@ -6,8 +6,8 @@ function AccountTab(props) {
 
     let getBorderRadius = () => {
         if (props.mobile) return "0";
-        if (props.first) return "5px 0 0 0";
-        return "0 5px 0 0";
+        if (props.first) return "0.375rem 0 0 0";
+        return "0 0.375rem 0 0";
     }
 
     return(
@@ -18,9 +18,9 @@ function AccountTab(props) {
                 transition-all no-highlight pt-[3px]
                 ${ props.first ? "" : "" }   
                 flex justify-center items-center cursor-pointer 
-                ${ !isSelected ? 
-                    "bg-primary text-white" : 
-                    "" }`}
+                ${ isSelected ? 
+                    "" : 
+                    "bg-primary text-white dark-primary" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}
         >

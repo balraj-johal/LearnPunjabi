@@ -21,14 +21,14 @@ function PopInModal(props) {
 
     return(
         <div ref={ref} 
-            className={`z-10 absolute top-0 left-0 w-screen h-12
+            className={`z-[100] absolute top-0 left-0 w-screen h-12
                 animate-move-down text-white text-lg
                 flex flex-row justify-center
                 ${props.show ? "" : "hidden"}    
             `}
         >
-            <div className={`min-w-40 w-10/12 sm:w-6/12 md:w-3/12 h-28 p-10 text-center
-            bg-primary drop-shadow-lg
+            <div className={`min-w-40 w-10/12 sm:w-6/12 md:w-3/12 h-28 p-10 
+            text-center bg-primary drop-shadow-lg
             flex justify-center items-center`}>
                 {props.text}
             </div>
