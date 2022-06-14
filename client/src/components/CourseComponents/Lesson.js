@@ -152,7 +152,7 @@ function Lesson(props) {
         if (props.lessonOverride) return;
         // TODO: submit tracked mistakes here
         let mistakes = answerTracking.wrongTasks;
-        let adjustedXP = Math.floor(25 * getPercentCorrect() / 100);
+        let adjustedXP = Math.floor(5 * getPercentCorrect() / 100) + 5;
         let endpoint = `/api/v1/users/progress/${lessonID}`;
         axiosClient.put(endpoint, qs.stringify({ XP: adjustedXP }))
             .then(res => {
