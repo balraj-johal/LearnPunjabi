@@ -79,6 +79,14 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
+    streak: {
+        type: Number,
+        default: 0
+    },
+    lastLessonFinish: {
+        type: Date,
+        required: false
+    },
 }, { timestamps: true });
 
 //Remove refreshToken from the response

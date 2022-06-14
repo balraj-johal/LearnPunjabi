@@ -20,11 +20,9 @@ function InternalPage(props) {
         <>
             <Topbar />
             <div 
-                className="container flex" 
-                id="internal-main" 
+                className="container flex overflow-hidden" 
                 style={{
-                    height: `calc(${100 * props.vh}px - ${props.topbarHeight}px)`
-                    // height: `calc(${100 * props.vh}px - ${props.topbarHeight}px)`
+                    height: `calc(100vh - ${props.topbarHeight}px)`
                 }} 
             >
                 {!props.loading && <Outlet />}
@@ -36,6 +34,9 @@ function InternalPage(props) {
             >
                 This website uses cookies to authenticate the user.
             </CookieConsent>
+            <div className="w-full h-full bg-gradient absolute z-[-1] top-0">
+                <div className="w-full h-full"/>
+            </div>
         </>
     )
 }

@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+  
 @import "abstracts/mixins";
 @import "abstracts/animations";
 @import "abstracts/variables";
@@ -35,6 +35,11 @@
 @layer utilities {
     .no-highlight {
         @include noHighlighting();
+    }
+    .bg-gradient {
+        div {
+            background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
+        }
     }
 }
 

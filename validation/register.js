@@ -24,6 +24,9 @@ module.exports = function validateRegister(data) {
     if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
         errors.password = "Password must be at least 6 characters";
     }
+    if (!(data.password === data.confirmPassword)) {
+        errors.confirmPassword = "Passwords must be equal";
+    }
 
     if (Validator.isEmpty(data.email)) {
         errors.email = "email is required"

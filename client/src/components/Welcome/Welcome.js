@@ -213,11 +213,11 @@ function Welcome(props) {
         setShowAccounts(!showAccounts);
     }
 
-    const { scroll } = useSpring({
-        from: { scroll: scrollFrom },
-        to: { scroll: scrollTo },
-        // config: config.molasses,
-    })
+    // const { scroll } = useSpring({
+    //     from: { scroll: scrollFrom },
+    //     to: { scroll: scrollTo },
+    //     // config: config.molasses,
+    // })
 
     return(
         <>
@@ -232,7 +232,7 @@ function Welcome(props) {
             />
             <div 
                 className="w-11/12 h-5/6 rounded 
-                    flex justify-center items-center"
+                    flex justify-center items-center overflow-hidden"
                 style={{marginBottom: "env(safe-area-inset-bottom)"}}
             >
                 <AccountManager />
@@ -242,7 +242,7 @@ function Welcome(props) {
                 id="welcome" 
                 ref={scrollArea} 
                 onScroll={onScroll} 
-                scrollTop={scroll}
+                // scrollTop={scroll}
             >
                 <div 
                     id="welcome-1" 

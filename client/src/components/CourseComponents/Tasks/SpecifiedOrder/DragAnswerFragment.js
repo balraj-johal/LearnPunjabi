@@ -18,7 +18,7 @@ function DragAnswerFragment(props) {
         <Draggable draggableId={String(props.index)} index={props.index} >
             {(provided) => (
                 <li
-                    className={`specified-order-answer answer`}
+                    className={`specified-order-answer answer dark-answer`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}

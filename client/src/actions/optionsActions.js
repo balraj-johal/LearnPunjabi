@@ -5,6 +5,7 @@ import {
 } from "./types";
 
 export const setDarkMode = value => dispatch => {
+    window.localStorage.setItem("darkMode", value)
     dispatch({
         type: SET_DARK_MODE,
         payload: value

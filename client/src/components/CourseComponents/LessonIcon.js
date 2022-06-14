@@ -24,7 +24,8 @@ function LessonIcon(props) {
         <Link to={`/lesson/${props.lesson.id}`} className="no-highlight">
             <div 
                 id="icon-main"
-                className={`${finished ? "bg-gold" : "bg-white"} shadow-xl
+                className={`${finished ? "bg-gold" : "bg-white"} 
+                    shadow-xl
                     lesson z-20 relative overflow-hidden no-highlight`}
             >
                 <span className="z-10">

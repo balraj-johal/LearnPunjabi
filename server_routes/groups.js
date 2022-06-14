@@ -2,6 +2,7 @@
  * @module api/users
  */
  const express = require("express");
+ const sanitize = require("mongo-sanitize");
 
 /**
  * Express router to mount user related functions on.
@@ -93,7 +94,8 @@ let createNewServerGroups = () => {
  */
 let pushGroupsToDb = (groups) => {
     groups.forEach(updateData => {
-        Group.findOne({ groupID : { $eq: updateData.groupID } })
+        const ID = sanitize(updateData.groupID);
+        Group.findOne({ groupID : { $eq: ID } })
             .then(DbGroup => {
                 // if group doesn't exist yet, create and save group
                 if (!DbGroup) {
