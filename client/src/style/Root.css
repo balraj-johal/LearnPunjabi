@@ -106,15 +106,6 @@
   font-family: "OpenDyslexic" !important;
 }
 
-#logo-full {
-  margin: 1em 1.5em 0.5em;
-  width: 210px;
-}
-
-#logo-icon {
-  margin: 1em 1.5em 0.5em;
-}
-
 #topbar {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -127,7 +118,22 @@
           align-items: center;
   padding-bottom: 6px;
   border-bottom: 2px solid black;
-  height: 83px;
+  height: 75px;
+}
+
+#topbar #logo-full {
+  margin: 1em 1.5em 0.5em;
+  width: 210px;
+}
+
+#topbar #logo-icon {
+  margin: 1em 1em 0.5em;
+}
+
+@media (min-height: 768px) {
+  #topbar {
+    height: 83px;
+  }
 }
 
 .account-button {
@@ -367,7 +373,7 @@ button:disabled:hover {
 #leaderboard .header {
   font-weight: bold;
   font-size: 18px;
-  padding: 15px 15px 14px;
+  padding: 12px 15px 10px;
 }
 
 #leaderboard #leaderboard-list {
