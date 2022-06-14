@@ -6,8 +6,8 @@ function AccountTab(props) {
 
     let getBorderRadius = () => {
         if (props.mobile) return "0";
-        if (props.first) return "5px 0 0 0";
-        return "0 5px 0 0";
+        if (props.first) return "0.375rem 0 0 0";
+        return "0 0.375rem 0 0";
     }
 
     return(
