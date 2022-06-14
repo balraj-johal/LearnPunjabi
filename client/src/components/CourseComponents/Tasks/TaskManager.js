@@ -102,7 +102,7 @@ function TaskManager(props) {
     }
 
     return(
-        <div className={`${props.override ? "w-5/6 h-3/4" : "w-full h-full"}
+        <div className={`${props.override ? "w-5/6 h-3/4 rounded" : "w-full h-full"}
             md:h-4/6 md:w-8/12 md:rounded 
             lg:w-8/12 lg:mt-[-1rem] lg:min-w-[900px]
             xl:w-6/12
