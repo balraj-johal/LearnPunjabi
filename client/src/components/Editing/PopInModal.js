@@ -27,8 +27,8 @@ function PopInModal(props) {
                 ${props.show ? "" : "hidden"}    
             `}
         >
-            <div className={`min-w-40 w-10/12 sm:w-6/12 md:w-3/12 h-28 p-10 text-center
-            bg-primary drop-shadow-lg
+            <div className={`min-w-40 w-10/12 sm:w-6/12 md:w-3/12 h-28 p-10 
+            text-center bg-primary drop-shadow-lg
             flex justify-center items-center`}>
                 {props.text}
             </div>

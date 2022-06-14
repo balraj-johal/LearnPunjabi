@@ -37,6 +37,7 @@ function TaskManager(props) {
     }
     let handleExit = () => {
         props.setAnimClasses("");
+        setAnimating(true);
         setOut(true);
         setTimeout(() => {
             setOut(false);
@@ -137,7 +138,6 @@ function AnimatedWrapper(props) {
     return(
         <animated.div 
             style={spring}
-            // md:w-7/12 
             className={`task w-full h-full min-h-[450px] md:min-h-[400px]
                 relative px-6 pt-16 pb-10 sm:p-10 lg:px-14 text-black 
                 md:text-lg text-sm dark-primary

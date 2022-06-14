@@ -957,7 +957,7 @@ button:disabled:hover {
 }
 
 .darkMode .dark-answer {
-  background-color: #3e3e3e;
+  background-color: #1a2534;
   border: transparent;
 }
 
@@ -967,6 +967,10 @@ button:disabled:hover {
 
 .darkMode .dark-answer.chosen {
   background-color: #2c3e58;
+}
+
+.darkMode #progress-bar-bg {
+  background-color: #dedede;
 }
 
 #course-custom-container {

@@ -27,6 +27,7 @@ $secondary-dark:#1a2534;
 $tertiary-dark:#233146;
 $highest-dark:#2c3e58;
 $accent-dark: #0096dc;
+$plain-dark: #dedede;
 
 @mixin darkMode {
     .dark-accent {
@@ -65,7 +66,7 @@ $accent-dark: #0096dc;
         color: white;
     }
     .dark-answer {
-        background-color: #3e3e3e;
+        background-color: $secondary-dark;
         border: transparent;
         &:hover {
             background-color: $tertiary-dark;
@@ -74,6 +75,9 @@ $accent-dark: #0096dc;
         &.chosen {
             background-color: $highest-dark;
         }
+    }
+    #progress-bar-bg {
+        background-color: $plain-dark;
     }
 }
 
