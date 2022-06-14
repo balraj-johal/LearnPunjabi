@@ -7,9 +7,12 @@ function RiversEnd(props) {
     let [mapArray, setMapArray] = useState([]);
 
     let calculate = () => {
-        if (bottom.current.clientHeight <= 0) return setTimeout(() => { calculate() }, 100);
+        if (bottom.current.clientHeight <= 0) return setTimeout(() => { 
+            calculate() 
+        }, 100);
         setSvgHeight(bottom.current.clientHeight);
-        let noStraights = Math.ceil(window.innerHeight/bottom.current.clientHeight) - 1;
+        let noStraights = 
+            Math.ceil(window.innerHeight/bottom.current.clientHeight);// - 1;
         let arr = new Array(noStraights).fill(0);
         setMapArray(arr);
     }
