@@ -21,7 +21,7 @@ function PopInModal(props) {
 
     return(
         <div ref={ref} 
-            className={`z-10 absolute top-0 left-0 w-screen h-12
+            className={`z-[100] absolute top-0 left-0 w-screen h-12
                 animate-move-down text-white text-lg
                 flex flex-row justify-center
                 ${props.show ? "" : "hidden"}    
