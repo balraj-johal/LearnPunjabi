@@ -76,7 +76,6 @@ function Lesson(props) {
             }, 200);
         }
 
-
         return () => { clearTimeout(reqTimeout) }
     }, [id]);
 
@@ -136,7 +135,7 @@ function Lesson(props) {
         if (nextIndex >= lesson.tasks.length) {
             if (props.lessonOverride) return;
             endLesson(lesson.id);
-            props.getUserData();
+            props.getUserData(); // WHY AM I DOING THIS HERE?
             navigate("/dashboard");
         } else {
             setCurrentTaskIndex(nextIndex);
@@ -151,7 +150,7 @@ function Lesson(props) {
     let endLesson = (lessonID) => {
         if (props.lessonOverride) return;
         // TODO: submit tracked mistakes here
-        let mistakes = answerTracking.wrongTasks;
+        // let mistakes = answerTracking.wrongTasks;
         let adjustedXP = Math.floor(25 * getPercentCorrect() / 100);
         let endpoint = `/api/v1/users/progress/${lessonID}`;
         axiosClient.put(endpoint, qs.stringify({ XP: adjustedXP }))
@@ -194,8 +193,6 @@ function Lesson(props) {
 
 //pull relevant props from redux state
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    isLoading: state.auth.loading
 });
 
 export default connect(

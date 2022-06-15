@@ -66,7 +66,7 @@ function Login(props) {
                 <div 
                     onClick={() => { props.setManagerState("ForgotPassword") }}
                     className="text-sm text-primary w-full cursor-pointer mt-4
-                        hover:text-primary2 hover:translate-x-2 transition-all"
+                        hover:text-secondary hover:translate-x-2 transition-all"
                 >
                     - Forgot Password?
                 </div>

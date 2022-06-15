@@ -19,8 +19,8 @@ function ProgressBar(props) {
             >
                 <div 
                     className={`rounded-xl h-full bg-primary 
-                    data-testid="progressbar-fill"
                     transition-all duration-300`} 
+                    data-testid="progressbar-fill"
                     style={{width: `${props.percent}%`}}>
                 </div>
             </div>

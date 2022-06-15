@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor,  } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 
 import { rest } from "msw"
 import { setupServer } from "msw/node"

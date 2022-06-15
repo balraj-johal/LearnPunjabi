@@ -1,13 +1,163 @@
-/**
- * does it move onto next task correctly
- * does it to the right thing after the last task
- * does it shuffle tasks
- * does it add the end task
- * does it add the correct amount of interstitials
- * does it handle load error
- * does it calculate the correct percent correct
- * does it track correct answers properly
- * does it track correct answers properly
- * does it track set progress properly
- * does it show progress bar
- */
+import { render, screen, waitFor, fireEvent } from '../../utils/testing';
+import { rest } from "msw";
+import { Routes, Route, MemoryRouter } from 'react-router-dom';
+import { setupServer } from "msw/node";
+
+import Lesson from './Lesson';
+
+
+const lesson = {
+    name: "test",
+    shuffle: false,
+    showInterstitials: true,
+    showPercentCorrect: true,
+    tasks: [
+        {
+            audio: {name: ""},
+            audioFilename: "",
+            taskID: "1",
+            text: "LOREM IPSUM",
+            type: "TextOnly",
+        }, 
+        {
+            audio: {name: ""},
+            audioFilename: "",
+            taskID: "2",
+            text: "TASK 2",
+            type: "TextOnly",
+        }, 
+    ],
+    id: "lesson-test",
+    requiredCompletions: 75,
+    noToSample: 0,
+}
+
+// declare which API requests to mock
+const server = setupServer(
+    // capture "GET /greeting" requests
+    rest.get('/api/v1/lessons/lesson-test', (req, res, ctx) => {
+        // respond using a mocked JSON body
+        return res(
+            ctx.json(lesson), 
+            ctx.delay(150)
+        )
+    }),
+)
+// establish API mocking before all tests
+beforeAll(() => server.listen())
+// reset any request handlers that are declared as a part of our tests
+// (i.e. for testing one-time error scenarios)
+afterEach(() => server.resetHandlers())
+// clean up once the tests are done
+afterAll(() => server.close())
+
+it('handles load error correctly', async () => {
+    // override server with failing route
+    server.use(
+        rest.get('/api/v1/lessons/lesson-test', (req, res, ctx) => {
+            return res(
+                ctx.status(500),
+                ctx.json({ error: "failure" }), 
+                ctx.delay(150)
+            )
+        })
+    )
+
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+    // wait for data to be fetched
+    await waitFor(() => {
+        expect(screen.getByText(/Loading failed./i)).toBeInTheDocument();
+    });
+})
+
+it('loads first task of lesson correctly', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+    // wait for data to be fetched
+    await waitFor(() => {
+        expect(screen.getByText(/LOREM IPSUM/i)).toBeInTheDocument();
+    });
+})
+
+it('shows progress bar', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+    // wait for data to be fetched
+    await waitFor(() => {
+        const progressElem = screen.getByRole("progressbar");
+        expect(progressElem).toBeInTheDocument();
+    });
+})
+
+it('shows next button on TextOnly task', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+
+    // wait for data to be fetched
+    await waitFor(() => {
+        const button = screen.getByRole("button", { name: /Next/i });
+        expect(button).toBeInTheDocument();
+    });
+})
+
+it('show next task after submit', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+
+    // wait for data to be fetched
+    await waitFor(async () => {
+        const nextButton = screen.getByRole("button", { name: /Next/i });
+        fireEvent.click(nextButton);
+    });
+    await waitFor(() => {
+        expect(screen.getByText(/TASK 2/i)).toBeInTheDocument();
+    });
+})
+
+// it('handles lesson end correctly', () => {
+
+// })
+// it('shuffles tasks', () => {
+
+// })
+// it('adds end task', () => {
+
+// })
+// it('adds interstitals', () => {
+
+// })
+// it('calculate correct percentage at lesson end', () => {
+
+// })
+// it('track answers properly', () => {
+
+// })
+// it('set progress correctly', () => {
+
+// })

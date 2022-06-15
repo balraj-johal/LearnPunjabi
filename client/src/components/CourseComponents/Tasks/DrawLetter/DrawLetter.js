@@ -22,7 +22,7 @@ function DrawLetter(props) {
             <div className={`relative mx-auto flex flex-col justify-center items-center ${props.animClasses}`} >
                 <DrawingCanvas clearing={clearing} setClearing={setClearing} />
                 <button className="w-full text-white h-8 bg-primary cursor-pointer mt-[-1px]
-                    hover:bg-primary2 capitalize transition-all duration-75 border-b border-x border-black" 
+                    hover:bg-secondary capitalize transition-all duration-75 border-b border-x border-black" 
                     onClick={()=>{ setClearing(true) }}
                 >Clear</button>
             </div>
