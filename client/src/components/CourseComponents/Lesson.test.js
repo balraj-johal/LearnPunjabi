@@ -5,8 +5,7 @@ import { setupServer } from "msw/node";
 
 import Lesson from './Lesson';
 
-
-const lesson = {
+const lessonDataTextOnly = {
     name: "test",
     shuffle: false,
     showInterstitials: true,
@@ -38,10 +37,16 @@ const server = setupServer(
     rest.get('/api/v1/lessons/lesson-test', (req, res, ctx) => {
         // respond using a mocked JSON body
         return res(
-            ctx.json(lesson), 
+            ctx.json(lessonDataTextOnly), 
             ctx.delay(150)
         )
     }),
+    rest.put("/api/v1/users/progress/lesson-test", (req, res, ctx) => {
+        return res(
+            ctx.json(lessonDataTextOnly), 
+            ctx.delay(150)
+        )
+    })
 )
 // establish API mocking before all tests
 beforeAll(() => server.listen())
@@ -140,24 +145,97 @@ it('show next task after submit', async () => {
     });
 })
 
-// it('handles lesson end correctly', () => {
+it('handles lesson end correctly', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/dashboard" element={
+                    <p>dashboard</p>
+                } />
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+    // wait for data to be fetched
+    await waitFor(async () => {
+        const nextButton = screen.getByRole("button", { name: /Next/i });
+        fireEvent.click(nextButton);
+        console.log("click 1")
+    });
+    // wait for second task to be displayed
+    await waitFor(async () => {
+        expect(screen.getByText(/TASK 2/i)).toBeInTheDocument();
+    });
+    const nextButton = screen.getByRole("button", { name: /Next/i });
+    fireEvent.click(nextButton); 
+    // check if end screen is shown
+    await waitFor(async () => { 
+        expect(screen.getByText(/your answers correct!/i)).toBeInTheDocument();
+    });
+    const finishButton = screen.getByRole("button", { name: /Finish/i });
+    fireEvent.click(finishButton); 
+    await waitFor(async () => { 
+        expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+    });
+})
 
-// })
-// it('shuffles tasks', () => {
+it('adds end task', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+    // wait for data to be fetched
+    await waitFor(async () => {
+        const nextButton = screen.getByRole("button", { name: /Next/i });
+        fireEvent.click(nextButton);
+        console.log("click 1")
+    });
+    // wait for second task to be displayed
+    await waitFor(async () => {
+        expect(screen.getByText(/TASK 2/i)).toBeInTheDocument();
+    });
+    const nextButton = screen.getByRole("button", { name: /Next/i });
+    fireEvent.click(nextButton); 
+    // check if end screen is shown
+    await waitFor(async () => { 
+        expect(screen.getByText(/your answers correct!/i)).toBeInTheDocument();
+    });
+})
 
-// })
-// it('adds end task', () => {
+it('calculate correct percentage at lesson end with no wrong answers', async () => {
+    render(
+        <MemoryRouter initialEntries={["/lesson/lesson-test"]} >
+            <Routes>
+                <Route path="/lesson/:id" element={<Lesson />} />
+            </Routes>
+        </MemoryRouter>
+    )
+    // wait for data to be fetched
+    await waitFor(async () => {
+        const nextButton = screen.getByRole("button", { name: /Next/i });
+        fireEvent.click(nextButton);
+        console.log("click 1")
+    });
+    // wait for second task to be displayed
+    await waitFor(async () => {
+        expect(screen.getByText(/TASK 2/i)).toBeInTheDocument();
+    });
+    const nextButton = screen.getByRole("button", { name: /Next/i });
+    fireEvent.click(nextButton); 
+    // check if end screen is shown
+    await waitFor(async () => { 
+        expect(screen.getByText(/You got 100% of your answers correct!/i))
+            .toBeInTheDocument();
+    });
+})
 
-// })
+
 // it('adds interstitals', () => {
 
 // })
-// it('calculate correct percentage at lesson end', () => {
-
-// })
-// it('track answers properly', () => {
-
-// })
-// it('set progress correctly', () => {
+// it('shuffles tasks', () => {
 
 // })

@@ -19,6 +19,7 @@ function DragAnswerFragment(props) {
             {(provided) => (
                 <li
                     className={`specified-order-answer answer dark-answer`}
+                    data-testid="selected-answer"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
@@ -29,7 +30,7 @@ function DragAnswerFragment(props) {
                     onAnimationEnd={() => { onAnimEnd() }}
                 >
                     { props.possible.text ? (
-                        <div className="text"> {props.possible.text} </div>
+                        <div className="text">{props.possible.text}</div>
                     ) : null }
                 </li>
             )}

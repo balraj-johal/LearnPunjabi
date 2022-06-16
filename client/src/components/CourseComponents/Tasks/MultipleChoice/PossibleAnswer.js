@@ -7,6 +7,7 @@ function PossibleAnswer(props) {
                 shadow-sm border-[1.5px] border-slate dark-answer
                 ${props.chosen ? "hover:bg-slate-200 bg-slate-200 chosen" : 
                     "hover:bg-slate-100"}`}
+            data-testid={`answer-${props.index}`}
             onClick={() => {
                 props.setChoice(props.index)
             }}

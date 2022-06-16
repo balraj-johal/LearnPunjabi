@@ -27,7 +27,10 @@ function MultipleChoice(props) {
 
     return(
         <>
-            <div className="multiple-choice flex flex-col h-5/6">
+            <div
+                data-testid="mult-choice" 
+                className="multiple-choice flex flex-col h-5/6"
+            >
                 <div className="title w-full h-1/6 md:h-2/6 px-0
                     flex flex-row justify-start items-center"
                 >
