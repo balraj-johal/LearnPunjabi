@@ -32,7 +32,7 @@ const PunjabText = React.forwardRef((props, ref) => {
             className="absolute w-full bottom-0 h-1/3 
                 font-normal text-xl 
                 md:px-12 md:pt-10 md:text-3xl 
-                lg:text-4xl lg:px-16 lg:pt-20 lg:pr-80
+                lg:text-4xl lg:px-16 lg:pt-20 lg:pr-48 xl:pr-80
                 pt-10 pl-4 pr-6"
             id="punjab-text"
         >
