@@ -26,7 +26,7 @@ function Settings(props) {
     return(
         <animated.div className="mt-2" style={{opacity: spring.opacity}}>
             <div className="w-full px-4 my-6 flex justify-between items-center">
-                <div className="text-lg">Dark Mode:</div>
+                <div className="text-md md:text-lg">Dark Mode:</div>
                 <Toggle
                     checked={darkMode}
                     icons={false}
@@ -35,7 +35,7 @@ function Settings(props) {
                 />
             </div>
             <div className="w-full px-4 my-6 flex justify-between items-center">
-                <div className="text-lg">Dyslexic Support Font:</div>
+                <div className="text-md md:text-lg">Dyslexic Support Font:</div>
                 <Toggle
                     checked={dyslexiaFont}
                     icons={false}

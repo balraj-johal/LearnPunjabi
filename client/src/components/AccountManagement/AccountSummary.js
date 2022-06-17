@@ -143,9 +143,10 @@ function SmallBubble({ children }) {
     return(
         <div 
             style={{width: "calc(50% - 5px)"}}
-        className="rounded shadow-md border-[1px] border-slate-200 md:text-xl
-            mt-[10px] h-full flex flex-col justify-center items-start py-2 px-8 md:py-4
-            font-normal z-10 dark-elevated"
+        className="rounded shadow-md border-[1px] border-slate-200 
+            md:text-xl md:py-4
+            mt-[10px] h-full flex flex-col justify-center items-start py-2 px-8
+            font-normal z-10 dark-tertiary"
         >
             { children }
         </div>

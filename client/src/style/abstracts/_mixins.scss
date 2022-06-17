@@ -22,16 +22,21 @@
     }
 }
 
-// $bg-primary-dark: #121212;
 $primary-dark: #10161f;
-$secondary-dark:#3e3e3e;
-$tertiary-dark:#4f4f4f;
-$highest-dark:#797979;
+$secondary-dark:#1a2534;
+$tertiary-dark:#233146;
+$highest-dark:#2c3e58;
 $accent-dark: #0096dc;
+$plain-dark: #dedede;
 
 @mixin darkMode {
     .dark-accent {
         background-color: $accent-dark !important;
+    }
+    .dark-tertiary {
+        background-color: $tertiary-dark !important;
+        color: white !important;
+        border-color: transparent !important;
     }
     .dark-elevated {
         background-color: $secondary-dark !important;
@@ -46,13 +51,13 @@ $accent-dark: #0096dc;
         transition: all 200ms;
     }
     .bg-gradient {
-        filter: brightness(0.85);
+        filter: brightness(0.7);
     }
     .accounts-wrap {
         background-color: $primary-dark;
         color: white;
     }
-    #topbar {
+    #topbar-wrap {
         background-color: $primary-dark;
         color: white;
     }
@@ -61,7 +66,7 @@ $accent-dark: #0096dc;
         color: white;
     }
     .dark-answer {
-        background-color: #3e3e3e;
+        background-color: $secondary-dark;
         border: transparent;
         &:hover {
             background-color: $tertiary-dark;
@@ -70,6 +75,9 @@ $accent-dark: #0096dc;
         &.chosen {
             background-color: $highest-dark;
         }
+    }
+    #progress-bar-bg {
+        background-color: $plain-dark;
     }
 }
 

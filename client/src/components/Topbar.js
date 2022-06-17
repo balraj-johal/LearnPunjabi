@@ -37,7 +37,7 @@ function Topbar(props) {
         >
             <div id="topbar">
                 <CorrectLogo mobile={props.mobile} ready={props.mobileReady} />
-                <div className="flex flex-row items-center mr-6">
+                <div className="flex flex-row items-center mr-4 md:mr-6">
                     { props.auth.isAuthenticated && !props.mobile ? (
                         <div className="mr-5 mt-2 animate-fade-in">
                             Hello {props.auth.user.username}!

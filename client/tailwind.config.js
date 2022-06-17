@@ -25,18 +25,18 @@ module.exports = {
                 },
                 'shake-x': {
                     '0%' : { transform: 'translateX(0px)' },
-                    '17%' : { transform: 'translateX(-7.5px)' },
-                    '34%' : { transform: 'translateX(7.5px)' },
-                    '50%' : { transform: 'translateX(-7.5px)' },
-                    '66%' : { transform: 'translateX(7.5px)' },
-                    '84%' : { transform: 'translateX(-4px)' },
+                    '17%' : { transform: 'translateX(-3.25px)' },
+                    '34%' : { transform: 'translateX(3.25px)' },
+                    '50%' : { transform: 'translateX(-3.25px)' },
+                    '66%' : { transform: 'translateX(3.25px)' },
+                    '84%' : { transform: 'translateX(-2px)' },
                     '100%' : { transform: 'translateX(0px)' }
                 },
                 'bounce-y': {
                     '0%' : { transform: 'translateY(0px)' },
-                    '20%' : { transform: 'translateY(-12.5px)' },
+                    '20%' : { transform: 'translateY(-7.5px)' },
                     '40%' : { transform: 'translateY(0px)' },
-                    '60%' : { transform: 'translateY(-5px)' },
+                    '60%' : { transform: 'translateY(-2px)' },
                     '80%' : { transform: 'translateY(0px)' },
                 }
             },

@@ -48,7 +48,10 @@ function ForgotPassword(props) {
                 className="mt-4" 
                 style={{opacity: spring.opacity}}
             >
-                <h2>Forgot Password</h2>
+                <p className="my-4">
+                    If you're forgotten your password, please enter your email below 
+                    to recieve a reset link!
+                </p>
                 <form 
                     className="forgot-password-form" 
                     noValidate 

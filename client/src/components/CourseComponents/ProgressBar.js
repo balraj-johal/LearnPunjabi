@@ -14,8 +14,10 @@ function ProgressBar(props) {
             className="w-full flex justify-center absolute 
                 top-4 md:top-10 md:shadow-2xl z-[60]"
         >
-            <div className="h-2 md:w-10/12 w-11/12 bg-gray-400 
-                md:bg-white rounded-xl left-1/12 overflow-hidden"
+            <div 
+                id="progress-bar-bg"
+                className="h-2 md:w-10/12 w-11/12 bg-gray-400
+                    md:bg-white rounded-xl left-1/12 overflow-hidden"
             >
                 <div 
                     className={`rounded-xl h-full bg-primary 
