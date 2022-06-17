@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '../../utils/testing';
-import { rest } from "msw";
 import { Routes, Route, MemoryRouter } from 'react-router-dom';
+import { rest } from "msw";
 import { setupServer } from "msw/node";
 
 import Lesson from './Lesson';
