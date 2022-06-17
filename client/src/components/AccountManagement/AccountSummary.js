@@ -107,18 +107,6 @@ function AccountSummary(props) {
                             style={{opacity: streakAnimFinished ? 1 : 0}}
                         />
                     </div>
-                    <div className="flex flex-col justify-evenly">
-                        <h2 className="text-lg md:text-xl font-normal">
-                            You're on a
-                        </h2>
-                        <h2 className="text-xl md:text-2xl">
-                            <animated.span className="md:text-2xl">
-                                {StreakSpring.streak.to(streak => {
-                                    return Math.floor(streak)
-                                })}
-                            </animated.span> day streak!
-                        </h2>
-                    </div>
                 </div>
                 <div className="flex flex-row justify-between 
                     h-1/6 py-1">
