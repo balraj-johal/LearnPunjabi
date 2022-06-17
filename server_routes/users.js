@@ -319,16 +319,15 @@ router.post("/logout", async (req, res) => {
     } catch (err) { return res.status(500).send(err.message); }
 })
 
-// TODO: urgent change to post 
 /**
  * set user status to Active if the supplied email verification code is valid
- * @name get/verify-email
+ * @name put/verify-email
  * @function
  * @memberof module:api/users~usersRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/verify-email/:verificationCode", async (req, res) => {
+router.put("/verify-email/:verificationCode", async (req, res) => {
     try {
         let user = await User.findOne({ verificationCode: {$eq: req.params.verificationCode} });
         if (!user) return res.status(404).send({ message: "User not found..." });

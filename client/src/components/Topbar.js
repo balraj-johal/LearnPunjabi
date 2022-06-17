@@ -59,7 +59,7 @@ function Topbar(props) {
 function CorrectLogo(props) {
     if (!props.ready) return <div />;
     return(
-        <Link to="/dashboard">
+        <Link to="/dashboard" aria-label="link to dashboard" role="logo">
             { props.mobile ? <LogoIcon /> : <Logo /> }
         </Link>
     )
