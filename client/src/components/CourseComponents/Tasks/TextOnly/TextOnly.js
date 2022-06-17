@@ -22,7 +22,10 @@ function TextOnly(props) {
 
     return(
         <>
-            <div className="text-only flex flex-row md:flex-row h-5/6 justify-between">
+            <div 
+                data-testid="text-only"
+                className="text-only flex flex-row md:flex-row h-5/6 justify-between"
+            >
                 { showSide && <TextOnlySide data={props.data} /> }
                 <div 
                     id="text-only-content" 
@@ -50,6 +53,7 @@ function TextOnlySide(props) {
             <img src={testImg} className="mb-14" alt={props.data.imgAlt} />
         </div>
     )
+    return null;
 }
 
 export default TextOnly;

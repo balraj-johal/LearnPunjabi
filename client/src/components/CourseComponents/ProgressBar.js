@@ -10,6 +10,7 @@ function ProgressBar(props) {
     return (
         <animated.div 
             style={spring}
+            role="progressbar"
             className="w-full flex justify-center absolute 
                 top-4 md:top-10 md:shadow-2xl z-[60]"
         >
@@ -20,12 +21,13 @@ function ProgressBar(props) {
             >
                 <div 
                     className={`rounded-xl h-full bg-primary 
-                        transition-all duration-300`} 
+                    transition-all duration-300`} 
+                    data-testid="progressbar-fill"
                     style={{width: `${props.percent}%`}}>
                 </div>
             </div>
         </animated.div>
-      );
+    );
 }
 
 export default ProgressBar;

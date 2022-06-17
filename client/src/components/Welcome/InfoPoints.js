@@ -21,7 +21,7 @@ function InfoPoints(props) {
     return(
         <animated.div 
             id="info-points" 
-            className="h-5/6 flex flex-col justify-evenly w-full bg-primary2
+            className="h-5/6 flex flex-col justify-evenly w-full bg-secondary
                 pl-4 md:pl-20"
             style={spring}
             ref={ref}

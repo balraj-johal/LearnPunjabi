@@ -78,10 +78,23 @@ function AccountSummary(props) {
                 </div>
                 <div 
                     id="total-xp" 
-                    className="w-full flex items-center py-4 px-7
+                    className="w-full flex items-center py-4 px-7 relative
                         no-highlight h-1/6 rounded 
                         bg-primary dark-accent shadow-lg text-white"
                 >
+                    <div 
+                        className="flex flex-col justify-evenly transition-all" 
+                        style={{transform: streakAnimFinished ? "translate(0%, 0)" : "translate(0%, 0)"}}
+                    >
+                        <h2 className="text-lg md:text-xl font-normal">You're on a</h2>
+                        <h2 className="text-xl md:text-2xl">
+                            <animated.span className="md:text-2xl">
+                                {StreakSpring.streak.to(streak => {
+                                    return Math.floor(streak)
+                                })}
+                            </animated.span> day streak!
+                        </h2>
+                    </div>
                     <div className="h-full w-3/12 flex items-center justify-center">
                         <Lottie 
                             rendererSettings={{ 
@@ -94,6 +107,7 @@ function AccountSummary(props) {
                             style={{opacity: streakAnimFinished ? 1 : 0}}
                         />
                     </div>
+<<<<<<< HEAD
                     <div className="flex flex-col justify-evenly">
                         <h2 className="text-lg md:text-xl font-normal">
                             You're on a
@@ -106,6 +120,8 @@ function AccountSummary(props) {
                             </animated.span> day streak!
                         </h2>
                     </div>
+=======
+>>>>>>> e3e9ebb1bd4524ec399761ef11ec6301ff9a06f1
                 </div>
                 <div className="flex flex-row justify-between 
                     h-1/6 py-1">

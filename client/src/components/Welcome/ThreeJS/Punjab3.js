@@ -14,7 +14,7 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
     const group = useRef();
     const river1 = useRef();
     const river2 = useRef();
-    const { nodes, materials } = useGLTF('/Punjab3-transformed.glb');
+    const { nodes, materials } = useGLTF('/Punjab4-transformed.glb');
     
     let [hovering, setHovering] = useState(false);
     let [stuck, setStuck] = useState(false);
@@ -25,12 +25,12 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
 
     useFrame(({ clock }) => {
         // rotate based on scroll
-        group.current.rotation.y = 
-            -ref.current / 500 - (clock.getElapsedTime() * 0.1);
+        // group.current.rotation.y = 
+        //     -ref.current / 500 - (clock.getElapsedTime() * 0.1);
         // river1.current.position.y = -ref.current / 1500;
         setAlpha(Math.min(1, (ref.current - 1000) / 1000));
         lerpedPos = lerp(RIVER_END_Y + 1.0, RIVER_END_Y, alpha);
-        river1.current.position.y = lerpedPos;
+        // river1.current.position.y = lerpedPos;
         // if (hovering) group.current.rotation.x += 10;
     });
 
@@ -60,10 +60,10 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
             position={[0, 0.5, 0]}
         >
             <mesh 
-                geometry={nodes.Map_rivers001.geometry} 
-                material={materials['Map_rivers.001']} 
+                geometry={nodes.Plane.geometry} 
+                material={materials['Material.001']} 
             />
-            <mesh 
+            {/* <mesh 
                 ref={river1} 
                 geometry={nodes.River1.geometry} 
                 position={[0, -0.01, 0]} 
@@ -93,11 +93,11 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
                 position={[0, -0.01, 0]} 
                 rotation={[0, -0.75, 0]}
                 scale={0.57} 
-            />
+            /> */}
         </group>
     )
 })
 
 export default Punjab3;
 
-useGLTF.preload('/Punjab3-transformed.glb')
+useGLTF.preload('/Punjab4-transformed.glb')
