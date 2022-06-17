@@ -107,7 +107,6 @@ function AccountSummary(props) {
                             style={{opacity: streakAnimFinished ? 1 : 0}}
                         />
                     </div>
-<<<<<<< HEAD
                     <div className="flex flex-col justify-evenly">
                         <h2 className="text-lg md:text-xl font-normal">
                             You're on a
@@ -120,8 +119,6 @@ function AccountSummary(props) {
                             </animated.span> day streak!
                         </h2>
                     </div>
-=======
->>>>>>> e3e9ebb1bd4524ec399761ef11ec6301ff9a06f1
                 </div>
                 <div className="flex flex-row justify-between 
                     h-1/6 py-1">
