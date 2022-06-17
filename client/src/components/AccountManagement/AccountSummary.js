@@ -55,7 +55,10 @@ function AccountSummary(props) {
         >
             <form 
                 noValidate 
-                onSubmit={() => { props.logoutUser() }} 
+                onSubmit={(e) => { 
+                    e.preventDefault();
+                    props.logoutUser();
+                }} 
                 className="flex flex-col h-full top-0 w-full justify-evenly"
             >
                 <div 
@@ -75,7 +78,7 @@ function AccountSummary(props) {
                 </div>
                 <div 
                     id="total-xp" 
-                    className="w-full flex items-center p-4
+                    className="w-full flex items-center py-4 px-7
                         no-highlight h-1/6 rounded 
                         bg-primary dark-accent shadow-lg text-white"
                 >
@@ -92,7 +95,9 @@ function AccountSummary(props) {
                         />
                     </div>
                     <div className="flex flex-col justify-evenly">
-                        <h2 className="text-lg md:text-xl font-normal">You're on a</h2>
+                        <h2 className="text-lg md:text-xl font-normal">
+                            You're on a
+                        </h2>
                         <h2 className="text-xl md:text-2xl">
                             <animated.span className="md:text-2xl">
                                 {StreakSpring.streak.to(streak => {
@@ -142,7 +147,7 @@ function SmallBubble({ children }) {
             style={{width: "calc(50% - 5px)"}}
         className="rounded shadow-md border-[1px] border-slate-200 
             md:text-xl md:py-4
-            mt-[10px] h-full flex flex-col justify-center items-start py-2 px-8
+            mt-[10px] h-full flex flex-col justify-center items-start py-2 px-7
             font-normal z-10 dark-tertiary"
         >
             { children }
