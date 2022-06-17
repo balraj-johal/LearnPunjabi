@@ -59,7 +59,7 @@ function Topbar(props) {
 function CorrectLogo(props) {
     if (!props.ready) return <div />;
     return(
-        <Link to="/dashboard">
+        <Link to="/dashboard" aria-label="link to dashboard" role="logo">
             { props.mobile ? <LogoIcon /> : <Logo /> }
         </Link>
     )
@@ -69,7 +69,7 @@ function EditButton(props) {
     return(
         <Link to="/edit">
             { props.role === "Admin" ? (
-                <div className="account-button mr-2 hover:bg-primary2 
+                <div className="account-button mr-2 hover:bg-secondary 
                     no-highlight transition-all animate-fade-in"
                 >
                     <img 
@@ -86,7 +86,7 @@ function EditButton(props) {
 function AccountButton(props) {
     return(
         <Link to="/account">
-            <div className="account-button hover:bg-primary2 transition-all 
+            <div className="account-button hover:bg-secondary transition-all 
                 no-highlight animate-fade-in"
             >
                 <img 

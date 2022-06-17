@@ -8,7 +8,7 @@ function Dashboard(props) {
     if (props.mobile) return <Course />;
     return(
         <>
-            <Course />
+            <Course showParticles={false} />
             <Sidebar />
         </>
     );

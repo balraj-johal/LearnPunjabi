@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 // auth actions
 import { useRefreshToken } from "../actions/authActions";
-import Loader from "./Loader";
 
 /** Compnent wrapper to redirect to login page if user is not authenticated
  * @name ProtectedComponent
@@ -38,7 +37,6 @@ function ProtectedComponent({ component, ...props}) {
     }, [props.auth]);
     
     if (ready) return component;
-    // return <Loader />;
     return null;
 }
 

@@ -8,24 +8,25 @@ import Loader from "./Loader";
 
 function VerifyEmail(props) {
     let navigate = useNavigate();
-    let [successful, setSuccessful] = useState(false);
     let params = useParams();
+    let [successful, setSuccessful] = useState(false);
 
     useEffect(() => {
         let redirectTimeout;
-        if (params.code && props.csrf.ready) {
-            axiosClient.get(`/api/v1/users/verify-email/${params.code}`)
+        if (params.code) {
+            console.log("utting", `/api/v1/users/verify-email/${params.code}`)
+            axiosClient.put(`/api/v1/users/verify-email/${params.code}`)
                 .then(result => {
                     setSuccessful(true);
                     redirectTimeout = setTimeout(() => {
                         navigate("/account");
-                    }, 5000);
+                    }, 4000);
                 })
                 .catch(err => { console.log(err); })
         }
 
         return () => { clearTimeout(redirectTimeout) };
-    }, [props.csrf.ready, params.code]);
+    }, [params.code]);
 
     return (
         <div className="accounts-wrap bg-white shadow-xl" id="verify-email">

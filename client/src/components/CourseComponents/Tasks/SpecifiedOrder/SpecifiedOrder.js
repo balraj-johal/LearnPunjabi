@@ -97,9 +97,11 @@ function SpecifiedOrder(props) {
 
     return(
         <>
-            <div className={`specified-order 
-                min-h-[${40 * props.vh}px] h-5/6 
-                flex flex-col justify-center`} 
+            <div 
+                data-testid="spec-order"
+                className={`specified-order 
+                    min-h-[${40 * props.vh}px] h-5/6 
+                    flex flex-col justify-center`} 
             >
                 <div className="title w-full h-1/6 md:h-2/6 px-0
                     flex flex-row justify-start items-center"
@@ -131,6 +133,7 @@ function SpecifiedOrder(props) {
                             {(provided) => (
                                 <ul 
                                     id="answers"
+                                    aria-label="selected-answers"
                                     {...provided.droppableProps} 
                                     ref={provided.innerRef}
                                 >
@@ -150,7 +153,11 @@ function SpecifiedOrder(props) {
                         </Droppable>
                     </DragDropContext>
                     <div id="possible-fragments">
-                        <ul className="possiblities-wrap" id="possibilites">
+                        <ul 
+                            className="possiblities-wrap" 
+                            id="possibilites"
+                            aria-label="possible-answers"
+                        >
                             {possibleFrags.map((data, index) => 
                                 <PossAnswerFragment 
                                     animating={animatingFrags.includes(data)}
