@@ -5,11 +5,11 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
         // <a href="#welcome-2">
             <div 
                 id="scroll-prompt" 
-                className="flex mx-4 mt-2 cursor-pointer 
+                className="flex mr-4 mt-2 cursor-pointer 
                     bg-white text-black
-                    md:m-4 lg:my-6 lg:mx-8
+                    md:my-4 lg:my-6 lg:mr-8
                     absolute
-                    px-2 py-1 items-center" 
+                    px-4 py-2 items-center" 
                 style={{
                     marginBottom: "calc(env(safe-area-inset-bottom) + 0.5rem)"
                 }}

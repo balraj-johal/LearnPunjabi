@@ -35,7 +35,7 @@ function SignInPrompt(props) {
                 md:w-3/5 md:pr-14 md:pl-12 md:top-[45%] 
                 lg:pl-24
                 xl:w-2/5
-                absolute flex flex-col items-end"
+                absolute flex flex-col"
             style={spring}
         >
             <animated.div 

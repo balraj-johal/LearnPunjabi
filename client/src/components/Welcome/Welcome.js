@@ -264,7 +264,6 @@ function Welcome(props) {
                     className="welcome-div grad-mid h-full"
                     ref={welcome2}
                 >
-                    {/* <InfoPoints /> */}
                     <Lesson lessonOverride={EXAMPLE_LESSON} />
                     <RiversMid />
                     <ScrollPrompt 
