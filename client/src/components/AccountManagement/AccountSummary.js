@@ -69,7 +69,7 @@ function AccountSummary(props) {
                     <h2 className="md:text-3xl text-xl my-2">
                         Hi&nbsp;
                         <span className="font-bold">
-                            {props.user.firstName}!
+                            {props.user.username}!
                         </span>
                     </h2>
                     <h3 className="md:text-lg">

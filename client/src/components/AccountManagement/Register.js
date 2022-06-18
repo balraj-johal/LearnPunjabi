@@ -21,7 +21,7 @@ function Register(props) {
     let [errors, setErrors] = useState({});
 
     let [username, setUsername] = useState("");
-    let [firstName, setFirstName] = useState("");
+    // let [firstName, setFirstName] = useState("");
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [confirmPassword, setConfirmPassword] = useState("");
@@ -40,7 +40,7 @@ function Register(props) {
             password: password,
             confirmPassword: confirmPassword,
             email: email,
-            firstName: firstName
+            // firstName: firstName
         }
         try {
             await axiosClient.post("/api/v1/users/", qs.stringify(formData));
@@ -62,7 +62,8 @@ function Register(props) {
                         setShowSuccessModal(false); 
                         props.setManagerState("Login"); 
                     }}
-                    text="Registration successful! Please check your emails for verification!" 
+                    text="Registration successful! 
+                        Please check your emails for verification!" 
                 /> : 
             null }
             <animated.div className="register" style={{opacity: spring.opacity}}>
@@ -74,13 +75,13 @@ function Register(props) {
                         errors={ errors }
                         type="username"
                     />
-                    <FormInput 
+                    {/* <FormInput 
                         for="firstName"
                         onChange={ e => setFirstName(e.target.value) }
                         value={ firstName }
                         errors={ errors }
                         type="text"
-                    />
+                    /> */}
                     <FormInput 
                         for="email"
                         onChange={ e => setEmail(e.target.value) }

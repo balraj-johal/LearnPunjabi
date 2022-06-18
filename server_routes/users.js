@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
             username: req.body.username,
             password: req.body.password,
             email: req.body.email,
-            firstName: req.body.firstName,
+            // firstName: req.body.firstName,
             createdOn: req.body.createdOn,
             progress: [],
             verificationCode: genVerificationCode(8),
@@ -226,7 +226,7 @@ router.get("/", async (req, res) => {
             user: {
                 _id: user._id,
                 username: user.username,
-                firstName: user.firstName,
+                // firstName: user.firstName,
                 progress: user.progress,
                 groupID: user.groupID,
                 totalXP: user.totalXP,
