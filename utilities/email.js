@@ -5,19 +5,26 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
+const FROM_ADMIN = {
+    email: 'admin@learnpunjabi.academy',
+    name: 'Learn Punjabi'
+}
+
 // what happens if email is never verified? can a user make another account with that email?
 // I need to delete the user document after verify email timeout
 
 let buildVerifCodeEmail = (params) => {
-    let link = `https://learn-punjabi-alphabet.herokuapp.com/verify-email/${params.code}`
+    const link = `https://www.learnpunjabi.academy/account/verify-email/${params.code}`
     return msg = {
         to: params.recipient, // Change to your recipient
-        from: 'balrajsjohal@gmail.com', // Change to your verified sender
+        from: FROM_ADMIN, // Change to your verified sender
         subject: 'Verify your account!',
         html: `
-            <table style="width:600px;">
-                <tr style="background-color:blue;color:white;height:80px;">
-                    <th colspan="3" style="">Learn Punjabi</th>
+            <table style="width:600px;background:linear-gradient(180deg, #E786FF 0%, #E786FF 8.33%, #86E2FF 100%);">
+                <tr style="background-color:transparent;color:white;height:80px;">
+                    <th colspan="3" style="">
+                        Learn Punjabi
+                    </th>
                 </tr>
                 <tr>
                     <td colspan="3" style="">
@@ -34,18 +41,11 @@ let buildVerifCodeEmail = (params) => {
                     </td>
                         <td colspan="1" style="background-color:white;text-align:center;">
                             <a href="${link}" target="_blank">
-                                Click Me!
+                                Verify your account!
                             </a>
                         </td>
                     <td colspan="1" style="">
                     
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="">
-                        <p>
-                            Your verification code is: ${params.code}
-                        </p>
                     </td>
                 </tr>
             </table>
@@ -65,13 +65,39 @@ exports.sendVerifCodeEmail = (params) => {
 }
 
 let buildPWResetEmail = (params) => {
-    let link = `${params.host}/reset-password/${params.code}`
+    let link = `https://www.learnpunjabi.academy/account/reset-password/${params.code}`
     return msg = {
         to: params.recipient, // Change to your recipient
-        from: 'balrajsjohal@gmail.com', // Change to your verified sender
+        from: FROM_ADMIN, // Change to your verified sender
         subject: 'Reset Password',
-        text: `link: ${link}`,
-        html: `'<strong>link: ${link}</strong>'`,
+        html: `
+            <table style="width:600px;background:linear-gradient(180deg, #E786FF 0%, #E786FF 8.33%, #86E2FF 100%);">
+                <tr style="background-color:transparent;color:white;height:80px;">
+                    <th colspan="3" style="">
+                        Learn Punjabi
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="3" style="">
+                        <p>
+                            Click on the link below to reset your password.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="1" style="">
+                    </td>
+                        <td colspan="1" style="background-color:white;text-align:center;">
+                            <a href="${link}" target="_blank">
+                                Reset Password!
+                            </a>
+                        </td>
+                    <td colspan="1" style="">
+                    
+                    </td>
+                </tr>
+            </table>
+        `,
     }
 }
 exports.sendPWResetEmail = (params) => {
@@ -84,3 +110,34 @@ exports.sendPWResetEmail = (params) => {
         })
 
 }
+let buildTestEmailToMe = () => {
+    return msg = {
+        to: 'balrajsjohal@gmail.com', // Change to your recipient
+        from: FROM_ADMIN, // Change to your verified sender
+        subject: 'My test email',
+        // text: `link: ${link}`,
+        html: `
+            <table style="width:600px;background:linear-gradient(180deg, #E786FF 0%, #E786FF 8.33%, #86E2FF 100%);">
+                <tr style="background-color:transparent;color:white;height:80px;">
+                    <th colspan="3" style="">
+                        Learn Punjabi
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="3" style="">
+                        <p>
+                            BING CHILLING
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        `,
+    }
+}
+let testEmail = buildTestEmailToMe();
+sgMail
+    .send(testEmail)
+    .then(() => { console.log('Email sent'); })
+    .catch((error) => {
+        console.error("sendgrid err: ", error.response.body)
+    })
