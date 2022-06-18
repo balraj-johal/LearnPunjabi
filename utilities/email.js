@@ -134,10 +134,3 @@ let buildTestEmailToMe = () => {
         `,
     }
 }
-let testEmail = buildTestEmailToMe();
-sgMail
-    .send(testEmail)
-    .then(() => { console.log('Email sent'); })
-    .catch((error) => {
-        console.error("sendgrid err: ", error.response.body)
-    })
