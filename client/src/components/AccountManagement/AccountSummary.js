@@ -50,7 +50,9 @@ function AccountSummary(props) {
 
     return(
         <animated.div 
-            style={{opacity: fadeSpring.opacity}}
+            aria-labelledby="tab-Summary"
+            role="tabpanel"
+            style={fadeSpring}
             className="h-full w-full"
         >
             <form 
@@ -153,10 +155,10 @@ function SmallBubble({ children }) {
     return(
         <div 
             style={{width: "calc(50% - 5px)"}}
-        className="rounded shadow-md border-[1px] border-slate-200 
-            md:text-xl md:py-4
-            mt-[10px] h-full flex flex-col justify-center items-start py-2 px-7
-            font-normal z-10 dark-tertiary"
+            className="rounded shadow-md border-[1px] border-slate-200 
+                md:text-xl md:py-4
+                mt-[10px] h-full flex flex-col justify-center items-start py-2 px-7
+                font-normal z-10 dark-tertiary"
         >
             { children }
         </div>

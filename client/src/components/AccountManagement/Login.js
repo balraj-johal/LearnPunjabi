@@ -41,7 +41,12 @@ function Login(props) {
     }
 
     return(
-        <animated.div className="login mt-2" style={{opacity: spring.opacity}}>
+        <animated.div 
+            role="tabpanel"
+            aria-labelledby="tab-Login"
+            className="login mt-2" 
+            style={spring}
+        >
             <form className="login-form" noValidate onSubmit={ onSubmit }>
                 <FormInput 
                     for="username"

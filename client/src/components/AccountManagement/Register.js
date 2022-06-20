@@ -55,7 +55,12 @@ function Register(props) {
     }
 
     return(
-        <animated.div className="register relative h-full" style={spring} >
+        <animated.div 
+            role="tabpanel"
+            aria-labelledby="tab-Register"
+            className="register relative h-full" 
+            style={spring} 
+        >
             { successful ? (
                 <RegistrationSuccess />
             ) : (
@@ -102,6 +107,10 @@ function RegistrationSuccess(props) {
             <p className="w-4/6">
                 Your registration was successful! Please check your provided
                 email for your verification link!
+            </p>
+            <p className="text-red">
+                Please check your spam/junk folders! Our emails
+                often get lost in there :/
             </p>
         </div>
     )

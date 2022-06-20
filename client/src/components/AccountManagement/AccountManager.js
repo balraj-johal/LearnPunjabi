@@ -39,7 +39,11 @@ function AccountManager(props) {
         >
             <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? (
-                    <div className="w-full flex">
+                    <div 
+                        className="w-full flex" 
+                        role={"tablist"} 
+                        aria-label="account tabs"
+                    >
                         <AccountTab 
                             first={true} 
                             for="Summary" 
@@ -53,7 +57,11 @@ function AccountManager(props) {
                         />
                     </div>
                 ) : (
-                    <div className="w-full flex">
+                    <div 
+                        className="w-full flex" 
+                        role={"tablist"} 
+                        aria-label="account tabs"
+                    >
                         <AccountTab 
                             first={true} 
                             for="Login" 

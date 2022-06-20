@@ -12,15 +12,15 @@ function AccountTab(props) {
 
     return(
         <div 
-            className={`
-                text-md w-6/12 h-9
+            role={"tab"}
+            id={`tab-${props.for}`}
+            aria-selected={isSelected}
+            className={`text-md w-6/12 h-9
                 md:h-12 md:text-lg
                 transition-all no-highlight pt-[3px]
                 ${ props.first ? "" : "" }   
                 flex justify-center items-center cursor-pointer 
-                ${ isSelected ? 
-                    "" : 
-                    "bg-primary text-white dark-primary" }`}
+                ${ isSelected ? "" : "bg-primary text-white dark-primary" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}
         >
