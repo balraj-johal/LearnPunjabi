@@ -78,7 +78,7 @@ function Welcome(props) {
                     <SignInPrompt handleClick={toggleShowAccounts} />
                     <ScrollPrompt 
                         text="Try a lesson on us!" 
-                        ref={welcome2}
+                        scrollTo="#welcome-2"
                     />
                 </div>
 
@@ -91,7 +91,7 @@ function Welcome(props) {
                     <RiversMid />
                     <ScrollPrompt 
                         text="want to learn about Punjab?" 
-                        ref={welcome3}
+                        scrollTo="#welcome-3"
                     />
                 </div>
                 <div 

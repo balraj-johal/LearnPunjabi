@@ -1,8 +1,8 @@
 import React, {  } from "react";
 
-let ScrollPrompt = React.forwardRef((props, ref) => {
+function ScrollPrompt(props) {
     return(
-        // <a href="#welcome-2">
+        <a href={props.scrollTo} className="z-50">
             <div 
                 id="scroll-prompt" 
                 className="flex mr-4 mt-2 cursor-pointer 
@@ -12,9 +12,6 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
                     px-4 py-2 items-center" 
                 style={{
                     marginBottom: "calc(env(safe-area-inset-bottom) + 0.5rem)"
-                }}
-                onClick={() => {
-                    // props.setScrollTo(ref.current.offsetHeight)
                 }}
             >
                 <svg 
@@ -31,8 +28,8 @@ let ScrollPrompt = React.forwardRef((props, ref) => {
                     { props.text }
                 </span>
             </div>
-        // {/* </a> */}
+        </a>
     )
-})
+}
 
 export default ScrollPrompt;
