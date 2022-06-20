@@ -78,15 +78,21 @@ function AccountSummary(props) {
                 </div>
                 <div 
                     id="total-xp" 
-                    className="w-full flex items-center py-4 px-7 relative
+                    className="w-full flex items-center justify-between
+                        py-4 px-7 relative
                         no-highlight h-1/6 rounded 
                         bg-primary dark-accent shadow-lg text-white"
                 >
                     <div 
                         className="flex flex-col justify-evenly transition-all" 
-                        style={{transform: streakAnimFinished ? "translate(0%, 0)" : "translate(0%, 0)"}}
+                        style={{
+                            transform: streakAnimFinished ? "translate(0%, 0)" : 
+                                "translate(0%, 0)"
+                        }}
                     >
-                        <h2 className="text-lg md:text-xl font-normal">You're on a</h2>
+                        <h2 className="text-lg md:text-xl font-normal">
+                            You're on a
+                        </h2>
                         <h2 className="text-xl md:text-2xl">
                             <animated.span className="md:text-2xl">
                                 {StreakSpring.streak.to(streak => {
@@ -129,7 +135,8 @@ function AccountSummary(props) {
                                 <span className="md:text-2xl font-bold">
                                     {props.user?.progress?.length}
                                 </span> 
-                                {props.user?.progress?.length === 1 ? " lesson!" : " lessons!"}
+                                { props.user?.progress?.length === 1 ? " lesson!" : 
+                                    " lessons!" }
                             </div>
                     </SmallBubble>
                 </div>
