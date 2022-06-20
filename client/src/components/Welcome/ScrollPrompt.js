@@ -16,8 +16,10 @@ function ScrollPrompt(props) {
         >
             <div 
                 id="scroll-prompt" 
-                className="flex items-center mr-4 mt-2 px-4 py-2 absolute 
+                className="mr-4 mt-2 px-4 py-2 absolute 
+                    flex items-center 
                     bg-white text-black
+                    hover:pl-6 transition-all
                     md:my-4 
                     lg:my-6 lg:mr-8" 
                 style={{
