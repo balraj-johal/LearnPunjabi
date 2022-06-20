@@ -103,7 +103,7 @@ function Main(props) {
     let authRedirects = () => {
         if (props.auth.loading) return null;
         if (props.auth.isAuthenticated) return <InternalPage />;
-        return <Navigate to="/welcome" />;
+        return <Navigate to="/welcome" replace />;
     }
 
     return(
