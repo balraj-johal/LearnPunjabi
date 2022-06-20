@@ -145,11 +145,9 @@ function Main(props) {
                         >
                             <AccountSummary user={{totalXP: 100, progress: [1, 2, 3]}} />
                         </div>} />
-                        <Route path="page" element={<FooterPage />}>
-                            <Route path="about" element={<About />} />
-                            <Route path="privacy" element={<Privacy />} />
-                            <Route path="attributions" element={<Attributions />} />
-                        </Route>
+                        <Route path="about" element={<FooterPage for="About" />} />
+                        <Route path="privacy" element={<FooterPage for="Privacy And Terms"  />} />
+                        <Route path="attributions" element={<FooterPage for="Attributions"  />} />
                     </Route>
                     <Route path="account" element={<InternalPage />}>
                         <Route path="" element={<AccountManager />} />
