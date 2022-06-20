@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useRefreshToken } from "../actions/authActions";
 
 /** Compnent wrapper to redirect to login page if user is not authenticated
- * @name ProtectedComponent
+ * @name ProtectByRole
  * @param {Component} component - component to render if authenticated
  * @param {Object} props
  */
-function ProtectedComponent({ component, ...props}) {
+function ProtectByRole({ component, ...props}) {
     let [ready, setReady] = useState(false);
     let navigate = useNavigate();
 
@@ -22,15 +22,6 @@ function ProtectedComponent({ component, ...props}) {
                 } else {
                     props.useRefreshToken();
                     navigate("/restricted");
-                }
-            }
-        } else {
-            if (!props.isLoading) {
-                if (props.isAuthenticated) {
-                    setReady(true);
-                } else {
-                    props.useRefreshToken();
-                    navigate("/account");
                 }
             }
         }
@@ -50,4 +41,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { useRefreshToken }
-)(ProtectedComponent);
+)(ProtectByRole);

@@ -14,7 +14,7 @@ import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManagement/AccountManager';
 import AccountSummary from '../components/AccountManagement/AccountSummary';
 import Lesson from '../components/CourseComponents/Lesson';
-import ProtectedComponent from "./ProtectedComponent";
+import ProtectByRole from "./ProtectByRole";
 import ResetPassword from "./AccountManagement/ResetPassword";
 import VerifyEmail from "./VerifyEmail";
 import Welcome from "./Welcome/Welcome";
@@ -121,13 +121,13 @@ function Main(props) {
                         <Route path="*" element={<PageNotFound />} />
                         <Route path="edit">
                             <Route path="" element={
-                                <ProtectedComponent 
+                                <ProtectByRole 
                                     component={<EditOverview />} 
                                     role={"Admin"} 
                                 />
                             } />
                             <Route path=":id" element={
-                                <ProtectedComponent 
+                                <ProtectByRole 
                                     component={<EditLesson />} 
                                     role={"Admin"} 
                                 />
