@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     firstName: { 
         type: String, 
-        required: true 
+        required: false 
     },
     createdOn: { 
         type: Date, 
