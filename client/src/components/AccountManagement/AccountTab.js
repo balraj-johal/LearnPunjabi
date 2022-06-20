@@ -11,11 +11,12 @@ function AccountTab(props) {
     }
 
     return(
-        <div 
+        <button 
             role={"tab"}
-            id={`tab-${props.for}`}
             aria-selected={isSelected}
-            className={`text-md w-6/12 h-9
+            tabIndex={0}
+            id={`tab-${props.for}`}
+            className={`text-md w-6/12 h-9 font-bold
                 md:h-12 md:text-lg
                 transition-all no-highlight pt-[3px]
                 ${ props.first ? "" : "" }   
@@ -25,7 +26,7 @@ function AccountTab(props) {
             onClick={() => { props.setManagerState(props.for) }}
         >
             { props.for }
-        </div>
+        </button>
     )
 }
 
