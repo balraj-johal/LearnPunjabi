@@ -9,7 +9,6 @@ function FormInput(props) {
             component = <FormTextArea 
                 for={props.for} 
                 value={props.value}
-                // task={props.task} 
                 onChange={props.onChange} 
             />
             break;
@@ -63,7 +62,6 @@ function FormInput(props) {
             component = <FormTaskType 
                 for={props.for} 
                 value={props.value}
-                // task={props.task} 
                 onChange={props.onChange} 
             />
             break;
@@ -93,7 +91,7 @@ function FormInput(props) {
         <div 
             className={`input-field my-1 md:my-4 flex 
                 flex-${props.row ? "row" : "col"}
-                ${props.errors?.[props.for] ? "error" : ""}`}
+                ${props.errors?.[props.for] ? "error animate-shake-x" : ""}`}
         >
             <FormLabel for={props.for} labelOverride={props.labelOverride} />
             {component}
