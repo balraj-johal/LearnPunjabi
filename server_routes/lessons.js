@@ -2,6 +2,7 @@
  * @module api/lessons
  */
 const express = require("express");
+const sanitize = require("mongo-sanitize");
 /**
  * Express router to mount user related functions on.
  * @type {object}
@@ -62,7 +63,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:lessonID", async (req, res, next) => {
     try {
         await verifyToken(req);
-        const LESSON_PARAMS = { id: { $eq: req.params.lessonID } };
+        const LESSON_PARAMS = { id: { $eq: sanitize(req.params.lessonID) } };
         let lesson = await Lesson.findOne(LESSON_PARAMS);
         if (!lesson) return res.status(404).send("Lesson not found.");
         let modifiedLesson = {...lesson._doc};
