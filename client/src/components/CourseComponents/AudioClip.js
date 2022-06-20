@@ -17,6 +17,7 @@ function AudioClip(props) {
                 role="audio"
                 ref={ref}
                 onEnded={() => { setPlaying(false) }}
+                volume={0.5}
             />
             <div 
                 className={`replay-audio-button button transition-all
