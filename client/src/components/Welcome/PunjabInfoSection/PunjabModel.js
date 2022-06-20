@@ -6,11 +6,10 @@ import React, { useRef, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { lerp } from "../../../utils/math";
-import Caption from './Caption';
 
 const RIVER_END_Y = 0.01;
 
-let Punjab3 = React.forwardRef(({ ...props }, ref) => {
+let PunjabModel = React.forwardRef(({ ...props }, ref) => {
     const group = useRef();
     const river1 = useRef();
     const river2 = useRef();
@@ -98,6 +97,6 @@ let Punjab3 = React.forwardRef(({ ...props }, ref) => {
     )
 })
 
-export default Punjab3;
+export default PunjabModel;
 
 useGLTF.preload('/Punjab4-transformed.glb')

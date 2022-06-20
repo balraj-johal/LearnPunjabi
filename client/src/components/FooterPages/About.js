@@ -3,7 +3,6 @@ import React from "react";
 function About(props) {
     return(
         <div className="">
-            <h1 className="text-2xl">About</h1>
             <p className="my-6 pr-10">
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                 sed do eiusmod tempor incididunt ut labore et dolore magna 

@@ -21,7 +21,6 @@ function Register(props) {
     let [errors, setErrors] = useState({});
 
     let [username, setUsername] = useState("");
-    // let [firstName, setFirstName] = useState("");
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [confirmPassword, setConfirmPassword] = useState("");
@@ -40,7 +39,6 @@ function Register(props) {
             password: password,
             confirmPassword: confirmPassword,
             email: email,
-            // firstName: firstName
         }
         try {
             await axiosClient.post("/api/v1/users/", qs.stringify(formData));
@@ -54,20 +52,20 @@ function Register(props) {
 
     return(
         <>
-            { successful ? 
-                <PopInModal 
-                    show={showSuccessModal} 
-                    length={4000} 
-                    unrender={() => { 
-                        setShowSuccessModal(false); 
-                        props.setManagerState("Login"); 
-                    }}
-                    text="Registration successful! 
-                        Please check your emails for verification!" 
-                /> : 
-            null }
-            <animated.div className="register" style={{opacity: spring.opacity}}>
-                <form className="register-form" noValidate onSubmit={ onSubmit }>
+            <animated.div className="register relative" style={{opacity: spring.opacity}} >
+                { true ? 
+                    <PopInModal 
+                        show={showSuccessModal} 
+                        length={400000} 
+                        unrender={() => { 
+                            setShowSuccessModal(false); 
+                            props.setManagerState("Login"); 
+                        }}
+                        text="Registration successful! 
+                            Please check your emails for verification!" 
+                    /> : 
+                null }
+                <form className="register-form" noValidate onSubmit={ onSubmit } >
                     <FormInput 
                         for="username"
                         onChange={ e => setUsername(e.target.value) }
@@ -75,13 +73,6 @@ function Register(props) {
                         errors={ errors }
                         type="username"
                     />
-                    {/* <FormInput 
-                        for="firstName"
-                        onChange={ e => setFirstName(e.target.value) }
-                        value={ firstName }
-                        errors={ errors }
-                        type="text"
-                    /> */}
                     <FormInput 
                         for="email"
                         onChange={ e => setEmail(e.target.value) }
