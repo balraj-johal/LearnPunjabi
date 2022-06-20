@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
-import PossibleAnswer from "./PossibleAnswer";
+import MultChoiceAnswer from "./MultChoiceAnswer";
 
 function MultipleChoice(props) {
     let [choice, setChoice] = useState(null);
@@ -47,7 +47,7 @@ function MultipleChoice(props) {
                     flex-col ${props.animClasses}`}
                 >
                     { props.data.possibleAnswers.map((possible, index) => 
-                        <PossibleAnswer 
+                        <MultChoiceAnswer 
                             chosen={(choice === index) ? true : false}
                             setChoice={setChoice}
                             possible={possible} 

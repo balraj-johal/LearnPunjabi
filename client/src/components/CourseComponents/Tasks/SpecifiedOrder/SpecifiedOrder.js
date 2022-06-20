@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import DragAnswerFragment from "./DragAnswerFragment";
-import PossAnswerFragment from "./PossAnswerFragment";
+import DraggableAnswerFrag from "./DraggableAnswerFrag";
+import SpecOrderAnswerFrag from "./SpecOrderAnswerFrag";
 import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
 
@@ -138,7 +138,7 @@ function SpecifiedOrder(props) {
                                     ref={provided.innerRef}
                                 >
                                     { order.map((data, index) => 
-                                        <DragAnswerFragment 
+                                        <DraggableAnswerFrag 
                                             animating={animatingFrags.includes(data)}
                                             removeAnimatingFrag={removeAnimatingFrag}
                                             possible={data}
@@ -159,7 +159,7 @@ function SpecifiedOrder(props) {
                             aria-label="possible-answers"
                         >
                             {possibleFrags.map((data, index) => 
-                                <PossAnswerFragment 
+                                <SpecOrderAnswerFrag 
                                     animating={animatingFrags.includes(data)}
                                     removeAnimatingFrag={removeAnimatingFrag}
                                     possible={data}

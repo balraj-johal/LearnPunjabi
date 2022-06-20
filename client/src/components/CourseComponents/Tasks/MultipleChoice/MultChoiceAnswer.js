@@ -1,6 +1,6 @@
 import React, {  } from "react";
 
-function PossibleAnswer(props) {
+function MultChoiceAnswer(props) {
     return(
         <div
             className={`multiple-choice-answer cursor-pointer answer transition-all
@@ -26,4 +26,4 @@ function PossibleAnswer(props) {
     )
 }
 
-export default PossibleAnswer;
+export default MultChoiceAnswer;

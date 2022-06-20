@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Draggable } from 'react-beautiful-dnd';
 
-function DragAnswerFragment(props) {
+function DraggableAnswerFrag(props) {
     // if animating is 1, css animation fadeIn is triggered
     let [animating, setAnimating] = useState(props.animating ? "1" : "0");
     
@@ -38,4 +38,4 @@ function DragAnswerFragment(props) {
     )
 }
 
-export default DragAnswerFragment;
+export default DraggableAnswerFrag;
