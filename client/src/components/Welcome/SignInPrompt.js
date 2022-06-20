@@ -32,9 +32,9 @@ function SignInPrompt(props) {
         <animated.div 
             className="animate-fade-in z-0 w-4/6 top-[40%]
                 pl-4 pr-4
-                md:w-3/5 md:pr-14 md:pl-12 md:top-[45%] 
+                md:w-3/5 md:pr-12 md:pl-12 md:top-[45%] 
                 lg:pl-24
-                xl:w-2/5
+                xl:w-3/6
                 absolute flex flex-col"
             style={spring}
         >

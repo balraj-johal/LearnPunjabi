@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import RiversTop from "../Welcome/RiversSVGs/RiversTop";
-import WelcomeLogo from "../Welcome/WelcomeLogo";
+import RiversTop from "../RiversSVGs/RiversTop";
+import WelcomeLogo from "../WelcomeLogo";
 import About from "./About";
 import Attributions from "./Attributions";
 import Privacy from "./Privacy";

@@ -22,10 +22,7 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
-import FooterPage from "./FooterPages/FooterPage";
-import About from "./FooterPages/About";
-import Privacy from "./FooterPages/Privacy";
-import Attributions from "./FooterPages/Attributions";
+import FooterPage from "./Welcome/FooterPages/FooterPage";
 
 function Main(props) {
     // fetch csrf token and store in redux reducer

@@ -11,12 +11,10 @@ import qs from 'qs';
 import FormError from "../FormComponents/FormError";
 import FormInput from "../FormComponents/FormInput";
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
-import PopInModal from "../Editing/PopInModal";
 
 function Register(props) {
     // initalise form state
     let [submitting, setSubmitting] = useState(false);
-    let [showSuccessModal, setShowSuccessModal] = useState(true);
     let [successful, setSuccessful] = useState(false);
     let [errors, setErrors] = useState({});
 
@@ -51,54 +49,40 @@ function Register(props) {
     }
 
     return(
-        <>
-            <animated.div className="register relative" style={{opacity: spring.opacity}} >
-                { true ? 
-                    <PopInModal 
-                        show={showSuccessModal} 
-                        length={400000} 
-                        unrender={() => { 
-                            setShowSuccessModal(false); 
-                            props.setManagerState("Login"); 
-                        }}
-                        text="Registration successful! 
-                            Please check your emails for verification!" 
-                    /> : 
-                null }
-                <form className="register-form" noValidate onSubmit={ onSubmit } >
-                    <FormInput 
-                        for="username"
-                        onChange={ e => setUsername(e.target.value) }
-                        value={ username }
-                        errors={ errors }
-                        type="username"
-                    />
-                    <FormInput 
-                        for="email"
-                        onChange={ e => setEmail(e.target.value) }
-                        value={ email }
-                        errors={ errors }
-                        type="text"
-                    />
-                    <FormInput 
-                        for="password"
-                        onChange={ e => setPassword(e.target.value) }
-                        value={ password }
-                        errors={ errors }
-                        type="password"
-                    />
-                    <FormInput 
-                        for="confirmPassword"
-                        onChange={ e => setConfirmPassword(e.target.value) }
-                        value={ confirmPassword }
-                        errors={ errors }
-                        type="password"
-                    />
-                    <FormError for="verification" errors={ errors } />
-                    <FormSubmitButton for="register" disabled={ submitting } />
-                </form>
-            </animated.div>
-        </>
+        <animated.div className="register relative" style={spring} >
+            <form className="register-form" noValidate onSubmit={ onSubmit } >
+                <FormInput 
+                    for="username"
+                    onChange={ e => setUsername(e.target.value) }
+                    value={ username }
+                    errors={ errors }
+                    type="username"
+                />
+                <FormInput 
+                    for="email"
+                    onChange={ e => setEmail(e.target.value) }
+                    value={ email }
+                    errors={ errors }
+                    type="text"
+                />
+                <FormInput 
+                    for="password"
+                    onChange={ e => setPassword(e.target.value) }
+                    value={ password }
+                    errors={ errors }
+                    type="password"
+                />
+                <FormInput 
+                    for="confirmPassword"
+                    onChange={ e => setConfirmPassword(e.target.value) }
+                    value={ confirmPassword }
+                    errors={ errors }
+                    type="password"
+                />
+                <FormError for="verification" errors={ errors } />
+                <FormSubmitButton for="register" disabled={ submitting } />
+            </form>
+        </animated.div>
     )
 }
 
