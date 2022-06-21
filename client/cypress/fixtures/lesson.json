@@ -1,0 +1,24 @@
+{
+    "_id": "62b05883d29969d4156977a3",
+    "name": "mocked",
+    "shuffle": false,
+    "showInterstitials": true,
+    "showPercentCorrect": true,
+    "tasks": [
+        {
+            "taskID": "1",
+            "text": "2",
+            "type": "TextOnly",
+            "audioFilename": "",
+            "audio": {
+                "name": ""
+            }
+        }
+    ],
+    "id": "lesson-mocked",
+    "requiredCompletions": 1,
+    "noToSample": 0,
+    "createdAt": "2022-06-20T11:22:43.115Z",
+    "updatedAt": "2022-06-20T11:22:43.115Z",
+    "__v": 0
+}
