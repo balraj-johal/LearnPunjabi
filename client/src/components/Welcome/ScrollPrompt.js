@@ -4,7 +4,10 @@ function ScrollPrompt(props) {
     return(
         <a 
             href={props.scrollTo} 
-            className="z-50" 
+            className="z-50 mr-4 mt-2 absolute bottom-0 left-0
+                w-10/12
+                md:my-4 md:w-3/6
+                lg:my-6 lg:mr-8 lg:w-2/6" 
             onClick={e => {
                 // this is a manual override of the anchor scroll behaviour,
                 // as I could not get smooth scrolling via css to work without
@@ -13,19 +16,18 @@ function ScrollPrompt(props) {
                 let scrollTo = document.getElementById(props.scrollTo.substring(1));
                 scrollTo.scrollIntoView({ behavior: "smooth" });
             }}
+            style={{
+                // this ensures the element is always above mobile browser UI
+                marginBottom: "calc(env(safe-area-inset-bottom) + 0.5rem)"
+            }}
         >
             <div 
                 id="scroll-prompt" 
-                className="mr-4 mt-2 px-4 py-2 absolute 
+                className="
+                    px-4 py-2 
                     flex items-center 
                     bg-white text-black
-                    hover:pl-6 transition-all
-                    md:my-4 
-                    lg:my-6 lg:mr-8" 
-                style={{
-                    // this ensures the element is always above mobile browser UI
-                    marginBottom: "calc(env(safe-area-inset-bottom) + 0.5rem)"
-                }}
+                    hover:pl-6 transition-all" 
             >
                 <svg 
                     viewBox="0 0 62 31" 
