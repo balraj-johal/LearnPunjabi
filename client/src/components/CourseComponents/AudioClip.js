@@ -10,19 +10,19 @@ function AudioClip(props) {
     if (!props.src) return null;
     return(
         <div className="audio no-highlight">
-            <audio 
+            <audio
                 id={`audio-${props.src}`} 
                 src={props.src}
                 preload="auto"
                 role="audio"
                 ref={ref}
                 onEnded={() => { setPlaying(false) }}
-                volume={0.5}
             />
-            <div 
+            <button 
                 className={`replay-audio-button button transition-all
                     ${playing ? "bg-secondary" : "bg-primary"}`}
                 onClick={() => {
+                    ref.current.volume = 0.25;
                     ref.current.currentTime = 0;
                     ref.current.play();
                     setPlaying(true);
@@ -36,7 +36,7 @@ function AudioClip(props) {
                     play={playing}
                     goTo={0}
                 />
-            </div>
+            </button>
         </div>
     )
 }

@@ -13,14 +13,16 @@ function SpecOrderAnswerFrag(props) {
     }
 
     return(
-        <li 
+        <button 
             className={`specified-order-answer answer dark-answer`} 
             onClick={() => { props.addToOrder(props.possible) }}
             animating={animating}
             onAnimationEnd={() => { onAnimEnd() }}
         >
-            <div className="text"> {props.possible.text} </div>
-        </li>
+            <div className="text">
+                {props.possible.text}
+            </div>
+        </button>
     )
 }
 

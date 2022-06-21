@@ -65,8 +65,10 @@ function EditTask(props) {
                 id={task.taskID}
                 index={props.index}
             />
-            <div className="absolute top-0 right-0 text-md text-red-400 my-2 mx-3" 
-                onClick={() => { props.deleteTask(task.taskID) }}>delete</div>
+            <button 
+                className="absolute top-0 right-0 text-md text-red-400 my-2 mx-3" 
+                onClick={() => { props.deleteTask(task.taskID) }}
+            >delete</button>
             <div className="w-5/12">
                 <FormInput 
                     type="taskType" 

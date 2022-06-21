@@ -81,11 +81,11 @@ function EditSpecifiedOrder(props) {
                         value={possible.text} 
                         onChange={onChange}
                     >
-                        <div
+                        <button
                             className="absolute top-0 right-0 h-12 w-12 text-3xl 
                                 flex justify-center items-center text-red-600" 
                             onClick={() => {deleteAnswer(index)}} 
-                        > - </div>
+                        > - </button>
                     </TaskAnswer>
                 ))}
                 <AddButton addNew={addNewAnswer} size="28" />

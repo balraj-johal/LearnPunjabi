@@ -24,27 +24,26 @@ function EditOverviewEntry(props) {
                     flex flex-col items-center justify-center 
                     text-xs text-gray-400 mr-8
                 `}>
-                    <div
+                    <button
                         className={`${props.listEndsState === "first" ? "invisible" : ""}`} 
                         onClick={() => { props.shiftLesson(props.lesson.id, "up"); }}
                     >
                         ▲
-                    </div>
+                    </button>
                     {props.index}
-                    <div
+                    <button
                         className={`${props.listEndsState === "last" ? "invisible" : ""}`} 
                         onClick={() => { props.shiftLesson(props.lesson.id, "down"); }}
                     >
                         ▼
-                    </div>
+                    </button>
                 </div>
                 { props.lesson.name }
                 <span className="ml-1 mt-1 text-gray-400 text-sm">
                     {props.lesson.tasksLength > 1 ? `${props.lesson.tasksLength} tasks` : "1 task"}
                 </span>
             </div>
-            <div 
-                role={"button"}
+            <button 
                 className="w-24 h-10 mx-5 flex items-center 
                     justify-center cursor-pointer transition-all
                     text-primary rounded border-2 border-black
@@ -52,7 +51,7 @@ function EditOverviewEntry(props) {
                 onClick={() => { navigate(`/edit/${props.lesson.id}`); }}
             >
                 Edit
-            </div>
+            </button>
     </div>
     )
 }

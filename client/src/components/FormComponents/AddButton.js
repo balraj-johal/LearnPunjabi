@@ -16,9 +16,9 @@ function AddButton(props) {
             data-testid="add-button"
         >
             {props.text ? props.text : null}
-            <div className="text-3xl text-blue-400
+            <span className="text-3xl text-blue-400
                 group-hover:text-white transition-all"
-            >+</div>
+            >+</span>
         </button>
     )
 }

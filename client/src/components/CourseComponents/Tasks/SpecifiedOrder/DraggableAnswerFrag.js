@@ -17,8 +17,8 @@ function DraggableAnswerFrag(props) {
     return(
         <Draggable draggableId={String(props.index)} index={props.index} >
             {(provided) => (
-                <li
-                    className={`specified-order-answer answer dark-answer`}
+                <button
+                    className="specified-order-answer answer dark-answer"
                     data-testid="selected-answer"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -32,7 +32,7 @@ function DraggableAnswerFrag(props) {
                     { props.possible.text ? (
                         <div className="text">{props.possible.text}</div>
                     ) : null }
-                </li>
+                </button>
             )}
         </Draggable>
     )

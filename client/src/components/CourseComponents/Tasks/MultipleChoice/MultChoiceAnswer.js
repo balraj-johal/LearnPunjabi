@@ -2,7 +2,7 @@ import React, {  } from "react";
 
 function MultChoiceAnswer(props) {
     return(
-        <div
+        <button
             className={`multiple-choice-answer cursor-pointer answer transition-all
                 shadow-sm border-[1.5px] border-slate dark-answer
                 ${props.chosen ? "hover:bg-slate-200 bg-slate-200 chosen" : 
@@ -22,7 +22,7 @@ function MultChoiceAnswer(props) {
                     {props.possible.bottomText}
                 </div>
             ) }
-        </div>
+        </button>
     )
 }
 

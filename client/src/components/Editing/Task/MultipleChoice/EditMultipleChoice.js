@@ -92,18 +92,18 @@ function EditMultipleChoice(props) {
                         onChange={onChange}
                         extraStyles={returnSelectedStyleClasses(index)}
                     >
-                        <div
+                        <button
                             className="absolute top-0 right-0 h-12 w-12 text-3xl 
                                 flex justify-center items-center text-red-600" 
                             onClick={() => {deleteAnswer(index)}} 
-                        > - </div>
-                        <div
+                        > - </button>
+                        <button
                             className={`absolute top-0 left-0 h-12 w-12 text-lg 
                                 flex justify-center items-center text-green-500
                                 ${data.correctAnswerIndex === index ? "hidden" : ""} transition-all  
                             `}
                             onClick={() => {selectAnswerAsCorrect(index)}} 
-                        > ✓ </div>
+                        > ✓ </button>
                     </TaskAnswer>
                 ))}
                 <AddButton addNew={addNewAnswer} size="28" />

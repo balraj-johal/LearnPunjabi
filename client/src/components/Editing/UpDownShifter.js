@@ -7,17 +7,17 @@ function UpDownShifter(props) {
             flex flex-col items-center justify-center text-gray-400
             ${props.shuffle ? "hidden" : ""}`}
         >
-            <div
+            <button
                 className={`${props.listEndsState === "first" ? "hidden" : "no"}`} 
                 onClick={() => { props.shiftTaskUp(props.id); }}>
                 ▲
-            </div>
+            </button>
             {props.index}
-            <div
+            <button
                 className={`${props.listEndsState === "last" ? "hidden" : "no"}`} 
                 onClick={() => { props.shiftTaskDown(props.id); }}>
                 ▼
-            </div>
+            </button>
         </div>
     )
 }
