@@ -28,11 +28,9 @@ function InternalPage(props) {
                 {!props.loading && <Outlet />}
             </div>
             <CookieConsent
-                acceptOnScroll={true}
-                acceptOnScrollPercentage={10}
                 overlay
             >
-                This website uses cookies to authenticate the user.
+                This website only stores essential cookies for authenticating a user.
             </CookieConsent>
             <div className="w-full h-full bg-gradient absolute z-[-1] top-0">
                 <div className="w-full h-full"/>
@@ -44,8 +42,6 @@ function InternalPage(props) {
 //pull relevant props from redux state
 const mapStateToProps = state => ({
     topbarHeight: state.display.topbarHeight,
-    vh: state.display.singleVH,
-    isAuthenticated: state.auth.isAuthenticated,
     loading: state.auth.loading,
 
 });
