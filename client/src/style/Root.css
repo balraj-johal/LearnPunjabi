@@ -223,6 +223,37 @@ button:disabled:hover {
           box-shadow: none !important;
 }
 
+#next-task-btn {
+  position: relative;
+}
+
+#next-task-btn:disabled {
+  background: #00a2ff !important;
+}
+
+#next-task-btn:disabled:hover {
+  background: #00a2ff !important;
+}
+
+#next-task-btn::before {
+  border-radius: 0.25rem;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(var(--size) circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.155), transparent var(--spread));
+  opacity: 1;
+  -webkit-transition: opacity 500ms;
+  transition: opacity 500ms;
+  z-index: 2;
+}
+
+#next-task-btn:hover::before {
+  opacity: 1;
+}
+
 .accounts-wrap {
   width: 100%;
   height: 100%;

@@ -41,7 +41,12 @@ function Login(props) {
     }
 
     return(
-        <animated.div className="login mt-2" style={{opacity: spring.opacity}}>
+        <animated.div 
+            role="tabpanel"
+            aria-labelledby="tab-Login"
+            className="login mt-2" 
+            style={spring}
+        >
             <form className="login-form" noValidate onSubmit={ onSubmit }>
                 <FormInput 
                     for="username"
@@ -66,7 +71,7 @@ function Login(props) {
                 <div 
                     onClick={() => { props.setManagerState("ForgotPassword") }}
                     className="text-sm text-primary w-full cursor-pointer mt-4
-                        hover:text-primary2 hover:translate-x-2 transition-all"
+                        hover:text-secondary hover:translate-x-2 transition-all"
                 >
                     - Forgot Password?
                 </div>

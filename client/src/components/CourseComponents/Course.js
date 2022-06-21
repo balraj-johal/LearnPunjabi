@@ -103,12 +103,13 @@ function Course(props) {
                     ) : "Loading failed. Please refresh and try again!" }
                 </div>
                 <div className="absolute top-0 left-0 w-full h-full z-0">
-                    <Canvas 
-                        dpr={[1, 2]} 
-                        camera={{ position: [0, 0, 30], fov: 100 }}
-                    >
-                        <Particles />
-                    </Canvas>
+                    { props.showParticles && <Canvas 
+                            dpr={[1, 2]} 
+                            camera={{ position: [0, 0, 30], fov: 100 }}
+                        >
+                            <Particles />
+                        </Canvas>
+                    }
                 </div>
             </div>
         // </ReactPullToRefresh>

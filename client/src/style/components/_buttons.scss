@@ -57,3 +57,40 @@ button {
 .react-toggle--focus .react-toggle-thumb {
     box-shadow: none !important;
 }
+
+#next-task-btn {
+    position: relative;
+    &:disabled {
+        background: #00a2ff !important;
+        &:hover {
+            background: #00a2ff !important;
+        }
+    }
+    &::before {
+        border-radius: 0.25rem;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        // background-color: rgba(102, 51, 153, 0.425);
+        background: radial-gradient(
+            var(--size) circle at var(--mouse-x) var(--mouse-y),
+            rgba(255, 255, 255, 0.155),
+            transparent var(--spread)
+        );
+        // background: radial-gradient(
+        //     300px circle at var(--mouse-x) var(--mouse-y),
+        //     rgba(255, 255, 255, 1.155),
+        //     transparent 40%
+        // );
+        opacity: 1;
+        transition: opacity 500ms;
+        z-index: 2;
+    }
+    // show radial gradient on hover
+    &:hover::before {
+        opacity: 1;
+    }
+}

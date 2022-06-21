@@ -7,8 +7,8 @@ function FormSubmitButton(props) {
         >
             <button
                 type="submit"
-                className="capitalize h-9 md:h-10 bg-primary rounded 
-                    text-white px-4 w-full hover:bg-primary2 mb-8 
+                className="capitalize h-9 mt-2 md:h-10 bg-primary rounded 
+                    text-white px-4 w-full hover:bg-secondary mb-8 
                     transition-all duration-100 max-w-2xl"
                 disabled={props.disabled || false}
             >

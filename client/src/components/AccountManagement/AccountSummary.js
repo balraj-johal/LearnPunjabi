@@ -50,12 +50,17 @@ function AccountSummary(props) {
 
     return(
         <animated.div 
-            style={{opacity: fadeSpring.opacity}}
+            aria-labelledby="tab-Summary"
+            role="tabpanel"
+            style={fadeSpring}
             className="h-full w-full"
         >
             <form 
                 noValidate 
-                onSubmit={() => { props.logoutUser() }} 
+                onSubmit={(e) => { 
+                    e.preventDefault();
+                    props.logoutUser();
+                }} 
                 className="flex flex-col h-full top-0 w-full justify-evenly"
             >
                 <div 
@@ -66,7 +71,7 @@ function AccountSummary(props) {
                     <h2 className="md:text-3xl text-xl my-2">
                         Hi&nbsp;
                         <span className="font-bold">
-                            {props.user.firstName}!
+                            {props.user.username}!
                         </span>
                     </h2>
                     <h3 className="md:text-lg">
@@ -75,10 +80,29 @@ function AccountSummary(props) {
                 </div>
                 <div 
                     id="total-xp" 
-                    className="w-full flex items-center p-4
+                    className="w-full flex items-center justify-between
+                        py-4 px-7 relative
                         no-highlight h-1/6 rounded 
                         bg-primary dark-accent shadow-lg text-white"
                 >
+                    <div 
+                        className="flex flex-col justify-evenly transition-all" 
+                        style={{
+                            transform: streakAnimFinished ? "translate(0%, 0)" : 
+                                "translate(0%, 0)"
+                        }}
+                    >
+                        <h2 className="text-lg md:text-xl font-normal">
+                            You're on a
+                        </h2>
+                        <h2 className="text-xl md:text-2xl">
+                            <animated.span className="md:text-2xl">
+                                {StreakSpring.streak.to(streak => {
+                                    return Math.floor(streak)
+                                })}
+                            </animated.span> day streak!
+                        </h2>
+                    </div>
                     <div className="h-full w-3/12 flex items-center justify-center">
                         <Lottie 
                             rendererSettings={{ 
@@ -90,16 +114,6 @@ function AccountSummary(props) {
                             play={streakAnimFinished}
                             style={{opacity: streakAnimFinished ? 1 : 0}}
                         />
-                    </div>
-                    <div className="flex flex-col justify-evenly">
-                        <h2 className="text-lg md:text-xl font-normal">You're on a</h2>
-                        <h2 className="text-xl md:text-2xl">
-                            <animated.span className="md:text-2xl">
-                                {StreakSpring.streak.to(streak => {
-                                    return Math.floor(streak)
-                                })}
-                            </animated.span> day streak!
-                        </h2>
                     </div>
                 </div>
                 <div className="flex flex-row justify-between 
@@ -123,7 +137,8 @@ function AccountSummary(props) {
                                 <span className="md:text-2xl font-bold">
                                     {props.user?.progress?.length}
                                 </span> 
-                                {props.user?.progress?.length === 1 ? " lesson!" : " lessons!"}
+                                { props.user?.progress?.length === 1 ? " lesson!" : 
+                                    " lessons!" }
                             </div>
                     </SmallBubble>
                 </div>
@@ -140,10 +155,10 @@ function SmallBubble({ children }) {
     return(
         <div 
             style={{width: "calc(50% - 5px)"}}
-        className="rounded shadow-md border-[1px] border-slate-200 
-            md:text-xl md:py-4
-            mt-[10px] h-full flex flex-col justify-center items-start py-2 px-8
-            font-normal z-10 dark-tertiary"
+            className="rounded shadow-md border-[1px] border-slate-200 
+                md:text-xl md:py-4
+                mt-[10px] h-full flex flex-col justify-center items-start py-2 px-7
+                font-normal z-10 dark-tertiary"
         >
             { children }
         </div>

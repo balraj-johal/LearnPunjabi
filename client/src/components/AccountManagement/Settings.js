@@ -24,7 +24,12 @@ function Settings(props) {
     }, [darkMode, dyslexiaFont])
 
     return(
-        <animated.div className="mt-2" style={{opacity: spring.opacity}}>
+        <animated.div 
+            aria-labelledby="tab-Settings"
+            role="tabpanel" 
+            className="mt-2" 
+            style={spring}
+        >
             <div className="w-full px-4 my-6 flex justify-between items-center">
                 <div className="text-md md:text-lg">Dark Mode:</div>
                 <Toggle

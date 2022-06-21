@@ -44,11 +44,13 @@ if (process.env.NODE_ENV === "dev") {
     allowedDomains = [
         "http://localhost:3000", 
         "http://localhost:3001/", 
-        "https://learn-punjabi-alphabet.herokuapp.com"
+        "https://learn-punjabi-alphabet.herokuapp.com",
+        "https://www.learnpunjabi.academy"
     ];
 } else {
     allowedDomains = [
-        "https://learn-punjabi-alphabet.herokuapp.com"
+        "https://learn-punjabi-alphabet.herokuapp.com",
+        "https://www.learnpunjabi.academy"
     ];
 }
 const corsOptions = {

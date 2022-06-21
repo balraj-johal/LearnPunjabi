@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated, config } from 'react-spring';
 
 import { registerUser } from "../../actions/authActions";
 
@@ -11,25 +11,23 @@ import qs from 'qs';
 import FormError from "../FormComponents/FormError";
 import FormInput from "../FormComponents/FormInput";
 import FormSubmitButton from "../FormComponents/FormSubmitButton";
-import PopInModal from "../Editing/PopInModal";
 
 function Register(props) {
     // initalise form state
     let [submitting, setSubmitting] = useState(false);
-    let [showSuccessModal, setShowSuccessModal] = useState(true);
     let [successful, setSuccessful] = useState(false);
+    let [fadeOut, setFadeOut] = useState(false);
     let [errors, setErrors] = useState({});
 
     let [username, setUsername] = useState("");
-    let [firstName, setFirstName] = useState("");
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [confirmPassword, setConfirmPassword] = useState("");
 
     const spring = useSpring({ 
-        to: { opacity: 1 }, 
+        to: { opacity: fadeOut ? 0 : 1 }, 
         from: { opacity: 0 }, 
-        delay: 200,
+        delay: 100,
     });
 
     let onSubmit = async e => {
@@ -40,12 +38,16 @@ function Register(props) {
             password: password,
             confirmPassword: confirmPassword,
             email: email,
-            firstName: firstName
         }
         try {
             await axiosClient.post("/api/v1/users/", qs.stringify(formData));
-            setSuccessful(true);
             setSubmitting(false);
+            // begin transition to success component
+            setFadeOut(true);
+            setTimeout(() => {
+                setFadeOut(false);
+                setSuccessful(true);
+            }, 500);
         } catch (error) {
             setErrors(error.response.data);
             setSubmitting(false);
@@ -53,60 +55,64 @@ function Register(props) {
     }
 
     return(
-        <>
-            { successful ? 
-                <PopInModal 
-                    show={showSuccessModal} 
-                    length={4000} 
-                    unrender={() => { 
-                        setShowSuccessModal(false); 
-                        props.setManagerState("Login"); 
-                    }}
-                    text="Registration successful! Please check your emails for verification!" 
-                /> : 
-            null }
-            <animated.div className="register" style={{opacity: spring.opacity}}>
-                <form className="register-form" noValidate onSubmit={ onSubmit }>
+        <animated.div 
+            role="tabpanel"
+            aria-labelledby="tab-Register"
+            className="register relative h-full" 
+            style={spring} 
+        >
+            { successful ? (
+                <RegistrationSuccess />
+            ) : (
+                <form className="register-form" noValidate onSubmit={onSubmit} >
                     <FormInput 
                         for="username"
-                        onChange={ e => setUsername(e.target.value) }
-                        value={ username }
-                        errors={ errors }
+                        onChange={e => setUsername(e.target.value)}
+                        value={username}
+                        errors={errors}
                         type="username"
                     />
                     <FormInput 
-                        for="firstName"
-                        onChange={ e => setFirstName(e.target.value) }
-                        value={ firstName }
-                        errors={ errors }
-                        type="text"
-                    />
-                    <FormInput 
                         for="email"
-                        onChange={ e => setEmail(e.target.value) }
-                        value={ email }
-                        errors={ errors }
+                        onChange={e => setEmail(e.target.value)}
+                        value={email}
+                        errors={errors}
                         type="text"
                     />
                     <FormInput 
                         for="password"
-                        onChange={ e => setPassword(e.target.value) }
-                        value={ password }
-                        errors={ errors }
+                        onChange={e => setPassword(e.target.value)}
+                        value={password}
+                        errors={errors}
                         type="password"
                     />
                     <FormInput 
                         for="confirmPassword"
-                        onChange={ e => setConfirmPassword(e.target.value) }
-                        value={ confirmPassword }
-                        errors={ errors }
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        value={confirmPassword}
+                        errors={errors}
                         type="password"
                     />
-                    <FormError for="verification" errors={ errors } />
-                    <FormSubmitButton for="register" disabled={ submitting } />
+                    <FormError for="registration" errors={errors} />
+                    <FormSubmitButton for="register" disabled={submitting} />
                 </form>
-            </animated.div>
-        </>
+            ) }
+        </animated.div>
+    )
+}
+
+function RegistrationSuccess(props) {
+    return(
+        <div className="flex items-center justify-evenly flex-col w-full h-full">
+            <p className="w-4/6">
+                Your registration was successful! Please check your provided
+                email for your verification link!
+            </p>
+            <p className="text-red">
+                Please check your spam/junk folders! Our emails
+                often get lost in there :/
+            </p>
+        </div>
     )
 }
 

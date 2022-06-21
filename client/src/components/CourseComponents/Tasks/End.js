@@ -11,11 +11,13 @@ function End(props) {
         <>
             <Lottie 
                 rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }} 
-                className={`w-full h-full absolute z-0 pointer-events-none`}
+                className="w-full h-full absolute top-0 left-0 z-0 
+                    pointer-events-none"
                 animationData={confetti} 
-                speed={0.75}
+                speed={0.8}
                 play 
                 loop={false}
+                delay={200}
             />
             <div className="lesson-end flex flex-col items-center 
                 h-5/6 justify-center">

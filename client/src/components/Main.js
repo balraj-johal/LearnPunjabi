@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import axiosClient from "../axiosDefaults";
@@ -12,9 +12,8 @@ import { setMobile, setSingleVH } from "../actions/displayActions";
 import InternalPage from "../components/InternalPage";
 import Dashboard from '../components/Dashboard';
 import AccountManager from '../components/AccountManagement/AccountManager';
-import AccountSummary from '../components/AccountManagement/AccountSummary';
 import Lesson from '../components/CourseComponents/Lesson';
-import ProtectedComponent from "./ProtectedComponent";
+import ProtectByRole from "./ProtectByRole";
 import ResetPassword from "./AccountManagement/ResetPassword";
 import VerifyEmail from "./VerifyEmail";
 import Welcome from "./Welcome/Welcome";
@@ -22,10 +21,7 @@ import EditOverview from "./Editing/Overview/EditOverview";
 import EditLesson from "./Editing/Lesson/EditLesson";
 import NotAuthorised from "./NotAuthorised";
 import PageNotFound from "./PageNotFound";
-import FooterPage from "./FooterPages/FooterPage";
-import About from "./FooterPages/About";
-import Privacy from "./FooterPages/Privacy";
-import Attributions from "./FooterPages/Attributions";
+import FooterPage from "./Welcome/FooterPages/FooterPage";
 
 function Main(props) {
     // fetch csrf token and store in redux reducer
@@ -65,11 +61,6 @@ function Main(props) {
         window.addEventListener("storage", synchLogout);
         return () => { window.removeEventListener("storage", synchLogout) };
     }, [synchLogout]);
-
-    // var getHeightOfIOSToolbars = function() {
-    //     var tH = (window.orientation === 0 ? screen.height : screen.width) -  getIOSWindowHeight();
-    //     return tH > 1 ? tH : 0;
-    // };
     
     // set up resize handlers
     const { setMobile } = props;
@@ -106,7 +97,7 @@ function Main(props) {
     let authRedirects = () => {
         if (props.auth.loading) return null;
         if (props.auth.isAuthenticated) return <InternalPage />;
-        return <Navigate to="/welcome" />;
+        return <Navigate to="/welcome" replace />;
     }
 
     return(
@@ -124,13 +115,13 @@ function Main(props) {
                         <Route path="*" element={<PageNotFound />} />
                         <Route path="edit">
                             <Route path="" element={
-                                <ProtectedComponent 
+                                <ProtectByRole 
                                     component={<EditOverview />} 
                                     role={"Admin"} 
                                 />
                             } />
                             <Route path=":id" element={
-                                <ProtectedComponent 
+                                <ProtectByRole 
                                     component={<EditLesson />} 
                                     role={"Admin"} 
                                 />
@@ -139,17 +130,15 @@ function Main(props) {
                     </Route>
                     <Route path="welcome" >
                         <Route path="" element={<Welcome loginQueried={props.csrf} />} />
-                        <Route path="test" element={
-                        <div className="account-switcher px-4 md:px-28 pb-5 pt-8 md:pt-8 
-                            h-full md:mt-0 mt-[-10px]"
-                        >
-                            <AccountSummary user={{totalXP: 100, progress: [1, 2, 3]}} />
-                        </div>} />
-                        <Route path="page" element={<FooterPage />}>
-                            <Route path="about" element={<About />} />
-                            <Route path="privacy" element={<Privacy />} />
-                            <Route path="attributions" element={<Attributions />} />
-                        </Route>
+                        <Route path="about" element={
+                            <FooterPage for="About" />
+                        } />
+                        <Route path="privacy" element={
+                            <FooterPage for="Privacy And Terms"  />
+                        } />
+                        <Route path="attributions" element={
+                            <FooterPage for="Attributions"  />
+                        } />
                     </Route>
                     <Route path="account" element={<InternalPage />}>
                         <Route path="" element={<AccountManager />} />

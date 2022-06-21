@@ -1,5 +1,8 @@
 import React, {  } from "react";
 
+import instagramIcon from "../../res/icons/socials/instagram.png";
+import twitterIcon from "../../res/icons/socials/twitter.png";
+
 function Footer(props) {
     return(
         <div 
@@ -14,8 +17,11 @@ function Footer(props) {
             >
                 <FooterLink to="about" text="About" />
                 <FooterLink to="privacy" text="Privacy and Terms" />
-                <FooterLink to="socials" text="Socials" />
                 <FooterLink to="attributions" text="Attributions" />
+                <div className="flex">
+                    <SocialIcon type="Instagram" />
+                    <SocialIcon type="Twitter" />
+                </div>
             </div>
         </div>
     )
@@ -24,10 +30,36 @@ function Footer(props) {
 function FooterLink(props) {
     return(
         <div id={`footer-link-${props.to}`} className="text-md md:text-xl">
-            <a href={`welcome/page/${props.to}`}>
+            <a href={`welcome/${props.to}`}>
                 {props.text}
             </a>
         </div>
+    )
+}
+
+function SocialIcon(props) {
+    let link, imgSrc;
+    switch (props.type) {
+        case "Instagram":
+            link = "https://www.flaticon.com/premium-icon/instagram_3661391";
+            imgSrc = instagramIcon;
+            break;
+        case "Twitter":
+            link = "https://www.flaticon.com/free-icon/twitter-sign_25347";
+            imgSrc = twitterIcon;
+            break;
+        // case "TikTok":
+        //     link = "https://www.flaticon.com/premium-icon/instagram_3661391";
+        //     imgSrc = instagramIcon;
+        //     break;
+        default:
+            break;
+    }
+
+    return(
+        <a href={link} className="mr-2 my-1" target="_blank">
+            <img src={imgSrc} className="w-8 h-8" alt={`${props.type} logo`} />
+        </a>
     )
 }
 

@@ -206,7 +206,6 @@ function EditLesson(props) {
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
-        scrollToBottom();
     }
 
     /** Deletes task from lesson
@@ -217,15 +216,6 @@ function EditLesson(props) {
         let newTasks = lesson.tasks.filter(item => item.taskID !== taskID);
         let updatedLesson = {...lesson, tasks: newTasks}
         setLesson(updatedLesson);
-    }
-
-    // TODO: fix 
-    /** should scroll the window to the bottom of the page - BROKEN
-     * @name scrollToBottom
-     */
-    let scrollToBottom = () => {
-        // let container = document.getElementById("container");
-        // container.scrollTop = container.scrollHeight;
     }
 
     /** Moves a specific task back in the lesson order

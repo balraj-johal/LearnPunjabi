@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
-import PossibleAnswer from "./PossibleAnswer";
+import MultChoiceAnswer from "./MultChoiceAnswer";
 
 function MultipleChoice(props) {
     let [choice, setChoice] = useState(null);
@@ -27,7 +27,10 @@ function MultipleChoice(props) {
 
     return(
         <>
-            <div className="multiple-choice flex flex-col h-5/6">
+            <div
+                data-testid="mult-choice" 
+                className="multiple-choice flex flex-col h-5/6"
+            >
                 <div className="title w-full h-1/6 md:h-2/6 px-0
                     flex flex-row justify-start items-center"
                 >
@@ -44,7 +47,7 @@ function MultipleChoice(props) {
                     flex-col ${props.animClasses}`}
                 >
                     { props.data.possibleAnswers.map((possible, index) => 
-                        <PossibleAnswer 
+                        <MultChoiceAnswer 
                             chosen={(choice === index) ? true : false}
                             setChoice={setChoice}
                             possible={possible} 

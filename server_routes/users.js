@@ -2,6 +2,7 @@
  * @module api/users
  */
 const express = require("express");
+const sanitize = require("mongo-sanitize");
 /**
  * Express router to mount user related functions on.
  * @type {object}
@@ -49,14 +50,18 @@ router.post("/", async (req, res) => {
     console.log(isValid, " : ", errors)
     try {
         // attempt to find user
-        let user = await User.findOne({ username: {$eq: req.body.username} });
+        let user = await User.findOne({
+            $or: [
+                { username: {$eq: sanitize(req.body.username)} },
+                { email: {$eq: sanitize(req.body.username)} },
+            ]
+        });
         if (user) return res.status(400).json({ username: "User already exists!" });
         // if not found, create new user
         const newUser = new User({
             username: req.body.username,
             password: req.body.password,
             email: req.body.email,
-            firstName: req.body.firstName,
             createdOn: req.body.createdOn,
             progress: [],
             verificationCode: genVerificationCode(8),
@@ -90,10 +95,13 @@ router.post("/", async (req, res) => {
             code: savedUser.verificationCode,
             host: req.get('host')
         });
-        return res.status(201).json({ message: `Check ${savedUser.email} for a verification link!` });
+        return res.status(201).json({ 
+            message: `Check ${savedUser.email} for a verification link!` 
+        });
     } catch (err) { 
         console.log(err);
-        return res.status(500).json({ registration: "Error creating user." }); }
+        return res.status(500).json({ registration: "Error creating user." }); 
+    }
 })
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -226,7 +234,7 @@ router.get("/", async (req, res) => {
             user: {
                 _id: user._id,
                 username: user.username,
-                firstName: user.firstName,
+                // firstName: user.firstName,
                 progress: user.progress,
                 groupID: user.groupID,
                 totalXP: user.totalXP,
@@ -319,18 +327,19 @@ router.post("/logout", async (req, res) => {
     } catch (err) { return res.status(500).send(err.message); }
 })
 
-// TODO: urgent change to post 
 /**
  * set user status to Active if the supplied email verification code is valid
- * @name get/verify-email
+ * @name put/verify-email
  * @function
  * @memberof module:api/users~usersRouter
  * @param { String } path - route path
  * @param { callback } middleware - express middleware
  */
-router.get("/verify-email/:verificationCode", async (req, res) => {
+router.put("/verify-email/:verificationCode", async (req, res) => {
     try {
-        let user = await User.findOne({ verificationCode: {$eq: req.params.verificationCode} });
+        let user = await User.findOne({ 
+            verificationCode: {$eq: req.params.verificationCode} 
+        });
         if (!user) return res.status(404).send({ message: "User not found..." });
         user.status = "Active";
         let savedUser = await user.save();

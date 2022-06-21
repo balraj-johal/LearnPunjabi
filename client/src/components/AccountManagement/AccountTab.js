@@ -11,21 +11,22 @@ function AccountTab(props) {
     }
 
     return(
-        <div 
-            className={`
-                text-md w-6/12 h-9
+        <button 
+            role={"tab"}
+            aria-selected={isSelected}
+            tabIndex={0}
+            id={`tab-${props.for}`}
+            className={`text-md w-6/12 h-9 font-bold
                 md:h-12 md:text-lg
                 transition-all no-highlight pt-[3px]
                 ${ props.first ? "" : "" }   
                 flex justify-center items-center cursor-pointer 
-                ${ isSelected ? 
-                    "" : 
-                    "bg-primary text-white dark-primary" }`}
+                ${ isSelected ? "" : "bg-primary text-white dark-primary" }`}
             style={{ borderRadius: getBorderRadius() }}
             onClick={() => { props.setManagerState(props.for) }}
         >
             { props.for }
-        </div>
+        </button>
     )
 }
 

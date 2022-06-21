@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function PossAnswerFragment(props) {
+function SpecOrderAnswerFrag(props) {
     // if animating is 1, css animation fadeIn is triggered
     let [animating, setAnimating] = useState(props.animating ? "1" : "0");
 
@@ -24,4 +24,4 @@ function PossAnswerFragment(props) {
     )
 }
 
-export default PossAnswerFragment;
+export default SpecOrderAnswerFrag;

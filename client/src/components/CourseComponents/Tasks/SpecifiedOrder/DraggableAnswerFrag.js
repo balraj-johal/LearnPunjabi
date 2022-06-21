@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Draggable } from 'react-beautiful-dnd';
 
-function DragAnswerFragment(props) {
+function DraggableAnswerFrag(props) {
     // if animating is 1, css animation fadeIn is triggered
     let [animating, setAnimating] = useState(props.animating ? "1" : "0");
     
@@ -19,6 +19,7 @@ function DragAnswerFragment(props) {
             {(provided) => (
                 <li
                     className={`specified-order-answer answer dark-answer`}
+                    data-testid="selected-answer"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
@@ -29,7 +30,7 @@ function DragAnswerFragment(props) {
                     onAnimationEnd={() => { onAnimEnd() }}
                 >
                     { props.possible.text ? (
-                        <div className="text"> {props.possible.text} </div>
+                        <div className="text">{props.possible.text}</div>
                     ) : null }
                 </li>
             )}
@@ -37,4 +38,4 @@ function DragAnswerFragment(props) {
     )
 }
 
-export default DragAnswerFragment;
+export default DraggableAnswerFrag;

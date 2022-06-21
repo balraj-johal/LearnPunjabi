@@ -14,12 +14,14 @@ function AudioClip(props) {
                 id={`audio-${props.src}`} 
                 src={props.src}
                 preload="auto"
+                role="audio"
                 ref={ref}
                 onEnded={() => { setPlaying(false) }}
+                volume={0.5}
             />
             <div 
                 className={`replay-audio-button button transition-all
-                    ${playing ? "bg-primary2" : "bg-primary"}`}
+                    ${playing ? "bg-secondary" : "bg-primary"}`}
                 onClick={() => {
                     ref.current.currentTime = 0;
                     ref.current.play();
