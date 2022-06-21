@@ -75,3 +75,6 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# cypress testing examples
+/client/cypress/e2e/2-advanced-examples

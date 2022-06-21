@@ -40,6 +40,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "e2e-test": "cypress open",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3001",
@@ -64,6 +65,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^14.2.0"
+    "@testing-library/user-event": "^14.2.0",
+    "cypress": "^10.1.0"
   }
 }
