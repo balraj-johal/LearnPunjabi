@@ -49,7 +49,8 @@ function Welcome(props) {
             className="w-screen h-screen absolute 
                 flex justify-center items-center"
         >
-            <div 
+            <button
+                id="hide-account-manager" 
                 onClick={() => { toggleShowAccounts() }}
                 className="w-screen h-screen absolute z-40 
                     bg-black bg-opacity-30"
