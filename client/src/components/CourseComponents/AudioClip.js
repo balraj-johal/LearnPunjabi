@@ -7,6 +7,29 @@ function AudioClip(props) {
     let ref = useRef();
     let [playing, setPlaying] = useState(false);
 
+    /**
+     * Allows user to pause playback using the spacebar when focused.
+     * @name handleStop
+     * @param {Object} e - event
+     */
+    let handleStop = (e) => {
+        // if (!playing) return;
+        if (e.keyCode === 32 || e.keyCode === 13) {
+            e.preventDefault();
+            if (!playing) return playAudio();
+            console.log("pausing")
+            ref.current.pause();
+            setPlaying(false);
+        }
+    }
+
+    let playAudio = () => {
+        console.log("playing")
+        ref.current.volume = 0.25;
+        ref.current.play();
+        setPlaying(true);
+    }
+
     if (!props.src) return null;
     return(
         <div className="audio no-highlight">
@@ -22,11 +45,10 @@ function AudioClip(props) {
                 className={`replay-audio-button button transition-all
                     ${playing ? "bg-secondary" : "bg-primary"}`}
                 onClick={() => {
-                    ref.current.volume = 0.25;
                     ref.current.currentTime = 0;
-                    ref.current.play();
-                    setPlaying(true);
+                    playAudio();
                 }}
+                onKeyDown={handleStop}
             >
                 <Lottie 
                     className="w-full h-full p-3"
