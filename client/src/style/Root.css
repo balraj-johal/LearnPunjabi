@@ -1062,6 +1062,15 @@ button:disabled:hover {
     background: -webkit-gradient(linear, left bottom, left top, from(#E786FF), to(#86E2FF));
     background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
   }
+  .visually-hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: -1;
+  }
 }
 
 html, body, #root {

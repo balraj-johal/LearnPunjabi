@@ -52,7 +52,7 @@ function ResetPassword(props) {
                 text="Reset successful!" 
             /> 
             <div className="accounts-wrap p-4 bg-white shadow-xl" id="reset-password">
-                <h2 className="text-lg">Reset Password</h2>
+                <h1 className="text-lg">Reset Password</h1>
                 <form 
                     className="reset-password-form" 
                     noValidate 

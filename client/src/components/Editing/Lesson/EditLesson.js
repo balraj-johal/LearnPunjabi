@@ -267,6 +267,7 @@ function EditLesson(props) {
             </Link>
             <main className="w-screen mx-auto
                     flex justify-center pt-10 mb-10">
+                <h1 className="visually-hidden">Edit Lesson {lesson.name}</h1>
                 <form 
                     className="edit-lesson-form w-8/12" 
                     id="edit-lesson"

@@ -10,6 +10,7 @@ function PageNotFound(props) {
             alignItems: "center",
             justifyContent: "center"
         }}>
+            <h1 className="visually-hidden">404 Error</h1>
             Page not found! :\
         </main>
     )

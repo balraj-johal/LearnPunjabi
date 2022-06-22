@@ -35,6 +35,7 @@ function VerifyEmail(props) {
             id="verify-email"
             className="accounts-wrap bg-white shadow-xl rounded"
         >
+            <h1 className="visually-hidden">Email Verification</h1>
             {queried ? (
                 <div className="flex flex-col justify-evenly items-center text-center h-full p-4">
                     {true ? (

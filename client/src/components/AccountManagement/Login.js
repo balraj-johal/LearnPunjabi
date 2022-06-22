@@ -47,6 +47,7 @@ function Login(props) {
             className="login mt-2" 
             style={spring}
         >
+            <h1 className="visually-hidden">Login</h1>
             <form className="login-form" noValidate onSubmit={ onSubmit }>
                 <FormInput 
                     for="username"
@@ -73,7 +74,8 @@ function Login(props) {
                 <a 
                     onClick={() => { props.setManagerState("ForgotPassword") }}
                     className="text-sm text-primary w-1/3 cursor-pointer mt-4 block
-                        hover:text-secondary hover:translate-x-2 transition-all"
+                        hover:text-secondary hover:translate-x-2 transition-all
+                        underline"
                 >
                     - Forgot Password?
                 </a>

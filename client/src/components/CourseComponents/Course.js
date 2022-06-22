@@ -89,6 +89,7 @@ function Course(props) {
             style={{ height: props.lessonWrapHeight }} 
         >
             <main id="lesson-links" className="animate-fade-in z-10">
+                <h1 className="visually-hidden">Lessons in the Course</h1>
                 { courseData.length > 0 ? (
                     courseData.map((lesson) => 
                         <LessonIcon 

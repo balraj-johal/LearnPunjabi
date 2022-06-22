@@ -48,7 +48,7 @@ function Welcome(props) {
             <button
                 id="hide-account-manager" 
                 onClick={() => { toggleShowAccounts() }}
-                className="w-screen h-screen absolute z-40 
+                className="w-screen h-screen absolute z-[75]
                     bg-black bg-opacity-30"
             />
             <div 
@@ -65,6 +65,7 @@ function Welcome(props) {
                 onScroll={onScroll} 
                 // scrollTop={scroll}
             >
+                <h1 className="visually-hidden">Welcome to Learn Punjabi</h1>
                 <div 
                     aria-label="Welcome section, including start learning button and example lesson link"
                     id="welcome-1" 

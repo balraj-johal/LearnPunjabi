@@ -30,6 +30,7 @@ function Settings(props) {
             className="mt-2" 
             style={spring}
         >
+            <h1 className="visually-hidden">Account Settings</h1>
             <div className="w-full px-4 my-6 flex justify-between items-center">
                 <label className="text-md md:text-lg">Dark Mode:</label>
                 <Toggle

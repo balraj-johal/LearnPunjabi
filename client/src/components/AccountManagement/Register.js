@@ -65,6 +65,7 @@ function Register(props) {
                 <RegistrationSuccess />
             ) : (
                 <form className="register-form" noValidate onSubmit={onSubmit} >
+                    <h1 className="visually-hidden">Register</h1>
                     <FormInput 
                         for="username"
                         onChange={e => setUsername(e.target.value)}
@@ -107,12 +108,15 @@ function Register(props) {
 
 function RegistrationSuccess(props) {
     return(
-        <div className="flex items-center justify-evenly flex-col w-full h-full">
+        <div 
+            className="flex items-center justify-evenly flex-col w-full h-full" 
+            aria-live="assertive"
+        >
             <p className="w-4/6">
                 Your registration was successful! Please check your provided
                 email for your verification link!
             </p>
-            <p className="text-red">
+            <p className="text-red w-4/6">
                 Please check your spam/junk folders! Our emails
                 often get lost in there :/
             </p>

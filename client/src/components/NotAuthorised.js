@@ -10,6 +10,7 @@ function NotAuthorised(props) {
             alignItems: "center",
             justifyContent: "center"
         }}>
+            <h1 className="visually-hidden">Unauthorised</h1>
             You do not have the required permissions for this action.
         </main>
     )
