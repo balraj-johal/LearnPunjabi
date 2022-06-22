@@ -10,7 +10,6 @@ import ScrollPrompt from "./ScrollPrompt";
 import PunjabModel from "./PunjabInfoSection/PunjabModel";
 import WelcomeLogo from "./WelcomeLogo";
 import SignInPrompt from "./SignInPrompt";
-// import InfoPoints from "./InfoPoints";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
