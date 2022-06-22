@@ -64,6 +64,13 @@
   }
 }
 
+@media (prefers-reduced-motion) {
+  .fadeIn, .fade-in, .move-down, .move-up, .bounce-y, .shake-x {
+    -webkit-animation: none !important;
+            animation: none !important;
+  }
+}
+
 :root {
   --vh: 0;
 }
@@ -991,6 +998,14 @@ button:disabled:hover {
 .darkMode #leaderboard, .darkMode #leaderboard .header {
   background-color: #10161f;
   color: white;
+}
+
+.darkMode .dark-input {
+  background-color: #dedede;
+}
+
+.darkMode .dark-input:focus {
+  border-color: #0096dc;
 }
 
 .darkMode .dark-answer {
