@@ -23,7 +23,7 @@ let MultChoiceAnswer = React.forwardRef((props, ref) => {
             ref={ref}
             className={`multiple-choice-answer cursor-pointer answer transition-all
                 shadow-sm border-[1.5px] border-slate dark-answer hover:bg-slate-100
-                ${props.chosen ? "bg-slate-100" : ""}`}
+                ${props.chosen ? "bg-slate-100 chosen" : ""}`}
             data-testid={`answer-${props.index}`}
             onKeyDown={handleKeyDown}
             onFocus={() => props.setFocusTargetIndex(props.index)}
