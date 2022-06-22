@@ -1,13 +1,33 @@
 import React, {  } from "react";
 
-function MultChoiceAnswer(props) {
+let MultChoiceAnswer = React.forwardRef((props, ref) => {
+
+    /** Implements answer focus changing using arrow keys
+     * @name handleArrows
+     * @param {Object} e - key event
+     */
+    let handleArrows = (e) => {
+        switch (e.keyCode) {
+            case 37: //arrow left
+                props.handleArrowKeys("left");
+                break;
+            case 39: //arrow right
+                props.handleArrowKeys("right");
+                break;
+            default:
+                break;
+        }
+    }
+
     return(
         <button
+            ref={ref}
             className={`multiple-choice-answer cursor-pointer answer transition-all
-                shadow-sm border-[1.5px] border-slate dark-answer
-                ${props.chosen ? "hover:bg-slate-200 bg-slate-200 chosen" : 
-                    "hover:bg-slate-100"}`}
+                shadow-sm border-[1.5px] border-slate dark-answer hover:bg-slate-100
+                ${props.chosen ? "bg-slate-100" : ""}`}
             data-testid={`answer-${props.index}`}
+            onKeyDown={handleArrows}
+            onFocus={() => props.setFocusTargetIndex(props.index)}
             onClick={() => {
                 props.setChoice(props.index)
             }}
@@ -24,6 +44,6 @@ function MultChoiceAnswer(props) {
             ) }
         </button>
     )
-}
+})
 
 export default MultChoiceAnswer;
