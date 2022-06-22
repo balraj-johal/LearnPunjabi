@@ -66,6 +66,12 @@ function Register(props) {
             ) : (
                 <form className="register-form" noValidate onSubmit={onSubmit} >
                     <h1 className="visually-hidden">Register</h1>
+                    <div className="visually-hidden" aria-live="polite">
+                        <h2>Form Errors</h2>
+                        {Object.values(errors).map(error => (
+                            <p key={error}>{error}</p>
+                        ))}
+                    </div>
                     <FormInput 
                         for="username"
                         onChange={e => setUsername(e.target.value)}
@@ -81,6 +87,7 @@ function Register(props) {
                         required={true}
                         errors={errors}
                         type="text"
+                        autoComplete="email"
                     />
                     <FormInput 
                         for="password"
@@ -89,6 +96,7 @@ function Register(props) {
                         required={true}
                         errors={errors}
                         type="password"
+                        autoComplete="new-password"
                     />
                     <FormInput 
                         for="confirmPassword"
