@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import axiosClient from "../axiosDefaults";
+import GenericButton from "./GenericButton";
 
 import Loader from "./Loader";
 
@@ -16,12 +17,9 @@ function VerifyEmail(props) {
         let redirectTimeout;
         if (params.code) {
             axiosClient.put(`/api/v1/users/verify-email/${params.code}`)
-                .then(result => {
+                .then(() => {
                     setSuccessful(true);
                     setQueried(true);
-                    redirectTimeout = setTimeout(() => {
-                        navigate("/account");
-                    }, 4000);
                 })
                 .catch(err => { 
                     console.log(err);
@@ -38,9 +36,15 @@ function VerifyEmail(props) {
             className="accounts-wrap bg-white shadow-xl rounded"
         >
             {queried ? (
-                <div className="flex justify-center items-center text-center h-full p-4">
-                    {successful ? (
-                        "Email verification successful! Please log in with your details!"
+                <div className="flex flex-col justify-evenly items-center text-center h-full p-4">
+                    {true ? (
+                        <>
+                            <p>Email verification successful! Please log in with your details!</p>
+                            <Link to="/account">
+                                <GenericButton text="Go to Login" handleClick={() => {}} />
+                            </Link>
+                        </>
+                        
                     ) : (
                         "Email verification unsuccessful... Please check your email again."
                     )}
