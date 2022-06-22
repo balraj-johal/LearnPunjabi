@@ -26,17 +26,20 @@ function Welcome(props) {
     let [showAccounts, setShowAccounts] = useState(false);
     // initialise listeners for scroll tracking
     const top = useRef();
-    const scrollArea = useRef();
+    const main = useRef();
 
     const onScroll = e => { 
         top.current = e.target.scrollTop;
     };
     useEffect(() => { 
-        onScroll({ target: scrollArea.current }) ;
+        onScroll({ target: main.current }) ;
     }, []);
 
     let toggleShowAccounts = () => {
         setShowAccounts(!showAccounts);
+        console.log(main.current)
+        if (!showAccounts) return main.current.setAttribute("inert", "true");
+        main.current.removeAttribute("inert");
     }
 
     return(
@@ -61,11 +64,10 @@ function Welcome(props) {
         </div> }
             <main 
                 id="welcome" 
-                ref={scrollArea} 
+                ref={main} 
                 onScroll={onScroll} 
-                // scrollTop={scroll}
             >
-                <h1 className="visually-hidden">Welcome to Learn Punjabi</h1>
+                <h1 className="visually-hidden">Welcome to Learn Punjabi!</h1>
                 <div 
                     aria-label="Welcome section, including start learning button and example lesson link"
                     id="welcome-1" 
