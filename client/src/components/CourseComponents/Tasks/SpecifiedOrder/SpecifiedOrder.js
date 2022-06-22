@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
@@ -8,6 +8,11 @@ import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
 
 function SpecifiedOrder(props) {
+    let focusTarget = useRef();
+    let [focusTargetData, setFocusTargetData] = useState({
+        onPossibleList: true,
+        index: 0
+    });
     let [order, setOrder] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
     let [animatingFrags, setAnimatingFrags] = useState([]);
@@ -31,6 +36,10 @@ function SpecifiedOrder(props) {
         if (getAnswerString().includes(props.data.correctAnswer)) {
             props.handleCorrect();
         } else {
+            setFocusTargetData({
+                onPossibleList: true,
+                index: 0
+            });
             props.handleWrong();
             resetTask();
         }
@@ -71,6 +80,7 @@ function SpecifiedOrder(props) {
             return elem !== frag;
         }));
         setAnimatingFrags(animatingFrags.concat([frag]));
+        shiftFocusBack();
     }
 
     /** Removes specified fragment from user's answer
@@ -83,6 +93,7 @@ function SpecifiedOrder(props) {
         }));
         setPossibleFrags(possibleFrags.concat([frag]));
         setAnimatingFrags(animatingFrags.concat([frag]));
+        shiftFocusBack();
     }
 
     /** Removes specified fragment from animating list
@@ -94,6 +105,60 @@ function SpecifiedOrder(props) {
             return elem !== frag;
         }));
     }
+    
+    /**
+     * Implements keyboard controls by updating which answer has the focus target ref
+     * @name updateFocus
+     * @param {String} direction - "left" or "right"
+     */
+    let handleArrowKeys = (direction) => {
+        let newIndex = 0;
+        if (direction === "left") {
+            newIndex = focusTargetData.index -= 1;
+            if (newIndex < 0) newIndex = props.data.possibleAnswers.length - 1;
+        } else if (direction === "right") {
+            newIndex = focusTargetData.index += 1;
+            if (newIndex > props.data.possibleAnswers.length - 1) newIndex = 0;
+        }
+        setFocusTargetData({...focusTargetData, index: newIndex});
+    }
+    
+    // if focused list is empty, switch focus to other list
+    useEffect(() => {
+        if (possibleFrags.length < 1) setFocusTargetData({
+            onPossibleList: false, 
+            index: 0
+        })
+    }, [possibleFrags])
+    useEffect(() => {
+        if (order.length < 1) setFocusTargetData({
+            onPossibleList: true, 
+            index: 0
+        })
+    }, [order])
+
+    /**
+     * on each change to a task answer list, 
+     * move focus back to the preceeding answer fragment
+     * @name shiftFocusBack
+     */
+    let shiftFocusBack = () => {
+        let newIndex = focusTargetData.index -= 1;
+        console.log(possibleFrags)
+        if (newIndex < 0) {
+            newIndex = 0;
+        } else {
+            setFocusTargetData({
+                ...focusTargetData, 
+                index: newIndex
+            });
+        };
+    }
+    // when focus target changes, focus on that element
+    useEffect(() => {
+        if (!focusTarget.current) return;
+        focusTarget.current.focus();
+    }, [focusTargetData])
 
     return(
         <>
@@ -139,6 +204,10 @@ function SpecifiedOrder(props) {
                                 >
                                     { order.map((data, index) => 
                                         <DraggableAnswerFrag 
+                                            ref={!focusTargetData.onPossibleList 
+                                                && focusTargetData.index === index ? focusTarget : null}
+                                            handleArrowKeys={handleArrowKeys}
+                                            setFocusTargetData={setFocusTargetData}
                                             animating={animatingFrags.includes(data)}
                                             removeAnimatingFrag={removeAnimatingFrag}
                                             possible={data}
@@ -160,8 +229,12 @@ function SpecifiedOrder(props) {
                         >
                             {possibleFrags.map((data, index) => 
                                 <SpecOrderAnswerFrag 
+                                    ref={focusTargetData.onPossibleList 
+                                        && focusTargetData.index === index ? focusTarget : null}
                                     animating={animatingFrags.includes(data)}
                                     removeAnimatingFrag={removeAnimatingFrag}
+                                    handleArrowKeys={handleArrowKeys}
+                                    setFocusTargetData={setFocusTargetData}
                                     possible={data}
                                     key={index}
                                     index={index}

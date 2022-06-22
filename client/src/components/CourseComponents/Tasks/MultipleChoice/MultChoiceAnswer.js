@@ -1,12 +1,11 @@
 import React, {  } from "react";
 
 let MultChoiceAnswer = React.forwardRef((props, ref) => {
-
     /** Implements answer focus changing using arrow keys
-     * @name handleArrows
+     * @name handleKeyDown
      * @param {Object} e - key event
      */
-    let handleArrows = (e) => {
+    let handleKeyDown = (e) => {
         switch (e.keyCode) {
             case 37: //arrow left
                 props.handleArrowKeys("left");
@@ -26,7 +25,7 @@ let MultChoiceAnswer = React.forwardRef((props, ref) => {
                 shadow-sm border-[1.5px] border-slate dark-answer hover:bg-slate-100
                 ${props.chosen ? "bg-slate-100" : ""}`}
             data-testid={`answer-${props.index}`}
-            onKeyDown={handleArrows}
+            onKeyDown={handleKeyDown}
             onFocus={() => props.setFocusTargetIndex(props.index)}
             onClick={() => {
                 props.setChoice(props.index)
