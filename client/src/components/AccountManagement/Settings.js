@@ -31,7 +31,7 @@ function Settings(props) {
             style={spring}
         >
             <div className="w-full px-4 my-6 flex justify-between items-center">
-                <div className="text-md md:text-lg">Dark Mode:</div>
+                <label className="text-md md:text-lg">Dark Mode:</label>
                 <Toggle
                     checked={darkMode}
                     icons={false}
@@ -40,7 +40,7 @@ function Settings(props) {
                 />
             </div>
             <div className="w-full px-4 my-6 flex justify-between items-center">
-                <div className="text-md md:text-lg">Dyslexic Support Font:</div>
+                <label className="text-md md:text-lg">Dyslexic Support Font:</label>
                 <Toggle
                     checked={dyslexiaFont}
                     icons={false}

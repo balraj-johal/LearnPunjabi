@@ -23,19 +23,19 @@ function PodiumPlace(props) {
             return <img 
                 src={firstPlace} 
                 className="h-full w-auto mr-2" 
-                alt="First Place is"
+                alt="First Place Medal"
             />
         case 1:
             return <img 
                 src={secondPlace} 
                 className="h-full w-auto mr-2" 
-                alt="Second Place is"
+                alt="Second Place Medal"
             />
         case 2:
             return <img 
                 src={thirdPlace} 
                 className="h-full w-auto mr-2"
-                alt="Third Place is"
+                alt="Third Place Medal"
              />
         default:
             break;

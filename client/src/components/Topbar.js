@@ -35,7 +35,7 @@ function Topbar(props) {
             ref={topbarRef} 
             className="no-highlight bg-white" 
         >
-            <div id="topbar">
+            <nav id="topbar">
                 <CorrectLogo mobile={props.mobile} ready={props.mobileReady} />
                 <div className="flex flex-row items-center mr-4 md:mr-6">
                     { props.auth.isAuthenticated && !props.mobile ? (
@@ -50,7 +50,7 @@ function Topbar(props) {
                         mobile={props.mobile} 
                     />
                 </div>
-            </div>
+            </nav>
             { child }
         </div>
     )
@@ -75,7 +75,7 @@ function EditButton(props) {
                     <img 
                         style={{margin: "-2px -2px 0 0"}} // minor adjustment to center icon
                         src={EditIcon} 
-                        alt="Open lesson edit menu" 
+                        alt="Lesson Editor Icon" 
                         className="no-highlight" 
                     />
                 </div>
@@ -91,7 +91,7 @@ function AccountButton(props) {
             >
                 <img 
                     src={AccountIcon} 
-                    alt="Open account page" 
+                    alt="User Account Icon" 
                     className="no-highlight" 
                 />
             </div>

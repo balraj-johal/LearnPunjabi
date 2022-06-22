@@ -84,35 +84,31 @@ function Course(props) {
         return <div className="lesson-wrap" style={{ height: "102%" }} />
     }
     return(
-        // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
-        //     // icon={<Loader />} 
-        // >
-            <div 
-                className="lesson-wrap relative" 
-                style={{ height: props.lessonWrapHeight }} 
-            >
-                <div className="animate-fade-in z-10">
-                    { courseData.length > 0 ? (
-                        courseData.map((lesson) => 
-                            <LessonIcon 
-                                lesson={lesson}
-                                timesCompleted={getTimesCompleted(lesson.id)}
-                                key={lesson.id} 
-                            />
-                        )
-                    ) : "Loading failed. Please refresh and try again!" }
-                </div>
-                <div className="absolute top-0 left-0 w-full h-full z-0">
-                    { props.showParticles && <Canvas 
-                            dpr={[1, 2]} 
-                            camera={{ position: [0, 0, 30], fov: 100 }}
-                        >
-                            <Particles />
-                        </Canvas>
-                    }
-                </div>
+        <div 
+            className="lesson-wrap relative" 
+            style={{ height: props.lessonWrapHeight }} 
+        >
+            <main id="lesson-links" className="animate-fade-in z-10">
+                { courseData.length > 0 ? (
+                    courseData.map((lesson) => 
+                        <LessonIcon 
+                            lesson={lesson}
+                            timesCompleted={getTimesCompleted(lesson.id)}
+                            key={lesson.id} 
+                        />
+                    )
+                ) : "Loading failed. Please refresh and try again!" }
+            </main>
+            <div className="absolute top-0 left-0 w-full h-full z-0">
+                { props.showParticles && <Canvas 
+                        dpr={[1, 2]} 
+                        camera={{ position: [0, 0, 30], fov: 100 }}
+                    >
+                        <Particles />
+                    </Canvas>
+                }
             </div>
-        // </ReactPullToRefresh>
+        </div>
     )
 }
 

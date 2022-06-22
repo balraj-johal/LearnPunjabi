@@ -3,7 +3,8 @@ import React, {  } from "react";
 function ScrollPrompt(props) {
     return(
         <a 
-            href={props.scrollTo} 
+            href={props.scrollTo}
+            title={props.text}
             className="z-50 mr-4 mt-2 absolute bottom-0 left-0
                 w-10/12
                 md:my-4 md:w-3/6

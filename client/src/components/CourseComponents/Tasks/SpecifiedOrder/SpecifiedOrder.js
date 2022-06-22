@@ -131,7 +131,7 @@ function SpecifiedOrder(props) {
                             )}
                         >
                             {(provided) => (
-                                <ul 
+                                <ol 
                                     id="answers"
                                     aria-label="selected-answers"
                                     {...provided.droppableProps} 
@@ -148,12 +148,12 @@ function SpecifiedOrder(props) {
                                         />
                                     ) }
                                     {provided.placeholder}
-                                </ul>
+                                </ol>
                             )}
                         </Droppable>
                     </DragDropContext>
                     <div id="possible-fragments">
-                        <ul 
+                        <ol 
                             className="possiblities-wrap" 
                             id="possibilites"
                             aria-label="possible-answers"
@@ -168,7 +168,7 @@ function SpecifiedOrder(props) {
                                     addToOrder={addToOrder}
                                 />
                             )}
-                        </ul>
+                        </ol>
                     </div>
                 </div>
             </div>

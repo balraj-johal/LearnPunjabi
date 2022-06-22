@@ -91,7 +91,7 @@ function Welcome(props) {
                     <Lesson lessonOverride={EXAMPLE_LESSON} />
                     <RiversMid />
                     <ScrollPrompt 
-                        text="want to learn about Punjab?" 
+                        text="Want to learn about Punjab?" 
                         scrollTo="#welcome-3"
                     />
                 </div>
