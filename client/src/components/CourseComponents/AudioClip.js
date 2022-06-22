@@ -17,14 +17,12 @@ function AudioClip(props) {
         if (e.keyCode === 32 || e.keyCode === 13) {
             e.preventDefault();
             if (!playing) return playAudio();
-            console.log("pausing")
             ref.current.pause();
             setPlaying(false);
         }
     }
 
     let playAudio = () => {
-        console.log("playing")
         ref.current.volume = 0.25;
         ref.current.play();
         setPlaying(true);
@@ -40,7 +38,11 @@ function AudioClip(props) {
                 role="audio"
                 ref={ref}
                 onEnded={() => { setPlaying(false) }}
+                aria-labelledby="audio-transcript"
             />
+            <p className="visually-hidden" id="audio-transcript">
+                {props.transcript}
+            </p>
             <button 
                 className={`replay-audio-button button transition-all
                     ${playing ? "bg-secondary" : "bg-primary"}`}
@@ -49,7 +51,8 @@ function AudioClip(props) {
                     playAudio();
                 }}
                 onKeyDown={handleStop}
-            >
+            >   
+                <span className="visually-hidden">Play Audio</span>
                 <Lottie 
                     className="w-full h-full p-3"
                     animationData={audioAnim}
