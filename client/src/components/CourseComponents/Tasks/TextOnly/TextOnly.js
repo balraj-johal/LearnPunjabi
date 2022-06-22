@@ -45,7 +45,10 @@ function TextOnlySide(props) {
     // audio takes priority
     if (props.data.audioLink) return(
         <div className={SIDE_STYLES}>
-            <AudioClip src={props.data.audioLink} />
+            <AudioClip 
+                src={props.data.audioLink} 
+                transcript={props.data.transcript} 
+            />
         </div>
     )
     if (props.data.image) return(

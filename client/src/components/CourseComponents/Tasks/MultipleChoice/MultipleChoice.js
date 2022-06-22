@@ -58,7 +58,10 @@ function MultipleChoice(props) {
                     flex flex-row justify-start items-center"
                 >
                     <div className="w-full h-auto flex items-start">
-                        <AudioClip src={props.data.audioLink} />
+                        <AudioClip 
+                            src={props.data.audioLink} 
+                            transcript={props.data.transcript} 
+                        />
                         <span 
                             className={`pr-[30%] lg:text-xl
                                 ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
