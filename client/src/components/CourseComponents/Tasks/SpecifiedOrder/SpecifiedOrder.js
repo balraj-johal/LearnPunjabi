@@ -13,7 +13,7 @@ function SpecifiedOrder(props) {
         onPossibleList: true,
         index: 0
     });
-    let [order, setOrder] = useState([]);
+    let [chosenFrags, setChosenFrags] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
     let [animatingFrags, setAnimatingFrags] = useState([]);
 
@@ -21,7 +21,7 @@ function SpecifiedOrder(props) {
      *  @name resetTask
      */
     let resetTask = useCallback(() => {
-        setOrder([]);
+        setChosenFrags([]);
         setPossibleFrags(props.data.possibleAnswers);
     })
     // initialise state when task data changes
@@ -53,10 +53,10 @@ function SpecifiedOrder(props) {
     let handleDragEnd = (result) => {
         // return if user drags elem out of bounds
         if (!result.destination) return;
-        const updatedOrder = [...order];
+        const updatedOrder = [...chosenFrags];
         const [updatedItem] = updatedOrder.splice(result.source.index, 1);
         updatedOrder.splice(result.destination.index, 0, updatedItem);
-        setOrder(updatedOrder);
+        setChosenFrags(updatedOrder);
     }
     /**
      * get the string containing the current answer state
@@ -65,7 +65,7 @@ function SpecifiedOrder(props) {
      */
     let getAnswerString = () => {
         let str = "";
-        order.forEach(elem => {
+        chosenFrags.forEach(elem => {
             str += elem.text
         })
         return str;
@@ -75,7 +75,7 @@ function SpecifiedOrder(props) {
      * @param {Object} frag - answer fragment
      */
     let addToOrder = (frag) => {
-        setOrder(order.concat([frag]));
+        setChosenFrags(chosenFrags.concat([frag]));
         setPossibleFrags(possibleFrags.filter(elem => {
             return elem !== frag;
         }));
@@ -88,7 +88,7 @@ function SpecifiedOrder(props) {
      * @param {Object} frag - answer fragment
      */
     let removeFromOrder = (frag) => {
-        setOrder(order.filter(elem => {
+        setChosenFrags(chosenFrags.filter(elem => {
             return elem !== frag;
         }));
         setPossibleFrags(possibleFrags.concat([frag]));
@@ -113,16 +113,50 @@ function SpecifiedOrder(props) {
      */
     let handleArrowKeys = (direction) => {
         let newIndex = 0;
-        if (direction === "left") {
-            newIndex = focusTargetData.index -= 1;
-            if (newIndex < 0) newIndex = props.data.possibleAnswers.length - 1;
-        } else if (direction === "right") {
-            newIndex = focusTargetData.index += 1;
-            if (newIndex > props.data.possibleAnswers.length - 1) newIndex = 0;
+        switch (direction) {
+            case "left":
+                newIndex = focusTargetData.index -= 1;
+                console.log("left");
+                if (newIndex < 0) {
+                    console.log("<0");
+                    if (focusTargetData.onPossibleList) {
+                        newIndex = possibleFrags.length - 1;
+                    } else {
+                        newIndex = chosenFrags.length - 1;
+                    }
+                }
+                setFocusTargetData({...focusTargetData, index: newIndex});
+                break;
+            case "right":
+                newIndex = focusTargetData.index += 1;
+                if (focusTargetData.onPossibleList) {
+                    if (newIndex > possibleFrags.length - 1) newIndex = 0;
+                    setFocusTargetData({...focusTargetData, index: newIndex});
+                } else {
+                    if (newIndex > chosenFrags.length - 1) newIndex = 0;
+                    setFocusTargetData({...focusTargetData, index: newIndex});
+                }
+                break;
+            case "down":
+                switchFocusBetweenLists();
+                break;
+            case "up":
+                switchFocusBetweenLists();
+                break;
+            default:
+                break;
         }
-        setFocusTargetData({...focusTargetData, index: newIndex});
     }
-    
+
+    let switchFocusBetweenLists = () => {
+        if (possibleFrags.length < 1) return;
+        if (chosenFrags.length < 1) return;
+        setFocusTargetData({
+            onPossibleList: !focusTargetData.onPossibleList, 
+            index: 0
+        })
+    }
+
     // if focused list is empty, switch focus to other list
     useEffect(() => {
         if (possibleFrags.length < 1) setFocusTargetData({
@@ -131,11 +165,11 @@ function SpecifiedOrder(props) {
         })
     }, [possibleFrags])
     useEffect(() => {
-        if (order.length < 1) setFocusTargetData({
+        if (chosenFrags.length < 1) setFocusTargetData({
             onPossibleList: true, 
             index: 0
         })
-    }, [order])
+    }, [chosenFrags])
 
     /**
      * on each change to a task answer list, 
@@ -191,7 +225,7 @@ function SpecifiedOrder(props) {
                                     {...provided.dragHandleProps}
                                     ref={provided.innerRef}
                                 >
-                                    {order[rubric.source.index].text}
+                                    {chosenFrags[rubric.source.index].text}
                                 </div>
                             )}
                         >
@@ -203,7 +237,7 @@ function SpecifiedOrder(props) {
                                     {...provided.droppableProps} 
                                     ref={provided.innerRef}
                                 >
-                                    { order.map((data, index) => 
+                                    { chosenFrags.map((data, index) => 
                                         <DraggableAnswerFrag 
                                             ref={!focusTargetData.onPossibleList 
                                                 && focusTargetData.index === index ? focusTarget : null}

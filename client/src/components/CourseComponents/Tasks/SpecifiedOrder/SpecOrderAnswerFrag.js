@@ -18,11 +18,17 @@ let SpecOrderAnswerFrag = React.forwardRef((props, ref) => {
      */
      let handleKeyDown = (e) => {
         switch (e.keyCode) {
-            case 37: //arrow left
+            case 37:
                 props.handleArrowKeys("left");
                 break;
-            case 39: //arrow right
+            case 39: 
                 props.handleArrowKeys("right");
+                break;
+            case 38:
+                props.handleArrowKeys("down");
+                break;
+            case 40:
+                props.handleArrowKeys("down");
                 break;
             default:
                 break;
