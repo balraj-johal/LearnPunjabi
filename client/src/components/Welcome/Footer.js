@@ -59,7 +59,7 @@ function SocialIcon(props) {
     }
 
     return(
-        <a href={link} className="mr-4 my-2 p-1 pl-0" target="_blank">
+        <a href={link} className="mr-4 my-2 p-1 pl-0">
             <img src={imgSrc} className="w-8 h-8" alt={`${props.type} logo`} />
         </a>
     )
