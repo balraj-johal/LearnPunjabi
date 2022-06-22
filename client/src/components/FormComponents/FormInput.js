@@ -21,6 +21,7 @@ function FormInput(props) {
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
                 required={props.required}
+                autoComplete={props.autoComplete}
             />
             break;
         case "file":
@@ -42,6 +43,7 @@ function FormInput(props) {
                 extraStyles={props.extraStyles}
                 required={props.required}
                 typeOverride="username"
+                autoComplete="username"
             />
             break;
         case "password":
@@ -53,6 +55,7 @@ function FormInput(props) {
                 extraStyles={props.extraStyles}
                 required={props.required}
                 typeOverride="password"
+                autoComplete={props.autoComplete}
             />
             break;
         case "checkbox":
@@ -82,6 +85,7 @@ function FormInput(props) {
                 required={props.required}
                 min={props.min}
                 max={props.max}
+                autoComplete={props.autoComplete}
             />
             break;
         default:
@@ -92,12 +96,14 @@ function FormInput(props) {
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
                 required={props.required}
+                autoComplete={props.autoComplete}
             />
             break;
     }
 
     return(
         <div 
+            aria-invalid={props.errors?.[props.for]}
             className={`input-field my-1 md:my-4 flex 
                 flex-${props.row ? "row" : "col"}
                 ${props.errors?.[props.for] ? "error animate-shake-x" : ""}`}
@@ -109,8 +115,9 @@ function FormInput(props) {
     )
 }
 
-const INPUT_STYLES = `rounded border-2 border-slate-200 px-1 py-0.5 
-    w-full my-0.5 focus:border-blue-400 outline-0 transition-all text-black`
+const INPUT_STYLES = `rounded border-2 border-slate-300 px-1 py-0.5 
+    w-full my-0.5 focus:border-blue-500 dark-input outline-0 
+    transition-all text-black`
 
 function FormTextArea(props) {
     return(
@@ -136,6 +143,7 @@ function FormText(props) {
             id={`${props.for}`}
             type={props.typeOverride || "text"}
             className={`${INPUT_STYLES} ${props.extraStyles}`}
+            autoComplete={props.autoComplete}
         />
     )
 }
@@ -165,6 +173,7 @@ function FormNumber(props) {
             className={`${INPUT_STYLES} ${props.extraStyles}`}
             min={props.min}
             max={props.max}
+            autoComplete={props.autoComplete}
         />
     )
 }
