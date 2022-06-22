@@ -92,6 +92,7 @@ function EditSpecifiedOrder(props) {
             </div>
             <FormInput
                 for="correctAnswer" 
+                required={true}
                 onChange={onChange}
                 placeholder="Correct Answer"
                 value={data.correctAnswer}

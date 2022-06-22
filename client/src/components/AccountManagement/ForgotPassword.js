@@ -60,9 +60,10 @@ function ForgotPassword(props) {
                     <FormInput 
                         for="email"
                         onChange={e => setEmail(e.target.value) }
-                        value={ email }
-                        errors={ errors }
+                        value={email}
+                        errors={errors}
                         type="text"
+                        required={true}
                     />
                     <FormSubmitButton for="forgot-password" text="Submit" />
                 </form>

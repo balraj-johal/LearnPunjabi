@@ -136,7 +136,7 @@ function AnimatedWrapper(props) {
     });
 
     return(
-        <animated.div 
+        <animated.main 
             style={spring}
             className={`task w-full h-full min-h-[450px] md:min-h-[400px]
                 relative px-6 pt-16 pb-10 sm:p-10 lg:px-14 text-black 
@@ -145,7 +145,7 @@ function AnimatedWrapper(props) {
             `} 
         >
             { props.task }
-        </animated.div>
+        </animated.main>
     )
 }
 

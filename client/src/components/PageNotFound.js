@@ -3,7 +3,7 @@ import React from "react";
 
 function PageNotFound(props) {
     return(
-        <div style={{
+        <main style={{
             width: "100%",
             height: "100%",
             display: "flex",
@@ -11,7 +11,7 @@ function PageNotFound(props) {
             justifyContent: "center"
         }}>
             Page not found! :\
-        </div>
+        </main>
     )
 }
 

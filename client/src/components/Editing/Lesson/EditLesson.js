@@ -265,7 +265,7 @@ function EditLesson(props) {
             >
                 &lt; back to overview
             </Link>
-            <div className="w-screen mx-auto
+            <main className="w-screen mx-auto
                     flex justify-center pt-10 mb-10">
                 <form 
                     className="edit-lesson-form w-8/12" 
@@ -276,6 +276,7 @@ function EditLesson(props) {
                     <FormTitle text={`Edit Lesson ${lesson.name}`} />
                     <FormInput
                         for="name" 
+                        required={true}
                         onChange={onChange}
                         placeholder={"Lesson Name"}
                         value={lesson.name}
@@ -284,6 +285,7 @@ function EditLesson(props) {
                     />
                     <FormInput
                         for="requiredCompletions" 
+                        required={true}
                         onChange={onChange}
                         value={lesson.requiredCompletions}
                         type="number" 
@@ -291,23 +293,28 @@ function EditLesson(props) {
                     /> 
                     <FormInput
                         for="shuffle" 
+                        required={true}
                         onChange={onChange}
                         value={lesson.shuffle}
                         type="checkbox"
                         row={true}
                         errors={errors}
                     /> 
-                    { lesson.shuffle ? <FormInput
-                        for="noToSample" 
-                        onChange={onChange}
-                        value={lesson.noToSample}
-                        type="number" 
-                        min={0}
-                        max={lesson.tasks.length}
-                        errors={errors}
-                    /> : null }
+                    { lesson.shuffle ? 
+                        <div aria-live="assertive">
+                            <FormInput
+                                for="noToSample" 
+                                onChange={onChange}
+                                value={lesson.noToSample}
+                                type="number" 
+                                min={0}
+                                max={lesson.tasks.length}
+                                errors={errors}
+                            />
+                        </div> : null }
                     <FormInput
                         for="showInterstitials" 
+                        required={true}
                         onChange={onChange}
                         value={lesson.showInterstitials}
                         type="checkbox"
@@ -316,6 +323,7 @@ function EditLesson(props) {
                     /> 
                     <FormInput
                         for="showPercentCorrect" 
+                        required={true}
                         onChange={onChange}
                         value={lesson.showPercentCorrect}
                         type="checkbox"
@@ -352,7 +360,7 @@ function EditLesson(props) {
                         text="Submit Lesson" 
                     />
                 </form>
-            </div>
+            </main>
         </>
     )
 }

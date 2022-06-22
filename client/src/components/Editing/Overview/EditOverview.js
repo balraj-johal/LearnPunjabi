@@ -74,7 +74,7 @@ function EditOverview(props) {
 
     if (!ready) return <Loader />;
     return(
-        <div className="edit-wrap bg-white h-full flex flex-col items-center justify-center shadow-xl">
+        <main className="edit-wrap bg-white h-full flex flex-col items-center justify-center shadow-xl">
             {courseData.map((lesson, index) => 
                 <EditOverviewEntry
                     lesson={lesson}
@@ -86,7 +86,7 @@ function EditOverview(props) {
                 />
             )}
             <EditOverviewEntry lesson={NEW_LESSON} new={true} />
-        </div>
+        </main>
     )
 }
 

@@ -199,6 +199,7 @@ function SpecifiedOrder(props) {
                                 <ol 
                                     id="answers"
                                     aria-label="selected-answers"
+                                    aria-live="assertive"
                                     {...provided.droppableProps} 
                                     ref={provided.innerRef}
                                 >
@@ -226,6 +227,7 @@ function SpecifiedOrder(props) {
                             className="possiblities-wrap" 
                             id="possibilites"
                             aria-label="possible-answers"
+                            aria-live="assertive"
                         >
                             {possibleFrags.map((data, index) => 
                                 <SpecOrderAnswerFrag 

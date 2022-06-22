@@ -73,6 +73,7 @@ function EditTask(props) {
                 <FormInput 
                     type="taskType" 
                     for="taskType" 
+                    required={true}
                     value={task.type} 
                     onChange={onChange} 
                     errors={props.errors[task.taskID]} 
@@ -80,6 +81,7 @@ function EditTask(props) {
                 <FormInput 
                     type="textarea" 
                     for="text" 
+                    required={true}
                     value={task.text} 
                     onChange={onChange} 
                     errors={props.errors[task.taskID]} 

@@ -64,7 +64,7 @@ function NextButton(props) {
                     props.next();
                 }}
             >
-                {props.text || "Next"} &gt;
+                {props.text || "Next Task"} &gt;
             </button>
         </div>
     );

@@ -27,10 +27,6 @@ function Welcome(props) {
     // initialise listeners for scroll tracking
     const top = useRef();
     const scrollArea = useRef();
-    const welcome1 = useRef();
-    const welcome2 = useRef();
-    const welcome3 = useRef();
-    const welcome4 = useRef();
 
     const onScroll = e => { 
         top.current = e.target.scrollTop;
@@ -63,16 +59,16 @@ function Welcome(props) {
                 <AccountManager />
             </div>
         </div> }
-            <div 
+            <main 
                 id="welcome" 
                 ref={scrollArea} 
                 onScroll={onScroll} 
                 // scrollTop={scroll}
             >
                 <div 
+                    aria-label="Welcome section, including start learning button and example lesson link"
                     id="welcome-1" 
                     className="welcome-div grad-top h-full"
-                    ref={welcome1}
                 >
                     <WelcomeLogo />
                     <RiversTop />
@@ -84,9 +80,9 @@ function Welcome(props) {
                 </div>
 
                 <div 
+                    aria-label="Example Lesson"
                     id="welcome-2" 
                     className="welcome-div grad-mid h-full"
-                    ref={welcome2}
                 >
                     <Lesson lessonOverride={EXAMPLE_LESSON} />
                     <RiversMid />
@@ -96,21 +92,20 @@ function Welcome(props) {
                     />
                 </div>
                 <div 
+                    aria-label="3D animation of Punjab's history through the years"
                     id="welcome-3" 
                     className="welcome-div grad-mid h-full"
-                    ref={welcome3}
                 >
                     <PunjabInfoWrapper ref={top} />
                 </div>
                 <div 
-                    id="welcome-4" 
+                    id="welcome-end" 
                     className="welcome-div grad-end h-full"
-                    ref={welcome4}
                 >
                     <RiversEnd />
                     <Footer />
                 </div>
-            </div>
+            </main>
         </>
     )
 }

@@ -54,6 +54,7 @@ function Login(props) {
                     value={ username }
                     errors={ props.errors }
                     type="username"
+                    required={true}
                     labelOverride="Username/Email"
                 />
                 <FormInput 
@@ -61,6 +62,7 @@ function Login(props) {
                     onChange={ e => setPassword(e.target.value) }
                     value={ password }
                     errors={ props.errors }
+                    required={true}
                     type="password"
                 />
                 <FormError 

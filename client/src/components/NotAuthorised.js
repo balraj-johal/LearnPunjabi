@@ -3,7 +3,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 function NotAuthorised(props) {
     return(
-        <div style={{
+        <main style={{
             width: "100%",
             height: "100%",
             display: "flex",
@@ -11,7 +11,7 @@ function NotAuthorised(props) {
             justifyContent: "center"
         }}>
             You do not have the required permissions for this action.
-        </div>
+        </main>
     )
 }
 

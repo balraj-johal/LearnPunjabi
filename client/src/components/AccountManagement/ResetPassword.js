@@ -61,6 +61,7 @@ function ResetPassword(props) {
                     <FormInput 
                         for="email"
                         onChange={e => setEmail(e.target.value)}
+                        required={true}
                         value={email}
                         errors={errors}
                         type="text"
@@ -69,6 +70,7 @@ function ResetPassword(props) {
                         for="newPassword"
                         onChange={e => setNewPW(e.target.value)}
                         value={newPW}
+                        required={true}
                         errors={errors}
                         type="password"
                     />

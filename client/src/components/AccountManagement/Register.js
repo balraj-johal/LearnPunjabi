@@ -69,6 +69,7 @@ function Register(props) {
                         for="username"
                         onChange={e => setUsername(e.target.value)}
                         value={username}
+                        required={true}
                         errors={errors}
                         type="username"
                     />
@@ -76,6 +77,7 @@ function Register(props) {
                         for="email"
                         onChange={e => setEmail(e.target.value)}
                         value={email}
+                        required={true}
                         errors={errors}
                         type="text"
                     />
@@ -83,6 +85,7 @@ function Register(props) {
                         for="password"
                         onChange={e => setPassword(e.target.value)}
                         value={password}
+                        required={true}
                         errors={errors}
                         type="password"
                     />
@@ -90,6 +93,7 @@ function Register(props) {
                         for="confirmPassword"
                         onChange={e => setConfirmPassword(e.target.value)}
                         value={confirmPassword}
+                        required={true}
                         errors={errors}
                         type="password"
                     />
