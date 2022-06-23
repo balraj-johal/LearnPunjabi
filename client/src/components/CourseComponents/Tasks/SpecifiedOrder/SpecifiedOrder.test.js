@@ -77,15 +77,16 @@ it('handles wrong answer correctly', async () => {
     render(<SpecifiedOrder data={{...testData, audioLink: null}} />);
     const frag = screen.getByText(/1/i);
     fireEvent.click(frag);
-    const selectedAnswerList = screen.getByRole("list", { 
-        name: /selected-answers/i
-    });
     await waitFor(() => {
         const button = screen.getByRole("button", { name: /Check Answer/i });
         fireEvent.click(button);
-        
-        const { getAllByTestId } = within(selectedAnswerList);
-        const items = getAllByTestId("selected-answer");
+    });
+    await waitFor(() => {
+        const selectedAnswerList = screen.getByRole("list", { 
+            name: /selected-answers/i
+        });
+        const { queryAllByRole } = within(selectedAnswerList);
+        const items = queryAllByRole("button");
         const itemNames = items.map(item => item.textContent);
         expect(itemNames).toEqual([]);
     });

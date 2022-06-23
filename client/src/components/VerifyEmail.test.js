@@ -45,22 +45,19 @@ it('shows success message for a valid code', async () => {
         screen.getByText(/verification successful/i);
     })
 })
-it('redirects for a valid code', async () => {
+it('shows login link for valid code', async () => {
     render(
         <MemoryRouter initialEntries={["/account/verify-email/1234a"]} >
             <Routes>
                 <Route path="/account/verify-email/:code" element={
                     <VerifyEmail />
                 } />
-                <Route path="/account" element={
-                    <p>account</p>
-                } />
             </Routes>
         </MemoryRouter>
     );
 
     await waitFor(() => {
-        screen.getByText(/account/i);
+        screen.getByRole("link", {name: /login/i});
     }, { timeout: 5000 })
 })
 it('shows failure message for an invalid code', async () => {
@@ -75,6 +72,6 @@ it('shows failure message for an invalid code', async () => {
     );
 
     await waitFor(() => {
-        screen.getByText(/verification not successful/i);
+        screen.getByText(/verification unsuccessful/i);
     })
 })

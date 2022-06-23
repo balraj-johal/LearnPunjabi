@@ -6,7 +6,8 @@ import twitterIcon from "../../res/icons/socials/twitter.png";
 function Footer(props) {
     return(
         <footer 
-            id="footer" 
+            id="footer"
+            role="footer"
             className="absolute bottom-0 h-1/4 bg-black bg-opacity-20 w-full
                 flex flex-col justify-center px-8"
         >

@@ -58,5 +58,8 @@ it('apply selected class on click', async () => {
 })
 it('handles wrong answer correctly', async () => {
     render(<MultipleChoice data={testData} handleCorrect={mockHandleCorrect} handleWrong={mockHandleWrong} />);
-    expect(1).toBe(0);
+    const answers = screen.getAllByRole("button");
+    answers.forEach(answer => {
+        expect(answer.classList.contains("chosen")).toBe(false);
+    });
 })

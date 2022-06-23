@@ -23,7 +23,7 @@ function SpecifiedOrder(props) {
     let resetTask = useCallback(() => {
         setChosenFrags([]);
         setPossibleFrags(props.data.possibleAnswers);
-    })
+    }, [props.data])
     // initialise state when task data changes
     useEffect(() => {
         resetTask();
@@ -36,12 +36,12 @@ function SpecifiedOrder(props) {
         if (getAnswerString().includes(props.data.correctAnswer)) {
             props.handleCorrect();
         } else {
+            resetTask();
+            props.handleWrong();
             setFocusTargetData({
                 onPossibleList: true,
                 index: 0
             });
-            props.handleWrong();
-            resetTask();
         }
     }
 
@@ -284,7 +284,7 @@ function SpecifiedOrder(props) {
                     </div>
                 </div>
             </div>
-            <NextButton next={() => {checkAnswer()}} text="Check Answer" />
+            <NextButton next={() => {checkAnswer(); console.log("checked")}} text="Check Answer" />
         </>
     );
 }
