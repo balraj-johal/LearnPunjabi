@@ -44,3 +44,18 @@
 .account-switcher[fadein="2"] {
     opacity: 1;
 }
+
+.account-tab {
+    &:first-child {
+        transform: translateX(-5px);
+    }
+    &::before {
+        content: "●";
+        position: relative;
+        transform: scale(0.5) translate(-10px, -2.5px);
+        opacity: 0;
+    }
+    &.selected::before {
+        opacity: 0.35;
+    }
+}

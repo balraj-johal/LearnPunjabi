@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -285,10 +286,6 @@ button:disabled:hover {
     width: 70%;
     max-width: 900px;
     margin: 50px auto;
-    min-height: 70vh;
-    min-height: calc(var(--vh, 1vh) * 70);
-    max-height: 80vh;
-    max-height: calc(var(--vh, 1vh) * 80);
   }
 }
 
@@ -311,6 +308,23 @@ button:disabled:hover {
 
 .account-switcher[fadein="2"] {
   opacity: 1;
+}
+
+.account-tab:first-child {
+  -webkit-transform: translateX(-5px);
+          transform: translateX(-5px);
+}
+
+.account-tab::before {
+  content: "●";
+  position: relative;
+  -webkit-transform: scale(0.5) translate(-10px, -2.5px);
+          transform: scale(0.5) translate(-10px, -2.5px);
+  opacity: 0;
+}
+
+.account-tab.selected::before {
+  opacity: 0.35;
 }
 
 .lesson-wrap {
