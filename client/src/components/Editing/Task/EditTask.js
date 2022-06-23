@@ -53,10 +53,11 @@ function EditTask(props) {
     }
 
     return(
-        <div className="edit-task flex flex-col items-center relative
+        <fieldset className="edit-task flex flex-col items-center relative
                 rounded border-2 border-black p-4 first:my-4 my-8" 
             id={`edit-task-${task.taskID}`}
         >
+            <legend>Task {task.taskID}</legend>
             <UpDownShifter 
                 shuffle={props.shuffle} 
                 listEndsState={props.listEndsState} 
@@ -66,7 +67,8 @@ function EditTask(props) {
                 index={props.index}
             />
             <button 
-                className="absolute top-0 right-0 text-md text-red-400 my-2 mx-3" 
+                className="absolute top-0 right-0 text-md 
+                    text-red-400 my-2 mx-3" 
                 onClick={() => { props.deleteTask(task.taskID) }}
             >delete</button>
             <div className="w-5/12">
@@ -108,7 +110,7 @@ function EditTask(props) {
                     errors={props.errors[task.taskID]}
                 />
             </div>
-        </div>
+        </fieldset>
     )
 }
 

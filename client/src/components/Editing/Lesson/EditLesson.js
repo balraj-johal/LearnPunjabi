@@ -275,62 +275,65 @@ function EditLesson(props) {
                     onSubmit={onSubmit}
                 >
                     <FormTitle text={`Edit Lesson ${lesson.name}`} />
-                    <FormInput
-                        for="name" 
-                        required={true}
-                        onChange={onChange}
-                        placeholder={"Lesson Name"}
-                        value={lesson.name}
-                        type="text"
-                        errors={errors}
-                    />
-                    <FormInput
-                        for="requiredCompletions" 
-                        required={true}
-                        onChange={onChange}
-                        value={lesson.requiredCompletions}
-                        type="number" 
-                        errors={errors}
-                    /> 
-                    <FormInput
-                        for="shuffle" 
-                        required={true}
-                        onChange={onChange}
-                        value={lesson.shuffle}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
-                    { lesson.shuffle ? 
-                        <div aria-live="assertive">
-                            <FormInput
-                                for="noToSample" 
-                                onChange={onChange}
-                                value={lesson.noToSample}
-                                type="number" 
-                                min={0}
-                                max={lesson.tasks.length}
-                                errors={errors}
-                            />
-                        </div> : null }
-                    <FormInput
-                        for="showInterstitials" 
-                        required={true}
-                        onChange={onChange}
-                        value={lesson.showInterstitials}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
-                    <FormInput
-                        for="showPercentCorrect" 
-                        required={true}
-                        onChange={onChange}
-                        value={lesson.showPercentCorrect}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
+                    <fieldset>
+                        <legend className="visually-hidden">Lesson Info</legend>
+                        <FormInput
+                            for="name" 
+                            required={true}
+                            onChange={onChange}
+                            placeholder={"Lesson Name"}
+                            value={lesson.name}
+                            type="text"
+                            errors={errors}
+                        />
+                        <FormInput
+                            for="requiredCompletions" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.requiredCompletions}
+                            type="number" 
+                            errors={errors}
+                        /> 
+                        <FormInput
+                            for="shuffle" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.shuffle}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                        { lesson.shuffle ? 
+                            <div aria-live="assertive">
+                                <FormInput
+                                    for="noToSample" 
+                                    onChange={onChange}
+                                    value={lesson.noToSample}
+                                    type="number" 
+                                    min={0}
+                                    max={lesson.tasks.length}
+                                    errors={errors}
+                                />
+                            </div> : null }
+                        <FormInput
+                            for="showInterstitials" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.showInterstitials}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                        <FormInput
+                            for="showPercentCorrect" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.showPercentCorrect}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                    </fieldset>
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (
