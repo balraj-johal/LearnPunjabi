@@ -5,12 +5,12 @@ import Leaderboard from "./SidebarComponents/Leaderboard";
 
 function Sidebar(props) {
     return(
-        <div 
+        <aside 
             className="sidebar bg-white dark-primary relative" 
             style={{height: props.lessonWrapHeight}}
         >
             <Leaderboard />
-        </div>
+        </aside>
     )
 }
 

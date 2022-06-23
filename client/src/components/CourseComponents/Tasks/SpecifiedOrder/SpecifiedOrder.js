@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
@@ -8,7 +8,12 @@ import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
 
 function SpecifiedOrder(props) {
-    let [order, setOrder] = useState([]);
+    let focusTarget = useRef();
+    let [focusTargetData, setFocusTargetData] = useState({
+        onPossibleList: true,
+        index: 0
+    });
+    let [chosenFrags, setChosenFrags] = useState([]);
     let [possibleFrags, setPossibleFrags] = useState([]);
     let [animatingFrags, setAnimatingFrags] = useState([]);
 
@@ -16,7 +21,7 @@ function SpecifiedOrder(props) {
      *  @name resetTask
      */
     let resetTask = useCallback(() => {
-        setOrder([]);
+        setChosenFrags([]);
         setPossibleFrags(props.data.possibleAnswers);
     })
     // initialise state when task data changes
@@ -31,6 +36,10 @@ function SpecifiedOrder(props) {
         if (getAnswerString().includes(props.data.correctAnswer)) {
             props.handleCorrect();
         } else {
+            setFocusTargetData({
+                onPossibleList: true,
+                index: 0
+            });
             props.handleWrong();
             resetTask();
         }
@@ -44,10 +53,10 @@ function SpecifiedOrder(props) {
     let handleDragEnd = (result) => {
         // return if user drags elem out of bounds
         if (!result.destination) return;
-        const updatedOrder = [...order];
+        const updatedOrder = [...chosenFrags];
         const [updatedItem] = updatedOrder.splice(result.source.index, 1);
         updatedOrder.splice(result.destination.index, 0, updatedItem);
-        setOrder(updatedOrder);
+        setChosenFrags(updatedOrder);
     }
     /**
      * get the string containing the current answer state
@@ -56,7 +65,7 @@ function SpecifiedOrder(props) {
      */
     let getAnswerString = () => {
         let str = "";
-        order.forEach(elem => {
+        chosenFrags.forEach(elem => {
             str += elem.text
         })
         return str;
@@ -66,11 +75,12 @@ function SpecifiedOrder(props) {
      * @param {Object} frag - answer fragment
      */
     let addToOrder = (frag) => {
-        setOrder(order.concat([frag]));
+        setChosenFrags(chosenFrags.concat([frag]));
         setPossibleFrags(possibleFrags.filter(elem => {
             return elem !== frag;
         }));
         setAnimatingFrags(animatingFrags.concat([frag]));
+        shiftFocusBack();
     }
 
     /** Removes specified fragment from user's answer
@@ -78,11 +88,12 @@ function SpecifiedOrder(props) {
      * @param {Object} frag - answer fragment
      */
     let removeFromOrder = (frag) => {
-        setOrder(order.filter(elem => {
+        setChosenFrags(chosenFrags.filter(elem => {
             return elem !== frag;
         }));
         setPossibleFrags(possibleFrags.concat([frag]));
         setAnimatingFrags(animatingFrags.concat([frag]));
+        shiftFocusBack();
     }
 
     /** Removes specified fragment from animating list
@@ -94,6 +105,94 @@ function SpecifiedOrder(props) {
             return elem !== frag;
         }));
     }
+    
+    /**
+     * Implements keyboard controls by updating which answer has the focus target ref
+     * @name updateFocus
+     * @param {String} direction - "left" or "right"
+     */
+    let handleArrowKeys = (direction) => {
+        let newIndex = 0;
+        switch (direction) {
+            case "left":
+                newIndex = focusTargetData.index -= 1;
+                console.log("left");
+                if (newIndex < 0) {
+                    console.log("<0");
+                    if (focusTargetData.onPossibleList) {
+                        newIndex = possibleFrags.length - 1;
+                    } else {
+                        newIndex = chosenFrags.length - 1;
+                    }
+                }
+                setFocusTargetData({...focusTargetData, index: newIndex});
+                break;
+            case "right":
+                newIndex = focusTargetData.index += 1;
+                if (focusTargetData.onPossibleList) {
+                    if (newIndex > possibleFrags.length - 1) newIndex = 0;
+                    setFocusTargetData({...focusTargetData, index: newIndex});
+                } else {
+                    if (newIndex > chosenFrags.length - 1) newIndex = 0;
+                    setFocusTargetData({...focusTargetData, index: newIndex});
+                }
+                break;
+            case "down":
+                switchFocusBetweenLists();
+                break;
+            case "up":
+                switchFocusBetweenLists();
+                break;
+            default:
+                break;
+        }
+    }
+
+    let switchFocusBetweenLists = () => {
+        if (possibleFrags.length < 1) return;
+        if (chosenFrags.length < 1) return;
+        setFocusTargetData({
+            onPossibleList: !focusTargetData.onPossibleList, 
+            index: 0
+        })
+    }
+
+    // if focused list is empty, switch focus to other list
+    useEffect(() => {
+        if (possibleFrags.length < 1) setFocusTargetData({
+            onPossibleList: false, 
+            index: 0
+        })
+    }, [possibleFrags])
+    useEffect(() => {
+        if (chosenFrags.length < 1) setFocusTargetData({
+            onPossibleList: true, 
+            index: 0
+        })
+    }, [chosenFrags])
+
+    /**
+     * on each change to a task answer list, 
+     * move focus back to the preceeding answer fragment
+     * @name shiftFocusBack
+     */
+    let shiftFocusBack = () => {
+        let newIndex = focusTargetData.index -= 1;
+        console.log(possibleFrags)
+        if (newIndex < 0) {
+            newIndex = 0;
+        } else {
+            setFocusTargetData({
+                ...focusTargetData, 
+                index: newIndex
+            });
+        };
+    }
+    // when focus target changes, focus on that element
+    useEffect(() => {
+        if (!focusTarget.current) return;
+        focusTarget.current.focus();
+    }, [focusTargetData])
 
     return(
         <>
@@ -106,7 +205,10 @@ function SpecifiedOrder(props) {
                 <div className="title w-full h-1/6 md:h-2/6 px-0
                     flex flex-row justify-start items-center"
                 >
-                    <AudioClip src={props.data.audioLink} />
+                    <AudioClip 
+                        src={props.data.audioLink} 
+                        transcript={props.data.audioTranscript} 
+                    />
                     <span className={`pr-[30%] lg:text-xl
                         ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
                     >
@@ -126,19 +228,24 @@ function SpecifiedOrder(props) {
                                     {...provided.dragHandleProps}
                                     ref={provided.innerRef}
                                 >
-                                    {order[rubric.source.index].text}
+                                    {chosenFrags[rubric.source.index].text}
                                 </div>
                             )}
                         >
                             {(provided) => (
-                                <ul 
+                                <ol 
                                     id="answers"
                                     aria-label="selected-answers"
+                                    aria-live="assertive"
                                     {...provided.droppableProps} 
                                     ref={provided.innerRef}
                                 >
-                                    { order.map((data, index) => 
+                                    { chosenFrags.map((data, index) => 
                                         <DraggableAnswerFrag 
+                                            ref={!focusTargetData.onPossibleList 
+                                                && focusTargetData.index === index ? focusTarget : null}
+                                            handleArrowKeys={handleArrowKeys}
+                                            setFocusTargetData={setFocusTargetData}
                                             animating={animatingFrags.includes(data)}
                                             removeAnimatingFrag={removeAnimatingFrag}
                                             possible={data}
@@ -148,27 +255,32 @@ function SpecifiedOrder(props) {
                                         />
                                     ) }
                                     {provided.placeholder}
-                                </ul>
+                                </ol>
                             )}
                         </Droppable>
                     </DragDropContext>
                     <div id="possible-fragments">
-                        <ul 
+                        <ol 
                             className="possiblities-wrap" 
                             id="possibilites"
                             aria-label="possible-answers"
+                            aria-live="assertive"
                         >
                             {possibleFrags.map((data, index) => 
                                 <SpecOrderAnswerFrag 
+                                    ref={focusTargetData.onPossibleList 
+                                        && focusTargetData.index === index ? focusTarget : null}
                                     animating={animatingFrags.includes(data)}
                                     removeAnimatingFrag={removeAnimatingFrag}
+                                    handleArrowKeys={handleArrowKeys}
+                                    setFocusTargetData={setFocusTargetData}
                                     possible={data}
                                     key={index}
                                     index={index}
                                     addToOrder={addToOrder}
                                 />
                             )}
-                        </ul>
+                        </ol>
                     </div>
                 </div>
             </div>

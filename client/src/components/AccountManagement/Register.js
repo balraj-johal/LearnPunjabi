@@ -65,10 +65,18 @@ function Register(props) {
                 <RegistrationSuccess />
             ) : (
                 <form className="register-form" noValidate onSubmit={onSubmit} >
+                    <h1 className="visually-hidden">Register</h1>
+                    <div className="visually-hidden" aria-live="polite">
+                        <h2>Form Errors</h2>
+                        {Object.values(errors).map(error => (
+                            <p key={error}>{error}</p>
+                        ))}
+                    </div>
                     <FormInput 
                         for="username"
                         onChange={e => setUsername(e.target.value)}
                         value={username}
+                        required={true}
                         errors={errors}
                         type="username"
                     />
@@ -76,20 +84,25 @@ function Register(props) {
                         for="email"
                         onChange={e => setEmail(e.target.value)}
                         value={email}
+                        required={true}
                         errors={errors}
                         type="text"
+                        autoComplete="email"
                     />
                     <FormInput 
                         for="password"
                         onChange={e => setPassword(e.target.value)}
                         value={password}
+                        required={true}
                         errors={errors}
                         type="password"
+                        autoComplete="new-password"
                     />
                     <FormInput 
                         for="confirmPassword"
                         onChange={e => setConfirmPassword(e.target.value)}
                         value={confirmPassword}
+                        required={true}
                         errors={errors}
                         type="password"
                     />
@@ -103,12 +116,15 @@ function Register(props) {
 
 function RegistrationSuccess(props) {
     return(
-        <div className="flex items-center justify-evenly flex-col w-full h-full">
+        <div 
+            className="flex items-center justify-evenly flex-col w-full h-full" 
+            aria-live="assertive"
+        >
             <p className="w-4/6">
                 Your registration was successful! Please check your provided
                 email for your verification link!
             </p>
-            <p className="text-red">
+            <p className="text-red w-4/6">
                 Please check your spam/junk folders! Our emails
                 often get lost in there :/
             </p>

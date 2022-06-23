@@ -53,7 +53,11 @@ function EditLesson(props) {
     useEffect(() => {
         window.addEventListener("beforeunload", handleUnload);
         return () => { window.removeEventListener("beforeunload", handleUnload)};
-    });
+    }, []);
+
+    useEffect(() => { 
+        document.title = `Learn Punjabi - Edit ${String(id)}`
+    }, []);
     
     // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
@@ -203,6 +207,7 @@ function EditLesson(props) {
             type: "TextOnly",
             audioFilename: "",
             audio: {name: ""},
+            audioTranscript: "",
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
@@ -265,8 +270,9 @@ function EditLesson(props) {
             >
                 &lt; back to overview
             </Link>
-            <div className="w-screen mx-auto
+            <main className="w-screen mx-auto
                     flex justify-center pt-10 mb-10">
+                <h1 className="visually-hidden">Edit Lesson {lesson.name}</h1>
                 <form 
                     className="edit-lesson-form w-8/12" 
                     id="edit-lesson"
@@ -274,54 +280,65 @@ function EditLesson(props) {
                     onSubmit={onSubmit}
                 >
                     <FormTitle text={`Edit Lesson ${lesson.name}`} />
-                    <FormInput
-                        for="name" 
-                        onChange={onChange}
-                        placeholder={"Lesson Name"}
-                        value={lesson.name}
-                        type="text"
-                        errors={errors}
-                    />
-                    <FormInput
-                        for="requiredCompletions" 
-                        onChange={onChange}
-                        value={lesson.requiredCompletions}
-                        type="number" 
-                        errors={errors}
-                    /> 
-                    <FormInput
-                        for="shuffle" 
-                        onChange={onChange}
-                        value={lesson.shuffle}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
-                    { lesson.shuffle ? <FormInput
-                        for="noToSample" 
-                        onChange={onChange}
-                        value={lesson.noToSample}
-                        type="number" 
-                        min={0}
-                        max={lesson.tasks.length}
-                        errors={errors}
-                    /> : null }
-                    <FormInput
-                        for="showInterstitials" 
-                        onChange={onChange}
-                        value={lesson.showInterstitials}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
-                    <FormInput
-                        for="showPercentCorrect" 
-                        onChange={onChange}
-                        value={lesson.showPercentCorrect}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
+                    <fieldset>
+                        <legend className="visually-hidden">Lesson Info</legend>
+                        <FormInput
+                            for="name" 
+                            required={true}
+                            onChange={onChange}
+                            placeholder={"Lesson Name"}
+                            value={lesson.name}
+                            type="text"
+                            errors={errors}
+                        />
+                        <FormInput
+                            for="requiredCompletions" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.requiredCompletions}
+                            type="number" 
+                            errors={errors}
+                        /> 
+                        <FormInput
+                            for="shuffle" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.shuffle}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                        { lesson.shuffle ? 
+                            <div aria-live="assertive">
+                                <FormInput
+                                    for="noToSample" 
+                                    onChange={onChange}
+                                    value={lesson.noToSample}
+                                    type="number" 
+                                    min={0}
+                                    max={lesson.tasks.length}
+                                    errors={errors}
+                                />
+                            </div> : null }
+                        <FormInput
+                            for="showInterstitials" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.showInterstitials}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                        <FormInput
+                            for="showPercentCorrect" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.showPercentCorrect}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                    </fieldset>
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (
@@ -352,7 +369,7 @@ function EditLesson(props) {
                         text="Submit Lesson" 
                     />
                 </form>
-            </div>
+            </main>
         </>
     )
 }

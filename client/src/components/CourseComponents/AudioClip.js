@@ -7,27 +7,52 @@ function AudioClip(props) {
     let ref = useRef();
     let [playing, setPlaying] = useState(false);
 
+    /**
+     * Allows user to pause playback using the spacebar when focused.
+     * @name handleStop
+     * @param {Object} e - event
+     */
+    let handleStop = (e) => {
+        // if (!playing) return;
+        if (e.keyCode === 32 || e.keyCode === 13) {
+            e.preventDefault();
+            if (!playing) return playAudio();
+            ref.current.pause();
+            setPlaying(false);
+        }
+    }
+
+    let playAudio = () => {
+        ref.current.volume = 0.25;
+        ref.current.play();
+        setPlaying(true);
+    }
+
     if (!props.src) return null;
     return(
         <div className="audio no-highlight">
-            <audio 
+            <audio
                 id={`audio-${props.src}`} 
                 src={props.src}
                 preload="auto"
                 role="audio"
                 ref={ref}
                 onEnded={() => { setPlaying(false) }}
-                volume={0.5}
+                aria-labelledby="audio-transcript"
             />
-            <div 
+            <p className="visually-hidden" id="audio-transcript">
+                {props.transcript}
+            </p>
+            <button 
                 className={`replay-audio-button button transition-all
                     ${playing ? "bg-secondary" : "bg-primary"}`}
                 onClick={() => {
                     ref.current.currentTime = 0;
-                    ref.current.play();
-                    setPlaying(true);
+                    playAudio();
                 }}
-            >
+                onKeyDown={handleStop}
+            >   
+                <span className="visually-hidden">Play Audio</span>
                 <Lottie 
                     className="w-full h-full p-3"
                     animationData={audioAnim}
@@ -36,7 +61,7 @@ function AudioClip(props) {
                     play={playing}
                     goTo={0}
                 />
-            </div>
+            </button>
         </div>
     )
 }

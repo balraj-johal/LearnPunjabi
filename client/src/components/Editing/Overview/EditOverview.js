@@ -24,6 +24,10 @@ function EditOverview(props) {
     let [courseData, setCourseData] = useState([]);
     let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
+    useEffect(() => { 
+        document.title = `Learn Punjabi - Edit Lessons`
+    }, []);
+
     // TODO: change this to only request specific properties from the API Get Request
     // on mount retrieve all lessons
     useEffect(() => {
@@ -68,13 +72,10 @@ function EditOverview(props) {
         }
     }
 
-    // let saveUpdatedCourseData = () => {
-    //     console.log("saving: ", courseData);
-    // }
-
     if (!ready) return <Loader />;
     return(
-        <div className="edit-wrap bg-white h-full flex flex-col items-center justify-center shadow-xl">
+        <main className="edit-wrap bg-white h-full flex flex-col items-center justify-center shadow-xl">
+            <h1 className="visually-hidden">Edit Lessons</h1>
             {courseData.map((lesson, index) => 
                 <EditOverviewEntry
                     lesson={lesson}
@@ -86,7 +87,7 @@ function EditOverview(props) {
                 />
             )}
             <EditOverviewEntry lesson={NEW_LESSON} new={true} />
-        </div>
+        </main>
     )
 }
 

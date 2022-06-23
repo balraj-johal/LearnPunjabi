@@ -34,10 +34,6 @@ function NextButton(props) {
         }
     })
 
-    useEffect(() => {
-        console.log(pulsing)
-    }, [pulsing])
-
     let handleMouseMove = e => {
         // get x/y coords of mouse relative to button
         const rect = e.target.getBoundingClientRect();
@@ -52,7 +48,7 @@ function NextButton(props) {
         <div 
             ref={button}
             className="w-full flex justify-end h-1/6 pb-4 md:pb-0"
-            onMouseMove={handleMouseMove}    
+            onMouseMove={handleMouseMove}
         >
             <button 
                 id="next-task-btn"
@@ -68,7 +64,7 @@ function NextButton(props) {
                     props.next();
                 }}
             >
-                {props.text || "Next"} &gt;
+                {props.text || "Next Task"} &gt;
             </button>
         </div>
     );
