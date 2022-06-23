@@ -47,7 +47,7 @@ function TextOnlySide(props) {
         <div className={SIDE_STYLES}>
             <AudioClip 
                 src={props.data.audioLink} 
-                transcript={props.data.transcript} 
+                transcript={props.data.audioTranscript} 
             />
         </div>
     )

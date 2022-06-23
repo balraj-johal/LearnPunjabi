@@ -203,6 +203,7 @@ function EditLesson(props) {
             type: "TextOnly",
             audioFilename: "",
             audio: {name: ""},
+            audioTranscript: "",
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);

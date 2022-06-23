@@ -207,7 +207,7 @@ function SpecifiedOrder(props) {
                 >
                     <AudioClip 
                         src={props.data.audioLink} 
-                        transcript={props.data.transcript} 
+                        transcript={props.data.audioTranscript} 
                     />
                     <span className={`pr-[30%] lg:text-xl
                         ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}

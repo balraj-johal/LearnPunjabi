@@ -60,7 +60,7 @@ function MultipleChoice(props) {
                     <div className="w-full h-auto flex items-start">
                         <AudioClip 
                             src={props.data.audioLink} 
-                            transcript={props.data.transcript} 
+                            transcript={props.data.audioTranscript} 
                         />
                         <span 
                             className={`pr-[30%] lg:text-xl

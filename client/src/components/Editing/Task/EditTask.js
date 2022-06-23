@@ -95,6 +95,13 @@ function EditTask(props) {
                     onChange={onFileChange} 
                     errors={props.errors[task.taskID]} 
                 />
+                <FormInput 
+                    type="textarea"
+                    for="audioTranscript"
+                    value={task.audioTranscript}
+                    onChange={onChange}
+                    errors={props.errors[task.taskID]} 
+                />
             </div>
             <div className="answers-wrap my-4 w-10/12">
                 <EditMultipleChoice 
