@@ -9,7 +9,7 @@ const MOCK_LESSON = {
       "tasksLength": 5
 }
 
-// test not run due to inability to assert animation start frame
+// test not run due to inability to assert animation start frame -- ADDE2E
 // it('randomises water animation start', () => {
 //     render(<LessonIcon timesCompleted={1} lesson={MOCK_LESSON} />)
 // })
