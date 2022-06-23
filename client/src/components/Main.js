@@ -129,7 +129,9 @@ function Main(props) {
                         </Route>
                     </Route>
                     <Route path="welcome" >
-                        <Route path="" element={<Welcome loginQueried={props.csrf} />} />
+                        <Route path="" element={
+                            <Welcome loginQueried={props.csrf} />
+                        } />
                         <Route path="about" element={
                             <FooterPage for="About" />
                         } />

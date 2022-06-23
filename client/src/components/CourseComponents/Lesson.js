@@ -28,6 +28,10 @@ function Lesson(props) {
     });
     let [mistakeTracker, setMistakeTracker] = useState([]);
     let [noOfTasks, setNoOfTasks] = useState(0);
+
+    useEffect(() => { 
+        document.title = `Learn Punjabi - ${String(id)}`
+    }, []);
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {

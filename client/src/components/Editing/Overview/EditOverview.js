@@ -24,6 +24,10 @@ function EditOverview(props) {
     let [courseData, setCourseData] = useState([]);
     let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
+    useEffect(() => { 
+        document.title = `Learn Punjabi - Edit Lessons`
+    }, []);
+
     // TODO: change this to only request specific properties from the API Get Request
     // on mount retrieve all lessons
     useEffect(() => {

@@ -31,7 +31,8 @@ function Welcome(props) {
         top.current = e.target.scrollTop;
     };
     useEffect(() => { 
-        onScroll({ target: main.current }) ;
+        onScroll({ target: main.current });
+        document.title = "Learn Punjabi - Welcome!"
     }, []);
 
     let toggleShowAccounts = () => {

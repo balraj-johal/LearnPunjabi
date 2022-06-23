@@ -53,7 +53,11 @@ function EditLesson(props) {
     useEffect(() => {
         window.addEventListener("beforeunload", handleUnload);
         return () => { window.removeEventListener("beforeunload", handleUnload)};
-    });
+    }, []);
+
+    useEffect(() => { 
+        document.title = `Learn Punjabi - Edit ${String(id)}`
+    }, []);
     
     // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
