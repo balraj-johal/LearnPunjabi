@@ -24,7 +24,7 @@ describe('welcome page', () => {
         })
         it('shows errors when trying to login with empty fields', () => {
             cy.get('.login-form button').click();
-            cy.contains('is required').should('be.visible');
+            cy.contains('is required').should('not.be.empty');
         })
         it('logs in properly', () => {
             cy.get('#username').type("@CDawgVA2");
@@ -44,7 +44,7 @@ describe('welcome page', () => {
             cy.get('.register-form button')
                 .scrollIntoView()
                 .click();
-            cy.contains('is required').should('be.visible');
+            cy.contains('is required').should('not.be.empty');
         })
         it('successfully registers new user', () => {
             // intercept register requests
