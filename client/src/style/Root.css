@@ -578,9 +578,6 @@ button:disabled:hover {
     width: 100px;
     height: 100px;
   }
-  .multiple-choice-answer.chosen {
-    background-color: #d7d7d7;
-  }
   .middle-text {
     font-size: 1.5em !important;
   }
