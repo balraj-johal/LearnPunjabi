@@ -65,6 +65,12 @@ $plain-dark: #dedede;
         background-color: $primary-dark;
         color: white;
     }
+    .dark-input {
+        background-color: #dedede;
+        &:focus {
+            border-color: $accent-dark;
+        }
+    }
     .dark-answer {
         background-color: $secondary-dark;
         border: transparent;

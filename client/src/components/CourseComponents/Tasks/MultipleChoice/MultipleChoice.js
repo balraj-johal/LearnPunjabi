@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 import AudioClip from "../../AudioClip";
@@ -6,6 +6,8 @@ import NextButton from "../NextButton";
 import MultChoiceAnswer from "./MultChoiceAnswer";
 
 function MultipleChoice(props) {
+    let focusTarget = useRef();
+    let [focusTargetIndex, setFocusTargetIndex] = useState(0);
     let [choice, setChoice] = useState(null);
 
     // clear chosen answer when task data changes
@@ -21,9 +23,30 @@ function MultipleChoice(props) {
             props.handleCorrect();
             return;
         }
+        setFocusTargetIndex(0);
         props.handleWrong();
         setChoice(null);
     }
+
+    /**
+     * Implements keyboard controls by updating which answer has the focus target ref
+     * @name updateFocus
+     * @param {String} direction - "left" or "right"
+     */
+    let handleArrowKeys = (direction) => {
+        let newIndex = 0;
+        if (direction === "left") {
+            newIndex = focusTargetIndex -= 1;
+            if (newIndex < 0) newIndex = props.data.possibleAnswers.length - 1;
+        } else if (direction === "right") {
+            newIndex = focusTargetIndex += 1;
+            if (newIndex > props.data.possibleAnswers.length - 1) newIndex = 0;
+        }
+        setFocusTargetIndex(newIndex);
+    }
+    useEffect(() => {
+        focusTarget.current.focus();
+    }, [focusTargetIndex])
 
     return(
         <>
@@ -35,23 +58,31 @@ function MultipleChoice(props) {
                     flex flex-row justify-start items-center"
                 >
                     <div className="w-full h-auto flex items-start">
-                        <AudioClip src={props.data.audioLink} />
-                        <span className={`pr-[30%] lg:text-xl
-                            ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
+                        <AudioClip 
+                            src={props.data.audioLink} 
+                            transcript={props.data.audioTranscript} 
+                        />
+                        <span 
+                            className={`pr-[30%] lg:text-xl
+                                ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
                         >
                             { props.data.text }
                         </span>
                     </div>
                 </div>
-                <div className={`answers-wrap h-5/6 md:h-4/6 py-2 items-center md:flex-row 
+                <div className={`answers-wrap h-5/6 py-2 items-center
+                    md:h-4/6 md:flex-row 
                     flex-col ${props.animClasses}`}
                 >
                     { props.data.possibleAnswers.map((possible, index) => 
                         <MultChoiceAnswer 
-                            chosen={(choice === index) ? true : false}
+                            ref={index === focusTargetIndex ? focusTarget : null}
+                            chosen={choice === index ? true : false}
                             setChoice={setChoice}
+                            handleArrowKeys={handleArrowKeys}
+                            setFocusTargetIndex={setFocusTargetIndex}
                             possible={possible} 
-                            key={index}
+                            key={possible.middleText}
                             index={index}
                         />
                     ) }

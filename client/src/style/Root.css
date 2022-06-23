@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,6 +62,13 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .fadeIn, .fade-in, .move-down, .move-up, .bounce-y, .shake-x {
+    -webkit-animation: none !important;
+            animation: none !important;
   }
 }
 
@@ -278,10 +286,6 @@ button:disabled:hover {
     width: 70%;
     max-width: 900px;
     margin: 50px auto;
-    min-height: 70vh;
-    min-height: calc(var(--vh, 1vh) * 70);
-    max-height: 80vh;
-    max-height: calc(var(--vh, 1vh) * 80);
   }
 }
 
@@ -304,6 +308,23 @@ button:disabled:hover {
 
 .account-switcher[fadein="2"] {
   opacity: 1;
+}
+
+.account-tab:first-child {
+  -webkit-transform: translateX(-5px);
+          transform: translateX(-5px);
+}
+
+.account-tab::before {
+  content: "●";
+  position: relative;
+  -webkit-transform: scale(0.5) translate(-10px, -2.5px);
+          transform: scale(0.5) translate(-10px, -2.5px);
+  opacity: 0;
+}
+
+.account-tab.selected::before {
+  opacity: 0.35;
 }
 
 .lesson-wrap {
@@ -556,9 +577,6 @@ button:disabled:hover {
     padding: 10px;
     width: 100px;
     height: 100px;
-  }
-  .multiple-choice-answer.chosen {
-    background-color: #d7d7d7;
   }
   .middle-text {
     font-size: 1.5em !important;
@@ -993,6 +1011,14 @@ button:disabled:hover {
   color: white;
 }
 
+.darkMode .dark-input {
+  background-color: #dedede;
+}
+
+.darkMode .dark-input:focus {
+  border-color: #0096dc;
+}
+
 .darkMode .dark-answer {
   background-color: #1a2534;
   border: transparent;
@@ -1061,6 +1087,15 @@ button:disabled:hover {
   .bg-gradient div {
     background: -webkit-gradient(linear, left bottom, left top, from(#E786FF), to(#86E2FF));
     background: linear-gradient(0deg, #E786FF 0%, #86E2FF 100%);
+  }
+  .visually-hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: -1;
   }
 }
 

@@ -34,8 +34,8 @@ function AccountManager(props) {
     }, [managerState])
 
     return(
-        <div className="accounts-wrap dark-elevated animate-fade-in bg-white 
-            overflow-hidden shadow-xl z-50 text-black relative md:rounded-md"
+        <div className="accounts-wrap sm:min-h-[650px] dark-elevated animate-fade-in bg-white 
+            overflow-hidden shadow-xl z-[100] text-black relative md:rounded-md"
         >
             <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? (
@@ -76,8 +76,9 @@ function AccountManager(props) {
                     </div>
                 )}
             </div>
-            <div className="account-switcher px-4 md:px-28 pb-5 pt-4 md:pt-8 
-                h-full md:mt-0 overflow-auto"
+            <div className="account-switcher px-4 pb-5 pt-4 
+                md:px-28 md:pt-8 md:mt-0 sm:min-h-[600px]
+                h-full overflow-auto"
             >
                 <Switcher 
                     state={managerState} 

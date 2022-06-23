@@ -12,7 +12,7 @@ function FooterPage(props) {
             <WelcomeLogo />
             <RiversTop />
             <div className="w-full flex h-5/6 justify-center">
-                <div className="w-10/12 h-full mx-10 my-8 z-50 relative
+                <main className="w-10/12 h-full mx-10 my-8 z-50 relative
                     bg-white text-black rounded shadow-xl
                     md:w-7/12 md:h-5/6 md:mt-24 
                     lg:h-5/6 lg:mt-10
@@ -23,7 +23,7 @@ function FooterPage(props) {
                             to="/welcome" 
                             className="text-primary cursor-pointer mb-4 block w-14"
                         >
-                            &lt; Back
+                            &lt; Back to main
                         </Link>
                         <h1 className="text-2xl">
                             { props.for }
@@ -32,7 +32,7 @@ function FooterPage(props) {
                     <div className="h-5/6 p-6 overflow-y-auto">
                         <ContentSwitcher content={props.for} />
                     </div>
-                </div>
+                </main>
             </div>
         </div>
     )

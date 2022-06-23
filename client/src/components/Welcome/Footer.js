@@ -5,9 +5,8 @@ import twitterIcon from "../../res/icons/socials/twitter.png";
 
 function Footer(props) {
     return(
-        <div 
+        <footer 
             id="footer" 
-            role="footer"
             className="absolute bottom-0 h-1/4 bg-black bg-opacity-20 w-full
                 flex flex-col justify-center px-8"
         >
@@ -23,17 +22,19 @@ function Footer(props) {
                     <SocialIcon type="Twitter" />
                 </div>
             </div>
-        </div>
+        </footer>
     )
 }
 
 function FooterLink(props) {
     return(
-        <div id={`footer-link-${props.to}`} className="text-md md:text-xl">
-            <a href={`welcome/${props.to}`}>
-                {props.text}
-            </a>
-        </div>
+        <a 
+            href={`welcome/${props.to}`} 
+            id={`footer-link-${props.to}`} 
+            className="text-md md:text-xl"
+        >
+            {props.text}
+        </a>
     )
 }
 
@@ -57,7 +58,7 @@ function SocialIcon(props) {
     }
 
     return(
-        <a href={link} className="mr-2 my-1" target="_blank">
+        <a href={link} className="mr-4 my-2 p-1 pl-0">
             <img src={imgSrc} className="w-8 h-8" alt={`${props.type} logo`} />
         </a>
     )

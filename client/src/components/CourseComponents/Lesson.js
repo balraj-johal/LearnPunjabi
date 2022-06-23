@@ -28,6 +28,10 @@ function Lesson(props) {
     });
     let [mistakeTracker, setMistakeTracker] = useState([]);
     let [noOfTasks, setNoOfTasks] = useState(0);
+
+    useEffect(() => { 
+        document.title = `Learn Punjabi - ${String(id)}`
+    }, []);
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
@@ -175,6 +179,7 @@ function Lesson(props) {
                 ${props.lessonOverride ? "" : "bg-white"} md:bg-transparent z-50 
                 items-center justify-center min-h-[550px] md:min-h-[500px]`}
             >
+                <h1 className="visually-hidden">Lesson {lesson.name}</h1>
                 {!props.lessonOverride && 
                     <ProgressBar percent={getProgressPercent()} />}
                 <TaskManager
@@ -186,6 +191,7 @@ function Lesson(props) {
             </div>
         ) : 
         <div className="flex justify-center items-center w-full h-full">
+            <h1 className="visually-hidden">Lesson {lesson.name}</h1>
             Loading failed. Please refresh and try again!
         </div>
     )

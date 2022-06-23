@@ -29,3 +29,9 @@
         opacity: 1;
     }
 }
+
+@media (prefers-reduced-motion) {
+    .fadeIn, .fade-in, .move-down, .move-up, .bounce-y, .shake-x {
+        animation: none !important;
+    }
+}

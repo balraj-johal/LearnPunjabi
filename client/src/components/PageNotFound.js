@@ -1,17 +1,21 @@
-import React from "react";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import React, { useEffect } from "react";
 
 function PageNotFound(props) {
+    useEffect(() => { 
+        document.title = `Learn Punjabi - 404`
+    }, []);
+
     return(
-        <div style={{
+        <main style={{
             width: "100%",
             height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center"
         }}>
+            <h1 className="visually-hidden">404 Error</h1>
             Page not found! :\
-        </div>
+        </main>
     )
 }
 

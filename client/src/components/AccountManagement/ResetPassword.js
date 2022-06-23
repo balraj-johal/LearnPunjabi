@@ -52,7 +52,7 @@ function ResetPassword(props) {
                 text="Reset successful!" 
             /> 
             <div className="accounts-wrap p-4 bg-white shadow-xl" id="reset-password">
-                <h2 className="text-lg">Reset Password</h2>
+                <h1 className="text-lg">Reset Password</h1>
                 <form 
                     className="reset-password-form" 
                     noValidate 
@@ -61,6 +61,7 @@ function ResetPassword(props) {
                     <FormInput 
                         for="email"
                         onChange={e => setEmail(e.target.value)}
+                        required={true}
                         value={email}
                         errors={errors}
                         type="text"
@@ -69,6 +70,7 @@ function ResetPassword(props) {
                         for="newPassword"
                         onChange={e => setNewPW(e.target.value)}
                         value={newPW}
+                        required={true}
                         errors={errors}
                         type="password"
                     />

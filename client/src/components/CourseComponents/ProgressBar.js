@@ -11,6 +11,7 @@ function ProgressBar(props) {
         <animated.div 
             style={spring}
             role="progressbar"
+            aria-label="lesson progressbar"
             className="w-full flex justify-center absolute 
                 top-4 md:top-10 md:shadow-2xl z-[60]"
         >
