@@ -25,20 +25,6 @@ function Course(props) {
         }
     }
 
-    // // refresh data on pull to refresh
-    // let onRefresh = async (resolve, reject) => {
-    //     setLoading(true);
-    //     try {
-    //         let res = await axiosClient.get("/api/v1/lessons/");
-    //         setCourseData(res.data.overview); 
-    //         setLoading(false);
-    //         resolve();
-    //     } catch (err) {
-    //         setLoading(false);
-    //         reject();
-    //     }
-    // }
-    
     useEffect(() => {
         let reqTimeout = setTimeout(getLessons, 200);
 

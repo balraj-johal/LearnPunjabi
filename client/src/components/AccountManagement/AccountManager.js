@@ -34,7 +34,9 @@ function AccountManager(props) {
     }, [managerState])
 
     return(
-        <div className="accounts-wrap sm:min-h-[650px] dark-elevated animate-fade-in bg-white 
+        <div className="accounts-wrap 
+            h-full w-full md:w-4/6
+            dark-elevated animate-fade-in bg-white 
             overflow-hidden shadow-xl z-[100] text-black relative md:rounded-md"
         >
             <div id="switcher-buttons" className="flex flex-row">
@@ -77,7 +79,7 @@ function AccountManager(props) {
                 )}
             </div>
             <div className="account-switcher px-4 pb-5 pt-4 
-                md:px-28 md:pt-8 md:mt-0 sm:min-h-[600px]
+                md:px-28 md:pt-8 md:mt-0 
                 h-full overflow-auto"
             >
                 <Switcher 

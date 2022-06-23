@@ -53,7 +53,7 @@ function AccountSummary(props) {
             aria-labelledby="tab-Summary"
             role="tabpanel"
             style={fadeSpring}
-            className="h-full w-full"
+            className="h-full w-full min-h-[580px] mb-4"
         >
             <form 
                 noValidate 

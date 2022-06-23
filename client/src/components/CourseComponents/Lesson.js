@@ -189,11 +189,12 @@ function Lesson(props) {
                     stats={`${getPercentCorrect()}%`}
                 />
             </div>
-        ) : 
-        <div className="flex justify-center items-center w-full h-full">
-            <h1 className="visually-hidden">Lesson {lesson.name}</h1>
-            Loading failed. Please refresh and try again!
-        </div>
+        ) : (
+            <div className="flex justify-center items-center w-full h-full">
+                <h1 className="visually-hidden">Lesson {lesson.name}</h1>
+                Loading failed. Please refresh and try again!
+            </div>
+        )
     )
 }
 
