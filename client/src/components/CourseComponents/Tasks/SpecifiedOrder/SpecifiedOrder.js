@@ -116,9 +116,7 @@ function SpecifiedOrder(props) {
         switch (direction) {
             case "left":
                 newIndex = focusTargetData.index -= 1;
-                console.log("left");
                 if (newIndex < 0) {
-                    console.log("<0");
                     if (focusTargetData.onPossibleList) {
                         newIndex = possibleFrags.length - 1;
                     } else {
@@ -284,7 +282,7 @@ function SpecifiedOrder(props) {
                     </div>
                 </div>
             </div>
-            <NextButton next={() => {checkAnswer(); console.log("checked")}} text="Check Answer" />
+            <NextButton next={() => { checkAnswer() }} text="Check Answer" />
         </>
     );
 }

@@ -91,3 +91,23 @@ it('handles wrong answer correctly', async () => {
         expect(itemNames).toEqual([]);
     });
 })
+it('handles correct answer correctly', async () => {
+    let correctlyAnswered = false;
+
+    render(<SpecifiedOrder data={{...testData, audioLink: null}} 
+        handleCorrect={() => { correctlyAnswered = true }} />);
+
+    let frag = screen.getByText(/3/i);
+    fireEvent.click(frag);
+    frag = screen.getByText(/2/i);
+    fireEvent.click(frag);
+    frag = screen.getByText(/1/i);
+    fireEvent.click(frag);
+    await waitFor(() => {
+        const button = screen.getByRole("button", { name: /Check Answer/i });
+        fireEvent.click(button);
+    });
+    await waitFor(() => {
+        expect(correctlyAnswered).toBe(true);
+    });
+})
