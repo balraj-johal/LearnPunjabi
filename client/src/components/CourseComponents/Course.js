@@ -59,7 +59,7 @@ function Course(props) {
         if (courseData.length > 0 && lessonBased > window.innerHeight) {
             return `${lessonBased}px`;
         }
-        return `${101 * props.vh}px`;
+        return `101vh`;
     }
     useEffect(() => {
         props.setLessonWrapHeight(getWrapHeight());

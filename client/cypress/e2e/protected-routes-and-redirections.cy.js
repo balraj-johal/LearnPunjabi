@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 /**
  * does stop allowing edit access if not admin
+ * does it show 404
+ * does it redirect to welcome if unauthenticated tries sth else
  */
 describe('test if routes and redirections work as intended', () => {
     before(() => {

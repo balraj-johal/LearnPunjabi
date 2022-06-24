@@ -1,5 +1,10 @@
 /// <reference types="cypress" />
 
+/** does dark mode work
+ * does dark mode save on refresh
+ * does dyslexia font work
+ * 
+ */
 describe('welcome page', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
@@ -69,5 +74,6 @@ describe('welcome page', () => {
             // check for success
             cy.contains('successful').should('be.visible');
         })
+        // it('successfully logs out user')
     })
 })
