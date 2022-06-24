@@ -66,11 +66,6 @@ function Main(props) {
     const { setMobile } = props;
     useEffect(() => {
         let onResize = () => {
-            let vh = window.innerHeight * 0.01;
-            // setVh(vh)
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-            props.setSingleVH(vh);
-            
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
         }

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('dashboard', () => {
-    beforeEach(() => {
+    before(() => {
         // open site
         cy.visit('http://localhost:3000');
         // login user

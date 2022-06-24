@@ -25,7 +25,7 @@ function EditOverview(props) {
     let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
     useEffect(() => { 
-        document.title = `Learn Punjabi - Edit Lessons`
+        document.title = `Learn Punjabi - Edit Lessons`;
     }, []);
 
     // TODO: change this to only request specific properties from the API Get Request

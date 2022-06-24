@@ -77,7 +77,7 @@ function Leaderboard(props) {
             style={{width: props.mobile ? "w-full" : "calc(40% - 7px)"}}
             onClick={() => { if (props.mobile) setCollapsed(!collapsed) }}
         >
-            <div className="header" >Weekly Leaderboard</div>
+            <h1 className="header">Weekly Leaderboard</h1>
             { data.length > 0 ? (
                 <div 
                     id="leaderboard-list" 

@@ -13,6 +13,36 @@
             "audio": {
                 "name": ""
             }
+        },
+        {
+            "taskID": "2",
+            "text": "2",
+            "type": "MultipleChoice",
+            "audioFilename": "",
+            "audio": {
+                "name": ""
+            },
+            "possibleAnswers": [
+                {"middleText": "1"},
+                {"middleText": "2"},
+                {"middleText": "3"}
+            ],
+            "correctAnswerIndex": 0
+        },
+        {
+            "taskID": "3",
+            "text": "2",
+            "type": "SpecifiedOrder",
+            "audioFilename": "",
+            "audio": {
+                "name": ""
+            },
+            "possibleAnswers": [
+                {"text": "1", "id": "ans-1"},
+                {"text": "2", "id": "ans-2"},
+                {"text": "3", "id": "ans-3"}
+            ],
+            "correctAnswer": "321"
         }
     ],
     "id": "lesson-mocked",

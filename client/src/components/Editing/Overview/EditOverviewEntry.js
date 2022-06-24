@@ -6,7 +6,7 @@ import AddButton from "../../FormComponents/AddButton";
 function EditOverviewEntry(props) {
     let navigate = useNavigate();
 
-    if (props.new) return (
+    if (props.new) return(
         <AddButton 
             extraStyles="mx-auto" 
             addNew={() => { navigate(`/edit/${props.lesson.id}`); }} 
