@@ -74,7 +74,9 @@ function EditOverview(props) {
 
     if (!ready) return <Loader />;
     return(
-        <main className="edit-wrap bg-white h-full flex flex-col items-center justify-center shadow-xl">
+        <main className="edit-wrap bg-white h-full flex flex-col 
+            items-center justify-center shadow-xl"
+        >
             <h1 className="visually-hidden">Edit Lessons</h1>
             {courseData.map((lesson, index) => 
                 <EditOverviewEntry

@@ -3,7 +3,7 @@
 describe('test topbar state when navigating through pages', () => {
     before(() => {
         // open site
-        cy.visit('http://localhost:3000');
+        cy.visit('/');
         // login user as admin
         cy.contains('Start Learning').click();
         cy.get('#username').type("@CDawgVA2");

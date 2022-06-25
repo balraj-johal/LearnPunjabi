@@ -20,14 +20,14 @@ describe('lesson', () => {
 
     before(() => {
         // login user
-        cy.visit('http://localhost:3000');
+        cy.visit('/');
         cy.contains('Start Learning').click();
         cy.get('#username').type("@CDawgVA2");
         cy.get('#password').type("@CDawgVA2");
         cy.get('.login-form button').click();
         cy.get(".lesson-wrap").should("be.visible");
         cy.wait(500);
-        cy.visit('http://localhost:3000/lesson/lesson-mocked');
+        cy.visit('/lesson/lesson-mocked');
         // accept cookies
         cy.get('#rcc-confirm-button').click();
     })

@@ -7,7 +7,8 @@ function AddButton(props) {
     return(
         <button
             type="button"
-            className={`flex flex-col justify-evenly items-center
+            className={`add-button 
+                flex flex-col justify-evenly items-center
                 rounded border-2 border-slate-200 p-4 m-3
                 group hover:bg-blue-400 hover:text-white 
                 hover:border-blue-400 transition-all

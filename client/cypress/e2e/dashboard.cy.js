@@ -3,7 +3,7 @@
 describe('dashboard', () => {
     before(() => {
         // open site
-        cy.visit('http://localhost:3000');
+        cy.visit('/');
         // login user
         cy.contains('Start Learning').click();
         cy.get('#username').type("@CDawgVA2");

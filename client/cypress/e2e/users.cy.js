@@ -7,7 +7,7 @@
  */
 describe('welcome page', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000')
+        cy.visit('/')
     })
 
     it('loads all sections', () => {

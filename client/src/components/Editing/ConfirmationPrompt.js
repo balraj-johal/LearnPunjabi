@@ -15,6 +15,7 @@ function ConfirmationPrompt(props) {
     return(
         <div 
             aria-live="assertive"
+            id="confirmation-prompt"
             className={`w-screen h-screen flex justify-center items-center
                 z-10 absolute top-0 left-0
                 ${props.showSubmitConfirm && !props.submitSuccess ? "" : "hidden"}    
@@ -26,13 +27,17 @@ function ConfirmationPrompt(props) {
                 Do you want to save the lesson?
                 <div>
                     <button
-                        className="capitalize h-10 bg-primary rounded text-white px-4 mx-2 w-24"
+                        id="confirm-yes"
+                        className="capitalize h-10 bg-primary rounded text-white 
+                            px-4 mx-2 w-24"
                         onClick={() => { props.saveLesson() }}
                     >
                         Yes
                     </button>
                     <button
-                        className="capitalize h-10 bg-red-500 rounded text-white px-4 mx-2 w-24"
+                        id="confirm-no"
+                        className="capitalize h-10 bg-red-500 rounded text-white 
+                            px-4 mx-2 w-24"
                         onClick={() => { props.setShowSubmitConfirm(false) }}
                     >
                         No

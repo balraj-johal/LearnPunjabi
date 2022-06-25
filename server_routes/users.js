@@ -143,7 +143,9 @@ router.post("/login", async (req, res) => {
         const token = getNewToken(savedUser._id);
         res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
         res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
-        return res.status(200).send({ message: `login for user ${savedUser._id} successful!` });
+        return res.status(200).send({
+            message: `login for user ${savedUser._id} successful!`
+        });
     } catch (err) { res.status(500).json(err); }
 });
 

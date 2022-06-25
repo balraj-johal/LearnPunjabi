@@ -16,7 +16,7 @@ function FormError(props) {
         <div 
             role="alert"
             aria-relevant="all"
-            className="auth-error" 
+            className="form-error" 
             id={`${props.for}-error`}
         >
             { error }
