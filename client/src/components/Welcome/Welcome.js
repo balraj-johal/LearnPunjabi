@@ -9,7 +9,7 @@ import { degreesToRads } from "../../utils/math";
 import ScrollPrompt from "./ScrollPrompt";
 import PunjabModel from "./PunjabInfoSection/PunjabModel";
 import WelcomeLogo from "./WelcomeLogo";
-import SignInPrompt from "./SignInPrompt";
+import CallToAction from "./CallToAction";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
@@ -59,7 +59,7 @@ function Welcome(props) {
                     flex justify-center items-center overflow-hidden"
                 style={{marginBottom: "env(safe-area-inset-bottom)"}}
             >
-                <AccountManager full={true} />
+                <AccountManager welcome={true} />
             </div>
         </div> }
             <main 
@@ -75,7 +75,10 @@ function Welcome(props) {
                 >
                     <WelcomeLogo />
                     <RiversTop />
-                    <SignInPrompt handleClick={toggleShowAccounts} />
+                    <CallToAction 
+                        text="Start Learning" 
+                        handleClick={toggleShowAccounts} 
+                    />
                     <ScrollPrompt 
                         text="Try a lesson on us!" 
                         scrollTo="#welcome-2"
@@ -85,7 +88,7 @@ function Welcome(props) {
                 <div 
                     aria-label="Example Lesson"
                     id="welcome-2" 
-                    className="welcome-div grad-mid h-full"
+                    className="welcome-div grad-mid h-full animate-fade-in"
                 >
                     <Lesson lessonOverride={EXAMPLE_LESSON} />
                     <RiversMid />

@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 import TypeAnimation from 'react-type-animation';
 
-// // component imports
-
 const TYPING_SEQUENCE_TIME = 3500;
 const TYPING_SEQUENCE = [
     'learn a new language?',
@@ -15,7 +13,7 @@ const TYPING_SEQUENCE = [
     TYPING_SEQUENCE_TIME,
 ]
 
-function SignInPrompt(props) {
+function CallToAction(props) {
     let [buttonState, setButtonState] = useState("not ready");
 
     useEffect(() => {
@@ -51,19 +49,30 @@ function SignInPrompt(props) {
                     repeat={Infinity}
                 />
             </animated.div>
-            <animated.button 
-                className="text-lg tracking-wide pb-1 pt-2 pl-4 mt-8 w-full
-                    md:text-2xl md:w-4/5 md:mt-10 md:pb-2 md:pt-3
-                    border-b-2 border-white bg-white text-black
-                    cursor-pointer transition-all z-0 font-normal
-                    hover:text-white hover:border-primary hover:bg-primary
-                    hover:font-bold relative text-left"
-                style={spring}
-                onClick={props.handleClick}
-            >
-                Start Learning &gt;
-            </animated.button>
+            <CallToActionButton 
+                text={props.text} 
+                handleClick={props.handleClick}
+                spring={spring} 
+            />
         </animated.div>
+    )
+}
+
+function CallToActionButton(props) {
+    return(
+        <animated.button 
+            className="text-lg tracking-wide pb-1 pt-2 pl-4 mt-8 w-full
+                md:text-2xl md:w-4/5 md:mt-10 md:pb-2 md:pt-3
+                lg:w-4/6
+                border-b-2 border-white bg-white text-black
+                cursor-pointer transition-all z-0 font-normal
+                hover:text-white hover:border-primary hover:bg-primary
+                hover:font-bold relative text-left"
+            style={props.spring}
+            onClick={props.handleClick}
+        >
+            {props.text} &gt;
+        </animated.button>
     )
 }
 
@@ -74,5 +83,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    {  }
-)(SignInPrompt);
+    {}
+)(CallToAction);
