@@ -59,7 +59,7 @@ function Welcome(props) {
                     flex justify-center items-center overflow-hidden"
                 style={{marginBottom: "env(safe-area-inset-bottom)"}}
             >
-                <AccountManager />
+                <AccountManager full={true} />
             </div>
         </div> }
             <main 
