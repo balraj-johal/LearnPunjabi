@@ -101,16 +101,19 @@ function FormInput(props) {
             break;
     }
 
+    const error = props.errors?.[props.for];
     return(
         <div 
-            aria-invalid={props.errors?.[props.for]}
+            aria-invalid={error ? true : false}
             className={`input-field my-1 md:my-4 flex 
                 flex-${props.row ? "row" : "col"}
-                ${props.errors?.[props.for] ? "error animate-shake-x" : ""}`}
+                ${error ? "error" : ""}`}
         >
             <FormLabel for={props.for} labelOverride={props.labelOverride} />
-            {component}
-            <FormError for={props.for} errors={props.errors} />
+            <div className={`${error ? "animate-shake-x" : ""}`}>
+                {component}
+                <FormError error={error} />
+            </div>
         </div>
     )
 }
