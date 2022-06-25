@@ -7,13 +7,13 @@ import thirdPlace from "../../res/icons/leaderboards/bronze-medal.png";
  */
 function UserEntry(props) {
     return(
-        <div className="user-entry h-10 items-center">
+        <li className="user-entry h-10 items-center">
             <div className="h-full flex items-center">
                 <PodiumPlace index={props.index} />
                 <p>{props.user.username}</p>
             </div>
             <p>{props.user.weeklyXP}XP</p>
-        </div>
+        </li>
     )
 }
 
