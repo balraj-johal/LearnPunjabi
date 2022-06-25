@@ -93,12 +93,12 @@ router.post("/:lessonID", async (req, res) => {
     try {
         const user = await verifyToken(req);
         if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
-        let lesson = await Lesson.findOne({ id: { $eq: req.params.lessonID } });
+        const query = { $eq: sanitize(req.params.lessonID) }
+        let lesson = await Lesson.findOne({ id: query });
         if (!lesson) lesson = new Lesson();
         lesson.name = req.body.name;
         lesson.id = req.body.id;
-        lesson.strId = "req.body.id"; // Somewhere the mongoDB is requiring the older property strId to save.
-        // console.log(lesson.strId)
+        lesson.strId = req.body.id; // Somewhere the mongoDB is requiring the older property strId to save.
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
         lesson.noToSample = req.body.noToSample;
