@@ -327,7 +327,7 @@ router.post("/logout", async (req, res) => {
         res.clearCookie("refreshToken", AUTH_COOKIE_OPTIONS);
         res.clearCookie("jwtToken", AUTH_COOKIE_OPTIONS);
         return res.status(200).send({ message: "Logout successful." });
-    } catch (err) { return res.status(500).send(err.message); }
+    } catch (err) { return res.status(500).send(err); }
 })
 
 /**

@@ -11,6 +11,11 @@ const lessonSchema = new mongoose.Schema({
         unique: true,
         required: false,
     },
+    strId: {
+        type: String,
+        unique: true,
+        required: false,
+    },
     requiredCompletions: {
         type: Number,
         required: true,
