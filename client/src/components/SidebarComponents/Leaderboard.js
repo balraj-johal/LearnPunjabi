@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import axiosClient from "../../axiosDefaults";
 
 // component imports
-import UserEntry from "./UserEntry";
+import LeaderboardUI from "./LeaderboardUI";
 
 function Leaderboard(props) {
     let [lbStyles, setLbStyles] = useState("");
@@ -16,7 +16,7 @@ function Leaderboard(props) {
      * @param { Array } data
      * @returns { Array } data - sorted
      */
-    let sortData = (data) => {
+    let sortDataByXP = (data) => {
         data.sort((a, b) => (a.weeklyXP < b.weeklyXP) ? 1 : -1);
         return data;
     }
@@ -26,7 +26,7 @@ function Leaderboard(props) {
         if (props.isAuthenticated) {
             axiosClient.get(`/api/v1/groups/${props.user.groupID}`)
                 .then(res => {
-                    setData(sortData(res.data.group.users));
+                    setData(sortDataByXP(res.data.group.users));
                 })
                 .catch(err => { console.log(err); })
         }
@@ -50,8 +50,8 @@ function Leaderboard(props) {
         let styles = "";
         if (collapsed) styles += " hidden opacity-0";
         if (!collapsed) styles += " opacity-1 h-full";
-        if (!mobile) styles += `h-min-[${30 * props.vh}px] 
-            h-max-[${50 * props.vh}px] lg:px-1`;
+        if (!mobile) styles += `h-min-[30vh] 
+            h-max-[50vh] lg:px-1`;
         if (mobile) {
             styles += " relative";
             if (collapsed) {
@@ -71,24 +71,14 @@ function Leaderboard(props) {
     }, [collapsed, props.mobile])
 
     return(
-        <div 
-            id="leaderboard" 
-            className={`${ lbStyles }`}
-            style={{width: props.mobile ? "w-full" : "calc(40% - 7px)"}}
-            onClick={() => { if (props.mobile) setCollapsed(!collapsed) }}
-        >
-            <h1 className="header">Weekly Leaderboard</h1>
-            { data.length > 0 ? (
-                <div 
-                    id="leaderboard-list" 
-                    className={`${listStyles} animate-fade-in`} 
-                >
-                    {data.map((user, index) => 
-                        <UserEntry user={user} key={user._id} index={index} />
-                    )}
-                </div>
-            ) : null }
-        </div>
+        <LeaderboardUI
+            lbStyles={lbStyles} 
+            listStyles={listStyles} 
+            collapsible={props.mobile}
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+            data={data} 
+        />
     )
 }
 
