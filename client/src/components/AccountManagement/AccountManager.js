@@ -32,10 +32,10 @@ function AccountManager(props) {
     useEffect(() => {
         props.clearAuthErrors();
     }, [managerState])
-
+    
     return(
         <div className={`accounts-wrap 
-            ${props.full ? "h-full" : "h-[80vh]"} w-full 
+            ${props.welcome ? "" : "md:h-5/6"} h-full w-full 
             md:w-4/6 md:rounded-md
             dark-elevated animate-fade-in bg-white 
             overflow-hidden shadow-xl z-[100] text-black relative`}

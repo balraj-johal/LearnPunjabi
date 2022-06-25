@@ -81,7 +81,7 @@ function Login(props) {
                 <a 
                     tabIndex={0}
                     onClick={() => { props.setManagerState("ForgotPassword") }}
-                    className="text-sm text-primary w-1/3 cursor-pointer mt-4 block
+                    className="text-sm text-primary w-2/5 cursor-pointer mt-4 block
                         hover:text-secondary hover:translate-x-2 transition-all
                         underline"
                 >
