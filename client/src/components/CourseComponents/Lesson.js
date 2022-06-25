@@ -13,6 +13,7 @@ import { getUserData } from "../../actions/authActions";
 // import components
 import TaskManager from "./Tasks/TaskManager";
 import ProgressBar from "./ProgressBar";
+import LessonAudio from "./LessonAudio";
 
 function Lesson(props) {
     let navigate = useNavigate();
@@ -179,6 +180,7 @@ function Lesson(props) {
                 ${props.lessonOverride ? "" : "bg-white"} md:bg-transparent z-50 
                 items-center justify-center min-h-[550px] md:min-h-[500px]`}
             >
+                <LessonAudio />
                 <h1 className="visually-hidden">Lesson {lesson.name}</h1>
                 {!props.lessonOverride && 
                     <ProgressBar percent={getProgressPercent()} />}

@@ -11,6 +11,7 @@ import PageNotFound from "../../PageNotFound";
 import End from "./End";
 
 import { setAnimClasses } from "../../../actions/currTaskActions";
+import { playAudio } from "../../../actions/lessonStatusActions";
 
 // return task component of specified type
 function TaskManager(props) {
@@ -21,6 +22,7 @@ function TaskManager(props) {
     let task;
 
     let handleCorrect = () => {
+        props.playAudio("correct");
         props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
@@ -29,6 +31,7 @@ function TaskManager(props) {
     }
     
     let handleWrong = () => {
+        props.playAudio("wrong");
         props.setAnimClasses("animate-shake-x wrong");
         setAnimating(true);
         setTimeout(() => {
@@ -43,6 +46,7 @@ function TaskManager(props) {
      * @name handleExit
      */
     let handleExit = useCallback(() => {
+        props.playAudio("correct");
         props.setAnimClasses("");
         setAnimating(true);
         setOut(true);
@@ -164,5 +168,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { setAnimClasses }
+    { setAnimClasses, playAudio }
 )(TaskManager);
