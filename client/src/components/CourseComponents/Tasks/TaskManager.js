@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
@@ -17,6 +17,7 @@ function TaskManager(props) {
     let [animating, setAnimating] = useState(false);
     let [currentID, setCurrentID] = useState(null);
     let [out, setOut] = useState(false);
+    const taskData = props.taskData;
     let task;
 
     let handleCorrect = () => {
@@ -26,25 +27,31 @@ function TaskManager(props) {
             handleExit();
         }, 750);
     }
+    
     let handleWrong = () => {
         props.setAnimClasses("animate-shake-x wrong");
         setAnimating(true);
         setTimeout(() => {
             props.setAnimClasses("");
             setAnimating(false);
-            props.submit(false, props.taskData.type);
+            props.submit(false, taskData.type);
         }, 750);
     }
-    let handleExit = () => {
+
+    /**
+     * begin task out animation and submit task success
+     * @name handleExit
+     */
+    let handleExit = useCallback(() => {
         props.setAnimClasses("");
         setAnimating(true);
         setOut(true);
         setTimeout(() => {
             setOut(false);
             setAnimating(false);
-            props.submit(true, props.taskData.type);
+            props.submit(true, taskData.type);
         }, 600);
-    }
+    }, [taskData])
 
     // refresh the fade in animation when task data changes
     useEffect(() => {
@@ -86,6 +93,7 @@ function TaskManager(props) {
         case "End":
             task = <End 
                     data={props.taskData} 
+                    hideButton={props.taskData.hideButton}
                     submit={() => handleExit()}
                     stats={props.stats}
                 />
