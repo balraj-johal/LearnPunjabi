@@ -54,7 +54,8 @@ function EditTask(props) {
 
     return(
         <fieldset className="edit-task flex flex-col items-center relative
-                rounded border-2 border-black p-4 first:my-4 my-8" 
+                rounded border-2 border-black p-4 first:my-4 my-8
+                bg-white shadow-md" 
             id={`edit-task-${task.taskID}`}
         >
             <legend>Task {task.taskID}</legend>

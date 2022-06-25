@@ -28,7 +28,7 @@ function Main(props) {
     const { setCSRFReady } = props;
     useEffect(() => {
         axiosClient.get("/csrf-token")
-        .then(res => {
+            .then(res => {
                 axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
                 setCSRFReady();
             })
