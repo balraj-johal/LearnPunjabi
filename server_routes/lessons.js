@@ -120,4 +120,18 @@ router.post("/:lessonID", async (req, res) => {
     }
 })
 
+router.delete("/:lessonID", async (req, res) => {
+    try {
+        const user = await verifyToken(req);
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
+        const query = { $eq: sanitize(req.params.lessonID) };
+        await Lesson.deleteOne({ id: query });
+        return res.status(200).send({
+            message: `deletion of lesson ${req.params.lessonID} successful`,
+        })
+    } catch (err) {
+        return res.status(500).send({ error: err })
+    }
+})
+
 module.exports = router;

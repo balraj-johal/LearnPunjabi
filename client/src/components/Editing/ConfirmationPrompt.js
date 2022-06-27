@@ -5,7 +5,7 @@ function ConfirmationPrompt(props) {
     if (props.saving) return(
         <div className={`w-screen h-screen flex justify-center items-center
             z-10 absolute top-0 left-0
-            ${props.showSubmitConfirm && !props.submitSuccess ? "" : "hidden"}    
+            ${props.showConfirmation && !props.submitSuccess ? "" : "hidden"}    
         `}>
             <div className="opacity-50 w-screen h-screen bg-green-500 absolute">
             </div>
@@ -18,7 +18,7 @@ function ConfirmationPrompt(props) {
             id="confirmation-prompt"
             className={`w-screen h-screen flex justify-center items-center
                 z-10 absolute top-0 left-0
-                ${props.showSubmitConfirm && !props.submitSuccess ? "" : "hidden"}    
+                ${props.showConfirmation && !props.submitSuccess ? "" : "hidden"}    
             `}
         >
             <div className="opacity-50 w-screen h-screen bg-green-500 absolute">
@@ -30,7 +30,7 @@ function ConfirmationPrompt(props) {
                         id="confirm-yes"
                         className="capitalize h-10 bg-primary rounded text-white 
                             px-4 mx-2 w-24"
-                        onClick={() => { props.saveLesson() }}
+                        onClick={() => { props.handleYes() }}
                     >
                         Yes
                     </button>
@@ -38,7 +38,7 @@ function ConfirmationPrompt(props) {
                         id="confirm-no"
                         className="capitalize h-10 bg-red-500 rounded text-white 
                             px-4 mx-2 w-24"
-                        onClick={() => { props.setShowSubmitConfirm(false) }}
+                        onClick={() => { props.setShowConfirmation(false) }}
                     >
                         No
                     </button>

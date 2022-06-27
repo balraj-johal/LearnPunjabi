@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axiosClient from "../../../axiosDefaults";
 
 import { _moveArrayIndex, _getListEndsState } from "../../../utils/arrays";
 
 import EditOverviewEntry from "./EditOverviewEntry";
 import Loader from "../../Loader";
-import SaveButton from "../SaveButton";
+import ConfirmationPrompt from "../ConfirmationPrompt";
 
 // TODO: decide where best to store this
 const NEW_LESSON = {
@@ -28,9 +28,7 @@ function EditOverview(props) {
         document.title = `Learn Punjabi - Edit Lessons`;
     }, []);
 
-    // TODO: change this to only request specific properties from the API Get Request
-    // on mount retrieve all lessons
-    useEffect(() => {
+    let fetchOverview = () => {
         axiosClient.get("/api/v1/lessons/")
             .then(res => {
                 setCourseData(res.data.overview); 
@@ -40,6 +38,12 @@ function EditOverview(props) {
                 console.log(error); 
                 setReady(true);
             })
+    }
+
+    // TODO: change this to only request specific properties from the API Get Request
+    // on mount retrieve all lessons
+    useEffect(() => {
+        fetchOverview();
     }, []);
     
     /** Moves specified lesson back or forwards in course order
@@ -71,25 +75,58 @@ function EditOverview(props) {
             setLessonOrderChanged(true);
         }
     }
+    
+
+    let [showConfirmation, setShowConfirmation] = useState(false);
+    let [targetID, setTargetID] = useState(null)
+    let [deleting, setDeleting] = useState(false);
+    let [deletionSuccess, setDeletionSuccess] = useState(false);
+    let deleteLesson = useCallback(async (id) => {
+        try {
+            setDeleting(true);
+            await axiosClient.delete(`/api/v1/lessons/${id}`);
+            setDeleting(false);
+            setDeletionSuccess(true);
+            setShowConfirmation(false);
+            fetchOverview();
+            // setShowSuccessModal(true);
+        } catch (error) {
+            setDeleting(false);
+            setShowConfirmation(false);
+            fetchOverview();
+            console.log('error deleting lesson', error);
+        }
+    }, []);
 
     if (!ready) return <Loader />;
     return(
-        <main className="edit-wrap h-full flex flex-col 
-            items-center justify-center"
-        >
-            <h1 className="visually-hidden">Edit Lessons</h1>
-            {courseData.map((lesson, index) => 
-                <EditOverviewEntry
-                    lesson={lesson}
-                    key={index}
-                    index={index}
-                    _getListEndsState={_getListEndsState}
-                    listEndsState={_getListEndsState(index, courseData)}
-                    shiftLesson={shiftLesson}
-                />
-            )}
-            <EditOverviewEntry lesson={NEW_LESSON} new={true} />
-        </main>
+        <>
+            {showConfirmation && <ConfirmationPrompt
+                showConfirmation={showConfirmation}
+                setShowConfirmation={setShowConfirmation}
+                deletionSuccess={setDeletionSuccess}
+                deleting={deleting}
+                handleYes={() => { deleteLesson(targetID) }}
+            />}
+            <main className="edit-wrap h-full flex flex-col 
+                items-center justify-center"
+            >
+                <h1 className="visually-hidden">Edit Lessons</h1>
+                {courseData.map((lesson, index) => 
+                    <EditOverviewEntry
+                        lesson={lesson}
+                        key={index}
+                        index={index}
+                        _getListEndsState={_getListEndsState}
+                        listEndsState={_getListEndsState(index, courseData)}
+                        shiftLesson={shiftLesson}
+                        setShowConfirmation={setShowConfirmation}
+                        setTargetID={setTargetID}
+                    />
+                )}
+                <EditOverviewEntry lesson={NEW_LESSON} new={true} />
+            </main>
+        </>
     )
 }
 

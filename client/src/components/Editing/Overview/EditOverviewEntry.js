@@ -25,16 +25,32 @@ function EditOverviewEntry(props) {
                         `${props.lesson.tasksLength} tasks` : "1 task"}
                 </span>
             </div>
-            <button 
-                className="w-24 h-10 mx-5 flex items-center 
-                    justify-center cursor-pointer transition-all
-                    text-primary rounded border-2 border-black
-                    hover:bg-primary hover:text-white hover:border-primary" 
-                onClick={() => { navigate(`/edit/${props.lesson.id}`); }}
-            >
-                Edit
-            </button>
-    </div>
+            <div id="buttons">
+                <button 
+                    className="w-24 h-10 mx-5 flex items-center 
+                        justify-center cursor-pointer transition-all
+                        rounded border-2 border-black
+                        hover:bg-red-500 hover:text-white 
+                        hover:border-red-500 text-red-500" 
+                    onClick={() => { 
+                        props.setShowConfirmation(true); 
+                        props.setTargetID(props.lesson.id);
+                    }}
+                >
+                    delete
+                </button>
+                <button 
+                    className="w-24 h-10 mx-5 flex items-center 
+                        justify-center cursor-pointer transition-all
+                        text-primary rounded border-2 border-black
+                        hover:bg-primary hover:text-white 
+                        hover:border-primary" 
+                    onClick={() => { navigate(`/edit/${props.lesson.id}`); }}
+                >
+                    Edit
+                </button>
+            </div>
+        </div>
     )
 }
 
