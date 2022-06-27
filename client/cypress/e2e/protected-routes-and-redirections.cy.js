@@ -26,7 +26,7 @@ describe('test if routes and redirections work as intended - logged in - admin',
     })
     it('redirects to dashboard if user is on site root', () => {
         cy.visit('/');
-        cy.get('.lesson-wrap').should('be.visible');
+        cy.get('.lessons-wrap').should('be.visible');
     })
 })
 
@@ -62,7 +62,7 @@ describe('test if routes and redirections work as intended - logged in', () => {
     })
     it('redirects to dashboard if user is on site root', () => {
         cy.visit('/');
-        cy.get('.lesson-wrap').should('be.visible');
+        cy.get('.lessons-wrap').should('be.visible');
     })
     it('shows 404 page', () => {
         cy.visit('/trains');

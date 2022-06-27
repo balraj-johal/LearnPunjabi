@@ -325,7 +325,7 @@ button:disabled:hover {
   opacity: 0.35;
 }
 
-.lesson-wrap {
+.lessons-wrap {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -339,7 +339,7 @@ button:disabled:hover {
   padding: 40px 0;
 }
 
-.lesson-wrap .lesson {
+.lessons-wrap .lesson {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -365,24 +365,24 @@ button:disabled:hover {
   transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
 }
 
-.lesson-wrap .lesson:hover {
+.lessons-wrap .lesson:hover {
   cursor: pointer;
   -webkit-transform: scale(1.05);
           transform: scale(1.05);
 }
 
-.lesson-wrap .lesson.complete {
+.lessons-wrap .lesson.complete {
   background-color: #00A2FF;
 }
 
 @media (max-width: 768px) {
-  .lesson-wrap {
+  .lessons-wrap {
     width: 100%;
   }
 }
 
 @media (min-width: 768px) {
-  .lesson-wrap {
+  .lessons-wrap {
     width: 60%;
     border-right: 2px solid black;
   }
@@ -1118,7 +1118,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+ monospace;
 }
 
 #root {

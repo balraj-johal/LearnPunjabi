@@ -50,7 +50,7 @@ function Course(props) {
     }
 
     /**
-     * calculate the height the lesson-wrap elem should be
+     * calculate the height the lessons-wrap elem should be
      * @name getWrapHeight
      * @returns { String } height - string to set height style to
      */
@@ -67,23 +67,29 @@ function Course(props) {
 
     if (loading) {
         props.setLessonWrapHeight("102%");
-        return <div className="lesson-wrap" style={{ height: "102%" }} />
+        return <div className="lessons-wrap" style={{ height: "102%" }} />
     }
     return(
         <div 
-            className="lesson-wrap relative" 
+            className="lessons-wrap relative" 
             style={{ height: props.lessonWrapHeight }} 
         >
-            <main id="lesson-links" className="animate-fade-in z-10">
+            <main 
+                id="lesson-links" 
+                className="animate-fade-in z-10 
+                    grid grid-cols-4 auto-cols-fr w-full"
+            >
                 <h1 className="visually-hidden">Lessons in the Course</h1>
                 { courseData.length > 0 ? (
-                    courseData.map((lesson) => 
-                        <LessonIcon 
-                            lesson={lesson}
-                            timesCompleted={getTimesCompleted(lesson.id)}
-                            key={lesson.id} 
-                        />
-                    )
+                    courseData.map((lesson) => (
+                        <div className="col-start-2 col-end-4">
+                            <LessonIcon 
+                                lesson={lesson}
+                                timesCompleted={getTimesCompleted(lesson.id)}
+                                key={lesson.id} 
+                            />
+                        </div>
+                    ))
                 ) : "Loading failed. Please refresh and try again!" }
             </main>
             <div className="absolute top-0 left-0 w-full h-full z-0">

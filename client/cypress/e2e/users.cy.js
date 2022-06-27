@@ -35,7 +35,7 @@ describe('welcome page', () => {
             cy.get('#username').type("@CDawgVA2");
             cy.get('#password').type("@CDawgVA2");
             cy.get('.login-form button').click();
-            cy.get(".lesson-wrap").should("be.visible");
+            cy.get(".lessons-wrap").should("be.visible");
         })
     })
 
