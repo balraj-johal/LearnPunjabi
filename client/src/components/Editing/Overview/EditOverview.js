@@ -12,15 +12,12 @@ import {
 import { 
     SortableContext, 
     verticalListSortingStrategy, 
-    useSortable, 
     sortableKeyboardCoordinates, 
     arrayMove, 
 } from '@dnd-kit/sortable';
-import { CSS } from "@dnd-kit/utilities";
 
 import axiosClient from "../../../axiosDefaults";
 import qs from "qs";
-import { _moveArrayIndex, _getListEndsState } from "../../../utils/arrays";
 
 import EditOverviewEntry from "./EditOverviewEntry";
 import AddButton from "../../FormComponents/AddButton";
@@ -28,6 +25,7 @@ import Loader from "../../Loader";
 import ConfirmationPrompt from "../ConfirmationPrompt";
 import GenericButton from "../../GenericButton";
 import PopInModal from "../PopInModal";
+import SortableItem from "./SortableItem";
 
 // TODO: decide where best to store this
 const NEW_LESSON = {
@@ -49,11 +47,18 @@ function EditOverview(props) {
     let [showModal, setShowModal] = useState(false);
     let [modalText, setModalText] = useState("");
 
+    let [showConfirmation, setShowConfirmation] = useState(false);
+    let [targetID, setTargetID] = useState(null);
+    let [deleting, setDeleting] = useState(false);
+
     useEffect(() => { 
         document.title = `Learn Punjabi - Edit Lessons`;
         fetchOverview();
     }, []);
 
+    /** gets all lessons, allowing ordering of course layout
+     * @name fetchOverview
+     */
     let fetchOverview = () => {
         // TODO: only pop new lessons out of order?
         // axiosClient.get("/api/v1/courses/")
@@ -80,13 +85,10 @@ function EditOverview(props) {
             })
     }
 
-    let [showConfirmation, setShowConfirmation] = useState(false);
-    let [targetID, setTargetID] = useState(null);
-    let [deleting, setDeleting] = useState(false);
-    let [deletionSuccess, setDeletionSuccess] = useState(false);
-
+    /** saves course data as new version
+     * @name handleOrderSave
+     */
     let handleOrderSave = () => {
-        console.log(courseData)
         const payload = qs.stringify({ courseData: courseData });
         axiosClient.post("/api/v1/courses/", payload)
             .then(res => { 
@@ -98,6 +100,10 @@ function EditOverview(props) {
             .catch(error => { console.error(error) })
     }
 
+    /** updates lesson position in columns on dashboard
+     * @param  {String} id lessonid
+     * @param  {String} newPosition "left", "middle", "right"
+     */
     let updateLessonPosition = (id, newPosition) => {
         let newData = [...courseData];
         newData.forEach(lesson => {
@@ -133,9 +139,7 @@ function EditOverview(props) {
     // define interaction sensors for drag/drop behaviour
     const sensors = useSensors(
         useSensor(MouseSensor, 
-            { activationConstraint: {
-                distance: 10
-            } }
+            { activationConstraint: { distance: 10 } }
         ),
         useSensor(TouchSensor, 
             { activationConstraint: { delay: 250, tolerance: 5} }
@@ -145,6 +149,10 @@ function EditOverview(props) {
         ),
     )
     
+    /**
+     * reorders course data on end of drag and drop interaction
+     * @param {Object} event drag event
+     */
     let handleDragEnd = (event) => {
         const { active, over } = event;
         if (active.id !== over.id) {
@@ -224,27 +232,6 @@ function EditOverview(props) {
                 />
             </main>
         </>
-    )
-}
-
-function SortableItem({children, ...props}) {
-    const { 
-        attributes, 
-        listeners, 
-        setNodeRef, 
-        transform, 
-        transition 
-    } = useSortable({id: props.id});
-
-    const style = { 
-        transform: CSS.Transform.toString(transform), transition,
-        width: "100%"
-    };
-
-    return(
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
-            {children}
-        </div>
     )
 }
 
