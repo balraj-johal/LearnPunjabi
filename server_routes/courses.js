@@ -63,7 +63,8 @@ router.get("/", async (req, res) => {
 router.get("/:version", async (req, res, next) => {
     console.log("getting course:", req.params.version)
     try {
-        await verifyToken(req);
+        const user = await verifyToken(req);
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
         const QUERY = { version: { $eq: sanitize(req.params.version) } };
         let course = await Course.findOne(QUERY);
         if (!course) return res.status(404).send("course not found.");
@@ -96,7 +97,6 @@ let getNewVersion = async () => {
 //  */
 router.post("/", async (req, res) => {
     try {
-        console.log("attempting")
         const user = await verifyToken(req);
         if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
         const newCourse = new Course();
