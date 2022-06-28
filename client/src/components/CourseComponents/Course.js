@@ -8,7 +8,6 @@ import axiosClient from "../../axiosDefaults";
 import { setProgress } from "../../actions/courseActions";
 import { setLessonWrapHeight } from "../../actions/displayActions";
 
-// import ReactPullToRefresh from "react-pull-to-refresh";
 import { Canvas } from '@react-three/fiber';
 import LessonIcon from "./LessonIcon";
 import Particles from "./Particles";
@@ -70,6 +69,18 @@ function Course(props) {
         props.setLessonWrapHeight(getWrapHeight());
     }, [courseData])
 
+    const getGridPositionClasses = (position) => {
+        if (position === "left") return "col-span-2";
+        if (position === "right") return "col-span-2";
+        return "col-start-2 col-end-4";
+    }
+    const getIconPositionClasses = (position) => {
+        if (position === "left") return "icon-2col-left";
+        if (position === "right") return "icon-2col-right";
+        return "mx-auto";
+    }
+
+
     if (loading) {
         props.setLessonWrapHeight("102%");
         return <div className="lessons-wrap" style={{ height: "102%" }} />
@@ -87,8 +98,12 @@ function Course(props) {
                 <h1 className="visually-hidden">Lessons in the Course</h1>
                 { courseData.length > 0 ? (
                     courseData.map((lesson) => (
-                        <div className="col-start-2 col-end-4" key={lesson.id} >
+                        <div 
+                            className={getGridPositionClasses(lesson.position)} 
+                            key={lesson.id} 
+                        >
                             <LessonIcon 
+                                extraClasses={getIconPositionClasses(lesson.position)}
                                 lesson={lesson}
                                 timesCompleted={getTimesCompleted(lesson.id)}
                             />

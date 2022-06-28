@@ -53,6 +53,7 @@ function EditOverview(props) {
     }, []);
 
     let fetchOverview = () => {
+        // TODO: only pop new lessons out of order?
         // axiosClient.get("/api/v1/courses/")
         //     .then(res => {
         //         setCourseData(res.data.lessons); 
@@ -64,7 +65,11 @@ function EditOverview(props) {
         //     })
         axiosClient.get("/api/v1/lessons/")
             .then(res => {
-                setCourseData(res.data.overview); 
+                const data = res.data.overview;
+                data.forEach(lesson => {
+                    lesson.position = "middle";
+                })
+                setCourseData(data); 
                 setReady(true);
             })
             .catch(error => {
@@ -88,6 +93,14 @@ function EditOverview(props) {
             .catch(error => {
                 console.log(error); 
             })
+    }
+
+    let updateLessonPosition = (id, newPosition) => {
+        let newData = [...courseData];
+        newData.forEach(lesson => {
+            if (lesson.id === id) lesson.position = newPosition;
+        })
+        setCourseData(newData);
     }
 
     /**
@@ -126,9 +139,11 @@ function EditOverview(props) {
             { coordinateGetter: sortableKeyboardCoordinates }
         ),
     )
-
+    
     let handleDragEnd = (event) => {
         const { active, over } = event;
+        console.log("active", active);
+        console.log("over", over);
         setLessonOrderChanged(true);
         if (active.id !== over.id) {
             // update data order
@@ -186,6 +201,7 @@ function EditOverview(props) {
                                 <EditOverviewEntry
                                     lesson={lesson}
                                     index={index}
+                                    updateLessonPosition={updateLessonPosition}
                                     setShowConfirmation={setShowConfirmation}
                                     setTargetID={setTargetID}
                                 />

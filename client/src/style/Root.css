@@ -1095,10 +1095,10 @@ button:disabled:hover {
     z-index: -1;
   }
   .icon-2col-left {
-    margin-right: 30px;
+    margin-right: 30px !important;
   }
   .icon-2col-right {
-    margin-left: 30px;
+    margin-left: 30px !important;
   }
 }
 

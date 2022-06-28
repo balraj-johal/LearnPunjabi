@@ -17,6 +17,32 @@ function EditOverviewEntry(props) {
                         `${props.lesson.tasksLength} tasks` : "1 task"}
                 </span>
             </div>
+            <div id="position">
+                <div
+                    className={`${props.lesson.position === "left" ? "" : "text-gray-200"}`} 
+                    onClick={() => { 
+                        props.updateLessonPosition(props.lesson.id, "left") 
+                    }}
+                >
+                    left
+                </div>
+                <div
+                    className={`${props.lesson.position === "middle" ? "" : "text-gray-200"}`} 
+                    onClick={() => { 
+                        props.updateLessonPosition(props.lesson.id, "middle") 
+                    }}
+                >
+                    middle
+                </div>
+                <div
+                    className={`${props.lesson.position === "right" ? "" : "text-gray-200"}`} 
+                    onClick={() => { 
+                        props.updateLessonPosition(props.lesson.id, "right") 
+                    }}
+                >
+                    right
+                </div>
+            </div>
             <div id="buttons">
                 <button 
                     className="w-24 h-10 mx-5 flex items-center 
