@@ -47,7 +47,7 @@ function EditOverview(props) {
     let [ready, setReady] = useState(false);
     let [courseData, setCourseData] = useState([]);
     let [showModal, setShowModal] = useState(false);
-    let [savedVersion, setSavedVersion] = useState(null);
+    let [modalText, setModalText] = useState("");
 
     useEffect(() => { 
         document.title = `Learn Punjabi - Edit Lessons`;
@@ -91,7 +91,9 @@ function EditOverview(props) {
         axiosClient.post("/api/v1/courses/", payload)
             .then(res => { 
                 setShowModal(true);
-                setSavedVersion(res.data.savedCourse.version);
+                setModalText(
+                    `Version ${res.data.savedCourse.version} saved!`
+                );
             })
             .catch(error => { console.error(error) })
     }
@@ -114,14 +116,16 @@ function EditOverview(props) {
             setDeleting(true);
             await axiosClient.delete(`/api/v1/lessons/${id}`);
             setDeleting(false);
-            setDeletionSuccess(true);
+            setModalText("Deletion successful!");
+            setShowModal(true);
             setShowConfirmation(false);
             fetchOverview();
-            // setShowSuccessModal(true);
         } catch (error) {
             setDeleting(false);
             setShowConfirmation(false);
             fetchOverview();
+            setModalText("Deletion failed...");
+            setShowModal(true);
             console.log('error deleting lesson', error);
         }
     }, []);
@@ -169,17 +173,16 @@ function EditOverview(props) {
     return(
         <>
             <PopInModal 
+                text={modalText}
                 show={showModal} 
                 length={8000} 
                 unrender={() => { 
                     setShowModal(false); 
                 }}
-                text={`Version ${savedVersion} saved!`}
             /> 
             {showConfirmation && <ConfirmationPrompt
                 showConfirmation={showConfirmation}
                 setShowConfirmation={setShowConfirmation}
-                deletionSuccess={setDeletionSuccess}
                 deleting={deleting}
                 handleYes={() => { deleteLesson(targetID) }}
             />}
