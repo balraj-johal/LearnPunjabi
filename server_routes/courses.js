@@ -45,12 +45,10 @@ const Course = require("../models/course.model");
 router.get("/", async (req, res) => {
     try {
         await verifyToken(req);
-        const latestCourse = await getLatestCourse();
-        if (!latestCourse) return res.status(500).send({
-            message: "no course found."
-        });
-        console.log("sending", latestCourse);
-        return res.status(200).send(latestCourse);
+        const QUERY = { version: { $eq: process.env.PUBLIC_COURSE_VERSION } };
+        let course = await Course.findOne(QUERY);
+        if (!course) return res.status(404).send("course not found.");
+        return res.status(200).send(course);
     } catch (err) {
         return res.status(500).send({error: err});
     }
