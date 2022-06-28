@@ -1,11 +1,31 @@
 import React, { useCallback, useEffect, useState } from "react";
-import axiosClient from "../../../axiosDefaults";
+import { useNavigate } from "react-router-dom";
+import { 
+    DndContext, 
+    KeyboardSensor, 
+    MouseSensor, 
+    TouchSensor, 
+    useSensor, 
+    useSensors,
+    closestCenter,
+} from "@dnd-kit/core";
+import { 
+    SortableContext, 
+    verticalListSortingStrategy, 
+    sortableKeyboardCoordinates, 
+    arrayMove, 
+} from '@dnd-kit/sortable';
 
-import { _moveArrayIndex, _getListEndsState } from "../../../utils/arrays";
+import axiosClient from "../../../axiosDefaults";
+import qs from "qs";
 
 import EditOverviewEntry from "./EditOverviewEntry";
+import AddButton from "../../FormComponents/AddButton";
 import Loader from "../../Loader";
 import ConfirmationPrompt from "../ConfirmationPrompt";
+import GenericButton from "../../GenericButton";
+import PopInModal from "../PopInModal";
+import SortableItem from "./SortableItem";
 
 // TODO: decide where best to store this
 const NEW_LESSON = {
@@ -20,18 +40,43 @@ const NEW_LESSON = {
 }
 
 function EditOverview(props) {
+    let navigate = useNavigate();
+
     let [ready, setReady] = useState(false);
     let [courseData, setCourseData] = useState([]);
-    let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
+    let [showModal, setShowModal] = useState(false);
+    let [modalText, setModalText] = useState("");
+
+    let [showConfirmation, setShowConfirmation] = useState(false);
+    let [targetID, setTargetID] = useState(null);
+    let [deleting, setDeleting] = useState(false);
 
     useEffect(() => { 
         document.title = `Learn Punjabi - Edit Lessons`;
+        fetchOverview();
     }, []);
 
+    /** gets all lessons, allowing ordering of course layout
+     * @name fetchOverview
+     */
     let fetchOverview = () => {
+        // TODO: only pop new lessons out of order?
+        // axiosClient.get("/api/v1/courses/")
+        //     .then(res => {
+        //         setCourseData(res.data.lessons); 
+        //         setReady(true);
+        //     })
+        //     .catch(error => {
+        //         console.log(error); 
+        //         setReady(true);
+        //     })
         axiosClient.get("/api/v1/lessons/")
             .then(res => {
-                setCourseData(res.data.overview); 
+                const data = res.data.overview;
+                data.forEach(lesson => {
+                    lesson.position = "middle";
+                })
+                setCourseData(data); 
                 setReady(true);
             })
             .catch(error => {
@@ -40,91 +85,151 @@ function EditOverview(props) {
             })
     }
 
-    // TODO: change this to only request specific properties from the API Get Request
-    // on mount retrieve all lessons
-    useEffect(() => {
-        fetchOverview();
-    }, []);
-    
-    /** Moves specified lesson back or forwards in course order
-     * @name shiftLesson
-     * @param {String} lessonID
-     * @param {String} direction
-    */
-    let shiftLesson = (lessonID, direction) => {
-        let oldIndex = courseData.findIndex(elem => elem.id === lessonID);
-        let valid = false;
-        switch (direction) {
-            case "up":
-                if (oldIndex > 0) {
-                    _moveArrayIndex(courseData, oldIndex, oldIndex - 1);
-                    valid = true;
-                }
-                break;
-            case "down":
-                if (oldIndex < courseData.length) {
-                    _moveArrayIndex(courseData, oldIndex, oldIndex + 1);
-                    valid = true;
-                }
-                break;
-            default:
-                break;
-        }
-        if (valid) {
-            setCourseData([...courseData]);
-            setLessonOrderChanged(true);
-        }
+    /** saves course data as new version
+     * @name handleOrderSave
+     */
+    let handleOrderSave = () => {
+        const payload = qs.stringify({ courseData: courseData });
+        axiosClient.post("/api/v1/courses/", payload)
+            .then(res => { 
+                setShowModal(true);
+                setModalText(
+                    `Version ${res.data.savedCourse.version} saved!`
+                );
+            })
+            .catch(error => { console.error(error) })
     }
-    
 
-    let [showConfirmation, setShowConfirmation] = useState(false);
-    let [targetID, setTargetID] = useState(null)
-    let [deleting, setDeleting] = useState(false);
-    let [deletionSuccess, setDeletionSuccess] = useState(false);
+    /** updates lesson position in columns on dashboard
+     * @param  {String} id lessonid
+     * @param  {String} newPosition "left", "middle", "right"
+     */
+    let updateLessonPosition = (id, newPosition) => {
+        let newData = [...courseData];
+        newData.forEach(lesson => {
+            if (lesson.id === id) lesson.position = newPosition;
+        })
+        setCourseData(newData);
+    }
+
+    /**
+     * deletes specified lesson
+     * @name deleteLesson
+     * @param {String} id - lesson id
+     */
     let deleteLesson = useCallback(async (id) => {
         try {
             setDeleting(true);
             await axiosClient.delete(`/api/v1/lessons/${id}`);
             setDeleting(false);
-            setDeletionSuccess(true);
+            setModalText("Deletion successful!");
+            setShowModal(true);
             setShowConfirmation(false);
             fetchOverview();
-            // setShowSuccessModal(true);
         } catch (error) {
             setDeleting(false);
             setShowConfirmation(false);
             fetchOverview();
+            setModalText("Deletion failed...");
+            setShowModal(true);
             console.log('error deleting lesson', error);
         }
     }, []);
+    
+    // define interaction sensors for drag/drop behaviour
+    const sensors = useSensors(
+        useSensor(MouseSensor, 
+            { activationConstraint: { distance: 10 } }
+        ),
+        useSensor(TouchSensor, 
+            { activationConstraint: { delay: 250, tolerance: 5} }
+        ),
+        useSensor(KeyboardSensor, 
+            { coordinateGetter: sortableKeyboardCoordinates }
+        ),
+    )
+    
+    /**
+     * reorders course data on end of drag and drop interaction
+     * @param {Object} event drag event
+     */
+    let handleDragEnd = (event) => {
+        const { active, over } = event;
+        if (active.id !== over.id) {
+            // update data order
+            setCourseData((lessons) => {
+                try {
+                    let oldIndex, newIndex;
+                    lessons.forEach((lesson, index) => {
+                        if (!oldIndex) {
+                            if (active.id === lesson.id) oldIndex = index;
+                        }
+                        if (!newIndex) {
+                            if (over.id === lesson.id) newIndex = index;
+                        }
+                    });
+                    // if (!oldIndex || !newIndex) { throw("indexes not found") }
+                    return arrayMove(lessons, oldIndex, newIndex);
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+        }
+    }
 
     if (!ready) return <Loader />;
     return(
         <>
+            <PopInModal 
+                text={modalText}
+                show={showModal} 
+                length={8000} 
+                unrender={() => { 
+                    setShowModal(false); 
+                }}
+            /> 
             {showConfirmation && <ConfirmationPrompt
                 showConfirmation={showConfirmation}
                 setShowConfirmation={setShowConfirmation}
-                deletionSuccess={setDeletionSuccess}
                 deleting={deleting}
                 handleYes={() => { deleteLesson(targetID) }}
             />}
             <main className="edit-wrap h-full flex flex-col 
-                items-center justify-center"
+                items-center"
             >
-                <h1 className="visually-hidden">Edit Lessons</h1>
-                {courseData.map((lesson, index) => 
-                    <EditOverviewEntry
-                        lesson={lesson}
-                        key={index}
-                        index={index}
-                        _getListEndsState={_getListEndsState}
-                        listEndsState={_getListEndsState(index, courseData)}
-                        shiftLesson={shiftLesson}
-                        setShowConfirmation={setShowConfirmation}
-                        setTargetID={setTargetID}
+                <div className="w-full flex justify-between items-center my-10">
+                    <h1 className="text-xl">Edit Course</h1>
+                    <GenericButton 
+                        text="Save Course" 
+                        handleClick={handleOrderSave}
                     />
-                )}
-                <EditOverviewEntry lesson={NEW_LESSON} new={true} />
+                </div>
+                <DndContext 
+                    onDragEnd={handleDragEnd} 
+                    sensors={sensors} 
+                    collisionDetection={closestCenter} 
+                >
+                    <SortableContext 
+                        items={courseData} 
+                        strategy={verticalListSortingStrategy}
+                    >
+                        {courseData.map((lesson, index) => 
+                            <SortableItem key={lesson.id} id={lesson.id}>
+                                <EditOverviewEntry
+                                    lesson={lesson}
+                                    index={index}
+                                    updateLessonPosition={updateLessonPosition}
+                                    setShowConfirmation={setShowConfirmation}
+                                    setTargetID={setTargetID}
+                                />
+                            </SortableItem>
+                        )}
+                    </SortableContext>
+                </DndContext>
+                <AddButton 
+                    extraStyles="mx-auto" 
+                    addNew={() => { navigate(`/edit/new`); }} 
+                />
             </main>
         </>
     )

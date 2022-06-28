@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import axiosClient from "../../axiosDefaults";
 
 // import redux actions
 import { setProgress } from "../../actions/courseActions";
 import { setLessonWrapHeight } from "../../actions/displayActions";
 
-// import ReactPullToRefresh from "react-pull-to-refresh";
 import { Canvas } from '@react-three/fiber';
 import LessonIcon from "./LessonIcon";
 import Particles from "./Particles";
 
 function Course(props) {
+    let params = useParams();
+
     let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
 
-    let getLessons = async () => {
+    let getCourse = async () => {
         try {
-            let res = await axiosClient.get("/api/v1/lessons/");
-            setCourseData(res.data.overview); 
+            const courseEndpoint = `/api/v1/courses/${params.version || ""}`
+            let res = await axiosClient.get(courseEndpoint);
+            setCourseData(res.data.lessons); 
             setLoading(false);
         } catch (err) {
             setLoading(false);
@@ -26,7 +30,7 @@ function Course(props) {
     }
 
     useEffect(() => {
-        let reqTimeout = setTimeout(getLessons, 200);
+        let reqTimeout = setTimeout(getCourse, 200);
 
         return () => { clearTimeout(reqTimeout) }
     }, [])
@@ -65,6 +69,18 @@ function Course(props) {
         props.setLessonWrapHeight(getWrapHeight());
     }, [courseData])
 
+    const getGridPositionClasses = (position) => {
+        if (position === "left") return "col-span-2";
+        if (position === "right") return "col-span-2";
+        return "col-start-2 col-end-4";
+    }
+    const getIconPositionClasses = (position) => {
+        if (position === "left") return "icon-2col-left";
+        if (position === "right") return "icon-2col-right";
+        return "mx-auto";
+    }
+
+
     if (loading) {
         props.setLessonWrapHeight("102%");
         return <div className="lessons-wrap" style={{ height: "102%" }} />
@@ -82,8 +98,12 @@ function Course(props) {
                 <h1 className="visually-hidden">Lessons in the Course</h1>
                 { courseData.length > 0 ? (
                     courseData.map((lesson) => (
-                        <div className="col-start-2 col-end-4" key={lesson.id} >
+                        <div 
+                            className={getGridPositionClasses(lesson.position)} 
+                            key={lesson.id} 
+                        >
                             <LessonIcon 
+                                extraClasses={getIconPositionClasses(lesson.position)}
                                 lesson={lesson}
                                 timesCompleted={getTimesCompleted(lesson.id)}
                             />
