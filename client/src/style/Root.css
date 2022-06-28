@@ -358,7 +358,7 @@ button:disabled:hover {
   width: 150px;
   height: 150px;
   border-radius: 10px;
-  margin: 45px;
+  margin: 45px auto;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
   transition: -webkit-transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out;
@@ -1094,6 +1094,12 @@ button:disabled:hover {
     overflow: hidden;
     z-index: -1;
   }
+  .icon-2col-left {
+    margin-right: 30px;
+  }
+  .icon-2col-right {
+    margin-left: 30px;
+  }
 }
 
 html, body, #root {
@@ -1118,8 +1124,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
- monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #root {

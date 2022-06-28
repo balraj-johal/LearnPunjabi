@@ -34,6 +34,7 @@ let buildOverviewObject = async () => {
     }
     return overview;
 }
+
 /**
  * Get overview of all lessons
  * @name get/

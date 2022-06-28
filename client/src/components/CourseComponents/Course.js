@@ -82,11 +82,10 @@ function Course(props) {
                 <h1 className="visually-hidden">Lessons in the Course</h1>
                 { courseData.length > 0 ? (
                     courseData.map((lesson) => (
-                        <div className="col-start-2 col-end-4">
+                        <div className="col-start-2 col-end-4" key={lesson.id} >
                             <LessonIcon 
                                 lesson={lesson}
                                 timesCompleted={getTimesCompleted(lesson.id)}
-                                key={lesson.id} 
                             />
                         </div>
                     ))

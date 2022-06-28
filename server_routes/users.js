@@ -47,7 +47,6 @@ router.post("/", async (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) return res.status(400).json(errors);
-    console.log(isValid, " : ", errors)
     try {
         // attempt to find user
         let user = await User.findOne({

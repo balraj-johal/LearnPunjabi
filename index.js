@@ -20,19 +20,14 @@ const app = express();
 // connect to MongoDB database
 const connectDB = async () => {
     console.log('Attempting to Connect to MongoDB...');
-    try {
-        await mongoose.connect(
-            process.env.MONGODB,
-            {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
-        );
-        console.log('MongoDB is Connected...');
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
+    mongoose.connect(
+        process.env.MONGODB,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+    console.log('MongoDB is Connected...');
 };
 connectDB();
 
