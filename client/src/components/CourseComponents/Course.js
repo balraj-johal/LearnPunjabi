@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import axiosClient from "../../axiosDefaults";
 
 // import redux actions
@@ -12,13 +14,16 @@ import LessonIcon from "./LessonIcon";
 import Particles from "./Particles";
 
 function Course(props) {
+    let params = useParams();
+
     let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
 
-    let getLessons = async () => {
+    let getCourse = async () => {
         try {
-            let res = await axiosClient.get("/api/v1/lessons/");
-            setCourseData(res.data.overview); 
+            const courseEndpoint = `/api/v1/courses/${params.version || ""}`
+            let res = await axiosClient.get(courseEndpoint);
+            setCourseData(res.data.lessons); 
             setLoading(false);
         } catch (err) {
             setLoading(false);
@@ -26,7 +31,7 @@ function Course(props) {
     }
 
     useEffect(() => {
-        let reqTimeout = setTimeout(getLessons, 200);
+        let reqTimeout = setTimeout(getCourse, 200);
 
         return () => { clearTimeout(reqTimeout) }
     }, [])

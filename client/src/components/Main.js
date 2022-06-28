@@ -102,7 +102,10 @@ function Main(props) {
             <Router>
                 <Routes>
                     <Route path="/" element={authRedirects()}>
-                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="dashboard">
+                            <Route path="" element={<Dashboard />} />
+                            <Route path=":version" element={<Dashboard />} />
+                        </Route> 
                         <Route path="lesson">
                             <Route path=":id" element={<Lesson />} />
                         </Route>

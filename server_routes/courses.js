@@ -63,22 +63,16 @@ router.get("/", async (req, res) => {
 //  * @param { callback } middleware - express middleware
 //  */
 router.get("/:version", async (req, res, next) => {
+    console.log("getting course:", req.params.version)
     try {
         await verifyToken(req);
-        const course_PARAMS = { id: { $eq: sanitize(req.params.courseID) } };
-        let course = await course.findOne(course_PARAMS);
+        const QUERY = { version: { $eq: sanitize(req.params.version) } };
+        let course = await Course.findOne(QUERY);
         if (!course) return res.status(404).send("course not found.");
-        let modifiedcourse = {...course._doc};
-        for (let i = 0; i < modifiedcourse.tasks.length; i++) {
-            const task = modifiedcourse.tasks[i]
-            if (task.audioFilename) {
-                let audioLink = await getFileLink(task.audioFilename);
-                task.audioLink = audioLink;
-            }
-        }
-        return res.status(200).send(modifiedcourse);
+        return res.status(200).send(course);
     } catch (err) {
         // next(err);
+        console.log(err)
         return res.status(500).send({error: err});
     }
 })
