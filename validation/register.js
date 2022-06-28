@@ -1,5 +1,8 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
+const Filter = require("bad-words");
+
+const swearFilter = new Filter();
 
 module.exports = function validateRegister(data) {
     let errors = {};
@@ -7,15 +10,14 @@ module.exports = function validateRegister(data) {
     // Convert empty fields to an empty string so we can use validator functions
     data.username = !isEmpty(data.username) ? data.username : "";
     data.password = !isEmpty(data.password) ? data.password : "";
-    // data.firstName = !isEmpty(data.firstName) ? data.firstName : "";
     data.email = !isEmpty(data.email) ? data.email : "";
 
     if (Validator.isEmpty(data.username)) {
-        errors.username = "username field is required";
+        errors.username = "Username field is required";
     }
-    // if (Validator.isEmpty(data.firstName)) {
-    //     errors.firstName = "firstName field is required";
-    // }
+    if (swearFilter.isProfane(data.username)) {
+        errors.username = "Please ensure you don't use bad language."
+    }
 
     // Password checks
     if (Validator.isEmpty(data.password)) {
