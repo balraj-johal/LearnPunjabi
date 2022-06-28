@@ -1,17 +1,9 @@
 import React, {  } from "react";
 import { useNavigate } from "react-router-dom";
 
-import AddButton from "../../FormComponents/AddButton";
-
 function EditOverviewEntry(props) {
     let navigate = useNavigate();
 
-    if (props.new) return(
-        <AddButton 
-            extraStyles="mx-auto" 
-            addNew={() => { navigate(`/edit/${props.lesson.id}`); }} 
-        />
-    )
     return(
         <div 
             className="flex justify-between items-center relative w-full
@@ -37,7 +29,7 @@ function EditOverviewEntry(props) {
                         props.setTargetID(props.lesson.id);
                     }}
                 >
-                    delete
+                    Delete
                 </button>
                 <button 
                     className="w-24 h-10 mx-5 flex items-center 
@@ -45,7 +37,7 @@ function EditOverviewEntry(props) {
                         text-primary rounded border-2 border-black
                         hover:bg-primary hover:text-white 
                         hover:border-primary" 
-                    onClick={() => { navigate(`/edit/${props.lesson.id}`); }}
+                    onClick={() => { navigate(`/edit/${props.lesson.id}`) }}
                 >
                     Edit
                 </button>

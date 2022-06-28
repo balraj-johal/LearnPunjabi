@@ -1,11 +1,32 @@
-import React, { useCallback, useEffect, useState } from "react";
-import axiosClient from "../../../axiosDefaults";
+import React, { Children, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { 
+    DndContext, 
+    KeyboardSensor, 
+    MouseSensor, 
+    TouchSensor, 
+    useSensor, 
+    useSensors,
+    closestCenter,
+} from "@dnd-kit/core";
+import { 
+    SortableContext, 
+    verticalListSortingStrategy, 
+    useSortable, 
+    sortableKeyboardCoordinates, 
+    arrayMove, 
+} from '@dnd-kit/sortable';
+import { CSS } from "@dnd-kit/utilities";
 
+import axiosClient from "../../../axiosDefaults";
+import qs from "qs";
 import { _moveArrayIndex, _getListEndsState } from "../../../utils/arrays";
 
 import EditOverviewEntry from "./EditOverviewEntry";
+import AddButton from "../../FormComponents/AddButton";
 import Loader from "../../Loader";
 import ConfirmationPrompt from "../ConfirmationPrompt";
+import GenericButton from "../../GenericButton";
 
 // TODO: decide where best to store this
 const NEW_LESSON = {
@@ -20,15 +41,27 @@ const NEW_LESSON = {
 }
 
 function EditOverview(props) {
+    let navigate = useNavigate();
+
     let [ready, setReady] = useState(false);
     let [courseData, setCourseData] = useState([]);
     let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
 
     useEffect(() => { 
         document.title = `Learn Punjabi - Edit Lessons`;
+        fetchOverview();
     }, []);
 
     let fetchOverview = () => {
+        // axiosClient.get("/api/v1/courses/")
+        //     .then(res => {
+        //         setCourseData(res.data.lessons); 
+        //         setReady(true);
+        //     })
+        //     .catch(error => {
+        //         console.log(error); 
+        //         setReady(true);
+        //     })
         axiosClient.get("/api/v1/lessons/")
             .then(res => {
                 setCourseData(res.data.overview); 
@@ -40,47 +73,28 @@ function EditOverview(props) {
             })
     }
 
-    // TODO: change this to only request specific properties from the API Get Request
-    // on mount retrieve all lessons
-    useEffect(() => {
-        fetchOverview();
-    }, []);
-    
-    /** Moves specified lesson back or forwards in course order
-     * @name shiftLesson
-     * @param {String} lessonID
-     * @param {String} direction
-    */
-    let shiftLesson = (lessonID, direction) => {
-        let oldIndex = courseData.findIndex(elem => elem.id === lessonID);
-        let valid = false;
-        switch (direction) {
-            case "up":
-                if (oldIndex > 0) {
-                    _moveArrayIndex(courseData, oldIndex, oldIndex - 1);
-                    valid = true;
-                }
-                break;
-            case "down":
-                if (oldIndex < courseData.length) {
-                    _moveArrayIndex(courseData, oldIndex, oldIndex + 1);
-                    valid = true;
-                }
-                break;
-            default:
-                break;
-        }
-        if (valid) {
-            setCourseData([...courseData]);
-            setLessonOrderChanged(true);
-        }
-    }
-    
-
     let [showConfirmation, setShowConfirmation] = useState(false);
-    let [targetID, setTargetID] = useState(null)
+    let [targetID, setTargetID] = useState(null);
     let [deleting, setDeleting] = useState(false);
     let [deletionSuccess, setDeletionSuccess] = useState(false);
+
+    let handleOrderSave = () => {
+        console.log(courseData)
+        const payload = qs.stringify({ courseData: courseData });
+        axiosClient.post("/api/v1/courses/", payload)
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch(error => {
+                console.log(error); 
+            })
+    }
+
+    /**
+     * deletes specified lesson
+     * @name deleteLesson
+     * @param {String} id - lesson id
+     */
     let deleteLesson = useCallback(async (id) => {
         try {
             setDeleting(true);
@@ -97,6 +111,46 @@ function EditOverview(props) {
             console.log('error deleting lesson', error);
         }
     }, []);
+    
+    // define interaction sensors for drag/drop behaviour
+    const sensors = useSensors(
+        useSensor(MouseSensor, 
+            { activationConstraint: {
+                distance: 10
+            } }
+        ),
+        useSensor(TouchSensor, 
+            { activationConstraint: { delay: 250, tolerance: 5} }
+        ),
+        useSensor(KeyboardSensor, 
+            { coordinateGetter: sortableKeyboardCoordinates }
+        ),
+    )
+
+    let handleDragEnd = (event) => {
+        const { active, over } = event;
+        setLessonOrderChanged(true);
+        if (active.id !== over.id) {
+            // update data order
+            setCourseData((lessons) => {
+                try {
+                    let oldIndex, newIndex;
+                    lessons.forEach((lesson, index) => {
+                        if (!oldIndex) {
+                            if (active.id === lesson.id) oldIndex = index;
+                        }
+                        if (!newIndex) {
+                            if (over.id === lesson.id) newIndex = index;
+                        }
+                    });
+                    // if (!oldIndex || !newIndex) { throw("indexes not found") }
+                    return arrayMove(lessons, oldIndex, newIndex);
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+        }
+    }
 
     if (!ready) return <Loader />;
     return(
@@ -109,24 +163,63 @@ function EditOverview(props) {
                 handleYes={() => { deleteLesson(targetID) }}
             />}
             <main className="edit-wrap h-full flex flex-col 
-                items-center justify-center"
+                items-center"
             >
-                <h1 className="visually-hidden">Edit Lessons</h1>
-                {courseData.map((lesson, index) => 
-                    <EditOverviewEntry
-                        lesson={lesson}
-                        key={index}
-                        index={index}
-                        _getListEndsState={_getListEndsState}
-                        listEndsState={_getListEndsState(index, courseData)}
-                        shiftLesson={shiftLesson}
-                        setShowConfirmation={setShowConfirmation}
-                        setTargetID={setTargetID}
+                <div className="w-full flex justify-between items-center my-10">
+                    <h1 className="text-xl">Edit Course</h1>
+                    <GenericButton 
+                        text="Save Course" 
+                        handleClick={handleOrderSave}
                     />
-                )}
-                <EditOverviewEntry lesson={NEW_LESSON} new={true} />
+                </div>
+                <DndContext 
+                    onDragEnd={handleDragEnd} 
+                    sensors={sensors} 
+                    collisionDetection={closestCenter} 
+                >
+                    <SortableContext 
+                        items={courseData} 
+                        strategy={verticalListSortingStrategy}
+                    >
+                        {courseData.map((lesson, index) => 
+                            <SortableItem key={lesson.id} id={lesson.id}>
+                                <EditOverviewEntry
+                                    lesson={lesson}
+                                    index={index}
+                                    setShowConfirmation={setShowConfirmation}
+                                    setTargetID={setTargetID}
+                                />
+                            </SortableItem>
+                        )}
+                    </SortableContext>
+                </DndContext>
+                <AddButton 
+                    extraStyles="mx-auto" 
+                    addNew={() => { navigate(`/edit/new`); }} 
+                />
             </main>
         </>
+    )
+}
+
+function SortableItem({children, ...props}) {
+    const { 
+        attributes, 
+        listeners, 
+        setNodeRef, 
+        transform, 
+        transition 
+    } = useSortable({id: props.id});
+
+    const style = { 
+        transform: CSS.Transform.toString(transform), transition,
+        width: "100%"
+    };
+
+    return(
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
+            {children}
+        </div>
     )
 }
 

@@ -67,14 +67,22 @@ function FormInput(props) {
                 required={props.required}
             />
             break;
-        case "taskType":
-            component = <FormTaskType 
-                for={props.for} 
-                value={props.value}
-                onChange={props.onChange} 
-                required={props.required}
-            />
-            break;
+            case "taskType":
+                component = <FormTaskType 
+                    for={props.for} 
+                    value={props.value}
+                    onChange={props.onChange} 
+                    required={props.required}
+                />
+                break;
+            case "select":
+                component = <FormSelect 
+                    for={props.for} 
+                    value={props.value}
+                    onChange={props.onChange} 
+                    required={props.required}
+                />
+                break;
         case "number":
             component = <FormNumber 
                 for={props.for} 
@@ -211,5 +219,20 @@ function FormTaskType(props) {
     )
 }
 
+function FormSelect(props) {
+    return(
+        <select 
+            id={props.for} 
+            onChange={props.onChange}
+            value={props.value}
+            aria-required={props.required || false}
+            className={`${INPUT_STYLES} ${props.extraStyles}`}
+        >
+            { props.options.map(elem => (
+                <option value={elem}>{elem}</option>
+            )) }
+        </select>
+    )
+}
 
 export default FormInput;
