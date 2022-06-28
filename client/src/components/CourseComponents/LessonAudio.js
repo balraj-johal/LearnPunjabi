@@ -8,17 +8,22 @@ import wrongAudio from "../../res/sounds/fail.mp3";
 
 function LessonAudio(props) {
     let correctRef = useRef();
+    let endRef = useRef();
     let wrongRef = useRef();
     
     useEffect(() => {
         correctRef.current.volume = 0.25;
-        correctRef.current.volume = 0.25;
+        wrongRef.current.volume = 0.25;
+        endRef.current.volume = 0.25;
         switch (props.playingAudio) {
             case "correct":
                 correctRef.current.play();
                 break;
             case "wrong":
                 wrongRef.current.play();
+                break;
+            case "end":
+                endRef.current.play();
                 break;
             default:
                 break;
@@ -29,6 +34,15 @@ function LessonAudio(props) {
         <div className="lesson-status-audio visually-hidden">
             <audio 
                 ref={correctRef} 
+                src={correctAudio} 
+                preload="auto"
+                role="audio" 
+                onEnded={() => {
+                    props.playAudio(null);
+                }}
+            />
+            <audio 
+                ref={endRef} 
                 src={correctAudio} 
                 preload="auto"
                 role="audio" 

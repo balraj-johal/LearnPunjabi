@@ -29,7 +29,7 @@ function TaskManager(props) {
             handleExit();
         }, 750);
     }
-    
+
     let handleWrong = () => {
         props.playAudio("wrong");
         props.setAnimClasses("animate-shake-x wrong");
@@ -46,7 +46,6 @@ function TaskManager(props) {
      * @name handleExit
      */
     let handleExit = useCallback(() => {
-        props.playAudio("correct");
         props.setAnimClasses("");
         setAnimating(true);
         setOut(true);
@@ -67,7 +66,10 @@ function TaskManager(props) {
         case "TextOnly":
             task = <TextOnly 
                     data={props.taskData} 
-                    submit={() => handleExit()}
+                    submit={() => {
+                        props.playAudio("correct");
+                        handleExit();
+                    }}
                     stats={props.stats}
                     setAnimating={setAnimating}
                 />
@@ -98,14 +100,20 @@ function TaskManager(props) {
             task = <End 
                     data={props.taskData} 
                     hideButton={props.taskData.hideButton}
-                    submit={() => handleExit()}
+                    submit={() => {
+                        props.playAudio("end");
+                        handleExit();
+                    }}
                     stats={props.stats}
                 />
             break;
         case "Interstitial":
             task = <Intersitial 
                     data={props.taskData} 
-                    submit={() => handleExit()}
+                    submit={() => {
+                        props.playAudio("correct");
+                        handleExit();
+                    }}
                 />
             break;
         default:
