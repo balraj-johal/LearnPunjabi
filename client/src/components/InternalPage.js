@@ -19,14 +19,14 @@ function InternalPage(props) {
     return(
         <>
             <Topbar />
-            <div 
+            <main 
                 className="container flex overflow-hidden" 
                 style={{
                     height: `calc(100vh - ${props.topbarHeight}px)`
                 }} 
             >
                 {!props.loading && <Outlet />}
-            </div>
+            </main>
             <CookieConsent
                 overlay
             >

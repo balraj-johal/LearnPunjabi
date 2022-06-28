@@ -5,8 +5,6 @@ import NextButton from "./NextButton";
 import confetti from "../../../res/animations/confetti.json";
 
 function End(props) {
-    const hideButton = props.data.hideButton;
-
     return(
         <>
             <Lottie 
@@ -28,7 +26,7 @@ function End(props) {
                     </span>
                 ) }
             </div>
-            {!hideButton && 
+            {!props.hideButton && 
                 <NextButton next={()=>{ props.submit(true) }} text="Finish" />}
         </>
     );

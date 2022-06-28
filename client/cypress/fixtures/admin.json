@@ -1,0 +1,18 @@
+{
+    "user": {
+        "_id":"627e903fa099eb9079e91e01",
+        "username":"Admin",
+        "progress":[
+            {"id":"Intro_Main","timesCompleted":3},
+            {"id":"Spec_Order_Test","timesCompleted":10},
+            {"id":"lesson-test all","timesCompleted":20}
+        ],
+            "groupID":2,
+            "totalXP":683,
+            "weeklyXP":0,
+            "role":"Admin",
+            "createdAt":"2022-05-13T17:07:11.838Z",
+            "streak":0,
+            "lastLessonFinish":1655164800000
+    }
+}

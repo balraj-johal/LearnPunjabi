@@ -34,6 +34,7 @@ let buildOverviewObject = async () => {
     }
     return overview;
 }
+
 /**
  * Get overview of all lessons
  * @name get/
@@ -93,12 +94,12 @@ router.post("/:lessonID", async (req, res) => {
     try {
         const user = await verifyToken(req);
         if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
-        let lesson = await Lesson.findOne({ id: { $eq: req.params.lessonID } });
+        const query = { $eq: sanitize(req.params.lessonID) }
+        let lesson = await Lesson.findOne({ id: query });
         if (!lesson) lesson = new Lesson();
         lesson.name = req.body.name;
         lesson.id = req.body.id;
-        lesson.strId = "req.body.id"; // Somewhere the mongoDB is requiring the older property strId to save.
-        // console.log(lesson.strId)
+        lesson.strId = req.body.id; // Somewhere the mongoDB is requiring the older property strId to save.
         lesson.requiredCompletions = req.body.requiredCompletions;
         lesson.shuffle = req.body.shuffle;
         lesson.noToSample = req.body.noToSample;
@@ -115,6 +116,20 @@ router.post("/:lessonID", async (req, res) => {
             .catch(err => { return res.status(500).send({
                 error: err, message: "error saving lesson"
             }); })
+    } catch (err) {
+        return res.status(500).send({ error: err })
+    }
+})
+
+router.delete("/:lessonID", async (req, res) => {
+    try {
+        const user = await verifyToken(req);
+        if (user.role !== "Admin") return res.status(401).send("Unauthorised.");
+        const query = { $eq: sanitize(req.params.lessonID) };
+        await Lesson.deleteOne({ id: query });
+        return res.status(200).send({
+            message: `deletion of lesson ${req.params.lessonID} successful`,
+        })
     } catch (err) {
         return res.status(500).send({ error: err })
     }

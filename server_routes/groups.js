@@ -115,7 +115,7 @@ let pushGroupsToDb = (groups) => {
                 }
                 // update associated users linking them to new groups
                 updateData.users.forEach(elem => {
-                    User.findOne({ _id: {$eq: elem._id} })
+                    User.findOne({ _id: {$eq: sanitize(elem._id)} })
                         .then(user => {
                             user.groupID = updateData.groupID;
                             user.weeklyXP = 0;
@@ -137,7 +137,7 @@ let pushGroupsToDb = (groups) => {
  * @param { callback } middleware - express middleware
  */
  router.get("/:groupID", (req, res) => {
-    const g_id = req.params.groupID;
+    const g_id = sanitize(req.params.groupID);
     Group.findOne({ groupID : { $eq: g_id } })
         .then(group => {
             updateGroupsWeeklyXP(group)

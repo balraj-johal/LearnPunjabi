@@ -233,9 +233,9 @@ it('calculate correct percentage at lesson end with no wrong answers', async () 
 })
 
 
-// it('adds interstitals', () => {
+// it('adds interstitals', () => { -- ADDE2E
 
 // })
-// it('shuffles tasks', () => {
+// it('shuffles tasks', () => { -- ADDE2E?
 
 // })

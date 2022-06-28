@@ -53,7 +53,7 @@ function AccountSummary(props) {
             aria-labelledby="tab-Summary"
             role="tabpanel"
             style={fadeSpring}
-            className="h-full w-full"
+            className="h-full w-full min-h-[580px]"
         >
             <form 
                 noValidate 
@@ -68,6 +68,7 @@ function AccountSummary(props) {
                     className="w-full flex flex-col
                         font-normal h-2/6 justify-center"
                 >
+                    <h1 className="visually-hidden">Account Summary</h1>
                     <h2 className="md:text-3xl text-xl my-2">
                         Hi&nbsp;
                         <span className="font-bold">
@@ -80,6 +81,7 @@ function AccountSummary(props) {
                 </div>
                 <div 
                     id="total-xp" 
+                    aria-label="your streak readout"
                     className="w-full flex items-center justify-between
                         py-4 px-7 relative
                         no-highlight h-1/6 rounded 
@@ -118,7 +120,7 @@ function AccountSummary(props) {
                 </div>
                 <div className="flex flex-row justify-between 
                     h-1/6 py-1">
-                    <SmallBubble>
+                    <SmallBubble label="your XP">
                         <div className="font-normal md:text-xl">
                             You have
                         </div>
@@ -129,7 +131,7 @@ function AccountSummary(props) {
                             <span className="md:text-2xl"> XP!</span>
                         </div>
                     </SmallBubble>
-                    <SmallBubble>
+                    <SmallBubble label="your lesson completion count">
                             <span className="md:text-xl">
                                 You've done
                             </span>
@@ -151,9 +153,10 @@ function AccountSummary(props) {
     )
 }
 
-function SmallBubble({ children }) {
+function SmallBubble({ children, ...props }) {
     return(
         <div 
+            aria-label={props.label}
             style={{width: "calc(50% - 5px)"}}
             className="rounded shadow-md border-[1px] border-slate-200 
                 md:text-xl md:py-4

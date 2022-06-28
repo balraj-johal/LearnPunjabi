@@ -9,8 +9,7 @@ import { degreesToRads } from "../../utils/math";
 import ScrollPrompt from "./ScrollPrompt";
 import PunjabModel from "./PunjabInfoSection/PunjabModel";
 import WelcomeLogo from "./WelcomeLogo";
-import SignInPrompt from "./SignInPrompt";
-// import InfoPoints from "./InfoPoints";
+import CallToAction from "./CallToAction";
 import RiversTop from "./RiversSVGs/RiversTop";
 import RiversEnd from "./RiversSVGs/RiversEnd";
 import RiversMid from "./RiversSVGs/RiversMid";
@@ -26,21 +25,21 @@ function Welcome(props) {
     let [showAccounts, setShowAccounts] = useState(false);
     // initialise listeners for scroll tracking
     const top = useRef();
-    const scrollArea = useRef();
-    const welcome1 = useRef();
-    const welcome2 = useRef();
-    const welcome3 = useRef();
-    const welcome4 = useRef();
+    const main = useRef();
 
     const onScroll = e => { 
         top.current = e.target.scrollTop;
     };
     useEffect(() => { 
-        onScroll({ target: scrollArea.current }) ;
+        onScroll({ target: main.current });
+        document.title = "Learn Punjabi - Welcome!"
     }, []);
 
     let toggleShowAccounts = () => {
         setShowAccounts(!showAccounts);
+        console.log(main.current)
+        if (!showAccounts) return main.current.setAttribute("inert", "true");
+        main.current.removeAttribute("inert");
     }
 
     return(
@@ -49,9 +48,10 @@ function Welcome(props) {
             className="w-screen h-screen absolute 
                 flex justify-center items-center"
         >
-            <div 
+            <button
+                id="hide-account-manager" 
                 onClick={() => { toggleShowAccounts() }}
-                className="w-screen h-screen absolute z-40 
+                className="w-screen h-screen absolute z-[75]
                     bg-black bg-opacity-30"
             />
             <div 
@@ -59,23 +59,26 @@ function Welcome(props) {
                     flex justify-center items-center overflow-hidden"
                 style={{marginBottom: "env(safe-area-inset-bottom)"}}
             >
-                <AccountManager />
+                <AccountManager welcome={true} />
             </div>
         </div> }
-            <div 
+            <main 
                 id="welcome" 
-                ref={scrollArea} 
+                ref={main} 
                 onScroll={onScroll} 
-                // scrollTop={scroll}
             >
+                <h1 className="visually-hidden">Welcome to Learn Punjabi!</h1>
                 <div 
+                    aria-label="Welcome section, including start learning button and example lesson link"
                     id="welcome-1" 
                     className="welcome-div grad-top h-full"
-                    ref={welcome1}
                 >
                     <WelcomeLogo />
                     <RiversTop />
-                    <SignInPrompt handleClick={toggleShowAccounts} />
+                    <CallToAction 
+                        text="Start Learning" 
+                        handleClick={toggleShowAccounts} 
+                    />
                     <ScrollPrompt 
                         text="Try a lesson on us!" 
                         scrollTo="#welcome-2"
@@ -83,33 +86,32 @@ function Welcome(props) {
                 </div>
 
                 <div 
+                    aria-label="Example Lesson"
                     id="welcome-2" 
-                    className="welcome-div grad-mid h-full"
-                    ref={welcome2}
+                    className="welcome-div grad-mid h-full animate-fade-in"
                 >
                     <Lesson lessonOverride={EXAMPLE_LESSON} />
                     <RiversMid />
                     <ScrollPrompt 
-                        text="want to learn about Punjab?" 
+                        text="Want to learn about Punjab?" 
                         scrollTo="#welcome-3"
                     />
                 </div>
                 <div 
+                    aria-label="3D animation of Punjab's history through the years"
                     id="welcome-3" 
                     className="welcome-div grad-mid h-full"
-                    ref={welcome3}
                 >
                     <PunjabInfoWrapper ref={top} />
                 </div>
                 <div 
-                    id="welcome-4" 
+                    id="welcome-end" 
                     className="welcome-div grad-end h-full"
-                    ref={welcome4}
                 >
                     <RiversEnd />
                     <Footer />
                 </div>
-            </div>
+            </main>
         </>
     )
 }

@@ -5,6 +5,7 @@ import Course from "./CourseComponents/Course";
 import Sidebar from "./Sidebar";
 
 function Dashboard(props) {
+    
     if (props.mobile) return <Course />;
     return(
         <>

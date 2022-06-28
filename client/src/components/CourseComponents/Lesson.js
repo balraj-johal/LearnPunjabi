@@ -13,6 +13,7 @@ import { getUserData } from "../../actions/authActions";
 // import components
 import TaskManager from "./Tasks/TaskManager";
 import ProgressBar from "./ProgressBar";
+import LessonAudio from "./LessonAudio";
 
 function Lesson(props) {
     let navigate = useNavigate();
@@ -28,6 +29,10 @@ function Lesson(props) {
     });
     let [mistakeTracker, setMistakeTracker] = useState([]);
     let [noOfTasks, setNoOfTasks] = useState(0);
+
+    useEffect(() => { 
+        document.title = `Learn Punjabi - ${String(id)}`
+    }, []);
     
     // when lesson ID is updated, get and save lesson data from server
     useEffect(() => {
@@ -150,7 +155,7 @@ function Lesson(props) {
     let endLesson = (lessonID) => {
         if (props.lessonOverride) return;
         // TODO: submit tracked mistakes here
-//         let mistakes = answerTracking.wrongTasks;
+        // let mistakes = answerTracking.wrongTasks;
         let adjustedXP = Math.floor(5 * getPercentCorrect() / 100) + 5;
         let endpoint = `/api/v1/users/progress/${lessonID}`;
         axiosClient.put(endpoint, qs.stringify({ XP: adjustedXP }))
@@ -175,6 +180,8 @@ function Lesson(props) {
                 ${props.lessonOverride ? "" : "bg-white"} md:bg-transparent z-50 
                 items-center justify-center min-h-[550px] md:min-h-[500px]`}
             >
+                <LessonAudio />
+                <h1 className="visually-hidden">Lesson {lesson.name}</h1>
                 {!props.lessonOverride && 
                     <ProgressBar percent={getProgressPercent()} />}
                 <TaskManager
@@ -184,10 +191,11 @@ function Lesson(props) {
                     stats={`${getPercentCorrect()}%`}
                 />
             </div>
-        ) : 
-        <div className="flex justify-center items-center w-full h-full">
-            Loading failed. Please refresh and try again!
-        </div>
+        ) : (
+            <div className="flex justify-center items-center w-full h-full">
+                Loading failed. Please refresh and try again!
+            </div>
+        )
     )
 }
 

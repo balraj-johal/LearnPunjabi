@@ -1,46 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import axiosClient from "../../axiosDefaults";
 
 // import redux actions
 import { setProgress } from "../../actions/courseActions";
 import { setLessonWrapHeight } from "../../actions/displayActions";
 
-// import ReactPullToRefresh from "react-pull-to-refresh";
 import { Canvas } from '@react-three/fiber';
 import LessonIcon from "./LessonIcon";
 import Particles from "./Particles";
 
 function Course(props) {
+    let params = useParams();
+
     let [loading, setLoading] = useState(true);
     let [courseData, setCourseData] = useState([]);
 
-    let getLessons = async () => {
+    let getCourse = async () => {
         try {
-            let res = await axiosClient.get("/api/v1/lessons/");
-            setCourseData(res.data.overview); 
+            const courseEndpoint = `/api/v1/courses/${params.version || ""}`
+            let res = await axiosClient.get(courseEndpoint);
+            setCourseData(res.data.lessons); 
             setLoading(false);
         } catch (err) {
             setLoading(false);
         }
     }
 
-    // // refresh data on pull to refresh
-    // let onRefresh = async (resolve, reject) => {
-    //     setLoading(true);
-    //     try {
-    //         let res = await axiosClient.get("/api/v1/lessons/");
-    //         setCourseData(res.data.overview); 
-    //         setLoading(false);
-    //         resolve();
-    //     } catch (err) {
-    //         setLoading(false);
-    //         reject();
-    //     }
-    // }
-    
     useEffect(() => {
-        let reqTimeout = setTimeout(getLessons, 200);
+        let reqTimeout = setTimeout(getCourse, 200);
 
         return () => { clearTimeout(reqTimeout) }
     }, [])
@@ -64,7 +54,7 @@ function Course(props) {
     }
 
     /**
-     * calculate the height the lesson-wrap elem should be
+     * calculate the height the lessons-wrap elem should be
      * @name getWrapHeight
      * @returns { String } height - string to set height style to
      */
@@ -73,46 +63,64 @@ function Course(props) {
         if (courseData.length > 0 && lessonBased > window.innerHeight) {
             return `${lessonBased}px`;
         }
-        return `${101 * props.vh}px`;
+        return `101vh`;
     }
     useEffect(() => {
         props.setLessonWrapHeight(getWrapHeight());
     }, [courseData])
 
+    const getGridPositionClasses = (position) => {
+        if (position === "left") return "col-span-2";
+        if (position === "right") return "col-span-2";
+        return "col-start-2 col-end-4";
+    }
+    const getIconPositionClasses = (position) => {
+        if (position === "left") return "icon-2col-left";
+        if (position === "right") return "icon-2col-right";
+        return "mx-auto";
+    }
+
+
     if (loading) {
         props.setLessonWrapHeight("102%");
-        return <div className="lesson-wrap" style={{ height: "102%" }} />
+        return <div className="lessons-wrap" style={{ height: "102%" }} />
     }
     return(
-        // <ReactPullToRefresh onRefresh={onRefresh} className="w-full h-full" 
-        //     // icon={<Loader />} 
-        // >
-            <div 
-                className="lesson-wrap relative" 
-                style={{ height: props.lessonWrapHeight }} 
+        <div 
+            className="lessons-wrap relative" 
+            style={{ height: props.lessonWrapHeight }} 
+        >
+            <main 
+                id="lesson-links" 
+                className="animate-fade-in z-10 
+                    grid grid-cols-4 auto-cols-fr w-full"
             >
-                <div className="animate-fade-in z-10">
-                    { courseData.length > 0 ? (
-                        courseData.map((lesson) => 
+                <h1 className="visually-hidden">Lessons in the Course</h1>
+                { courseData.length > 0 ? (
+                    courseData.map((lesson) => (
+                        <div 
+                            className={getGridPositionClasses(lesson.position)} 
+                            key={lesson.id} 
+                        >
                             <LessonIcon 
+                                extraClasses={getIconPositionClasses(lesson.position)}
                                 lesson={lesson}
                                 timesCompleted={getTimesCompleted(lesson.id)}
-                                key={lesson.id} 
                             />
-                        )
-                    ) : "Loading failed. Please refresh and try again!" }
-                </div>
-                <div className="absolute top-0 left-0 w-full h-full z-0">
-                    { props.showParticles && <Canvas 
-                            dpr={[1, 2]} 
-                            camera={{ position: [0, 0, 30], fov: 100 }}
-                        >
-                            <Particles />
-                        </Canvas>
-                    }
-                </div>
+                        </div>
+                    ))
+                ) : "Loading failed. Please refresh and try again!" }
+            </main>
+            <div className="absolute top-0 left-0 w-full h-full z-0">
+                { props.showParticles && <Canvas 
+                        dpr={[1, 2]} 
+                        camera={{ position: [0, 0, 30], fov: 100 }}
+                    >
+                        <Particles />
+                    </Canvas>
+                }
             </div>
-        // </ReactPullToRefresh>
+        </div>
     )
 }
 

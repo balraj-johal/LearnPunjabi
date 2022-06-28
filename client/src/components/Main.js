@@ -28,7 +28,7 @@ function Main(props) {
     const { setCSRFReady } = props;
     useEffect(() => {
         axiosClient.get("/csrf-token")
-        .then(res => {
+            .then(res => {
                 axiosClient.defaults.headers.common['X-CSRF-Token'] = res.data.token;
                 setCSRFReady();
             })
@@ -66,11 +66,6 @@ function Main(props) {
     const { setMobile } = props;
     useEffect(() => {
         let onResize = () => {
-            let vh = window.innerHeight * 0.01;
-            // setVh(vh)
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-            props.setSingleVH(vh);
-            
             if (window.innerWidth < 768) return setMobile(true);
             return setMobile(false);
         }
@@ -107,7 +102,10 @@ function Main(props) {
             <Router>
                 <Routes>
                     <Route path="/" element={authRedirects()}>
-                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="dashboard">
+                            <Route path="" element={<Dashboard />} />
+                            <Route path=":version" element={<Dashboard />} />
+                        </Route> 
                         <Route path="lesson">
                             <Route path=":id" element={<Lesson />} />
                         </Route>
@@ -129,7 +127,9 @@ function Main(props) {
                         </Route>
                     </Route>
                     <Route path="welcome" >
-                        <Route path="" element={<Welcome loginQueried={props.csrf} />} />
+                        <Route path="" element={
+                            <Welcome loginQueried={props.csrf} />
+                        } />
                         <Route path="about" element={
                             <FooterPage for="About" />
                         } />

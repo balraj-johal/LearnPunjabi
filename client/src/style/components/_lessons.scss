@@ -1,5 +1,5 @@
 
-.lesson-wrap {
+.lessons-wrap {
     display: flex;
     align-items: center;
     flex-direction: column;    
@@ -15,7 +15,7 @@
         width: 150px;
         height: 150px;
         border-radius: 10px;
-        margin: 45px;
+        margin: 45px auto;
 
         @include hoverScaleUp(1.05);
 
@@ -26,13 +26,13 @@
 }
 
 @media (max-width: 768px) {
-    .lesson-wrap {
+    .lessons-wrap {
         width: 100%;
     }
 }
 
 @media (min-width: 768px) {
-    .lesson-wrap {
+    .lessons-wrap {
         width: 60%;
         border-right: $border-thickness solid black;
     }

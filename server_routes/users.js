@@ -47,7 +47,6 @@ router.post("/", async (req, res) => {
     //validate userData
     const { errors, isValid } = validateRegister(req.body);
     if (!isValid) return res.status(400).json(errors);
-    console.log(isValid, " : ", errors)
     try {
         // attempt to find user
         let user = await User.findOne({
@@ -118,8 +117,8 @@ router.post("/login", async (req, res) => {
     const { errors, isValid } = validateLogin(req.body);
     if (!isValid) return res.status(400).json(errors);
     try {
-        const username = req.body.username;
-        const password = req.body.password;
+        const username = sanitize(req.body.username);
+        const password = sanitize(req.body.password);
         // attempt to find user
         let user = await User.findOne({$or: [
             { username: {$eq: username} },
@@ -143,7 +142,9 @@ router.post("/login", async (req, res) => {
         const token = getNewToken(savedUser._id);
         res.cookie("refreshToken", newRefreshToken, AUTH_COOKIE_OPTIONS);
         res.cookie("jwtToken", token, AUTH_COOKIE_OPTIONS);
-        return res.status(200).send({ message: `login for user ${savedUser._id} successful!` });
+        return res.status(200).send({
+            message: `login for user ${savedUser._id} successful!`
+        });
     } catch (err) { res.status(500).json(err); }
 });
 
@@ -165,7 +166,8 @@ const forgotPasswordLimiter = rateLimit({
  */
 router.post("/forgot-password", forgotPasswordLimiter, async (req, res) => {
 try {
-    let user = await User.findOne({ email: {$eq: req.body.email} });
+    const query = { $eq: sanitize(req.body.email) }
+    let user = await User.findOne({ email: query });
     // if no user is found by that email
     if (!user) return res.status(404).json({ email: "Error finding user." });
     user.pwResetCode = genVerificationCode(8);
@@ -191,8 +193,8 @@ try {
 router.post("/reset-password/:resetCode", async (req, res) => {
     try {
         let user = await User.findOne({ 
-            pwResetCode: {$eq: req.params.resetCode},
-            email: {$eq: req.body.email},
+            pwResetCode: {$eq: sanitize(req.params.resetCode)},
+            email: {$eq: sanitize(req.body.email)},
             pwResetCodeExpiry: {$gt: Date.now()}
         });
         if (!user) return res.status(404).json({ 
@@ -324,7 +326,7 @@ router.post("/logout", async (req, res) => {
         res.clearCookie("refreshToken", AUTH_COOKIE_OPTIONS);
         res.clearCookie("jwtToken", AUTH_COOKIE_OPTIONS);
         return res.status(200).send({ message: "Logout successful." });
-    } catch (err) { return res.status(500).send(err.message); }
+    } catch (err) { return res.status(500).send(err); }
 })
 
 /**
@@ -338,7 +340,7 @@ router.post("/logout", async (req, res) => {
 router.put("/verify-email/:verificationCode", async (req, res) => {
     try {
         let user = await User.findOne({ 
-            verificationCode: {$eq: req.params.verificationCode} 
+            verificationCode: {$eq: sanitize(req.params.verificationCode)} 
         });
         if (!user) return res.status(404).send({ message: "User not found..." });
         user.status = "Active";

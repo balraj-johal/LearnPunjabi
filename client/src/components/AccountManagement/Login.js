@@ -47,34 +47,46 @@ function Login(props) {
             className="login mt-2" 
             style={spring}
         >
-            <form className="login-form" noValidate onSubmit={ onSubmit }>
+            <form className="login-form" noValidate onSubmit={onSubmit}>
+                <h1 className="visually-hidden">Login</h1>
+                <div className="visually-hidden" aria-live="polite">
+                    <h2>Form Errors</h2>
+                    {Object.values(props.errors).map(error => (
+                        <p key={error}>{error}</p>
+                    ))}
+                </div>
                 <FormInput 
                     for="username"
-                    onChange={ e => setUsername(e.target.value) }
-                    value={ username }
-                    errors={ props.errors }
+                    onChange={e => setUsername(e.target.value)}
+                    value={username}
+                    errors={props.errors}
                     type="username"
+                    required={true}
                     labelOverride="Username/Email"
                 />
                 <FormInput 
                     for="password"
-                    onChange={ e => setPassword(e.target.value) }
-                    value={ password }
-                    errors={ props.errors }
+                    onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    errors={props.errors}
+                    required={true}
                     type="password"
+                    autoComplete="current-password"
                 />
                 <FormError 
                     for="verification" 
-                    errors={ props.errors } 
+                    errors={props.errors} 
                 />
                 <FormSubmitButton for="login" disabled={submitting} />
-                <div 
+                <a 
+                    tabIndex={0}
                     onClick={() => { props.setManagerState("ForgotPassword") }}
-                    className="text-sm text-primary w-full cursor-pointer mt-4
-                        hover:text-secondary hover:translate-x-2 transition-all"
+                    className="text-sm text-primary w-2/5 cursor-pointer mt-4 block
+                        hover:text-secondary hover:translate-x-2 transition-all
+                        underline"
                 >
                     - Forgot Password?
-                </div>
+                </a>
             </form>
         </animated.div>
     )

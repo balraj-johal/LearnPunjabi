@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import ProgressBar from './ProgressBar';
 
 /**
- * does it show the correct width of bar
+ * does it show the correct width of bar wrt lesson progress -- ADDE2E
  */
 
 

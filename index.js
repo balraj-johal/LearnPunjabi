@@ -14,25 +14,21 @@ const users = require("./server_routes/users");
 const progress = require("./server_routes/users/progress");
 const groups = require("./server_routes/groups");
 const lessons = require("./server_routes/lessons");
+const courses = require("./server_routes/courses");
 
 const app = express();
 
 // connect to MongoDB database
 const connectDB = async () => {
     console.log('Attempting to Connect to MongoDB...');
-    try {
-        await mongoose.connect(
-            process.env.MONGODB,
-            {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
-        );
-        console.log('MongoDB is Connected...');
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
+    mongoose.connect(
+        process.env.MONGODB,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+    console.log('MongoDB is Connected...');
 };
 connectDB();
 
@@ -95,6 +91,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/users/progress", progress);
 app.use("/api/v1/groups", groups);
 app.use("/api/v1/lessons", lessons);
+app.use("/api/v1/courses", courses);
 app.use("/api/v1/s3", s3.router);
 
 const PORT = process.env.PORT || 3001;

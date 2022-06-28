@@ -32,10 +32,13 @@ function AccountManager(props) {
     useEffect(() => {
         props.clearAuthErrors();
     }, [managerState])
-
+    
     return(
-        <div className="accounts-wrap dark-elevated animate-fade-in bg-white 
-            overflow-hidden shadow-xl z-50 text-black relative md:rounded-md"
+        <div className={`accounts-wrap 
+            ${props.welcome ? "" : "md:h-5/6"} h-full w-full 
+            md:w-4/6 md:rounded-md
+            dark-elevated animate-fade-in bg-white 
+            overflow-hidden shadow-xl z-[100] text-black relative`}
         >
             <div id="switcher-buttons" className="flex flex-row">
                 {props.isAuthenticated ? (
@@ -76,8 +79,9 @@ function AccountManager(props) {
                     </div>
                 )}
             </div>
-            <div className="account-switcher px-4 md:px-28 pb-5 pt-4 md:pt-8 
-                h-full md:mt-0 overflow-auto"
+            <div className="account-switcher px-4 pb-5 pt-4 
+                md:px-28 md:pt-8 md:mt-0 
+                h-full overflow-auto"
             >
                 <Switcher 
                     state={managerState} 

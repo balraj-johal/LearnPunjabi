@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useSpring, animated } from 'react-spring';
 
@@ -11,40 +11,50 @@ import PageNotFound from "../../PageNotFound";
 import End from "./End";
 
 import { setAnimClasses } from "../../../actions/currTaskActions";
+import { playAudio } from "../../../actions/lessonStatusActions";
 
 // return task component of specified type
 function TaskManager(props) {
     let [animating, setAnimating] = useState(false);
     let [currentID, setCurrentID] = useState(null);
     let [out, setOut] = useState(false);
+    const taskData = props.taskData;
     let task;
 
     let handleCorrect = () => {
+        props.playAudio("correct");
         props.setAnimClasses("animate-bounce-y correct");
         setAnimating(true);
         setTimeout(() => {
             handleExit();
         }, 750);
     }
+
     let handleWrong = () => {
+        props.playAudio("wrong");
         props.setAnimClasses("animate-shake-x wrong");
         setAnimating(true);
         setTimeout(() => {
             props.setAnimClasses("");
             setAnimating(false);
-            props.submit(false, props.taskData.type);
+            props.submit(false, taskData.type);
         }, 750);
     }
-    let handleExit = () => {
+
+    /**
+     * begin task out animation and submit task success
+     * @name handleExit
+     */
+    let handleExit = useCallback(() => {
         props.setAnimClasses("");
         setAnimating(true);
         setOut(true);
         setTimeout(() => {
             setOut(false);
             setAnimating(false);
-            props.submit(true, props.taskData.type);
+            props.submit(true, taskData.type);
         }, 600);
-    }
+    }, [taskData])
 
     // refresh the fade in animation when task data changes
     useEffect(() => {
@@ -56,7 +66,10 @@ function TaskManager(props) {
         case "TextOnly":
             task = <TextOnly 
                     data={props.taskData} 
-                    submit={() => handleExit()}
+                    submit={() => {
+                        props.playAudio("correct");
+                        handleExit();
+                    }}
                     stats={props.stats}
                     setAnimating={setAnimating}
                 />
@@ -86,14 +99,21 @@ function TaskManager(props) {
         case "End":
             task = <End 
                     data={props.taskData} 
-                    submit={() => handleExit()}
+                    hideButton={props.taskData.hideButton}
+                    submit={() => {
+                        props.playAudio("end");
+                        handleExit();
+                    }}
                     stats={props.stats}
                 />
             break;
         case "Interstitial":
             task = <Intersitial 
                     data={props.taskData} 
-                    submit={() => handleExit()}
+                    submit={() => {
+                        props.playAudio("correct");
+                        handleExit();
+                    }}
                 />
             break;
         default:
@@ -103,7 +123,7 @@ function TaskManager(props) {
 
     return(
         <div className={`${props.override ? "w-5/6 h-3/4 rounded" : "w-full h-full"}
-            md:h-4/6 md:w-8/12 md:rounded 
+            md:h-4/6 md:w-8/12 md:rounded md:min-h-[500px]
             lg:w-8/12 lg:mt-[-1rem] lg:min-w-[900px]
             xl:w-6/12
             relative flex items-center justify-center 
@@ -136,7 +156,7 @@ function AnimatedWrapper(props) {
     });
 
     return(
-        <animated.div 
+        <animated.main 
             style={spring}
             className={`task w-full h-full min-h-[450px] md:min-h-[400px]
                 relative px-6 pt-16 pb-10 sm:p-10 lg:px-14 text-black 
@@ -145,7 +165,7 @@ function AnimatedWrapper(props) {
             `} 
         >
             { props.task }
-        </animated.div>
+        </animated.main>
     )
 }
 
@@ -156,5 +176,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { setAnimClasses }
+    { setAnimClasses, playAudio }
 )(TaskManager);

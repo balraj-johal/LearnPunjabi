@@ -10,6 +10,7 @@ function FormInput(props) {
                 for={props.for} 
                 value={props.value}
                 onChange={props.onChange} 
+                required={props.required}
             />
             break;
         case "text":
@@ -19,6 +20,8 @@ function FormInput(props) {
                 value={props.value}
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
+                required={props.required}
+                autoComplete={props.autoComplete}
             />
             break;
         case "file":
@@ -28,6 +31,7 @@ function FormInput(props) {
                 value={props.value}
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
+                required={props.required}
             />
             break;
         case "username":
@@ -37,7 +41,9 @@ function FormInput(props) {
                 value={props.value}
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
+                required={props.required}
                 typeOverride="username"
+                autoComplete="username"
             />
             break;
         case "password":
@@ -47,7 +53,9 @@ function FormInput(props) {
                 value={props.value}
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
+                required={props.required}
                 typeOverride="password"
+                autoComplete={props.autoComplete}
             />
             break;
         case "checkbox":
@@ -56,15 +64,25 @@ function FormInput(props) {
                 onChange={props.onChange} 
                 value={props.value}
                 extraStyles={props.extraStyles}
+                required={props.required}
             />
             break;
-        case "taskType":
-            component = <FormTaskType 
-                for={props.for} 
-                value={props.value}
-                onChange={props.onChange} 
-            />
-            break;
+            case "taskType":
+                component = <FormTaskType 
+                    for={props.for} 
+                    value={props.value}
+                    onChange={props.onChange} 
+                    required={props.required}
+                />
+                break;
+            case "select":
+                component = <FormSelect 
+                    for={props.for} 
+                    value={props.value}
+                    onChange={props.onChange} 
+                    required={props.required}
+                />
+                break;
         case "number":
             component = <FormNumber 
                 for={props.for} 
@@ -72,8 +90,10 @@ function FormInput(props) {
                 task={props.task} 
                 onChange={props.onChange} 
                 extraStyles={props.extraStyles}
+                required={props.required}
                 min={props.min}
                 max={props.max}
+                autoComplete={props.autoComplete}
             />
             break;
         default:
@@ -83,31 +103,39 @@ function FormInput(props) {
                 value={props.value}
                 placeholder={props.placeholder}
                 extraStyles={props.extraStyles}
+                required={props.required}
+                autoComplete={props.autoComplete}
             />
             break;
     }
 
+    const error = props.errors?.[props.for];
     return(
         <div 
+            aria-invalid={error ? true : false}
             className={`input-field my-1 md:my-4 flex 
                 flex-${props.row ? "row" : "col"}
-                ${props.errors?.[props.for] ? "error animate-shake-x" : ""}`}
+                ${error ? "error" : ""}`}
         >
             <FormLabel for={props.for} labelOverride={props.labelOverride} />
-            {component}
-            <FormError for={props.for} errors={props.errors} />
+            <div className={`${error ? "animate-shake-x" : ""}`}>
+                {component}
+                <FormError error={error} />
+            </div>
         </div>
     )
 }
 
-const INPUT_STYLES = `rounded border-2 border-slate-200 px-1 py-0.5 
-    w-full my-0.5 focus:border-blue-400 outline-0 transition-all text-black`
+const INPUT_STYLES = `rounded border-2 border-slate-300 px-1 py-0.5 
+    w-full my-0.5 focus:border-blue-500 dark-input outline-0 
+    transition-all text-black`
 
 function FormTextArea(props) {
     return(
         <textarea
             onChange={props.onChange}
             value={props.value}
+            aria-required={props.required || false}
             placeholder={props.placeholder}
             id={`${props.for}`}
             type="text"
@@ -121,10 +149,12 @@ function FormText(props) {
         <input
             onChange={props.onChange}
             value={props.value}
+            aria-required={props.required || false}
             placeholder={props.placeholder}
             id={`${props.for}`}
             type={props.typeOverride || "text"}
             className={`${INPUT_STYLES} ${props.extraStyles}`}
+            autoComplete={props.autoComplete}
         />
     )
 }
@@ -132,6 +162,7 @@ function FormText(props) {
 function FormFile(props) {
     return(
         <input
+        aria-required={props.required || false}
             onChange={props.onChange}
             accept="audio/*"
             id={`${props.for}`}
@@ -145,6 +176,7 @@ function FormNumber(props) {
     return(
         <input
             onChange={props.onChange}
+            aria-required={props.required || false}
             value={props.value}
             placeholder={props.placeholder}
             id={`${props.for}`}
@@ -152,6 +184,7 @@ function FormNumber(props) {
             className={`${INPUT_STYLES} ${props.extraStyles}`}
             min={props.min}
             max={props.max}
+            autoComplete={props.autoComplete}
         />
     )
 }
@@ -159,6 +192,7 @@ function FormNumber(props) {
 function FormCheckbox(props) {
     return(
         <input
+        aria-required={props.required || false}
             className={`rounded border-2 border-black w-6 h-6 
                 px-1 py-0.5 mx-3 ${props.extraStyles}`}
             onChange={props.onChange}
@@ -175,6 +209,7 @@ function FormTaskType(props) {
             id="type" 
             onChange={props.onChange}
             value={props.value}
+            aria-required={props.required || false}
             className={`${INPUT_STYLES} ${props.extraStyles}`}
         >
             <option value="TextOnly">Text Only</option>
@@ -184,5 +219,20 @@ function FormTaskType(props) {
     )
 }
 
+function FormSelect(props) {
+    return(
+        <select 
+            id={props.for} 
+            onChange={props.onChange}
+            value={props.value}
+            aria-required={props.required || false}
+            className={`${INPUT_STYLES} ${props.extraStyles}`}
+        >
+            { props.options.map(elem => (
+                <option value={elem}>{elem}</option>
+            )) }
+        </select>
+    )
+}
 
 export default FormInput;

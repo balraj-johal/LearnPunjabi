@@ -53,7 +53,11 @@ function EditLesson(props) {
     useEffect(() => {
         window.addEventListener("beforeunload", handleUnload);
         return () => { window.removeEventListener("beforeunload", handleUnload)};
-    });
+    }, []);
+
+    useEffect(() => { 
+        document.title = `Learn Punjabi - Edit ${String(id)}`
+    }, []);
     
     // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
@@ -116,11 +120,9 @@ function EditLesson(props) {
             // copy object
             let lessonCopy = {...lesson};
             lessonCopy = removeUnnecessaryTaskProperties(lesson);
-
             // assign id if necessary
             if (!lessonCopy.id || lessonCopy.id === "new") 
                 lessonCopy.id = `lesson-${lessonCopy.name}`;
-
             // validate
             let validationErrors = _getLessonValidationErrors(lessonCopy);
             setErrors(validationErrors);
@@ -129,7 +131,6 @@ function EditLesson(props) {
                 setShowSubmitConfirm(false);
                 return;
             }
-            
             // build audio file upload promises
             const fileUploads = [];
             lessonCopy.tasks.forEach(task => {
@@ -145,14 +146,11 @@ function EditLesson(props) {
                     axiosClient.post(`/api/v1/s3/upload`, fileData, options)
                 );
             })
-
             // send api request to save lesson data
             await axiosClient.post(`/api/v1/lessons/${String(lessonCopy.id)}`, 
                 qs.stringify(lessonCopy));
-
             // send upload requests for files
             await Promise.all(fileUploads);
-
             // handle success
             setSaving(false);
             setSubmitSuccess(true);
@@ -203,6 +201,7 @@ function EditLesson(props) {
             type: "TextOnly",
             audioFilename: "",
             audio: {name: ""},
+            audioTranscript: "",
         })
         let updatedLesson = {...lesson, tasks: tasksCopy}
         setLesson(updatedLesson);
@@ -237,7 +236,8 @@ function EditLesson(props) {
     let shiftTaskDown = (taskID) => {
         let tasksCopy = lesson.tasks;
         let oldIndex = tasksCopy.findIndex(elem => elem?.taskID === taskID);
-        if (oldIndex < tasksCopy.length) _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
+        if (oldIndex < tasksCopy.length) 
+            _moveArrayIndex(tasksCopy, oldIndex, oldIndex + 1);
         let updatedLesson = {...lesson, tasks: tasksCopy};
         setLesson(updatedLesson);
     }
@@ -252,10 +252,10 @@ function EditLesson(props) {
                 text="Lesson saved successfully!" 
             />
             <ConfirmationPrompt 
-                showSubmitConfirm={showSubmitConfirm}
-                setShowSubmitConfirm={setShowSubmitConfirm}
+                showConfirmation={showSubmitConfirm}
+                setShowConfirmation={setShowSubmitConfirm}
                 submitSuccess={submitSuccess}
-                saveLesson={saveLesson}
+                handleYes={saveLesson}
                 saving={saving}
             />
             <Link 
@@ -265,8 +265,9 @@ function EditLesson(props) {
             >
                 &lt; back to overview
             </Link>
-            <div className="w-screen mx-auto
+            <main className="w-screen mx-auto
                     flex justify-center pt-10 mb-10">
+                <h1 className="visually-hidden">Edit Lesson {lesson.name}</h1>
                 <form 
                     className="edit-lesson-form w-8/12" 
                     id="edit-lesson"
@@ -274,54 +275,65 @@ function EditLesson(props) {
                     onSubmit={onSubmit}
                 >
                     <FormTitle text={`Edit Lesson ${lesson.name}`} />
-                    <FormInput
-                        for="name" 
-                        onChange={onChange}
-                        placeholder={"Lesson Name"}
-                        value={lesson.name}
-                        type="text"
-                        errors={errors}
-                    />
-                    <FormInput
-                        for="requiredCompletions" 
-                        onChange={onChange}
-                        value={lesson.requiredCompletions}
-                        type="number" 
-                        errors={errors}
-                    /> 
-                    <FormInput
-                        for="shuffle" 
-                        onChange={onChange}
-                        value={lesson.shuffle}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
-                    { lesson.shuffle ? <FormInput
-                        for="noToSample" 
-                        onChange={onChange}
-                        value={lesson.noToSample}
-                        type="number" 
-                        min={0}
-                        max={lesson.tasks.length}
-                        errors={errors}
-                    /> : null }
-                    <FormInput
-                        for="showInterstitials" 
-                        onChange={onChange}
-                        value={lesson.showInterstitials}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
-                    <FormInput
-                        for="showPercentCorrect" 
-                        onChange={onChange}
-                        value={lesson.showPercentCorrect}
-                        type="checkbox"
-                        row={true}
-                        errors={errors}
-                    /> 
+                    <fieldset>
+                        <legend className="visually-hidden">Lesson Info</legend>
+                        <FormInput
+                            for="name" 
+                            required={true}
+                            onChange={onChange}
+                            placeholder={"Lesson Name"}
+                            value={lesson.name}
+                            type="text"
+                            errors={errors}
+                        />
+                        <FormInput
+                            for="requiredCompletions" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.requiredCompletions}
+                            type="number" 
+                            errors={errors}
+                        /> 
+                        <FormInput
+                            for="shuffle" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.shuffle}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                        { lesson.shuffle ? 
+                            <div aria-live="assertive">
+                                <FormInput
+                                    for="noToSample" 
+                                    onChange={onChange}
+                                    value={lesson.noToSample}
+                                    type="number" 
+                                    min={0}
+                                    max={lesson.tasks.length}
+                                    errors={errors}
+                                />
+                            </div> : null }
+                        <FormInput
+                            for="showInterstitials" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.showInterstitials}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                        <FormInput
+                            for="showPercentCorrect" 
+                            required={true}
+                            onChange={onChange}
+                            value={lesson.showPercentCorrect}
+                            type="checkbox"
+                            row={true}
+                            errors={errors}
+                        /> 
+                    </fieldset>
                     <div className="mt-8">
                         <FormTitle text="Tasks: " />
                         {lesson.tasks.map((task, index) => (
@@ -352,7 +364,7 @@ function EditLesson(props) {
                         text="Submit Lesson" 
                     />
                 </form>
-            </div>
+            </main>
         </>
     )
 }

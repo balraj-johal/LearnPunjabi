@@ -20,7 +20,10 @@ function PopInModal(props) {
     }, [props.show])
 
     return(
-        <div ref={ref} 
+        <div 
+            id="modal"
+            aria-live="assertive"
+            ref={ref} 
             className={`z-[100] absolute top-0 left-0 w-screen h-12
                 animate-move-down text-white text-lg
                 flex flex-row justify-center

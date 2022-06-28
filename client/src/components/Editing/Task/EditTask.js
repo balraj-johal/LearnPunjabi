@@ -53,10 +53,12 @@ function EditTask(props) {
     }
 
     return(
-        <div className="edit-task flex flex-col items-center relative
-                rounded border-2 border-black p-4 first:my-4 my-8" 
+        <fieldset className="edit-task flex flex-col items-center relative
+                rounded border-2 border-black p-4 first:my-4 my-8
+                bg-white shadow-md" 
             id={`edit-task-${task.taskID}`}
         >
+            <legend>Task {task.taskID}</legend>
             <UpDownShifter 
                 shuffle={props.shuffle} 
                 listEndsState={props.listEndsState} 
@@ -65,12 +67,16 @@ function EditTask(props) {
                 id={task.taskID}
                 index={props.index}
             />
-            <div className="absolute top-0 right-0 text-md text-red-400 my-2 mx-3" 
-                onClick={() => { props.deleteTask(task.taskID) }}>delete</div>
+            <button 
+                className="absolute top-0 right-0 text-md 
+                    text-red-400 my-2 mx-3" 
+                onClick={() => { props.deleteTask(task.taskID) }}
+            >delete</button>
             <div className="w-5/12">
                 <FormInput 
                     type="taskType" 
                     for="taskType" 
+                    required={true}
                     value={task.type} 
                     onChange={onChange} 
                     errors={props.errors[task.taskID]} 
@@ -78,6 +84,7 @@ function EditTask(props) {
                 <FormInput 
                     type="textarea" 
                     for="text" 
+                    required={true}
                     value={task.text} 
                     onChange={onChange} 
                     errors={props.errors[task.taskID]} 
@@ -87,6 +94,13 @@ function EditTask(props) {
                     for="audio"
                     value={task.audio}
                     onChange={onFileChange} 
+                    errors={props.errors[task.taskID]} 
+                />
+                <FormInput 
+                    type="textarea"
+                    for="audioTranscript"
+                    value={task.audioTranscript}
+                    onChange={onChange}
                     errors={props.errors[task.taskID]} 
                 />
             </div>
@@ -104,7 +118,7 @@ function EditTask(props) {
                     errors={props.errors[task.taskID]}
                 />
             </div>
-        </div>
+        </fieldset>
     )
 }
 
