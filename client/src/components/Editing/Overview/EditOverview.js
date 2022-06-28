@@ -27,6 +27,7 @@ import AddButton from "../../FormComponents/AddButton";
 import Loader from "../../Loader";
 import ConfirmationPrompt from "../ConfirmationPrompt";
 import GenericButton from "../../GenericButton";
+import PopInModal from "../PopInModal";
 
 // TODO: decide where best to store this
 const NEW_LESSON = {
@@ -45,7 +46,8 @@ function EditOverview(props) {
 
     let [ready, setReady] = useState(false);
     let [courseData, setCourseData] = useState([]);
-    let [lessonOrderChanged, setLessonOrderChanged] = useState(false);
+    let [showModal, setShowModal] = useState(false);
+    let [savedVersion, setSavedVersion] = useState(null);
 
     useEffect(() => { 
         document.title = `Learn Punjabi - Edit Lessons`;
@@ -87,12 +89,11 @@ function EditOverview(props) {
         console.log(courseData)
         const payload = qs.stringify({ courseData: courseData });
         axiosClient.post("/api/v1/courses/", payload)
-            .then(res => {
-                console.log(res.data)
+            .then(res => { 
+                setShowModal(true);
+                setSavedVersion(res.data.savedCourse.version);
             })
-            .catch(error => {
-                console.log(error); 
-            })
+            .catch(error => { console.error(error) })
     }
 
     let updateLessonPosition = (id, newPosition) => {
@@ -142,9 +143,6 @@ function EditOverview(props) {
     
     let handleDragEnd = (event) => {
         const { active, over } = event;
-        console.log("active", active);
-        console.log("over", over);
-        setLessonOrderChanged(true);
         if (active.id !== over.id) {
             // update data order
             setCourseData((lessons) => {
@@ -170,6 +168,14 @@ function EditOverview(props) {
     if (!ready) return <Loader />;
     return(
         <>
+            <PopInModal 
+                show={showModal} 
+                length={8000} 
+                unrender={() => { 
+                    setShowModal(false); 
+                }}
+                text={`Version ${savedVersion} saved!`}
+            /> 
             {showConfirmation && <ConfirmationPrompt
                 showConfirmation={showConfirmation}
                 setShowConfirmation={setShowConfirmation}

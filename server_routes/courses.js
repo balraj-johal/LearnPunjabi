@@ -90,7 +90,7 @@ router.post("/", async (req, res) => {
                 console.log("saving error", err)
                 return res.status(500).send({
                     error: err, 
-                    message: "error saving course"
+                    message: "Error saving course."
                 }); 
             })
     } catch (err) {
