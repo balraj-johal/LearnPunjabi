@@ -4,8 +4,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import DraggableAnswerFrag from "./DraggableAnswerFrag";
 import SpecOrderAnswerFrag from "./SpecOrderAnswerFrag";
-import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
+import TaskHeader from "../TaskHeader";
 
 function SpecifiedOrder(props) {
     let focusTarget = useRef();
@@ -200,37 +200,8 @@ function SpecifiedOrder(props) {
                     min-h-[40vh] h-5/6 
                     flex flex-col justify-center`} 
             >
-                <div className="title w-full h-1/6 md:h-2/6 px-0
-                    flex flex-row justify-start items-center"
-                >
-                    <AudioClip 
-                        src={props.data.audioLink} 
-                        transcript={props.data.audioTranscript} 
-                    />
-                    <span className={`pr-[30%] lg:text-xl
-                        ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
-                    >
-                        { props.data.text }
-                    </span>
-                </div>
+                <TaskHeader data={props.data} />
                 <div id="lists" className={`${props.animClasses}`}>
-                    <DragDropContext onDragEnd={handleDragEnd} >
-                        <Droppable 
-                            droppableId="characters" 
-                            direction="horizontal"
-                            renderClone={(provided, snapshot, rubric) => (
-                                <div
-                                    className={`w-2 rounded border-[1px] border-bg-primary 
-                                        flex justify-center items-center`}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    ref={provided.innerRef}
-                                >
-                                    {chosenFrags[rubric.source.index].text}
-                                </div>
-                            )}
-                        >
-                            {(provided) => (
                                 <ol 
                                     id="answers"
                                     aria-label="selected-answers"
