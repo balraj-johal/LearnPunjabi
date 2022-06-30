@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import DraggableAnswerFrag from "./DraggableAnswerFrag";
 import SpecOrderAnswerFrag from "./SpecOrderAnswerFrag";
@@ -48,16 +47,10 @@ function SpecifiedOrder(props) {
     /**
      * update the stored list state when an element has been dragged
      * @name handleDragEnd
-     * @param {Object} result - result object from the onDragEnd event of the dragdrop Context
      */
-    let handleDragEnd = (result) => {
-        // return if user drags elem out of bounds
-        if (!result.destination) return;
-        const updatedOrder = [...chosenFrags];
-        const [updatedItem] = updatedOrder.splice(result.source.index, 1);
-        updatedOrder.splice(result.destination.index, 0, updatedItem);
-        setChosenFrags(updatedOrder);
+    let handleDragEnd = () => {
     }
+
     /**
      * get the string containing the current answer state
      * @name getAnswerString
@@ -70,6 +63,7 @@ function SpecifiedOrder(props) {
         })
         return str;
     }
+
     /** Adds specified fragment to user's answer
      * @name addToOrder
      * @param {Object} frag - answer fragment
@@ -202,38 +196,32 @@ function SpecifiedOrder(props) {
             >
                 <TaskHeader data={props.data} />
                 <div id="lists" className={`${props.animClasses}`}>
-                                <ol 
-                                    id="answers"
-                                    aria-label="selected-answers"
-                                    aria-live="assertive"
-                                    {...provided.droppableProps} 
-                                    ref={provided.innerRef}
-                                >
-                                    { chosenFrags.map((data, index) => 
-                                        <DraggableAnswerFrag 
-                                            ref={!focusTargetData.onPossibleList 
-                                                && focusTargetData.index === index ? focusTarget : null}
-                                            handleArrowKeys={handleArrowKeys}
-                                            setFocusTargetData={setFocusTargetData}
-                                            animating={animatingFrags.includes(data)}
-                                            removeAnimatingFrag={removeAnimatingFrag}
-                                            possible={data}
-                                            key={index}
-                                            index={index}
-                                            removeFromOrder={removeFromOrder}
-                                        />
-                                    ) }
-                                    {provided.placeholder}
-                                </ol>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
+                    <ol 
+                        id="answers"
+                        aria-label="selected-answers"
+                        aria-live="polite"
+                    >
+                        { chosenFrags.map((data, index) => 
+                            <DraggableAnswerFrag 
+                                ref={!focusTargetData.onPossibleList 
+                                    && focusTargetData.index === index ? focusTarget : null}
+                                handleArrowKeys={handleArrowKeys}
+                                setFocusTargetData={setFocusTargetData}
+                                animating={animatingFrags.includes(data)}
+                                removeAnimatingFrag={removeAnimatingFrag}
+                                possible={data}
+                                key={index}
+                                index={index}
+                                removeFromOrder={removeFromOrder}
+                            />
+                        ) }
+                    </ol>
                     <div id="possible-fragments">
                         <ol 
                             className="possiblities-wrap" 
                             id="possibilites"
                             aria-label="possible-answers"
-                            aria-live="assertive"
+                            aria-live="polite"
                         >
                             {possibleFrags.map((data, index) => 
                                 <SpecOrderAnswerFrag 

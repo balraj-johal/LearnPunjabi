@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Draggable } from 'react-beautiful-dnd';
 
 let DraggableAnswerFrag = React.forwardRef((props, ref) => {
     // if animating is 1, css animation fadeIn is triggered
@@ -38,30 +37,23 @@ let DraggableAnswerFrag = React.forwardRef((props, ref) => {
 
 
     return(
-        <Draggable draggableId={String(props.index)} index={props.index} >
-            {(provided) => (
-                <button
-                    ref={ref}
-                    className="specified-order-answer answer dark-answer"
-                    data-testid="selected-answer"
-                    // ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    onClick={() => {
-                        props.removeFromOrder(props.possible);
-                    }}
-                    onKeyDown={handleKeyDown}
-                    onFocus={() => {props.setFocusTargetData({
-                        onPossibleList: false,
-                        index: props.index
-                    })}}
-                    animating={animating}
-                    onAnimationEnd={() => { onAnimEnd() }}
-                >
-                    {props.possible.text}
-                </button>
-            )}
-        </Draggable>
+        <button
+            ref={ref}
+            className="specified-order-answer answer dark-answer"
+            data-testid="selected-answer"
+            animating={animating}
+            onAnimationEnd={() => { onAnimEnd() }}
+            onClick={() => { props.removeFromOrder(props.possible) }}
+            onKeyDown={handleKeyDown}
+            onFocus={() => {
+                props.setFocusTargetData({
+                    onPossibleList: false,
+                    index: props.index
+                })
+            }}
+        >
+            {props.possible.text}
+        </button>
     )
 })
 
