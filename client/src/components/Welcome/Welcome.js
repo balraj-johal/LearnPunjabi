@@ -69,7 +69,8 @@ function Welcome(props) {
             >
                 <h1 className="visually-hidden">Welcome to Learn Punjabi!</h1>
                 <div 
-                    aria-label="Welcome section, including start learning button and example lesson link"
+                    aria-label="Welcome section, 
+                        including start learning button and example lesson link"
                     id="welcome-1" 
                     className="welcome-div grad-top h-full"
                 >
