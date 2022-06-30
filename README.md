@@ -1,18 +1,17 @@
 # LearnPunjabi
+Learn Punjabi is an educational platform that will make it easier for non-native speakers to learn Punjabi and its alphabet Gurmukhi.
 
-Learn Punjabi is an in-development application that will make it easier for non-native speakers to learn Punjabi and its alphabet Gurmukhi.
+Punjabi is a language spoken by >10 million people worldwide that is underserved in popular culture and not taught on other popular platforms, such as Duolingo.
 
-Punjabi is a language spoken by >10 million people worldwide that is underserved in popular culture.
+## Project Status
+The project is currently targeting a production-ready release with a small set of initial lessons.
 
-## Github Project Tracker
-I am currently working towards a feature-complete MVP with a small amount of initial content.
+Once the first release milestone is hit, the platform will be expanded with more content and lesson task types, including a planned AI character recognition task type to allow users to better learn character forms.
 
 https://github.com/users/balraj-johal/projects/2
 
 ## Access
-The project is currently hosted for development/testing purposes at https://learn-punjabi-alphabet.herokuapp.com/.
-
-Once the first MVP milestone has been reached the site will be moved to a custom domain and become publically available.
+The site is live at www.learnpunjabi.academy, athough it is still currently in beta.
 
 ## See Design Board
 https://www.figma.com/file/8DZ2x7b1wMu1O9ruT78WXh/Learn-Punjabi-Design?node-id=0%3A1
