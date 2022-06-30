@@ -294,7 +294,9 @@ router.post("/refreshToken", (req, res, next) => {
                 return res.status(200).send({ userID: user._id });
             })
         })
-        .catch(err => { res.status(500).send({ error: err }); })
+        .catch(err => { 
+            res.status(err.code).send({ message: err.message }); 
+        })
 })
 
 /**
