@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // import redux actions
 import { setDarkMode, setDyslexicOption } from "../../actions/optionsActions";
@@ -18,6 +19,7 @@ import ForgotPassword from "./ForgotPassword";
 import Settings from "./Settings";
 
 function AccountManager(props) {
+    const navigate = useNavigate();
     // initialise state
     let initialState;
     props.isAuthenticated ? initialState = "Summary" : initialState = "Login";
@@ -26,6 +28,7 @@ function AccountManager(props) {
     // update state if user is logged in
     useEffect(() => {
         props.isAuthenticated ? setManagerState("Summary") : setManagerState("Login");
+        if (props.isAuthenticated && props.welcome) navigate("/dashboard");
     }, [props.isAuthenticated]);
 
     // clear error messages when user switches between states
