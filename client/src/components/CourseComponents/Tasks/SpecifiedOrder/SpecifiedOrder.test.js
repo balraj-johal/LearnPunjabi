@@ -49,7 +49,7 @@ it('add frag to answers correctly when clicked', async () => {
     
     await waitFor(() => {
         const { getAllByTestId } = within(selectedAnswerList);
-        const items = getAllByTestId("selected-answer");
+        const items = getAllByTestId("selected-frag");
         const itemNames = items.map(item => item.textContent);
         expect(itemNames).toEqual(["1"]);
     });
@@ -68,7 +68,7 @@ it('removes frag from answers correctly when clicked', async () => {
     fireEvent.click(selectedFrag);
     await waitFor(() => {
         const { queryAllByTestId } = within(selectedAnswerList);
-        const items = queryAllByTestId("selected-answer");
+        const items = queryAllByTestId("selected-frag");
         const itemNames = items.map(item => item.textContent);
         expect(itemNames).toEqual([]);
     });

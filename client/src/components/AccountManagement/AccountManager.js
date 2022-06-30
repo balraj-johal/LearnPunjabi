@@ -20,6 +20,7 @@ import Settings from "./Settings";
 
 function AccountManager(props) {
     const navigate = useNavigate();
+    
     // initialise state
     let initialState;
     props.isAuthenticated ? initialState = "Summary" : initialState = "Login";

@@ -25,19 +25,7 @@ import Loader from "../../Loader";
 import ConfirmationPrompt from "../ConfirmationPrompt";
 import GenericButton from "../../GenericButton";
 import PopInModal from "../PopInModal";
-import SortableItem from "./SortableItem";
-
-// TODO: decide where best to store this
-const NEW_LESSON = {
-    name: "",
-    id: "new",
-    requiredCompletions: 1,
-    shuffle: false,
-    showInterstitials: true,
-    showPercentCorrect: true,
-    noToSample: 0,
-    tasks: []
-}
+import SortableItem from "../../SortableItem";
 
 function EditOverview(props) {
     let navigate = useNavigate();
@@ -214,7 +202,7 @@ function EditOverview(props) {
                         strategy={verticalListSortingStrategy}
                     >
                         {courseData.map((lesson, index) => 
-                            <SortableItem key={lesson.id} id={lesson.id}>
+                            <SortableItem key={lesson.id} id={lesson.id} extraStyles="w-full" >
                                 <EditOverviewEntry
                                     lesson={lesson}
                                     index={index}

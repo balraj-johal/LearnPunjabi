@@ -648,6 +648,7 @@ button:disabled:hover {
   height: 2em;
   min-width: 60px;
   border: 1px solid grey;
+  background-color: white;
   border-radius: 5px;
   margin-top: 10px;
   display: -webkit-box;

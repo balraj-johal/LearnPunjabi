@@ -36,20 +36,25 @@ let SpecOrderAnswerFrag = React.forwardRef((props, ref) => {
     }
 
     return(
-        <button 
-            ref={ref}
-            className={`specified-order-answer answer dark-answer`} 
-            onClick={() => { props.addToOrder(props.possible) }}
-            onKeyDown={handleKeyDown}
-            onFocus={() => {props.setFocusTargetData({
-                onPossibleList: true,
-                index: props.index
-            })}}
-            animating={animating}
-            onAnimationEnd={() => { onAnimEnd() }}
-        >
-            {props.possible.text}
-        </button>
+        <li>
+            <button 
+                ref={ref}
+                className="specified-order-answer answer dark-answer"
+                data-testid={props.draggable ? "selected-frag" : "unselected-frag"}
+                animating={animating}
+                onAnimationEnd={() => { onAnimEnd() }}
+                onClick={() => { props.handleClick(props.possible) }}
+                onKeyDown={handleKeyDown}
+                onFocus={() => {
+                    props.setFocusTargetData({
+                        onPossibleList: !props.draggable,
+                        index: props.index
+                    })
+                }}
+            >
+                {props.possible.text}
+            </button>
+        </li>
     )
 })
 

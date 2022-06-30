@@ -12,12 +12,17 @@ function SortableItem({children, ...props}) {
     } = useSortable({id: props.id});
 
     const style = { 
-        transform: CSS.Transform.toString(transform), transition,
-        width: "100%"
+        transform: CSS.Transform.toString(transform), transition
     };
 
     return(
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
+        <div 
+            ref={setNodeRef} 
+            style={style} 
+            {...attributes} 
+            {...listeners} 
+            className={props.extraStyles}
+        >
             {children}
         </div>
     )

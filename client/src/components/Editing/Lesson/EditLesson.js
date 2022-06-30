@@ -80,7 +80,6 @@ function EditLesson(props) {
      * @param {Object} lesson
      * @returns {Object} lesson with only the properties relevant to its tasks
      */
-    // TODO: improve removal of properties in possible answers of spec order etc.
     let removeUnnecessaryTaskProperties = (lesson) => {
         lesson.tasks.forEach(task => {
             // delete unneeded properties

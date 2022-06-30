@@ -1,10 +1,26 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 
-import DraggableAnswerFrag from "./DraggableAnswerFrag";
 import SpecOrderAnswerFrag from "./SpecOrderAnswerFrag";
 import NextButton from "../NextButton";
 import TaskHeader from "../TaskHeader";
+
+import { 
+    DndContext, 
+    KeyboardSensor, 
+    MouseSensor, 
+    TouchSensor, 
+    useSensor, 
+    useSensors,
+    closestCenter,
+} from "@dnd-kit/core";
+import { 
+    SortableContext, 
+    horizontalListSortingStrategy,
+    sortableKeyboardCoordinates, 
+    arrayMove, 
+} from '@dnd-kit/sortable';
+import SortableItem from "../../../SortableItem";
 
 function SpecifiedOrder(props) {
     let focusTarget = useRef();
@@ -45,11 +61,38 @@ function SpecifiedOrder(props) {
     }
 
     /**
-     * update the stored list state when an element has been dragged
-     * @name handleDragEnd
+     * reorders course data on end of drag and drop interaction
+     * @param {Object} event drag event
      */
-    let handleDragEnd = () => {
+    let handleDragEnd = (event) => {
+        const { active, over } = event;
+        if (active.id !== over.id) {
+            // update data order
+            setChosenFrags((frags) => {
+                try {
+                    let oldIndex, newIndex;
+                    frags.forEach((frag, index) => {
+                        if (!oldIndex) {
+                            if (active.id === frag.id) oldIndex = index;
+                        }
+                        if (!newIndex) {
+                            if (over.id === frag.id) newIndex = index;
+                        }
+                    });
+                    // if (!oldIndex || !newIndex) { throw("indexes not found") }
+                    return arrayMove(frags, oldIndex, newIndex);
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+        }
     }
+    // define interaction sensors for drag/drop behaviour
+    const sensors = useSensors(
+        useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5} }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    )
 
     /**
      * get the string containing the current answer state
@@ -170,7 +213,6 @@ function SpecifiedOrder(props) {
      */
     let shiftFocusBack = () => {
         let newIndex = focusTargetData.index -= 1;
-        console.log(possibleFrags)
         if (newIndex < 0) {
             newIndex = 0;
         } else {
@@ -201,20 +243,32 @@ function SpecifiedOrder(props) {
                         aria-label="selected-answers"
                         aria-live="polite"
                     >
-                        { chosenFrags.map((data, index) => 
-                            <DraggableAnswerFrag 
-                                ref={!focusTargetData.onPossibleList 
-                                    && focusTargetData.index === index ? focusTarget : null}
-                                handleArrowKeys={handleArrowKeys}
-                                setFocusTargetData={setFocusTargetData}
-                                animating={animatingFrags.includes(data)}
-                                removeAnimatingFrag={removeAnimatingFrag}
-                                possible={data}
-                                key={index}
-                                index={index}
-                                removeFromOrder={removeFromOrder}
-                            />
-                        ) }
+                        <DndContext 
+                            onDragEnd={handleDragEnd} 
+                            sensors={sensors} 
+                            collisionDetection={closestCenter} 
+                        >
+                            <SortableContext 
+                                items={chosenFrags} 
+                                strategy={horizontalListSortingStrategy}
+                            >
+                                { chosenFrags.map((frag, index) => 
+                                    <SortableItem key={frag.id} id={frag.id} >
+                                        <SpecOrderAnswerFrag 
+                                            ref={!focusTargetData.onPossibleList 
+                                                && focusTargetData.index === index ? focusTarget : null}
+                                            possible={frag}
+                                            index={index}
+                                            handleClick={removeFromOrder}
+                                            animating={animatingFrags.includes(frag)}
+                                            removeAnimatingFrag={removeAnimatingFrag}
+                                            handleArrowKeys={handleArrowKeys}
+                                            setFocusTargetData={setFocusTargetData}
+                                        />
+                                    </SortableItem>
+                                ) }
+                            </SortableContext>
+                        </DndContext>
                     </ol>
                     <div id="possible-fragments">
                         <ol 
@@ -223,18 +277,18 @@ function SpecifiedOrder(props) {
                             aria-label="possible-answers"
                             aria-live="polite"
                         >
-                            {possibleFrags.map((data, index) => 
+                            {possibleFrags.map((frag, index) => 
                                 <SpecOrderAnswerFrag 
                                     ref={focusTargetData.onPossibleList 
                                         && focusTargetData.index === index ? focusTarget : null}
-                                    animating={animatingFrags.includes(data)}
+                                    animating={animatingFrags.includes(frag)}
                                     removeAnimatingFrag={removeAnimatingFrag}
                                     handleArrowKeys={handleArrowKeys}
                                     setFocusTargetData={setFocusTargetData}
-                                    possible={data}
+                                    possible={frag}
                                     key={index}
                                     index={index}
-                                    addToOrder={addToOrder}
+                                    handleClick={addToOrder}
                                 />
                             )}
                         </ol>
