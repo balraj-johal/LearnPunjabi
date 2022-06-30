@@ -159,9 +159,7 @@ function Lesson(props) {
         let adjustedXP = Math.floor(5 * getPercentCorrect() / 100) + 5;
         let endpoint = `/api/v1/users/progress/${lessonID}`;
         axiosClient.put(endpoint, qs.stringify({ XP: adjustedXP }))
-            .then(res => {
-                props.setProgress(res.data.newProgress);
-            })
+            .then(res => { props.setProgress(res.data.newProgress) })
             .catch(err => { console.log(err); })
     }
 
@@ -176,8 +174,8 @@ function Lesson(props) {
     if (!ready) return null;
     return(
         lesson ? (
-            <div className={`w-full h-full relative flex dark-primary animate-fade-in
-                ${props.lessonOverride ? "" : "bg-white"} md:bg-transparent z-50 
+            <div className={`w-full h-full relative flex animate-fade-in
+                ${props.lessonOverride ? "" : "bg-white dark-primary"} md:bg-transparent z-50 
                 items-center justify-center min-h-[550px] md:min-h-[500px]`}
             >
                 <LessonAudio />
