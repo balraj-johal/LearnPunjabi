@@ -82,11 +82,8 @@ export const forgotPassword = userData => dispatch => {
         })
 }
 export const resetPassword = (userData) => dispatch => {
-    axiosClient.post(`/api/v1/users/reset-password/${userData.code}`, qs.stringify(userData))
-        .then(res => {
-            console.log("reset successful");
-            console.log(res.data);
-        })
+    axiosClient.post(`/api/v1/users/reset-password/${userData.code}`, 
+        qs.stringify(userData))
         .catch(err => {
             dispatch({
                 type: SET_AUTH_ERRORS,
@@ -126,11 +123,9 @@ export const useRefreshToken = () => async (dispatch) => {
     try {
         await axiosClient.post(`/api/v1/users/refreshToken`, qs.stringify({}));
         let userData = await getUserDataPromise();
-        if (!userData) return console.log("problem getting userdata");
         dispatch(setCurrentUser(userData));
         dispatch({ type: SET_HAS_CHECKED });
     } catch (err) {
-        console.log("Token refresh error: ", err);
         dispatch({ type: SET_LOADED });
         dispatch({ type: SET_HAS_CHECKED });
     }

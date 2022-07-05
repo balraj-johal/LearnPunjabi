@@ -92,9 +92,9 @@ const userSchema = new mongoose.Schema({
 
 //Remove refreshToken from the response
 userSchema.set("toJSON", {
-    transform: function (document, retrn, options) {
-        delete retrn.refreshToken
-        return retrn
+    transform: function (document, handledData, options) {
+        delete handledData.refreshToken;
+        return handledData;
     },
 })
 userSchema.plugin(passportLocalMongoose)

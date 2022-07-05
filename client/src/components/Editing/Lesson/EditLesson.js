@@ -37,7 +37,7 @@ const NEW_LESSON = {
 function EditLesson(props) {
     let { id } = useParams();
     
-    let [lesson, setLesson] = useState();
+    let [lesson, setLesson] = useState({...NEW_LESSON});
     let [ready, setReady] = useState(false);
     let [saving, setSaving] = useState(false);
     let [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -56,22 +56,19 @@ function EditLesson(props) {
     }, []);
 
     useEffect(() => { 
-        document.title = `Learn Punjabi - Edit ${String(id)}`
+        document.title = `Learn Punjabi - Edit ${String(id)}`;
+        // setLesson({...NEW_LESSON, tasks: []});
     }, []);
     
     // when lesson ID is updated, get/create and lesson data from server
     useEffect(() => {
-        if (id === "new") {
-            setLesson(NEW_LESSON);
-            setReady(true);
-        } else {
-            axiosClient.get(`/api/v1/lessons/${String(id)}`)
-                .then(res => {
-                    setLesson(res.data);
-                    setReady(true);
-                })
-                .catch(err => { console.log("Get lesson error: ", err); })
-        }
+        if (id === "new") return setReady(true);
+        axiosClient.get(`/api/v1/lessons/${String(id)}`)
+            .then(res => {
+                setLesson(res.data);
+                setReady(true);
+            })
+            .catch(err => { console.log("Get lesson error: ", err); })
     }, [id]);
 
     /**
