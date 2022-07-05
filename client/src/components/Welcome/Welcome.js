@@ -1,4 +1,5 @@
 import React, { Suspense, useRef, useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { useInViewport } from 'react-in-viewport';
 import { Canvas, useThree } from '@react-three/fiber';
 
@@ -20,6 +21,7 @@ import Lesson from "../CourseComponents/Lesson";
 
 import { EXAMPLE_LESSON } from "../../utils/examples";
 
+import { setWelcomeScrollProgress } from "../../actions/displayActions";
 
 function Welcome(props) {
     let [showAccounts, setShowAccounts] = useState(false);
@@ -27,17 +29,30 @@ function Welcome(props) {
     const top = useRef();
     const main = useRef();
 
+    let getScrollProgress = () => {
+        let scrollWrapper = document.getElementById("welcome-3");
+        let welcome = document.getElementById("welcome");
+        let offset = welcome.scrollTop - scrollWrapper.offsetTop;
+        let pageHeight = scrollWrapper.scrollHeight / (5 + 1);
+        props.setWelcomeScrollProgress(offset/pageHeight);
+    }
+
     const onScroll = e => { 
-        top.current = e.target.scrollTop;
+        if (e.target) top.current = e.target.scrollTop;
+        getScrollProgress();
     };
     useEffect(() => { 
         onScroll({ target: main.current });
-        document.title = "Learn Punjabi - Welcome!"
+        document.title = "Learn Punjabi - Welcome!";
+
+        window.addEventListener("resize", getScrollProgress);
+        return () => {
+            window.removeEventListener("resize", getScrollProgress);
+        }
     }, []);
 
     let toggleShowAccounts = () => {
         setShowAccounts(!showAccounts);
-        console.log(main.current)
         if (!showAccounts) return main.current.setAttribute("inert", "true");
         main.current.removeAttribute("inert");
     }
@@ -65,7 +80,8 @@ function Welcome(props) {
             <main 
                 id="welcome" 
                 ref={main} 
-                onScroll={onScroll} 
+                onScroll={onScroll}
+                className="relative"
             >
                 <h1 className="visually-hidden">Welcome to Learn Punjabi!</h1>
                 <div 
@@ -103,7 +119,8 @@ function Welcome(props) {
                     id="welcome-3" 
                     className="welcome-div grad-mid h-full"
                 >
-                    <PunjabInfoWrapper ref={top} />
+                    <PunjabInfoWrapper ref={top}
+                        scrollProgress={props.welcomeScrollProgress} />
                 </div>
                 <div 
                     id="welcome-end" 
@@ -129,6 +146,7 @@ let PunjabModelWrapper = React.forwardRef((props, ref) => {
                 ref={ref} 
                 rotation={[0.5, 0, 0]} 
                 setPageIndex={props.setPageIndex} 
+                scrollProgress={props.scrollProgress}
             />
         </Suspense>
     )
@@ -156,6 +174,7 @@ let PunjabInfoWrapper = React.forwardRef((props, ref) => {
                         <PunjabModelWrapper 
                             ref={ref} 
                             setPageIndex={setPageIndex} 
+                            scrollProgress={props.scrollProgress}
                         />
                         <rectAreaLight
                             width={3}
@@ -187,14 +206,26 @@ function ScrollProgressTracker(props) {
     useEffect(() => {
         let timeout = setTimeout(() => {
             if (!inViewport) return;
-            props.setPageIndex(props.index)
+            props.setPageIndex(props.index);
         }, 200);
 
         return () => { clearTimeout(timeout) };
     }, [inViewport])
 
-    return <div className="h-screen w-full" ref={ref} />
+    return (
+        <div 
+            id={`scroll-progress-tracker-${props.index}`} 
+            className="h-screen w-full" 
+            ref={ref} 
+        />
+    )
 }
 
+const mapStateToProps = state => ({
+    welcomeScrollProgress: state.display.welcomeScrollProgress,
+});
 
-export default Welcome;
+export default connect(
+    mapStateToProps,
+    { setWelcomeScrollProgress }
+)(Welcome);

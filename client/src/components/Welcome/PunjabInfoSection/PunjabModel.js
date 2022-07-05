@@ -7,6 +7,7 @@ import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { lerp } from "../../../utils/math";
 
+
 const RIVER_END_Y = 0.01;
 
 let PunjabModel = React.forwardRef(({ ...props }, ref) => {
@@ -19,18 +20,23 @@ let PunjabModel = React.forwardRef(({ ...props }, ref) => {
     let [stuck, setStuck] = useState(false);
     let [r1label, showR1Label] = useState(false);
 
-    let [alpha, setAlpha] = useState(0);
-    let lerpedPos;
 
     useFrame(({ clock }) => {
-        // rotate based on scroll
-        // group.current.rotation.y = 
-        //     -ref.current / 500 - (clock.getElapsedTime() * 0.1);
-        // river1.current.position.y = -ref.current / 1500;
-        setAlpha(Math.min(1, (ref.current - 1000) / 1000));
-        lerpedPos = lerp(RIVER_END_Y + 1.0, RIVER_END_Y, alpha);
-        // river1.current.position.y = lerpedPos;
-        // if (hovering) group.current.rotation.x += 10;
+        if (props.scrollProgress > 0 && props.scrollProgress <= 1) {
+            // fade in
+            group.current.position.y = 0.4 +  props.scrollProgress / 10;
+        } else if (props.scrollProgress > 1 && props.scrollProgress <= 2) {
+            // show rivers
+            // group.current.position.y = 0.5 - props.scrollProgress;
+        } else if (props.scrollProgress > 2 && props.scrollProgress <= 3) {
+            // partition
+
+        } else if (props.scrollProgress > 3 && props.scrollProgress <= 4) {
+            // split of states (decrease old east punjab opacity)
+
+        } else if (props.scrollProgress > 4 && props.scrollProgress <= 5) {
+            // ?
+        }
     });
 
     /** keep hover behaviour going for a certain amount of time onClick.
@@ -53,14 +59,18 @@ let PunjabModel = React.forwardRef(({ ...props }, ref) => {
             ref={group} 
             {...props} 
             dispose={null}
-            onClick={ e => stickHoverOnClick() }
-            onPointerEnter={ e => setHovering(true) }
-            onPointerLeave={ e => handlePointerLeave(e) }
+            onClick={e => stickHoverOnClick()}
+            onPointerEnter={e => setHovering(true)}
+            onPointerLeave={e => handlePointerLeave(e)}
             position={[0, 0.5, 0]}
-        >
+        > 
             <mesh 
                 geometry={nodes.Plane.geometry} 
                 material={materials['Material.001']} 
+                material-transparent={true}
+                material-opacity={props.scrollProgress}
+                // material-color={0xFF0000}
+                // material-map={}
             />
             {/* <mesh 
                 ref={river1} 
@@ -99,4 +109,4 @@ let PunjabModel = React.forwardRef(({ ...props }, ref) => {
 
 export default PunjabModel;
 
-useGLTF.preload('/Punjab4-transformed.glb')
+useGLTF.preload('/Punjab4-transformed.glb');
