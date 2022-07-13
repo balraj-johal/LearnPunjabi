@@ -68,6 +68,7 @@ function EditTask(props) {
                 index={props.index}
             />
             <button 
+                type="button"
                 className="absolute top-0 right-0 text-md 
                     text-red-400 my-2 mx-3" 
                 onClick={() => { props.deleteTask(task.taskID) }}

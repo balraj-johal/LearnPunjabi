@@ -104,6 +104,7 @@ function EditLesson(props) {
     */
     let onSubmit = e => {
         e.preventDefault();
+        console.log("subb")
         setShowSubmitConfirm(true);
     }
 
