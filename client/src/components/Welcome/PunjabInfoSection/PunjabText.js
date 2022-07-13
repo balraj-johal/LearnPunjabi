@@ -23,7 +23,7 @@ const PunjabText = React.forwardRef((props, ref) => {
         setTimeout(() => {
             setText(textOptions[props.pageIndex]);
             props.setTextVisible(true);
-        }, 500)
+        }, 300)
     }, [props.pageIndex])
 
     return(
