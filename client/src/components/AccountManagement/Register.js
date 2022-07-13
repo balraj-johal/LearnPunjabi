@@ -58,7 +58,7 @@ function Register(props) {
         <animated.div 
             role="tabpanel"
             aria-labelledby="tab-Register"
-            className="register relative" 
+            className="register relative h-[92%]" 
             style={spring} 
         >
             { successful ? (
