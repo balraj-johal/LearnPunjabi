@@ -39,7 +39,7 @@ function Leaderboard(props) {
     // TODO: consider just using plain css here. 
     let _calculateLeaderboardStyles = useCallback((collapsed, mobile) => {
         if (!mobile) return `border-b-[2px] border-black min-h-[35vh] 
-            fixed pr-1`;
+            fixed pr-1 pointer-events-none`;
         let styles = `cursor-pointer relative transition-all 
             bg-white border-b-[2px] border-black`;
         if (collapsed) styles += " translate-y-0";
