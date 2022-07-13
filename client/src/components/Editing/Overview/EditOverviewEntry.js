@@ -18,7 +18,11 @@ function EditOverviewEntry(props) {
                 </span>
             </div>
             <div id="position">
-                <div
+                <PositionSwitcher targetPosition="left" lesson={props.lesson} updatePosition={props.updateLessonPosition} />
+                <PositionSwitcher targetPosition="middle" lesson={props.lesson} updatePosition={props.updateLessonPosition} />
+                <PositionSwitcher targetPosition="right" lesson={props.lesson} updatePosition={props.updateLessonPosition} />
+                <PositionSwitcher targetPosition="hidden" lesson={props.lesson} updatePosition={props.updateLessonPosition} />
+                {/* <div
                     className={`${props.lesson.position === "left" ? "" : "text-gray-200"}`} 
                     onClick={() => { 
                         props.updateLessonPosition(props.lesson.id, "left") 
@@ -41,7 +45,7 @@ function EditOverviewEntry(props) {
                     }}
                 >
                     right
-                </div>
+                </div> */}
             </div>
             <div id="buttons">
                 <button 
@@ -68,6 +72,19 @@ function EditOverviewEntry(props) {
                     Edit
                 </button>
             </div>
+        </div>
+    )
+}
+
+function PositionSwitcher(props) {
+    return(
+        <div
+            className={`${props.lesson.position === props.targetPosition ? "" : "text-gray-200"}`} 
+            onClick={() => { 
+                props.updatePosition(props.lesson.id, props.targetPosition) 
+            }}
+        >
+            {props.targetPosition}
         </div>
     )
 }

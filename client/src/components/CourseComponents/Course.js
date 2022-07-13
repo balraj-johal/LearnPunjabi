@@ -72,11 +72,13 @@ function Course(props) {
     const getGridPositionClasses = (position) => {
         if (position === "left") return "col-span-2";
         if (position === "right") return "col-span-2";
+        if (position === "hidden") return "hidden";
         return "col-start-2 col-end-4";
     }
     const getIconPositionClasses = (position) => {
         if (position === "left") return "icon-2col-left";
         if (position === "right") return "icon-2col-right";
+        if (position === "hidden") return "hidden";
         return "mx-auto";
     }
 

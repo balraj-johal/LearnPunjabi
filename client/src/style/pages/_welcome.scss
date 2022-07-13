@@ -95,7 +95,6 @@
 
 #welcome-3 {
     height: 600vh !important;
-    height: calc(var(--vh, 1vh) * 600) !important;
     overflow: initial !important;
     #stick {
         position: sticky;

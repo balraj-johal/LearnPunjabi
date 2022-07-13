@@ -8,12 +8,14 @@ function UpDownShifter(props) {
             ${props.shuffle ? "hidden" : ""}`}
         >
             <button
+                type="button"
                 className={`${props.listEndsState === "first" ? "hidden" : "no"}`} 
                 onClick={() => { props.shiftTaskUp(props.id); }}>
                 ▲
             </button>
             {props.index}
             <button
+                type="button"
                 className={`${props.listEndsState === "last" ? "hidden" : "no"}`} 
                 onClick={() => { props.shiftTaskDown(props.id); }}>
                 ▼

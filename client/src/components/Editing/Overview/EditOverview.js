@@ -61,6 +61,7 @@ function EditOverview(props) {
         axiosClient.get("/api/v1/lessons/")
             .then(res => {
                 const data = res.data.overview;
+                // default lesson icon position to middle
                 data.forEach(lesson => {
                     lesson.position = "middle";
                 })
@@ -202,7 +203,11 @@ function EditOverview(props) {
                         strategy={verticalListSortingStrategy}
                     >
                         {courseData.map((lesson, index) => 
-                            <SortableItem key={lesson.id} id={lesson.id} extraStyles="w-full" >
+                            <SortableItem 
+                                key={lesson.id} 
+                                id={lesson.id} 
+                                extraStyles="w-full" 
+                            >
                                 <EditOverviewEntry
                                     lesson={lesson}
                                     index={index}

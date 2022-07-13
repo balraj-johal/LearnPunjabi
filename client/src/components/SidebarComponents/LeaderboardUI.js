@@ -13,7 +13,13 @@ function LeaderboardUI(props) {
                 if (props.collapsible) props.setCollapsed(!props.collapsed) 
             }}
         >
-            <h1 className="header">Weekly Leaderboard</h1>
+            <h1 
+                className="header" 
+                style={{
+                    marginTop: props.collapsed ? "0px" : "15px",
+                    transition: "all 150ms"
+                }}
+            >Weekly Leaderboard</h1>
             <ol 
                 id="leaderboard-list" 
                 className={`${props.listStyles} animate-fade-in`} 
