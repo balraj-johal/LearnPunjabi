@@ -2,7 +2,8 @@ import {
     SET_MOBILE,
     SET_TOPBAR_HEIGHT,
     SET_LESSON_WRAP_HEIGHT,
-    SET_SINGLE_VH
+    SET_SINGLE_VH,
+    SET_WELCOME_SCROLL_PROGRESS
 } from "../actions/types";
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
     topbarHeight: 0,
     lessonWrapHeight: "0px",
     singleVH: 0,
+    welcomeScrollProgress: 0,
 };
 
 export default function(state = initialState, action) {
@@ -35,6 +37,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 singleVH: action.payload
+            };
+        case SET_WELCOME_SCROLL_PROGRESS:
+            return {
+                ...state,
+                welcomeScrollProgress: action.payload
             };
         default:
             return state;

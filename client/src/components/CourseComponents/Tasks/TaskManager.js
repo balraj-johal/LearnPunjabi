@@ -77,14 +77,14 @@ function TaskManager(props) {
         case "MultipleChoice":
             task = <MultipleChoice 
                     data={props.taskData} 
-                    handleCorrect={() => handleCorrect()}
+                    handleCorrect={handleCorrect}
                     handleWrong={handleWrong}
                 />
             break;
         case "SpecifiedOrder":
             task = <SpecifiedOrder 
                     data={props.taskData}
-                    handleCorrect={() => handleCorrect()}
+                    handleCorrect={handleCorrect}
                     handleWrong={handleWrong} 
                     stats={props.stats}
                 />
@@ -92,7 +92,7 @@ function TaskManager(props) {
         case "DrawLetter":
             task = <DrawLetter 
                     data={props.taskData}
-                    handleCorrect={() => handleCorrect()}
+                    handleCorrect={handleCorrect}
                     handleWrong={handleWrong} 
                 />
             break;

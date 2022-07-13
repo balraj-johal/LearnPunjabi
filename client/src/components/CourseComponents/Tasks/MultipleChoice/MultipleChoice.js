@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
-import AudioClip from "../../AudioClip";
+import TaskHeader from "../TaskHeader";
 import NextButton from "../NextButton";
 import MultChoiceAnswer from "./MultChoiceAnswer";
 
@@ -54,22 +54,7 @@ function MultipleChoice(props) {
                 data-testid="mult-choice" 
                 className="multiple-choice flex flex-col h-5/6"
             >
-                <div className="title w-full h-1/6 md:h-2/6 px-0
-                    flex flex-row justify-start items-center"
-                >
-                    <div className="w-full h-auto flex items-start">
-                        <AudioClip 
-                            src={props.data.audioLink} 
-                            transcript={props.data.audioTranscript} 
-                        />
-                        <span 
-                            className={`pr-[30%] lg:text-xl
-                                ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
-                        >
-                            { props.data.text }
-                        </span>
-                    </div>
-                </div>
+                <TaskHeader data={props.data} />
                 <div className={`answers-wrap h-5/6 py-2 items-center
                     md:h-4/6 md:flex-row 
                     flex-col ${props.animClasses}`}

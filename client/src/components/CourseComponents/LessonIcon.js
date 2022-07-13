@@ -23,12 +23,13 @@ function LessonIcon(props) {
     return(
         <Link to={`/lesson/${props.lesson.id}`} className="no-highlight">
             <div 
-                id="icon-main"
-                className={`${finished ? "bg-gold" : "bg-white"} shadow-xl
-                    lesson z-20 relative overflow-hidden no-highlight
+                id={`icon-${props.lesson.id}`}
+                className={`lesson-icon 
+                    ${finished ? "bg-gold" : "bg-white"} shadow-xl
+                    z-20 relative overflow-hidden no-highlight
                     ${props.extraClasses}`}
             >
-                <span className="z-10">
+                <span className="z-10 px-2 text-center">
                     { props.lesson.name }<br/>
                 </span>
                 <div 

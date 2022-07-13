@@ -1,11 +1,26 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import DraggableAnswerFrag from "./DraggableAnswerFrag";
 import SpecOrderAnswerFrag from "./SpecOrderAnswerFrag";
-import AudioClip from "../../AudioClip";
 import NextButton from "../NextButton";
+import TaskHeader from "../TaskHeader";
+
+import { 
+    DndContext, 
+    KeyboardSensor, 
+    MouseSensor, 
+    TouchSensor, 
+    useSensor, 
+    useSensors,
+    closestCenter,
+} from "@dnd-kit/core";
+import { 
+    SortableContext, 
+    horizontalListSortingStrategy,
+    sortableKeyboardCoordinates, 
+    arrayMove, 
+} from '@dnd-kit/sortable';
+import SortableItem from "../../../SortableItem";
 
 function SpecifiedOrder(props) {
     let focusTarget = useRef();
@@ -46,18 +61,39 @@ function SpecifiedOrder(props) {
     }
 
     /**
-     * update the stored list state when an element has been dragged
-     * @name handleDragEnd
-     * @param {Object} result - result object from the onDragEnd event of the dragdrop Context
+     * reorders course data on end of drag and drop interaction
+     * @param {Object} event drag event
      */
-    let handleDragEnd = (result) => {
-        // return if user drags elem out of bounds
-        if (!result.destination) return;
-        const updatedOrder = [...chosenFrags];
-        const [updatedItem] = updatedOrder.splice(result.source.index, 1);
-        updatedOrder.splice(result.destination.index, 0, updatedItem);
-        setChosenFrags(updatedOrder);
+    let handleDragEnd = (event) => {
+        const { active, over } = event;
+        if (active.id !== over.id) {
+            // update data order
+            setChosenFrags((frags) => {
+                try {
+                    let oldIndex, newIndex;
+                    frags.forEach((frag, index) => {
+                        if (!oldIndex) {
+                            if (active.id === frag.id) oldIndex = index;
+                        }
+                        if (!newIndex) {
+                            if (over.id === frag.id) newIndex = index;
+                        }
+                    });
+                    // if (!oldIndex || !newIndex) { throw("indexes not found") }
+                    return arrayMove(frags, oldIndex, newIndex);
+                } catch (error) {
+                    console.log(error);
+                }
+            })
+        }
     }
+    // define interaction sensors for drag/drop behaviour
+    const sensors = useSensors(
+        useSensor(MouseSensor, { activationConstraint: { distance: 10 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5} }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    )
+
     /**
      * get the string containing the current answer state
      * @name getAnswerString
@@ -70,6 +106,7 @@ function SpecifiedOrder(props) {
         })
         return str;
     }
+
     /** Adds specified fragment to user's answer
      * @name addToOrder
      * @param {Object} frag - answer fragment
@@ -176,7 +213,6 @@ function SpecifiedOrder(props) {
      */
     let shiftFocusBack = () => {
         let newIndex = focusTargetData.index -= 1;
-        console.log(possibleFrags)
         if (newIndex < 0) {
             newIndex = 0;
         } else {
@@ -200,82 +236,59 @@ function SpecifiedOrder(props) {
                     min-h-[40vh] h-5/6 
                     flex flex-col justify-center`} 
             >
-                <div className="title w-full h-1/6 md:h-2/6 px-0
-                    flex flex-row justify-start items-center"
-                >
-                    <AudioClip 
-                        src={props.data.audioLink} 
-                        transcript={props.data.audioTranscript} 
-                    />
-                    <span className={`pr-[30%] lg:text-xl
-                        ${props.data.audioLink ? "ml-4 md:ml-10" : ""}`}
-                    >
-                        { props.data.text }
-                    </span>
-                </div>
+                <TaskHeader data={props.data} />
                 <div id="lists" className={`${props.animClasses}`}>
-                    <DragDropContext onDragEnd={handleDragEnd} >
-                        <Droppable 
-                            droppableId="characters" 
-                            direction="horizontal"
-                            renderClone={(provided, snapshot, rubric) => (
-                                <div
-                                    className={`w-2 rounded border-[1px] border-bg-primary 
-                                        flex justify-center items-center`}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    ref={provided.innerRef}
-                                >
-                                    {chosenFrags[rubric.source.index].text}
-                                </div>
-                            )}
+                    <ol 
+                        id="answers"
+                        aria-label="selected-answers"
+                        aria-live="polite"
+                    >
+                        <DndContext 
+                            onDragEnd={handleDragEnd} 
+                            sensors={sensors} 
+                            collisionDetection={closestCenter} 
                         >
-                            {(provided) => (
-                                <ol 
-                                    id="answers"
-                                    aria-label="selected-answers"
-                                    aria-live="assertive"
-                                    {...provided.droppableProps} 
-                                    ref={provided.innerRef}
-                                >
-                                    { chosenFrags.map((data, index) => 
-                                        <DraggableAnswerFrag 
+                            <SortableContext 
+                                items={chosenFrags} 
+                                strategy={horizontalListSortingStrategy}
+                            >
+                                { chosenFrags.map((frag, index) => 
+                                    <SortableItem key={frag.id} id={frag.id} >
+                                        <SpecOrderAnswerFrag 
                                             ref={!focusTargetData.onPossibleList 
                                                 && focusTargetData.index === index ? focusTarget : null}
+                                            possible={frag}
+                                            index={index}
+                                            handleClick={removeFromOrder}
+                                            animating={animatingFrags.includes(frag)}
+                                            removeAnimatingFrag={removeAnimatingFrag}
                                             handleArrowKeys={handleArrowKeys}
                                             setFocusTargetData={setFocusTargetData}
-                                            animating={animatingFrags.includes(data)}
-                                            removeAnimatingFrag={removeAnimatingFrag}
-                                            possible={data}
-                                            key={index}
-                                            index={index}
-                                            removeFromOrder={removeFromOrder}
                                         />
-                                    ) }
-                                    {provided.placeholder}
-                                </ol>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
+                                    </SortableItem>
+                                ) }
+                            </SortableContext>
+                        </DndContext>
+                    </ol>
                     <div id="possible-fragments">
                         <ol 
                             className="possiblities-wrap" 
                             id="possibilites"
                             aria-label="possible-answers"
-                            aria-live="assertive"
+                            aria-live="polite"
                         >
-                            {possibleFrags.map((data, index) => 
+                            {possibleFrags.map((frag, index) => 
                                 <SpecOrderAnswerFrag 
                                     ref={focusTargetData.onPossibleList 
                                         && focusTargetData.index === index ? focusTarget : null}
-                                    animating={animatingFrags.includes(data)}
+                                    animating={animatingFrags.includes(frag)}
                                     removeAnimatingFrag={removeAnimatingFrag}
                                     handleArrowKeys={handleArrowKeys}
                                     setFocusTargetData={setFocusTargetData}
-                                    possible={data}
+                                    possible={frag}
                                     key={index}
                                     index={index}
-                                    addToOrder={addToOrder}
+                                    handleClick={addToOrder}
                                 />
                             )}
                         </ol>

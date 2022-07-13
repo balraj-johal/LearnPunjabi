@@ -339,7 +339,7 @@ button:disabled:hover {
   padding: 40px 0;
 }
 
-.lessons-wrap .lesson {
+.lessons-wrap .lesson-icon {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -355,8 +355,8 @@ button:disabled:hover {
           flex-direction: column;
   -ms-flex-negative: 0;
       flex-shrink: 0;
-  width: 150px;
-  height: 150px;
+  width: 125px;
+  height: 125px;
   border-radius: 10px;
   margin: 45px auto;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
@@ -365,13 +365,13 @@ button:disabled:hover {
   transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
 }
 
-.lessons-wrap .lesson:hover {
+.lessons-wrap .lesson-icon:hover {
   cursor: pointer;
   -webkit-transform: scale(1.05);
           transform: scale(1.05);
 }
 
-.lessons-wrap .lesson.complete {
+.lessons-wrap .lesson-icon.complete {
   background-color: #00A2FF;
 }
 
@@ -385,6 +385,10 @@ button:disabled:hover {
   .lessons-wrap {
     width: 60%;
     border-right: 2px solid black;
+  }
+  .lessons-wrap .lesson-icon {
+    width: 150px;
+    height: 150px;
   }
 }
 
@@ -644,6 +648,7 @@ button:disabled:hover {
   height: 2em;
   min-width: 60px;
   border: 1px solid grey;
+  background-color: white;
   border-radius: 5px;
   margin-top: 10px;
   display: -webkit-box;
@@ -855,8 +860,9 @@ button:disabled:hover {
 
 #lp-logo {
   z-index: 2;
-  -webkit-transform: translate(0.5%, -9%) scaleX(102%);
-          transform: translate(0.5%, -9%) scaleX(102%);
+  -webkit-transform: translate(4%, 20%) scaleX(100%);
+          transform: translate(4%, 20%) scaleX(100%);
+  width: 91%;
   position: relative;
 }
 

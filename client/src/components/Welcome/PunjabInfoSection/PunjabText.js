@@ -3,9 +3,9 @@ import { useSpring, animated } from 'react-spring';
 
 const textOptions = [
     "Punjab is a reigon in South Asia covering areas in India and Pakistan.",
-    'Translated to English, the name means "The Land of Five Rivers".',
-    'Translated to English, the name means "The Land of Five Rivers".',
-    'Translated to English, the name means "The Land of Five Rivers".',
+    'It has a population of 28 million speaking a range of languages.".',
+    'Punjab was divided in Partition into West Punjab in Pakistan, and East in India.',
+    'And then divided again between states in India in 1966.',
     'Translated to English, the name means "The Land of Five Rivers".',
 ]
 

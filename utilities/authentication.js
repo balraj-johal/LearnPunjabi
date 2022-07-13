@@ -82,39 +82,48 @@ exports.verifyToken = (req) => {
  * @returns {Object} user, refreshToken - returns user object and new token
  */
 exports.verifyRefreshToken = (req) => { 
+    const rejectionObject = {
+        code: 500,
+        message: ""
+    }
     // TODO: add correct error codes to this Promise
     return new Promise((resolve, reject) => {
         // retrieve token from cookies
         let refreshToken = req.cookies.refreshToken;
-        if (refreshToken) {
-            try {
-                // verify refresh token against JWT_SECRET and extract user id from it
-                jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-                    if (err) {
-                        console.log(err);
-                        reject(`Unauthorised: JWT verification failed: ${err}`);
-                    } else {
-                        // find user 
-                        const userId = decoded.userID;
-                        User.findOne({ _id: {$eq: sanitize(userId)} })
-                            .then(user => {
-                                if (user) {
-                                    resolve({user: user, refreshToken: refreshToken});
-                                } else {
-                                    reject(`Unauthorized: User not found.`);
-                                }
-                            })
-                            .catch(error => {
-                                console.log(error);
-                                reject(error);
-                            })
-                    }
-                })
-            } catch (err) {
-                reject(`Unauthorized: Error in jwt verify or user.find.`);
-            }
-        } else {
-            reject(`Unauthorized: Refresh Token not present.`);
+        if (!refreshToken) {
+            rejectionObject.code = 401;
+            rejectionObject.message = `Refresh Token not present in request`;
+            return reject(rejectionObject);
+        }
+        try {
+            // verify refresh token against JWT_SECRET and extract user id from it
+            const SECRET = process.env.REFRESH_TOKEN_SECRET;
+            jwt.verify(refreshToken, SECRET, (err, decoded) => {
+                if (err) {
+                    rejectionObject.code = 400;
+                    rejectionObject.message = `JWT verification failed: ${err}`;
+                    return reject(rejectionObject);
+                }
+                // find user 
+                const userId = decoded.userID;
+                User.findOne({ _id: {$eq: sanitize(userId)} })
+                    .then(user => {
+                        if (user) {
+                            resolve({user: user, refreshToken: refreshToken});
+                        } else {
+                            rejectionObject.code = 404;
+                            rejectionObject.message = `User not found`;
+                            reject(rejectionObject);
+                        }
+                    })
+                    .catch(error => {
+                        reject(error);
+                    })
+            })
+        } catch (err) {
+            rejectionObject.code = 500;
+            rejectionObject.message = `Error in jwt verify or user.find`;
+            reject(rejectionObject);
         }
     })
 }

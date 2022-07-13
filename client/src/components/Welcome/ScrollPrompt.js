@@ -39,7 +39,7 @@ function ScrollPrompt(props) {
                 >
                     <path d="M2 2L31 28L60 2" stroke="black" strokeWidth="4"/>
                 </svg>
-                <span className="ml-4 text-md md:text-xl font-bold tracking-wide underline">
+                <span className="ml-4 text-md md:text-xl font-bold tracking-wide">
                     { props.text }
                 </span>
             </div>

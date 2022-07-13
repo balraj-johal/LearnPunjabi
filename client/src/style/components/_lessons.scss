@@ -5,15 +5,16 @@
     flex-direction: column;    
     padding: 40px 0;
 
-    .lesson {
+    .lesson-icon {
         display: flex;
         align-items: center;
         justify-content: space-evenly;
         flex-direction: column;
         flex-shrink: 0;
 
-        width: 150px;
-        height: 150px;
+        width: 125px;
+        height: 125px;
+
         border-radius: 10px;
         margin: 45px auto;
 
@@ -35,6 +36,10 @@
     .lessons-wrap {
         width: 60%;
         border-right: $border-thickness solid black;
+        .lesson-icon {
+            width: 150px;
+            height: 150px;
+        }
     }
 }
 

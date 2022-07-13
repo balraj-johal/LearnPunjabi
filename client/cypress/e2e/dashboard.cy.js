@@ -14,7 +14,7 @@ describe('dashboard', () => {
     })
 
     it('begins a lesson', () => {
-        cy.get('#icon-main').first().click();
+        cy.get('.lesson-icon').first().click();
         cy.get('#next-task-btn').should("be.visible");
     })
 })

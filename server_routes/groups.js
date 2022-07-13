@@ -3,6 +3,7 @@
  */
  const express = require("express");
  const sanitize = require("mongo-sanitize");
+ const schedule = require('node-schedule');
 
 /**
  * Express router to mount user related functions on.
@@ -15,6 +16,31 @@ const router = express.Router();
 // model imports
 const User = require("../models/user.model");
 const Group = require("../models/groups.model");
+const GroupScheduler = require("../models/groupScheduler.model");
+
+const { getWeekFromNow } = require("../utilities/date");
+
+/**
+ * Returns the username and weeklyXP for every user in the specified group.
+ * @name get/groups/:groupID
+ * @function
+ * @memberof module:api/groups~groupRouter
+ * @param { String } path - route path
+ * @param { callback } middleware - express middleware
+ */
+ router.get("/:groupID", (req, res) => {
+    const g_id = sanitize(req.params.groupID);
+    Group.findOne({ groupID : { $eq: g_id } })
+        .then(group => {
+            updateGroupsWeeklyXP(group)
+                .then(result => {
+                    return res.status(200).send({ group: result });
+                })
+        })
+        .catch(err => {
+            return res.status(404).send("Group not found...");
+        })
+})
 
 /**
  * Updates all the users' weeklyXP data in the group object
@@ -129,31 +155,54 @@ let pushGroupsToDb = (groups) => {
 }
 
 /**
- * Returns the username and weeklyXP for every user in the specified group.
- * @name get/groups/:groupID
- * @function
- * @memberof module:api/groups~groupRouter
- * @param { String } path - route path
- * @param { callback } middleware - express middleware
+ * Refresh leaderboard groups if necessary, and save next
+ * refresh date (+ 1 week) to groupScheduler database object
+ * @name initialiseLeaderboardRefreshing
  */
- router.get("/:groupID", (req, res) => {
-    const g_id = sanitize(req.params.groupID);
-    Group.findOne({ groupID : { $eq: g_id } })
-        .then(group => {
-            updateGroupsWeeklyXP(group)
-                .then(result => {
-                    return res.status(200).send({ group: result });
-                })
-        })
-        .catch(err => {
-            return res.status(404).send("Group not found...");
-        })
-})
+let initialiseLeaderboardRefreshing = async () => {
+    let scheduler = await GroupScheduler.findOne({name: { $eq: "scheduler" }});
+    if (!scheduler) {
+        // update leaderboard groups
+        createNewServerGroups()
+            .then(groups => { pushGroupsToDb(groups) })
+        // save initial refresh date
+        scheduler = new GroupScheduler();
+        scheduler.refreshOn = getWeekFromNow();
+        scheduler
+            .save()
+            .catch((error) => { console.error(error); })
+    } else {
+        // if refresh date has passed
+        if (Date.now() > scheduler.refreshOn) {
+            const groups = await createNewServerGroups();
+            pushGroupsToDb(groups);
+            scheduleGroupRefresh(getWeekFromNow());
+        } else {
+            // setup refresh date watcher
+            schedule.scheduleJob(scheduler.refreshOn, async () => {
+                const groups = await createNewServerGroups();
+                pushGroupsToDb(groups);
+                scheduleGroupRefresh(getWeekFromNow());
+            });
+        }
+    }
     
-if (process.env.NODE_ENV === "production") {
-    // update leaderboard groups
-    createNewServerGroups()
-        .then(groups => { pushGroupsToDb(groups) })
 }
+
+/**
+ * saves new leaderboard refresh date
+ * @name scheduleGroupRefresh
+ * @param {Date} newDate
+ */
+let scheduleGroupRefresh = async (newDate) => {
+    let scheduler = await GroupScheduler.findOne({name: { $eq: "scheduler" }});
+    if (!scheduler) scheduler = new GroupScheduler();
+    scheduler.refreshOn = newDate;
+    scheduler
+        .save()
+        .catch(error => { console.error(error); })
+}
+
+initialiseLeaderboardRefreshing();
 
 module.exports = router;
