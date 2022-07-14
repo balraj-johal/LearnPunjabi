@@ -8,7 +8,7 @@ function ScrollPrompt(props) {
             className="z-50 mr-4 mt-2 absolute bottom-0 left-0
                 w-10/12
                 md:my-4 md:w-3/6
-                lg:my-6 lg:mr-8 lg:w-2/6" 
+                lg:my-6 lg:mr-8" // lg:w-2/6
             onClick={e => {
                 // this is a manual override of the anchor scroll behaviour,
                 // as I could not get smooth scrolling via css to work without

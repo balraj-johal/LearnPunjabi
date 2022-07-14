@@ -9,6 +9,7 @@ import { Canvas } from "@react-three/fiber";
 import RiversMid from "../RiversSVGs/RiversMid";
 import ThreeJSElements from './ThreeJSElements';
 import PunjabText from "./PunjabText";
+import ScrollPrompt from "../ScrollPrompt";
 
 let PunjabInfoCanvas = React.forwardRef((props, ref) => {
     let [pageIndex, setPageIndex] = useState(0);
@@ -38,6 +39,10 @@ let PunjabInfoCanvas = React.forwardRef((props, ref) => {
                         />
                     </Canvas> }
                 </div>
+                <ScrollPrompt 
+                    text="Keep scrolling!" 
+                    // scrollTo="#welcome-3"
+                />
             </div>
             <ScrollProgressTracker index={0} setPageIndex={setPageIndex} />
             <ScrollProgressTracker index={1} setPageIndex={setPageIndex} />
