@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { connect } from "react-redux";
-
+import { useInViewport } from 'react-in-viewport';
 
 // import components
 import ScrollPrompt from "./ScrollPrompt";
@@ -53,6 +53,9 @@ function Welcome(props) {
         main.current.removeAttribute("inert");
     }
 
+    const exampleLesson = useRef();
+    const { inViewport } = useInViewport( exampleLesson );
+
     return(
         <>
         { showAccounts && <div 
@@ -101,14 +104,21 @@ function Welcome(props) {
                 <div 
                     aria-label="Example Lesson"
                     id="welcome-2" 
-                    className="welcome-div grad-mid h-full animate-fade-in"
+                    className="welcome-div grad-mid h-full"
                 >
-                    <Lesson lessonOverride={EXAMPLE_LESSON} />
+                    <div 
+                        className={`w-full h-full z-50 relative transition-opacity duration-500 delay-200
+                            ${inViewport ? "opacity-1" : "opacity-0"}`}
+                    >
+                        <Lesson lessonOverride={EXAMPLE_LESSON} />
+                        {/* empty div for better tracking if section in viewport */}
+                        <div ref={exampleLesson} className="invisible absolute top-10 h-full" />
+                        <ScrollPrompt 
+                            text="Want to learn about Punjab?" 
+                            scrollTo="#welcome-3"
+                        />
+                    </div>
                     <RiversMid />
-                    <ScrollPrompt 
-                        text="Want to learn about Punjab?" 
-                        scrollTo="#welcome-3"
-                    />
                 </div>
                 <div 
                     aria-label="3D animation of Punjab's history through the years"
