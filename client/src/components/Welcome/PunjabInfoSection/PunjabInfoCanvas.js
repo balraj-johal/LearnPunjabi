@@ -14,9 +14,12 @@ let PunjabInfoCanvas = React.forwardRef((props, ref) => {
     let [pageIndex, setPageIndex] = useState(0);
     let [textVisible, setTextVisible] = useState(false);
 
+    const stick = useRef();
+    const { inViewport } = useInViewport( stick );
+
     return(
         <>
-            <div id="stick">
+            <div id="stick" ref={stick}>
                 <RiversMid />
                 <div className="w-[70%] h-full relative">
                     <PunjabText
@@ -25,7 +28,7 @@ let PunjabInfoCanvas = React.forwardRef((props, ref) => {
                         setTextVisible={setTextVisible} 
                         textVisible={textVisible}
                     />
-                    <Canvas 
+                    { inViewport && <Canvas 
                         dpr={[1, 2]} 
                         camera={{ position: [0, 0, 10], fov: 22 }}
                     >
@@ -33,7 +36,7 @@ let PunjabInfoCanvas = React.forwardRef((props, ref) => {
                             setPageIndex={setPageIndex} 
                             scrollProgress={props.scrollProgress}
                         />
-                    </Canvas>
+                    </Canvas> }
                 </div>
             </div>
             <ScrollProgressTracker index={0} setPageIndex={setPageIndex} />
