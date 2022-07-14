@@ -1,6 +1,8 @@
-import React, {  } from "react";
+import React, { useState } from "react";
 
 function ScrollPrompt(props) {
+    const [hovering, setHovering] = useState(false);
+
     return(
         <a 
             href={props.scrollTo}
@@ -24,11 +26,17 @@ function ScrollPrompt(props) {
         >
             <div 
                 id="scroll-prompt" 
-                className="
-                    px-4 py-2 
+                className={`px-6 py-2 ml-[-0.5rem]
                     flex items-center 
                     bg-white text-black
-                    hover:pl-6 transition-all" 
+                    transition-all
+                    ${hovering ? "" : "animate-bounce-x"}`} //hover:pl-6 
+                style={{
+                    transform: hovering ? "translateX(7.5px)" : "",
+                    animationDelay: "4000ms"
+                }}
+                onMouseEnter={() => {setHovering(true)}}
+                onMouseLeave={() => {setHovering(false)}}
             >
                 <svg 
                     viewBox="0 0 62 31" 

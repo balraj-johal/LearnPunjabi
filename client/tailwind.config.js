@@ -38,6 +38,15 @@ module.exports = {
                     '40%' : { transform: 'translateY(0px)' },
                     '60%' : { transform: 'translateY(-2px)' },
                     '80%' : { transform: 'translateY(0px)' },
+                },
+                'bounce-x': {
+                    '0%' : { transform: 'translateX(0px)' },
+                    '4%' : { transform: 'translateX(5px)' },
+                    '8%' : { transform: 'translateX(0px)' },
+                    '12%' : { transform: 'translateX(1px)' },
+                    '16%' : { transform: 'translateX(0px)' },
+                    '20%' : { transform: 'translateX(0px)' },
+                    '100%' : { transform: 'translateX(0px)' },
                 }
             },
             animation: {
@@ -46,6 +55,7 @@ module.exports = {
                 'move-up': 'move-up 200ms forwards ease-in-out',
                 'shake-x': 'shake-x 600ms forwards ease-out',
                 'bounce-y': 'bounce-y 600ms forwards ease-out',
+                'bounce-x': 'bounce-x 3000ms infinite ease-out',
             }
         },
     },
