@@ -18,7 +18,7 @@ function EditMultipleChoice(props) {
     */
     let onChange = e => {
         let dataCopy = {...data};
-        if (e.target.id.includes("possible-answer-")) {
+        if (e.target.id.includes("possble-answer-")) {
             let index = Number(e.target.id.substring(16));
             dataCopy.possibleAnswers[index].middleText = e.target.value;
         } else { 
@@ -93,14 +93,17 @@ function EditMultipleChoice(props) {
                         extraStyles={returnSelectedStyleClasses(index)}
                     >
                         <button
+                            type="button"
                             className="absolute top-0 right-0 h-12 w-12 text-3xl 
                                 flex justify-center items-center text-red-600" 
                             onClick={() => {deleteAnswer(index)}} 
                         > - </button>
                         <button
+                            type="button"
                             className={`absolute top-0 left-0 h-12 w-12 text-lg 
                                 flex justify-center items-center text-green-500
-                                ${data.correctAnswerIndex === index ? "hidden" : ""} transition-all  
+                                ${data.correctAnswerIndex === index ? "hidden" : ""} 
+                                transition-all  
                             `}
                             onClick={() => {selectAnswerAsCorrect(index)}} 
                         > ✓ </button>
